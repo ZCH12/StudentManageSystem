@@ -14,10 +14,13 @@ int list[1500];				//名单,里面保存的是学生的下标
 int list2[1500];
 int list3[1500];
 int n;
+int i;                      //for
 int temp,temp2;
 char *temp3;
 
-void start();
+
+
+
 void SortList();
 void SearchStudentByUnit();
 void AddNewInformationUnit();
@@ -57,88 +60,92 @@ int main() {
     
     int mode = 0;
     
-    printf(
-           "0.显示所有学生信息\n"
-           "1.排序\n"
-           "2.查找学生\n"
-           "3.新增数据列\n"
-           "4.删除数据列\n"
-           "5.新增学生\n"
-           "6.修改学生信息\n"
-           "7.删除指定学生\n"
-           "8.读取学生信息\n"
-           "9.保存学生信息\n"
+    
+    printf(" 0.显示所有学生信息\n"
+           " 1.排序\n"
+           " 2.查找学生\n"
+           " 3.新增数据列\n"
+           " 4.删除数据列\n"
+           " 5.新增学生\n"
+           " 6.修改学生信息\n"
+           " 7.删除指定学生\n"
+           " 8.读取学生信息\n"
+           " 9.保存学生信息\n"
            "-1.退出"
            );
-    while(scanf("%d",&mode),mode==-1);
-    switch (mode) {//确定
-        case 0://"0.显示所有学生信息"
-            display(list, n, 1);//完成
-            break;
-            
-        case 1://"1.排序"
-            SortList();//完成，缺循环及退出
-            break;
-            
-        case 2://"2.查找学生"
-            SearchStudentByUnit();//完成，缺循环，第二条件，第三条件，无限条件，退出。
-            break;
-            
-        case 3://"3.新增数据列\n"//完成，缺循环，新增多个数列,退出。
-            AddNewInformationUnit();
-            break;
-            
-        case 4://"4.删除数据列\n"
-            DeleteInformationUnit();
-            break;
-            
-        case 5://"5.新增学生\n"
-            AddNewStudent();
-            break;
-            
-        case 6://"6.修改学生信息\n"
-            ChangeStudentInformation();
-            break;
-            
-        case 7://"7.删除指定学生\n"
-            DeleteAStudentFromList();
-            break;
-            
-        case 8://"8.读取学生信息\n"
-            ReadFromFile();
-            break;
-            
-        case 9://"9.保存学生信息\n"
-            WriteToFile();
-            break;
-            
+    while(scanf("%d",&mode),mode==-1){
+        switch (mode) {
+            case 0://"0.显示所有学生信息"
+                display(list, n, 1);//完成
+                break;
+                
+            case 1://"1.排序"
+                SortList();//完成，缺循环及退出
+                break;
+                
+            case 2://"2.查找学生"
+                SearchStudentByUnit();//完成，缺循环，第二条件，第三条件，无限条件，退出。
+                break;
+                
+            case 3://"3.新增数据列\n"//完成，缺循环，新增多个数列,退出。
+                AddNewInformationUnit();
+                break;
+                
+            case 4://"4.删除数据列\n"
+                DeleteInformationUnit();
+                break;
+                
+            case 5://"5.新增学生\n"
+                AddNewStudent();
+                break;
+                
+            case 6://"6.修改学生信息\n"
+                ChangeStudentInformation();
+                break;
+                
+            case 7://"7.删除指定学生\n"
+                DeleteAStudentFromList();
+                break;
+                
+            case 8://"8.读取学生信息\n"
+                ReadFromFile();
+                break;
+                
+            case 9://"9.保存学生信息\n"
+                WriteToFile();
+                break;
+                
+        }
     }
     return 0;
 }
-
 void SortList(){
     
     int order;
-    char sortbase[16];
+    int sortbase;
     
-    printf("请输入所需排序的单元(如:名字,成绩1)，输入-1退出\n");
-    while(scanf("%s", sortbase),sortbase != -1)
-    printf("请选择排序方式\n"
-           "0.升序\n"
-           "1.降序\n"
+    printf("0.排序\n"
+           "-1.退出\n"
            );
-    scanf("%d", &order);
-    
-    switch (order) {
-        case 0:
-            Sort(list, n, SearchHeadIndex(sortbase), 0);
-            display(list, n, 0);
-            break;
-            
-        case 1:
-            Sort(list, n, SearchHeadIndex(sortbase), 1);
-            display(list, n, 0);
-            break;
+    while(scanf("%d", &order), order != -1){
+        
+        for (i = 0; i < UnitCount; i++) {
+            printf("%d.%s\n", i, UnitHead[i]);
+        }
+        scanf("%d", &sortbase);
+        
+        printf("1.升序\n"
+               "2.降序");
+        scanf("%d", &order);
+        switch (order) {
+            case 1://升
+                Sort(list, n, sortbase, 0);
+                break;
+                
+            case 2://降
+                Sort(list, n, sortbase, 1);
+                break;
+        }
     }
     return;
 }
@@ -211,8 +218,8 @@ void ChangeStudentInformation() {
     printf("请输入更改的内容\n");
     scanf("%s", information);
     
-    GetString(list, list_id, SearchHeadIndex(getunit));
-    strcpy(temp3,information);
+    temp3 = GetString(list, list_id, SearchHeadIndex(getunit));
+    strcpy(temp3, information);
     display(list, n, 1);
     
     return;
@@ -247,7 +254,7 @@ void ReadFromFile() {
     
     char filename;
     printf("请输入所需读取的文件名字,如(data.ini)");
-    scanf("%s",&filename);
+    scanf("%s", &filename);
     
     ReadIni(&filename);		//读取data.ini
     GetList(list, &n);    		//取得一个名单
@@ -259,7 +266,7 @@ void WriteToFile() {
     char filename;
     
     printf("请输入所需读取的文件名字,如(data.ini)");
-    scanf("%s",&filename);
+    scanf("%s", &filename);
     
     WriteIni(&filename, list, n);
     

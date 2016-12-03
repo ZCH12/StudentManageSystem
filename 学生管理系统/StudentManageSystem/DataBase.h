@@ -5,6 +5,8 @@
 
 extern char ***StudentList;
 extern int StudentCount;
+extern int UnitCount;
+extern char **UnitHead;			
 
 void ReadIni(char *File);
 void WriteIni(char* File, int *list, int n);
