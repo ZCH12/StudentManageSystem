@@ -55,7 +55,7 @@ int main() {
     ReadIni("data.ini");		//读取data.ini
     GetList(list, &n);
     
-    int mode = -1;
+    int mode = 0;
     
     printf(
            "0.显示所有学生信息\n"
@@ -68,8 +68,9 @@ int main() {
            "7.删除指定学生\n"
            "8.读取学生信息\n"
            "9.保存学生信息\n"
+           "-1.退出"
            );
-    scanf("%d",&mode);
+    while(scanf("%d",&mode),mode==-1);
     switch (mode) {//确定
         case 0://"0.显示所有学生信息"
             display(list, n, 1);//完成
@@ -120,8 +121,8 @@ void SortList(){
     int order;
     char sortbase[16];
     
-    printf("请输入所需排序的单元(如:名字,成绩1)\n");
-    scanf("%s", sortbase);
+    printf("请输入所需排序的单元(如:名字,成绩1)，输入-1退出\n");
+    while(scanf("%s", sortbase),sortbase != -1)
     printf("请选择排序方式\n"
            "0.升序\n"
            "1.降序\n"
