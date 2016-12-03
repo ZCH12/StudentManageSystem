@@ -285,7 +285,7 @@ void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
 */
 void DestroyStudentList()
 {
-	int a, b, c;
+	int a, b;
 	for (a = 0; a < StudentCount; a++)
 	{
 		for (b = 0; b < UnitCount; b++)
