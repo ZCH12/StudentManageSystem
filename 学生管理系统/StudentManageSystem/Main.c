@@ -8,7 +8,7 @@
 //  Copyright © 2016 wongziihou. All rights reserved.
 //
 #include "DataBase.h"
-
+#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}
 
 int list[1500];				//名单,里面保存的是学生的下标
 int list2[1500];
@@ -73,45 +73,45 @@ int main() {
            " 9.保存学生信息\n"
            "-1.退出"
            );
-    while(scanf("%d",&mode),mode==-1){
+    while(scanf("%d",&mode),mode==-1){                                          //当输入mode
         switch (mode) {
-            case 0://"0.显示所有学生信息"
-                display(list, n, 1);//完成
+            case 0://"0.显示所有学生信息"//缺循环，单独选择显示一个或多个学生信息表，退出
+                display(list, n, 1);
                 break;
                 
             case 1://"1.排序"
-                SortList();//完成，缺循环及退出
+                SortList();//允许排任何一列数据列，支持升降序使用                                   //完成
                 break;
                 
             case 2://"2.查找学生"
-                SearchStudentByUnit();//完成，缺循环，第二条件，第三条件，无限条件，退出。
+                SearchStudentByUnit();//缺循环，第二条件，第三条件，无限条件，退出
                 break;
                 
-            case 3://"3.新增数据列\n"//完成，缺循环，新增多个数列,退出。
+            case 3://"3.新增数据列\n"//缺循环，同时新增多个数据列，退出
                 AddNewInformationUnit();
                 break;
                 
-            case 4://"4.删除数据列\n"
+            case 4://"4.删除数据列\n"//缺循环，同时删除多个数据列，退出
                 DeleteInformationUnit();
                 break;
                 
-            case 5://"5.新增学生\n"
+            case 5://"5.新增学生\n"//缺循环，同时新增多个学生，退出
                 AddNewStudent();
                 break;
                 
-            case 6://"6.修改学生信息\n"
+            case 6://"6.修改学生信息\n"//缺循环，同时修改多个学生的信息，同时修改学生的多个信息，退出
                 ChangeStudentInformation();
                 break;
                 
-            case 7://"7.删除指定学生\n"
+            case 7://"7.删除指定学生\n"//缺循环，同时修删除多个指定学生的同一个信息，同时删除同一个学生的多个指定信息，退出
                 DeleteAStudentFromList();
                 break;
                 
-            case 8://"8.读取学生信息\n"
+            case 8://"8.读取学生信息\n"//缺循环，同时读取多个文件，退出
                 ReadFromFile();
                 break;
                 
-            case 9://"9.保存学生信息\n"
+            case 9://"9.保存学生信息\n"//缺循环,同时保持多个学生信息表，退出
                 WriteToFile();
                 break;
                 
@@ -119,35 +119,37 @@ int main() {
     }
     return 0;
 }
-void SortList(){
+
+//#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}
+void SortList() {
     
     int order;
     int sortbase;
-    
-    printf("0.排序\n"
-           "-1.退出\n"
-           );
-    while(scanf("%d", &order), order != -1){
-        
-        for (i = 0; i < UnitCount; i++) {
-            printf("%d.%s\n", i, UnitHead[i]);
-        }
-        scanf("%d", &sortbase);
-        
-        printf("1.升序\n"
-               "2.降序");
-        scanf("%d", &order);
-        switch (order) {
-            case 1://升
-                Sort(list, n, sortbase, 0);
-                break;
-                
-            case 2://降
-                Sort(list, n, sortbase, 1);
-                break;
+A:                                                                      //标记A
+    while(printf(   "0.升序排序\n"
+                    "1.降序排序\n"
+                    "-1.退出\n\n"),
+          scanf("%d", &order),order!=-1) {                      //当输入为-1时,直接跳出
+        OUTSCANFAGAIN(order, -1, 1);                            //判断order是否越界,若越界则重新输入
+        while (1) {                                             //order必为0或1
+            for (i = 0; i < UnitCount; i++) {                   //显示选项
+                printf("%d.%s\n", i, UnitHead[i]);
+            }
+            scanf("%d", &sortbase);
+            switch (order) {
+                    
+                case 1:                                         //order -> 0 对应 case 1.升序排序
+                    OUTSCANFAGAIN(sortbase, 0, UnitCount);      //判断sortbase是否越界,若越界则重新输入
+                    Sort(list, n, sortbase, 0);
+                    goto A;
+                    
+                case 2:                                         //order -> 1 对应 case 2.降序排序
+                    OUTSCANFAGAIN(sortbase, 0, UnitCount);
+                    Sort(list, n, sortbase, 1);
+                    goto A;
+            }
         }
     }
-    return;
 }
 
 void SearchStudentByUnit() {
@@ -274,38 +276,6 @@ void WriteToFile() {
     
 }   
 
-
-
-//    //测试代码,自行去掉注释进行测试
-//
-//    printf("按照姓名升序排序\n");
-//    Sort(list, n, SearchHeadIndex("姓名"), 0);
-//    display(list, n);
-//
-//    /*
-//     printf("\n按照姓名降序排序\n");
-//     Sort(list, n, SearchHeadIndex("姓名"), 1);
-//     display(list, n);
-//     printf("\n按照学号升序排序\n");
-//     Sort(list, n, SearchHeadIndex("学号"), 0);
-//     display(list, n);
-//     printf("\n按照学号降序排序\n");
-//     Sort(list, n, SearchHeadIndex("学号"), 1);
-//     display(list, n);
-//     printf("\n按照成绩1升序排序\n");
-//     Sort(list, n, SearchHeadIndex("成绩1"), 0);
-//     display(list, n);
-//     printf("\n按照成绩1降序排序\n");
-//     Sort(list, n, SearchHeadIndex("成绩1"), 1);
-//     display(list, n);
-
-//     printf("\n找到成绩1为65分的\n");
-//     temp=Search(list, n, list2, SearchHeadIndex("成绩1"), "65");
-//     display(list2, temp);
-//     printf("\n找到成绩1为65分,并且成绩2为56分的\n");
-//     temp2 = Search(list2, temp, list3, SearchHeadIndex("成绩2"), "56");
-//     display(list3, temp2);
-//
 
 
 

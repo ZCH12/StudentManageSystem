@@ -13,7 +13,7 @@ TODO:存在缺陷
 这是一个保存学生在表中的实际存放顺序的下标的数组
 它保存的数据是一个个下标,这些数据的顺序不会改变表本身,但是它会关系到显示和保存数据
 */
-#define WRONGEXIT(x) {printf("%s,程序将会退出",x);system("pause");exit(1);}
+#define WRONGEXIT(x) {printf("%s,程序将会退出\n",x);system("pause");exit(1);}
 #define ADDITIONAL 10		//一次增加10个学生
 
 /*
