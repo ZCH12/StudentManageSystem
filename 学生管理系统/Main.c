@@ -17,6 +17,8 @@ void DeleteAStudentFromList();
 void ReadFromFile();
 void WriteToFile();
 
+//强势登陆
+
 
 //     printf("\n新增一个项成绩3\n");
 //     NewUnit("成绩3", 3, '0');
