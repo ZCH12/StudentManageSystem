@@ -70,9 +70,9 @@ int main() {
            "9.保存学生信息\n"
            );
     scanf("%d",&mode);
-    switch (mode) {
+    switch (mode) {//确定
         case 0://"0.显示所有学生信息"
-            display(list, n);//完成
+            display(list, n, 1);//完成
             break;
             
         case 1://"1.排序"
@@ -131,12 +131,12 @@ void SortList(){
     switch (order) {
         case 0:
             Sort(list, n, SearchHeadIndex(sortbase), 0);
-            display(list, n);
+            display(list, n, 0);
             break;
             
         case 1:
             Sort(list, n, SearchHeadIndex(sortbase), 1);
-            display(list, n);
+            display(list, n, 0);
             break;
     }
     return;
@@ -153,7 +153,8 @@ void SearchStudentByUnit() {
     scanf("%s", &destin);
     
     temp=Search(list, n, list2, SearchHeadIndex(searchunit), &destin);
-    display(list2, n);
+    display(list2, n, 0);
+    
     
     return;
 }
@@ -163,11 +164,11 @@ void AddNewInformationUnit() {
     int unitlimits;
     
     
-    printf("请输入:所添加的单元名字 单元字节范围 初始值\n");
+    printf("请输入:所添加的单元 单元字节范围 初始值\n");
     scanf("%s %d %c", title, &unitlimits, &defaul);
     
     NewUnit(title, unitlimits, defaul);
-    display(list, n);
+    display(list, n, 0);
     
     return;
 }
@@ -176,8 +177,9 @@ void DeleteInformationUnit() {
     
     printf("请输入:所删除的单元名字\n");
     scanf("%s", title);
+    
     DeleteUnit(SearchHeadIndex(title));
-    display(list, n);
+    display(list, n, 0);
     
     return;
 }
@@ -187,8 +189,9 @@ void AddNewStudent() {
     //     display(list, n);
     
     NewStudent(list, &n);
-    printf("\n新增一个学生\n");
-    display(list, n);
+    printf("\n已新增一个学生\n");
+    display(list, n, 0);
+   
     return;
     
 }
@@ -198,16 +201,19 @@ void ChangeStudentInformation() {
     int list_id;
     char information[16];
     
+    display(list, n, 1);
+    
     printf("请输入所需更改的单元\n");
-    scanf("%s",getunit);
+    scanf("%s", getunit);
     printf("请输入所需更改的序号\n");
-    scanf("%d",&list_id);
+    scanf("%d", &list_id);
     printf("请输入更改的内容\n");
-    scanf("%s",information);
+    scanf("%s", information);
     
     GetString(list, list_id, SearchHeadIndex(getunit));
     strcpy(temp3,information);
-    display(list, n);
+    display(list, n, 1);
+    
     return;
     
 }
@@ -215,8 +221,8 @@ void DeleteAStudentFromList() {
     
     int studentnumber, mode;
     
-    printf("请输入所需删除信息的序号\n");
-    scanf("%d",&studentnumber);
+    printf("请输入所需删除学生所有信息的序号\n");
+    scanf("%d", &studentnumber);
     printf("请选择:\n"
            "0.未排序\n"
            "1.已排序\n"
@@ -224,30 +230,41 @@ void DeleteAStudentFromList() {
     switch (mode) {
         case 0:
             DeleteStudentInList(list, &n, studentnumber, 0);
-            display(list, n);
+            display(list, n, 1);
             break;
             
         case 1:
             DeleteStudentInList(list, &n, studentnumber, 0);
-            display(list, n);
+            display(list, n, 1);
             break;
     }
+    
     return;
 }
 void ReadFromFile() {
     
     
-    
+    char filename;
     printf("请输入所需读取的文件名字,如(data.ini)");
+    scanf("%s",&filename);
     
-    ReadIni("data.ini");		//读取data.ini
+    ReadIni(&filename);		//读取data.ini
     GetList(list, &n);    		//取得一个名单
+    
     return;
 }
 void WriteToFile() {
-    WriteIni(<#char *File#>, <#int *list#>, <#int n#>)
-    return
-}
+    
+    char filename;
+    
+    printf("请输入所需读取的文件名字,如(data.ini)");
+    scanf("%s",&filename);
+    
+    WriteIni(&filename, list, n);
+    
+    return;
+    
+}   
 
 
 
