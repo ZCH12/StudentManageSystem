@@ -17,7 +17,7 @@ int SearchHeadIndex(const char *ListHeadName);
 void Sort(int *list, int n, int sortBase, int Order);
 int Search(int *Sourcelist, int n, int *Resultlist, int SearchUnit, const char *destin);
 void GetList(int *list, int *n);
-void display(int *list, int n);
+void display(int *list, int n, int mode);
 void DestroyStudentList();
 char* GetString(int *list, int list_ID, int GetUnit);
 char* GetUnitTittle(int Unit);

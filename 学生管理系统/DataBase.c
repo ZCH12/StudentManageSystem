@@ -2,7 +2,10 @@
 
 /*
 Create By ZCR
-2016-12-01
+2016-12-03
+
+TODO:存在缺陷
+没有初始化函数
 */
 
 /*
@@ -21,16 +24,19 @@ Create By ZCR
 注意表头的长度限制为31个英文字符
 */
 
+
+
 /*
 指向字符串数组的指针
 */
 char ***StudentList;
-
 char **UnitHead;			//表头名称的字符串数组
 int *UnitHeadlimits;		//单元字符限制(数组)
 int UnitCount;
 int StudentCount;
 int StudentCapacity;		//用于记录StudentList的容量(提高效率,避免多次分配)
+
+
 
 /*
 从文件读取数据
@@ -213,8 +219,8 @@ Unit要删除的列的下标
 */
 void DeleteUnit(int Unit)
 {
-	int a,b,c;
-	for (a = 0,b=0; a < UnitCount; a++)
+	int a, b, c;
+	for (a = 0, b = 0; a < UnitCount; a++)
 	{
 		UnitHead[b] = UnitHead[a];
 		UnitHeadlimits[b] = UnitHeadlimits[a];
@@ -225,7 +231,7 @@ void DeleteUnit(int Unit)
 	}
 	for (a = 0; a < StudentCount; a++)
 	{
-		for (b = 0,c=0; b < UnitCount; b++)
+		for (b = 0, c = 0; b < UnitCount; b++)
 		{
 			StudentList[a][c] = StudentList[a][b];
 			if (b != Unit)
@@ -420,18 +426,34 @@ void GetList(int *list, int *n)
 /*
 根据list显示学生信息
 */
-void display(int *list, int n)
+void display(int *list, int n, int mode)
 {
 	int a, b;
+	if (mode == 1)
+	{
+		printf("编号 ");
+	}
 	for (a = 0; a < UnitCount; a++) {
 		printf("%-*s ", UnitHeadlimits[a], UnitHead[a]);
 	}
 	printf("\n");
-	for (a = 0; a < n; a++) {
-		for (b = 0; b < UnitCount; b++) {
-			printf("%-*s ", UnitHeadlimits[b], StudentList[list[a]][b]);
+	if (mode == 1) {
+		for (a = 0; a < n; a++) {
+			for (b = 0; b < UnitCount; b++) {
+				printf("%-*s ", UnitHeadlimits[b], StudentList[list[a]][b]);
+			}
+			printf("\n");
 		}
-		printf("\n");
+	}
+	else
+	{
+		for (a = 0; a < n; a++) {
+			printf("-%4d ", a);
+			for (b = 0; b < UnitCount; b++) {
+				printf("%-*s ", UnitHeadlimits[b], StudentList[list[a]][b]);
+			}
+			printf("\n");
+		}
 	}
 	return;
 }
@@ -443,7 +465,7 @@ list 名单
 list_ID 学生在名单中的位置(从0开始计)
 GetUnit 表头的
 */
-char* GetString(int *list,int list_ID,int GetUnit)
+char* GetString(int *list, int list_ID, int GetUnit)
 {
 	return StudentList[list[list_ID]][GetUnit];
 }

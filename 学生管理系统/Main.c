@@ -1,8 +1,4 @@
 #include "DataBase.h"
-#include "DataBase.c"
-
-
-
 
 int list[1500];				//名单,里面保存的是学生的下标
 int list2[1500];
@@ -11,7 +7,6 @@ int n;
 int temp,temp2;
 char *temp3;
 
-void start();
 void SortList();
 void SearchStudentByUnit();
 void AddNewInformationUnit();
@@ -56,7 +51,6 @@ void WriteToFile();
 //    system("pause");
 
 int main() {
-    
     
     ReadIni("data.ini");		//读取data.ini
     GetList(list, &n);			//取得一个名单
