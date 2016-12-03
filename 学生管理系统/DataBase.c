@@ -1,46 +1,46 @@
-#include "DataBase.h"
+ï»¿#include "DataBase.h"
 
 /*
 Create By ZCR
 2016-12-03
 
-TODO:´æÔÚÈ±Ïİ
-Ã»ÓĞ³õÊ¼»¯º¯Êı
+TODO:å­˜åœ¨ç¼ºé™·
+æ²¡æœ‰åˆå§‹åŒ–å‡½æ•°
 */
 
 /*
-ÔÚµ÷ÓÃº¯ÊıÊ±,»áÒªÇó´«ÈëÒ»¸ö*list,
-ÕâÊÇÒ»¸ö±£´æÑ§ÉúÔÚ±íÖĞµÄÊµ¼Ê´æ·ÅË³ĞòµÄÏÂ±êµÄÊı×é
-Ëü±£´æµÄÊı¾İÊÇÒ»¸ö¸öÏÂ±ê,ÕâĞ©Êı¾İµÄË³Ğò²»»á¸Ä±ä±í±¾Éí,µ«ÊÇËü»á¹ØÏµµ½ÏÔÊ¾ºÍ±£´æÊı¾İ
+åœ¨è°ƒç”¨å‡½æ•°æ—¶,ä¼šè¦æ±‚ä¼ å…¥ä¸€ä¸ª*list,
+è¿™æ˜¯ä¸€ä¸ªä¿å­˜å­¦ç”Ÿåœ¨è¡¨ä¸­çš„å®é™…å­˜æ”¾é¡ºåºçš„ä¸‹æ ‡çš„æ•°ç»„
+å®ƒä¿å­˜çš„æ•°æ®æ˜¯ä¸€ä¸ªä¸ªä¸‹æ ‡,è¿™äº›æ•°æ®çš„é¡ºåºä¸ä¼šæ”¹å˜è¡¨æœ¬èº«,ä½†æ˜¯å®ƒä¼šå…³ç³»åˆ°æ˜¾ç¤ºå’Œä¿å­˜æ•°æ®
 */
-#define WRONGEXIT(x) {printf("%s,³ÌĞò½«»áÍË³ö",x);system("pause");exit(1);}
-#define ADDITIONAL 10		//Ò»´ÎÔö¼Ó10¸öÑ§Éú
+#define WRONGEXIT(x) {printf("%s,ç¨‹åºå°†ä¼šé€€å‡º",x);system("pause");exit(1);}
+#define ADDITIONAL 10		//ä¸€æ¬¡å¢åŠ 10ä¸ªå­¦ç”Ÿ
 
 /*
-ÔÚ´æµµÎÄ¼şÖĞ,
-µÚÒ»ĞĞµÚÒ»¸öÊı×Ö´ú±íÑ§ÉúµÄÈËÊın,µÚ¶ş¸öÊı×Ö´ú±íÃ¿¸öÈËµÄÊôĞÔµÄ¸öÊıunit
-µÚ¶şĞĞÓĞunit×éÊı¾İ,Ã¿×éÊı¾İÓÉ2¸öÊı¾İ×é³É,·Ö±ğÊÇÒ»¸ö×Ö·û´®(±íÍ·)ºÍÒ»¸öÊı×Ö(´ú±íÕâ¸öµ¥ÔªµÄÏŞÖÆ³¤¶È)
-½ÓÏÂÀ´ÓĞn×éÊı¾İ,Ò»Ö±µ½ÎÄ¼ş½áÎ²,Ã¿×éÊı¾İ·Ö±ğÓĞunit¸öÊı¾İ,ËûÃÇµÄÖµ¾ÍÊÇ±íÍ·¶¨ÒåµÄÖµ
-×¢Òâ±íÍ·µÄ³¤¶ÈÏŞÖÆÎª31¸öÓ¢ÎÄ×Ö·û
+åœ¨å­˜æ¡£æ–‡ä»¶ä¸­,
+ç¬¬ä¸€è¡Œç¬¬ä¸€ä¸ªæ•°å­—ä»£è¡¨å­¦ç”Ÿçš„äººæ•°n,ç¬¬äºŒä¸ªæ•°å­—ä»£è¡¨æ¯ä¸ªäººçš„å±æ€§çš„ä¸ªæ•°unit
+ç¬¬äºŒè¡Œæœ‰unitç»„æ•°æ®,æ¯ç»„æ•°æ®ç”±2ä¸ªæ•°æ®ç»„æˆ,åˆ†åˆ«æ˜¯ä¸€ä¸ªå­—ç¬¦ä¸²(è¡¨å¤´)å’Œä¸€ä¸ªæ•°å­—(ä»£è¡¨è¿™ä¸ªå•å…ƒçš„é™åˆ¶é•¿åº¦)
+æ¥ä¸‹æ¥æœ‰nç»„æ•°æ®,ä¸€ç›´åˆ°æ–‡ä»¶ç»“å°¾,æ¯ç»„æ•°æ®åˆ†åˆ«æœ‰unitä¸ªæ•°æ®,ä»–ä»¬çš„å€¼å°±æ˜¯è¡¨å¤´å®šä¹‰çš„å€¼
+æ³¨æ„è¡¨å¤´çš„é•¿åº¦é™åˆ¶ä¸º31ä¸ªè‹±æ–‡å­—ç¬¦
 */
 
 
 
 /*
-Ö¸Ïò×Ö·û´®Êı×éµÄÖ¸Õë
+æŒ‡å‘å­—ç¬¦ä¸²æ•°ç»„çš„æŒ‡é’ˆ
 */
 char ***StudentList;
-char **UnitHead;			//±íÍ·Ãû³ÆµÄ×Ö·û´®Êı×é
-int *UnitHeadlimits;		//µ¥Ôª×Ö·ûÏŞÖÆ(Êı×é)
+char **UnitHead;			//è¡¨å¤´åç§°çš„å­—ç¬¦ä¸²æ•°ç»„
+int *UnitHeadlimits;		//å•å…ƒå­—ç¬¦é™åˆ¶(æ•°ç»„)
 int UnitCount;
 int StudentCount;
-int StudentCapacity;		//ÓÃÓÚ¼ÇÂ¼StudentListµÄÈİÁ¿(Ìá¸ßĞ§ÂÊ,±ÜÃâ¶à´Î·ÖÅä)
+int StudentCapacity;		//ç”¨äºè®°å½•StudentListçš„å®¹é‡(æé«˜æ•ˆç‡,é¿å…å¤šæ¬¡åˆ†é…)
 
 
 
 /*
-´ÓÎÄ¼ş¶ÁÈ¡Êı¾İ
-File Òª¶ÁÈ¡µÄÎÄ¼şÂ·¾¶
+ä»æ–‡ä»¶è¯»å–æ•°æ®
+File è¦è¯»å–çš„æ–‡ä»¶è·¯å¾„
 */
 void ReadIni(char *File)
 {
@@ -50,35 +50,35 @@ void ReadIni(char *File)
 	char temp;
 	f = fopen(File, "r");
 	if (!f)
-		WRONGEXIT("´ò¿ªÎÄ¼şÊ§°Ü")
-		fscanf(f, "%d%d", &n, &unit);	//´ÓÎÄ¼şÖĞ¶ÁÈ¡Á½¸öÖµ
+		WRONGEXIT("æ‰“å¼€æ–‡ä»¶å¤±è´¥")
+		fscanf(f, "%d%d", &n, &unit);	//ä»æ–‡ä»¶ä¸­è¯»å–ä¸¤ä¸ªå€¼
 	UnitCount = unit;
 	StudentCount = n;
 	StudentCapacity = n;
-	//³õÊ¼»¯±íÍ·
+	//åˆå§‹åŒ–è¡¨å¤´
 	UnitHead = (char**)malloc(sizeof(char*) * unit);
 	UnitHeadlimits = (int*)malloc(sizeof(int)*unit);
 	if (!(UnitHead&&UnitHeadlimits))
-		WRONGEXIT("ÄÚ´æ²»×ã")
+		WRONGEXIT("å†…å­˜ä¸è¶³");
 
-		for (a = 0; a < unit; a++) {
-			*(UnitHead + a) = (char*)malloc(sizeof(char) * 32);
-			if (!(*(UnitHead + a)))
-				WRONGEXIT("ÄÚ´æ²»×ã")
-				fscanf(f, "%s%c%d", *(UnitHead + a), &temp, UnitHeadlimits + a);
-		}
-	//¿ªÊ¼³õÊ¼»¯±í²¢¶ÁÈ¡Êı¾İ
+	for (a = 0; a < unit; a++) {
+		*(UnitHead + a) = (char*)malloc(sizeof(char) * 32);
+		if (!(*(UnitHead + a)))
+			WRONGEXIT("å†…å­˜ä¸è¶³");
+		fscanf(f, "%s%c%d", *(UnitHead + a), &temp, UnitHeadlimits + a);
+	}
+	//å¼€å§‹åˆå§‹åŒ–è¡¨å¹¶è¯»å–æ•°æ®
 	StudentList = (char***)malloc(sizeof(char**)*n);
 	if (!StudentList)
-		WRONGEXIT("ÄÚ´æ²»×ã");
+		WRONGEXIT("å†…å­˜ä¸è¶³");
 	for (a = 0; a < n; a++) {
 		StudentList[a] = (char**)malloc(sizeof(char*)*unit);
 		if (!StudentList[a])
-			WRONGEXIT("ÄÚ´æ²»×ã");
+			WRONGEXIT("å†…å­˜ä¸è¶³");
 		for (b = 0; b < unit; b++) {
 			StudentList[a][b] = (char*)malloc(sizeof(char)*(UnitHeadlimits[b] + 1));
 			if (!StudentList[a][b])
-				WRONGEXIT("ÄÚ´æ²»×ã");
+				WRONGEXIT("å†…å­˜ä¸è¶³");
 			fscanf(f, "%s", StudentList[a][b]);
 		}
 	}
@@ -86,10 +86,10 @@ void ReadIni(char *File)
 }
 
 /*
-Ğ´ÈëÊı¾İµ½ÎÄ¼ş
-FileÒª½øĞĞĞ´ÈëµÄÎÄ¼şÂ·¾¶,
-list µ±Ç°ÕıÔÚ´¦ÀíµÄÑ§ÉúµÄÏÂ±ê¼¯ºÏ
-n listÖĞÔªËØµÄ¸öÊı
+å†™å…¥æ•°æ®åˆ°æ–‡ä»¶
+Fileè¦è¿›è¡Œå†™å…¥çš„æ–‡ä»¶è·¯å¾„,
+list å½“å‰æ­£åœ¨å¤„ç†çš„å­¦ç”Ÿçš„ä¸‹æ ‡é›†åˆ
+n listä¸­å…ƒç´ çš„ä¸ªæ•°
 */
 void WriteIni(char* File, int *list, int n)
 {
@@ -97,7 +97,7 @@ void WriteIni(char* File, int *list, int n)
 	int a, b;
 	f = fopen(File, "w+");
 	if (!f)
-		WRONGEXIT("´ò¿ªÎÄ¼şÊ§°Ü")
+		WRONGEXIT("æ‰“å¼€æ–‡ä»¶å¤±è´¥")
 		fprintf(f, "%d %d\n", n, UnitCount);
 	for (a = 0; a < UnitCount; a++) {
 		fprintf(f, "%s %d ", UnitHead[a], UnitHeadlimits[a]);
@@ -113,10 +113,10 @@ void WriteIni(char* File, int *list, int n)
 }
 
 /*
-ĞÂÔöÒ»¸ö±íÁĞ
-titleĞÂÔöÁĞµÄ±íÍ·
-UnitLimits ĞÂÔöÊı¾İ³¤¶ÈÏŞÖÆ
-Default ±íÖĞµÄ³õÊ¼Öµ,±ØĞëÎª·Ç¿Õ°××Ö·û
+æ–°å¢ä¸€ä¸ªè¡¨åˆ—
+titleæ–°å¢åˆ—çš„è¡¨å¤´
+UnitLimits æ–°å¢æ•°æ®é•¿åº¦é™åˆ¶
+Default è¡¨ä¸­çš„åˆå§‹å€¼,å¿…é¡»ä¸ºéç©ºç™½å­—ç¬¦
 */
 void NewUnit(char *title, int UnitLimits, char Default)
 {
@@ -126,41 +126,41 @@ void NewUnit(char *title, int UnitLimits, char Default)
 	int newUnitCount;
 	newUnitCount = UnitCount + 1;
 
-	if (UnitLimits < 1)		//È·±£UnitLimitsÄÜ¹»´æ´¢ÏÂ"0"
+	if (UnitLimits < 1)		//ç¡®ä¿UnitLimitsèƒ½å¤Ÿå­˜å‚¨ä¸‹"0"
 		UnitLimits = 1;
 
-	//´´½¨±íÍ·
+	//åˆ›å»ºè¡¨å¤´
 	temp = (char**)malloc(sizeof(char*)*newUnitCount);
 	if (!temp)
-		WRONGEXIT("ÄÚ´æ²»×ã");
+		WRONGEXIT("å†…å­˜ä¸è¶³");
 	for (a = 0; a < UnitCount; a++)
 		temp[a] = UnitHead[a];
 	temp[a] = (char*)malloc(sizeof(char) * 32);
 	if (!temp[a])
-		WRONGEXIT("ÄÚ´æ²»×ã");
+		WRONGEXIT("å†…å­˜ä¸è¶³");
 	strcpy(temp[a], title);
 	free(UnitHead);
 	UnitHead = temp;
 
 	temp2 = (int*)malloc(sizeof(int)*newUnitCount);
 	if (!temp2)
-		WRONGEXIT("ÄÚ´æ²»×ã");
+		WRONGEXIT("å†…å­˜ä¸è¶³");
 	for (a = 0; a < UnitCount; a++)
 		temp2[a] = UnitHeadlimits[a];
 	temp2[a] = UnitLimits;
 	free(UnitHeadlimits);
 	UnitHeadlimits = temp2;
 
-	//ÎªÃ¿¸öÑ§ÉúµÄÏàÓ¦ÊôĞÔ·ÖÅäÄÚ´æ
+	//ä¸ºæ¯ä¸ªå­¦ç”Ÿçš„ç›¸åº”å±æ€§åˆ†é…å†…å­˜
 	for (a = 0; a < StudentCount; a++) {
 		temp = (char**)malloc(sizeof(char*)*newUnitCount);
 		if (!temp)
-			WRONGEXIT("ÄÚ´æ²»×ã");
+			WRONGEXIT("å†…å­˜ä¸è¶³");
 		for (b = 0; b < UnitCount; b++)
 			temp[b] = StudentList[a][b];
 		temp[b] = (char*)malloc(sizeof(char)*(UnitLimits + 1));
 		if (!temp[b])
-			WRONGEXIT("ÄÚ´æ²»×ã");
+			WRONGEXIT("å†…å­˜ä¸è¶³");
 		temp[b][0] = Default;
 		temp[b][1] = 0;
 		free(StudentList[a]);
@@ -171,51 +171,51 @@ void NewUnit(char *title, int UnitLimits, char Default)
 }
 
 /*
-¼ÓÈëÒ»¸öĞÂµÄÑ§Éú
-list µ±Ç°ÕıÔÚ´¦ÀíµÄÑ§ÉúµÄÏÂ±ê¼¯ºÏ
-n listÖĞÔªËØµÄ¸öÊı
+åŠ å…¥ä¸€ä¸ªæ–°çš„å­¦ç”Ÿ
+list å½“å‰æ­£åœ¨å¤„ç†çš„å­¦ç”Ÿçš„ä¸‹æ ‡é›†åˆ
+n listä¸­å…ƒç´ çš„ä¸ªæ•°
 */
 int NewStudent(int *list, int *n)
 {
 	char ***temp;
 	int a;
-	//È·¶¨ÊÇ·ñÓĞ¿Õ¼ä±£´æÊı¾İ
+	//ç¡®å®šæ˜¯å¦æœ‰ç©ºé—´ä¿å­˜æ•°æ®
 	if (StudentCapacity <= StudentCount) {
 		StudentCapacity = StudentCount + ADDITIONAL;
 		temp = (char***)malloc(sizeof(char**)*StudentCapacity);
 		if (!temp)
-			WRONGEXIT("ÄÚ´æ²»×ã");
+			WRONGEXIT("å†…å­˜ä¸è¶³");
 		for (a = 0; a < StudentCount; a++)
 			temp[a] = StudentList[a];
 		free(StudentList);
 		StudentList = temp;
 	}
-	//¶Ô×îºóÒ»¸öÔªËØ½øĞĞĞ´Èë,µ½ÕâÀï¿ÉÒÔÈ·¶¨StudentList[StudentCount]Ò»¶¨¿ÉÒÔ±£´æÊı¾İ
+	//å¯¹æœ€åä¸€ä¸ªå…ƒç´ è¿›è¡Œå†™å…¥,åˆ°è¿™é‡Œå¯ä»¥ç¡®å®šStudentList[StudentCount]ä¸€å®šå¯ä»¥ä¿å­˜æ•°æ®
 	if (UnitCount > 0) {
 		StudentList[StudentCount] = (char**)malloc(sizeof(char*)*UnitCount);
 		if (!StudentList[StudentCount])
-			WRONGEXIT("ÄÚ´æ²»×ã");
+			WRONGEXIT("å†…å­˜ä¸è¶³");
 		for (a = 0; a < UnitCount; a++) {
 			if (UnitHeadlimits[a] < 1) {
 				UnitHeadlimits[a] = 1;
 			}
 			StudentList[StudentCount][a] = (char*)malloc(sizeof(char)*(UnitHeadlimits[a] + 1));
 			if (!StudentList[StudentCount][a])
-				WRONGEXIT("ÄÚ´æ²»×ã")
-				StudentList[StudentCount][a][0] = '0';		//³õÊ¼»¯µ¥Ôª¸ñÊı¾İ
+				WRONGEXIT("å†…å­˜ä¸è¶³");
+			StudentList[StudentCount][a][0] = '0';		//åˆå§‹åŒ–å•å…ƒæ ¼æ•°æ®
 			StudentList[StudentCount][a][1] = 0;
 		}
 	}
 
-	list[*n] = StudentCount;//°ÑĞÂµÄÑ§ÉúµÄÏÂ±ê´«µİ¸øÃûµ¥
+	list[*n] = StudentCount;//æŠŠæ–°çš„å­¦ç”Ÿçš„ä¸‹æ ‡ä¼ é€’ç»™åå•
 	*n += 1;
 	StudentCount++;
 	return *n;
 }
 
 /*
-É¾³ıÖ¸¶¨ÁĞ
-UnitÒªÉ¾³ıµÄÁĞµÄÏÂ±ê
+åˆ é™¤æŒ‡å®šåˆ—
+Unitè¦åˆ é™¤çš„åˆ—çš„ä¸‹æ ‡
 */
 void DeleteUnit(int Unit)
 {
@@ -244,11 +244,11 @@ void DeleteUnit(int Unit)
 }
 
 /*
-´ÓÃûµ¥ÖĞÌŞ³ıÄ³¸öÑ§Éú(´Ëº¯Êı²»»á¶Ô±í½øĞĞ¸Ä¶¯)
-listÊÇÒª½øĞĞĞŞ¸ÄµÄ±í
-nÊÇlist±íµÄ³¤¶È
-StudentNumberÊÇÑ§ÉúÔÚ±íÖĞµÄÊµ¼Ê±àºÅ
-modeÊÇÉ¾³ıÄ£Ê½ 0±íÊ¾É¾³ıºóÈ¡×îºóÒ»¸öÔªËØÀ´Ìî²¹¿ÕÈ±(Ğ§ÂÊ¸ß) 1±íÊ¾½«°´Ô­À´µÄË³Ğò
+ä»åå•ä¸­å‰”é™¤æŸä¸ªå­¦ç”Ÿ(æ­¤å‡½æ•°ä¸ä¼šå¯¹è¡¨è¿›è¡Œæ”¹åŠ¨)
+listæ˜¯è¦è¿›è¡Œä¿®æ”¹çš„è¡¨
+næ˜¯listè¡¨çš„é•¿åº¦
+StudentNumberæ˜¯å­¦ç”Ÿåœ¨è¡¨ä¸­çš„å®é™…ç¼–å·
+modeæ˜¯åˆ é™¤æ¨¡å¼ 0è¡¨ç¤ºåˆ é™¤åå–æœ€åä¸€ä¸ªå…ƒç´ æ¥å¡«è¡¥ç©ºç¼º(æ•ˆç‡é«˜) 1è¡¨ç¤ºå°†æŒ‰åŸæ¥çš„é¡ºåº
 */
 void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
 {
@@ -256,7 +256,7 @@ void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
 	switch (mode)
 	{
 	case 0:
-		//É¾³ıÖ¸¶¨Ñ§ÉúÖ®ºóÓÃ×îºóÒ»¸öÑ§ÉúĞÅÏ¢Ìî³ä
+		//åˆ é™¤æŒ‡å®šå­¦ç”Ÿä¹‹åç”¨æœ€åä¸€ä¸ªå­¦ç”Ÿä¿¡æ¯å¡«å……
 		for (a = 0; a < *n; a++)
 		{
 			if (list[a] == StudentNumber)
@@ -268,7 +268,7 @@ void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
 		}
 		break;
 	case 1:
-		//É¾³ıÖ¸¶¨Ñ§ÉúÖ®ºó,¿ÕÎ»Ö®ºóµÄÑ§ÉúÉÏÒÆ,ÒÔ´ËÌî²¹¿ÕÎ»
+		//åˆ é™¤æŒ‡å®šå­¦ç”Ÿä¹‹å,ç©ºä½ä¹‹åçš„å­¦ç”Ÿä¸Šç§»,ä»¥æ­¤å¡«è¡¥ç©ºä½
 		for (a = 0; a < *n; a++)
 		{
 			list[b] = list[a];
@@ -281,7 +281,7 @@ void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
 }
 
 /*
-µ±Ñ§Éú±í²»ÔÙĞèÒªÊ±,µ÷ÓÃËü¿ÉÒÔÊÍ·ÅÄÚ´æ,µ«ÊÇÊÍ·ÅÄÚ´æÖ®ºó²»ÄÜÔÙ¶Ô±í½øĞĞ²Ù×÷,³ı·ÇÖØĞÂ¶ÁÈ¡±íĞÅÏ¢
+å½“å­¦ç”Ÿè¡¨ä¸å†éœ€è¦æ—¶,è°ƒç”¨å®ƒå¯ä»¥é‡Šæ”¾å†…å­˜,ä½†æ˜¯é‡Šæ”¾å†…å­˜ä¹‹åä¸èƒ½å†å¯¹è¡¨è¿›è¡Œæ“ä½œ,é™¤éé‡æ–°è¯»å–è¡¨ä¿¡æ¯
 */
 void DestroyStudentList()
 {
@@ -300,14 +300,14 @@ void DestroyStudentList()
 
 
 /*
-Á½¸ö×Ö·û´®½øĞĞ±È½Ï,¼æÈİÊı×Ö±È½Ï
+ä¸¤ä¸ªå­—ç¬¦ä¸²è¿›è¡Œæ¯”è¾ƒ,å…¼å®¹æ•°å­—æ¯”è¾ƒ
 */
 int StrCmp(const char *A, const char *B)
 {
 	int isNumA = 1, isNumB = 1;
 	int lenA = 0, lenB = 0;
 	char *A2 = (char*)A, *B2 = (char*)B;
-	//¼ÆËã³¤¶È²¢ÅĞ¶ÏÊÇ·ñÊÇ´¿Êı×Ö
+	//è®¡ç®—é•¿åº¦å¹¶åˆ¤æ–­æ˜¯å¦æ˜¯çº¯æ•°å­—
 	while (*A2) {
 		if (isNumA && (*A2<'0' || *A2>'9'))
 			isNumA = 0;
@@ -321,24 +321,24 @@ int StrCmp(const char *A, const char *B)
 		B2++;
 	}
 	if (isNumA*isNumB == 1) {
-		//Á½¸öÊı×Ö½øĞĞ±È½Ï
+		//ä¸¤ä¸ªæ•°å­—è¿›è¡Œæ¯”è¾ƒ
 		if (lenA != lenB) {
-			//Èç¹ûÁ½¸öÊı×ÖµÄ³¤¶È²»Í¬,Ôò³¤µÄÊı×Ö´ó
+			//å¦‚æœä¸¤ä¸ªæ•°å­—çš„é•¿åº¦ä¸åŒ,åˆ™é•¿çš„æ•°å­—å¤§
 			return lenA - lenB;
 		}
 		else {
-			//Èç¹ûÊı×Ö³¤¶ÈÏàÍ¬,Ôõ´Ó¸ßÎ»µ½µÍÎ»ÒÀ´Î±È½Ï
+			//å¦‚æœæ•°å­—é•¿åº¦ç›¸åŒ,æ€ä»é«˜ä½åˆ°ä½ä½ä¾æ¬¡æ¯”è¾ƒ
 			return strcmp(A, B);
 		}
 	}
 	else {
-		//·ÇÊı×Ö½øĞĞ±È½Ï
+		//éæ•°å­—è¿›è¡Œæ¯”è¾ƒ
 		return strcmp(A, B);
 	}
 }
 
 /*
-Í¨¹ı±íÍ·µÄ±êÌâÕÒµ½±íÍ·¶ÔÓ¦µÄ±àºÅ
+é€šè¿‡è¡¨å¤´çš„æ ‡é¢˜æ‰¾åˆ°è¡¨å¤´å¯¹åº”çš„ç¼–å·
 */
 int SearchHeadIndex(const char *UnitHeadName)
 {
@@ -351,11 +351,11 @@ int SearchHeadIndex(const char *UnitHeadName)
 }
 
 /*
-´«ÈëÒ»¸öÏÂ±êÊı×é,´æ´¢Ñ§Éú°´Ö¸¶¨µÄ»ù×¼½øĞĞÅÅĞòºóĞÂµÄË³Ğò,listÖĞ½ö´¢´æÕâ¸öÑ§ÉúÔÚÊı¾İ¿âÖĞµÄÊµ¼ÊË³Ğò
-list µ±Ç°ÕıÔÚ´¦ÀíµÄÑ§ÉúµÄÏÂ±ê¼¯ºÏ
-n listÖĞÔªËØµÄ¸öÊı
-Order==0 ÉıĞòÅÅĞò
-Order==1 ½µĞòÅÅĞò
+ä¼ å…¥ä¸€ä¸ªä¸‹æ ‡æ•°ç»„,å­˜å‚¨å­¦ç”ŸæŒ‰æŒ‡å®šçš„åŸºå‡†è¿›è¡Œæ’åºåæ–°çš„é¡ºåº,listä¸­ä»…å‚¨å­˜è¿™ä¸ªå­¦ç”Ÿåœ¨æ•°æ®åº“ä¸­çš„å®é™…é¡ºåº
+list å½“å‰æ­£åœ¨å¤„ç†çš„å­¦ç”Ÿçš„ä¸‹æ ‡é›†åˆ
+n listä¸­å…ƒç´ çš„ä¸ªæ•°
+Order==0 å‡åºæ’åº
+Order==1 é™åºæ’åº
 */
 void Sort(int *list, int n, int sortBase, int Order)
 {
@@ -389,12 +389,12 @@ void Sort(int *list, int n, int sortBase, int Order)
 }
 
 /*
-²éÕÒ·ûºÏÌõ¼şµÄÑ§Éú
-·µ»ØÖµÎªÕÒµ½µÄÑ§ÉúÊı
-Sourcelist µ±Ç°ÕıÔÚ´¦ÀíµÄÑ§ÉúµÄÏÂ±ê¼¯ºÏ
-n listÖĞÔªËØµÄ¸öÊı
-Resultlist ´¦ÀíÖ®ºó·µ»ØµÄÑ§ÉúµÄÏÂ±ê¼¯ºÏ(ÔÊĞíÓëSourcelistÒ»Ñù)
-destin Ñ°ÕÒµÄÄ¿±ê×Ö·û´®
+æŸ¥æ‰¾ç¬¦åˆæ¡ä»¶çš„å­¦ç”Ÿ
+è¿”å›å€¼ä¸ºæ‰¾åˆ°çš„å­¦ç”Ÿæ•°
+Sourcelist å½“å‰æ­£åœ¨å¤„ç†çš„å­¦ç”Ÿçš„ä¸‹æ ‡é›†åˆ
+n listä¸­å…ƒç´ çš„ä¸ªæ•°
+Resultlist å¤„ç†ä¹‹åè¿”å›çš„å­¦ç”Ÿçš„ä¸‹æ ‡é›†åˆ(å…è®¸ä¸Sourcelistä¸€æ ·)
+destin å¯»æ‰¾çš„ç›®æ ‡å­—ç¬¦ä¸²
 */
 int Search(int *Sourcelist, int n, int *Resultlist, int SearchUnit, const char *destin)
 {
@@ -409,9 +409,9 @@ int Search(int *Sourcelist, int n, int *Resultlist, int SearchUnit, const char *
 }
 
 /*
-È¡µÃÕûÕÅ±íµÄÔ­Àí¾ÍÊÇ°ÑËùÓĞË÷Òı¶¼´«µİ³öÈ¥
-listÓÃÓÚ·µ»ØÑ§ÉúÃûµ¥
-n·µ»ØÑ§ÉúÊı
+å–å¾—æ•´å¼ è¡¨çš„åŸç†å°±æ˜¯æŠŠæ‰€æœ‰ç´¢å¼•éƒ½ä¼ é€’å‡ºå»
+listç”¨äºè¿”å›å­¦ç”Ÿåå•
+nè¿”å›å­¦ç”Ÿæ•°
 */
 void GetList(int *list, int *n)
 {
@@ -424,20 +424,20 @@ void GetList(int *list, int *n)
 }
 
 /*
-¸ù¾İlistÏÔÊ¾Ñ§ÉúĞÅÏ¢
+æ ¹æ®listæ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯
+mode=1 æ˜¾ç¤ºç¼–å·
+mode=0 ä¸æ˜¾ç¤ºç¼–å·
 */
 void display(int *list, int n, int mode)
 {
 	int a, b;
 	if (mode == 1)
-	{
-		printf("±àºÅ ");
-	}
+		printf("ç¼–å· ");
 	for (a = 0; a < UnitCount; a++) {
 		printf("%-*s ", UnitHeadlimits[a], UnitHead[a]);
 	}
 	printf("\n");
-	if (mode == 1) {
+	if (mode == 0) {
 		for (a = 0; a < n; a++) {
 			for (b = 0; b < UnitCount; b++) {
 				printf("%-*s ", UnitHeadlimits[b], StudentList[list[a]][b]);
@@ -445,10 +445,9 @@ void display(int *list, int n, int mode)
 			printf("\n");
 		}
 	}
-	else
-	{
+	else {
 		for (a = 0; a < n; a++) {
-			printf("-%4d ", a);
+			printf("%-4d ", a);
 			for (b = 0; b < UnitCount; b++) {
 				printf("%-*s ", UnitHeadlimits[b], StudentList[list[a]][b]);
 			}
@@ -459,11 +458,11 @@ void display(int *list, int n, int mode)
 }
 
 /*
-¸Ãº¯ÊıÈ¡µÃÖ¸¶¨Ñ§ÉúµÄÖ¸¶¨ĞÅÏ¢µÄÖ¸Õë
-¿ÉÒÔÓÃÓÚÏÔÊ¾ËüµÄÖµ»òĞŞ¸ÄËüµÄÖµ
-list Ãûµ¥
-list_ID Ñ§ÉúÔÚÃûµ¥ÖĞµÄÎ»ÖÃ(´Ó0¿ªÊ¼¼Æ)
-GetUnit ±íÍ·µÄ
+è¯¥å‡½æ•°å–å¾—æŒ‡å®šå­¦ç”Ÿçš„æŒ‡å®šä¿¡æ¯çš„æŒ‡é’ˆ
+å¯ä»¥ç”¨äºæ˜¾ç¤ºå®ƒçš„å€¼æˆ–ä¿®æ”¹å®ƒçš„å€¼
+list åå•
+list_ID å­¦ç”Ÿåœ¨åå•ä¸­çš„ä½ç½®(ä»0å¼€å§‹è®¡)
+GetUnit è¡¨å¤´çš„
 */
 char* GetString(int *list, int list_ID, int GetUnit)
 {
@@ -471,7 +470,7 @@ char* GetString(int *list, int list_ID, int GetUnit)
 }
 
 /*
-·µ»ØµÚUnit¸öµ¥ÔªµÄÃû³Æ
+è¿”å›ç¬¬Unitä¸ªå•å…ƒçš„åç§°
 */
 char* GetUnitTittle(int Unit)
 {
