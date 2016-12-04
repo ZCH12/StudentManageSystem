@@ -7,7 +7,7 @@
 //  Created by wongziihou on 2/12/16.
 //  Copyright © 2016 wongziihou. All rights reserved.
 //
-#include "DataBase.h"
+#include "DataBase.hpp"
 #define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}
 
 int list[1500];				//名单,里面保存的是学生的下标
@@ -17,6 +17,8 @@ int n;
 int i;                      //for
 int temp,temp2;
 char *temp3;
+Chart form1;
+Chart *OperateChart;
 
 
 
@@ -55,7 +57,7 @@ void WriteToFile();
 
 int main() {
     
-    ReadIni("data.ini");		//读取data.ini
+    ReadIni("data.ini", OperateChart);		//读取data.ini
     GetList(list, &n);
     
     int mode = 0;
@@ -129,22 +131,22 @@ A:                                                                      //标记
     while(printf(   "0.升序排序\n"
                     "1.降序排序\n"
                     "-1.退出\n\n"),
-          scanf("%d", &order),order!=-1) {                      //当输入为-1时,直接跳出
+          scanf("%d", &order), order!=-1) {                      //当输入为-1时,直接跳出
         OUTSCANFAGAIN(order, -1, 1);                            //判断order是否越界,若越界则重新输入
         while (1) {                                             //order必为0或1
-            for (i = 0; i < UnitCount; i++) {                   //显示选项
-                printf("%d.%s\n", i, UnitHead[i]);
+            for (i = 0; i < form1.TitleCount; i++) {                   //显示选项
+                printf("%d.%s\n", i, form1.ChartTitle[i]);
             }
             scanf("%d", &sortbase);
             switch (order) {
                     
                 case 1:                                         //order -> 0 对应 case 1.升序排序
-                    OUTSCANFAGAIN(sortbase, 0, UnitCount);      //判断sortbase是否越界,若越界则重新输入
+                    OUTSCANFAGAIN(sortbase, 0, form1.TitleCount);      //判断sortbase是否越界,若越界则重新输入
                     Sort(list, n, sortbase, 0);
                     goto A;
                     
                 case 2:                                         //order -> 1 对应 case 2.降序排序
-                    OUTSCANFAGAIN(sortbase, 0, UnitCount);
+                    OUTSCANFAGAIN(sortbase, 0, form1.TitleCount);
                     Sort(list, n, sortbase, 1);
                     goto A;
             }
@@ -154,9 +156,18 @@ A:                                                                      //标记
 
 void SearchStudentByUnit() {
     
+    int order;
     char searchunit[16];
     char destin;
     
+    while(printf("0.kai shi\n"
+                 "1.降序排序\n"
+                 "-1.退出\n\n"),
+          scanf("%d", &order), order!=-1) {
+        
+    }
+        
+    //缺循环，第二条件，第三条件，无限条件，退出
     printf("请输入所需寻找的单元(如:姓名,成绩1)\n");
     scanf("%s", searchunit);
     printf("输入所需寻找的信息(如:张三,64)\n");
@@ -240,6 +251,7 @@ void DeleteAStudentFromList() {
     switch (mode) {
         case 0:
             DeleteStudentInList(list, &n, studentnumber, 0);
+            
             display(list, n, 1);
             break;
             
@@ -253,12 +265,12 @@ void DeleteAStudentFromList() {
 }
 void ReadFromFile() {
     
-    
+
     char filename;
     printf("请输入所需读取的文件名字,如(data.ini)");
     scanf("%s", &filename);
     
-    ReadIni(&filename);		//读取data.ini
+    ReadIni(&filename, OperateChart);       //读取data.ini
     GetList(list, &n);    		//取得一个名单
     
     return;
