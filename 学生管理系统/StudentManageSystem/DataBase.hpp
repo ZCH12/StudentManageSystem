@@ -92,7 +92,7 @@ File 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
 */
 
-ErrVal ReadIni(char *File, Chart *OperateChart);
+ErrVal ReadFromFile(char *File, Chart *OperateChart);
 void WriteIni(char* File, int *list, int n);
 void NewUnit(char *title, int UnitLimits, char Default);
 int NewStudent(int *list, int *n);
@@ -109,7 +109,7 @@ char* GetString(int *list, int list_ID, int GetUnit);
 char* GetUnitTittle(int Unit);
 
 
-ErrVal ReadIni(char *FileName, Chart *OperateChart)
+ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 {
 	FILE *File;
 	int Count, TitleCount;
