@@ -214,7 +214,6 @@ ErrVal CreateNewUnit(Chart *OperateChart,int CreateCount,char (*NewTitleSet)[32]
 	char **temp;		//为了提高性能
 	int temp2,*temp3;
 
-
 	//开始新建表头
 	temp=OperateChart->ChartTitle;
 	temp2=OperateChart->TitleCount;
@@ -254,7 +253,6 @@ ErrVal CreateNewUnit(Chart *OperateChart,int CreateCount,char (*NewTitleSet)[32]
 		NewTitleSet++;
 	}
 
-
 	//开始新建一个新的表
 	temp2=OperateChart->TitleCount;
 	NewChart=(Chart_t)malloc(sizeof(ChartPiece_t)*OperateChart->UsedLines);
@@ -288,17 +286,15 @@ ErrVal CreateNewUnit(Chart *OperateChart,int CreateCount,char (*NewTitleSet)[32]
 		temp=OperateChart->Chart[a];
 		temp2=OperateChart->TitleCount;
 		for (b=0;b<temp2;b++)
-		{
 			NewChart[a][b]=temp[b];
-			//temp++;
-		}
+
 		//新的单元格进行分配内存
 		temp2+=CreateCount;
 		
 		for (c=0;c<CreateCount;b++,c++)
 		{
-			//d=NewTitleLimits[c]+1;
-			d=4;
+			d=NewTitleLimits[c]+1;
+			//d=4;
 			NewChart[a][b]=(char*)calloc(sizeof(char)*(d>2?d:2),sizeof(char)*(d>2?d:2));
 			if (!NewChart[a][b])
 			{
@@ -322,18 +318,11 @@ ErrVal CreateNewUnit(Chart *OperateChart,int CreateCount,char (*NewTitleSet)[32]
 	}
 	//运行到这里,新的表就分配好了
 	//把旧表内存释放掉,放入新表,就操作成功了
-
-	/*
 	for (a=0;a<OperateChart->UsedLines;a++)		//删除旧表,
-	{
-		temp=OperateChart->Chart[a];
-		for (b=0;b<OperateChart->TitleCount;b++)
-			free(temp[b]);
-		free(temp);
-	}
-	*/
-	//free(OperateChart->ChartTitle);
-	//free(OperateChart->ChartLimits);
+		free(OperateChart->Chart[a]);
+	free(OperateChart->Chart);
+	free(OperateChart->ChartTitle);
+	free(OperateChart->ChartLimits);
 
 	OperateChart->TitleCount=temp2;
 	OperateChart->Chart=NewChart;

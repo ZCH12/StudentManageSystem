@@ -34,15 +34,26 @@ typedef struct
 	int HadInit;				//记录这个表是否已经被初始化
 } Chart;
 
-//定义一个索引结构体,它是一个表的分身,表中元素的显示顺序不是Chart表决定的,而是由这个结构体中的索引数组的顺序决定的
-//注意在使用这个结构时,list要和它匹配的Chart一起使用,否则会出现得不到想要的结果
+
+/*
+IndexList是一个索引结构体,它里面的list是一个int数组,数组的每一个元素是单元行在Chart表中的实际顺序的下标(从0开始计数),在调用display时,影响数据输出的顺序的是list中下标的顺序,而与行在数组的位置无关
+Title也是一个索引结构体,它里面的list是一个int数组,数组的每一个元素是标题在Chart表中的下标,在调用display时,此索引也同样可以影响display显示的标题和顺序
+警告:在使用时一定要与相应的表匹配,否则结果不正确.
+*/
 //#####要确保listCount<UsedLines
 typedef struct
 {
-	int *list;			//数组,里面的值存储的是指定表中的实际行的数组下标
+	int *list;			//数组,里面的值存储的是指定表中的实际行(或列)的数组下标
 	int listCount;		//记录数组的个数
-} IndexList;
+} IndexList,TitleList;
 
 
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
+
+/*
+以下函数未实现
+*/
+//ErrVal InitChart(Chart *OperateChart,int LinesCount,int TitleCount);
+//ErrVal Display_Chart(Chart *OperateChart,IndexList ShowLines,TitleList ShowTitle);
+//ErrVal Display_Piece(Chart *OperateChart, int ShowLineIndex, TitleList ShowTitle);
