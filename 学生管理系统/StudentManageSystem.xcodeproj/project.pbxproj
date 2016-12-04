@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D71C8CB01DF1E580007BD820 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D71C8CAF1DF1E580007BD820 /* main.c */; };
-		D71C8CB81DF1E611007BD820 /* DataBase.c in Sources */ = {isa = PBXBuildFile; fileRef = D71C8CB71DF1E611007BD820 /* DataBase.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,10 +23,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D70495111DF3D2E500D423AD /* DataBase.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DataBase.hpp; sourceTree = "<group>"; };
 		D71C8CAC1DF1E580007BD820 /* StudentManageSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StudentManageSystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		D71C8CAF1DF1E580007BD820 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		D71C8CB61DF1E5CB007BD820 /* DataBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
-		D71C8CB71DF1E611007BD820 /* DataBase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataBase.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +58,8 @@
 		D71C8CAE1DF1E580007BD820 /* StudentManageSystem */ = {
 			isa = PBXGroup;
 			children = (
+				D70495111DF3D2E500D423AD /* DataBase.hpp */,
 				D71C8CAF1DF1E580007BD820 /* main.c */,
-				D71C8CB61DF1E5CB007BD820 /* DataBase.h */,
-				D71C8CB71DF1E611007BD820 /* DataBase.c */,
 			);
 			path = StudentManageSystem;
 			sourceTree = "<group>";
@@ -124,7 +121,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D71C8CB81DF1E611007BD820 /* DataBase.c in Sources */,
 				D71C8CB01DF1E580007BD820 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
