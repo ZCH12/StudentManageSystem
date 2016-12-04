@@ -1,6 +1,4 @@
-﻿#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+﻿#include "DataBase.h"
 /*
 数据库库
 Create By ZCR
@@ -16,19 +14,11 @@ TODO:存在缺陷
 这是一个保存学生在表中的实际存放顺序的下标的数组
 它保存的数据是一个个下标,这些数据的顺序不会改变表本身,但是它会关系到显示和保存数据
 */
-#define ADDITIONAL 10		//一次增加10个学生
 
 
-//错误代码
 
-#define SUCCESS 0
-#define ERR_OPENFILE 1
-#define ERR_NOTSTANDARDFILE 2
-#define ERR_MEMORYNOTENOUGH 3
 
-typedef int ErrVal;
-typedef char*** Chart_t;
-typedef char** ChartPiece_t;
+
 
 /*
 初始化一个空表
@@ -43,31 +33,7 @@ typedef char** ChartPiece_t;
 注意表头的长度限制为31个英文字符
 */
 
-//定义一个表结构
-typedef struct
-{
-	//表
-	Chart_t Chart;				//整个表的入口首地址
 
-	//标题
-	int TitleCount;				//存储标题的个数
-	ChartPiece_t ChartTitle;	//存储每个标题的字符(每个标题不得超过31个字母)
-	int* ChartLimits;			//存储每一个标题下的单元格里的字符串的最大长度
-
-	//行
-	int AllocatedLines;			//表已分配的大小(此值大于等于UsedLines)(已分配但未使用的行未申请内存)
-	int UsedLines;				//在表中实际被使用的行
-	int HadInit;				//记录这个表是否已经被初始化
-} Chart;
-
-//定义一个索引结构体,它是一个表的分身,表中元素的显示顺序不是Chart表决定的,而是由这个结构体中的索引数组的顺序决定的
-//注意在使用这个结构时,list要和它匹配的Chart一起使用,否则会出现得不到想要的结果
-//#####要确保listCount<UsedLines
-typedef struct
-{
-	int *list;			//数组,里面的值存储的是指定表中的实际行的数组下标
-	int listCount;		//记录数组的个数
-} IndexList;
 
 /*
 从文件读取数据到指定表
@@ -78,10 +44,10 @@ ErrVal ReadFromFile(char *FileName,Chart *OperateChart)
 {
 	FILE *File;
 	int Count, TitleCount;
-	int a, b;		//循环变量
-	char temp;		//用于扔掉无用的数据
+	int a, b;				//循环变量
+	char temp;				//用于扔掉无用的数据
 	char **temp2,***temp4;	//用于提高性能
-	int *temp3;		//用于提高性能
+	int *temp3;				//用于提高性能
 
 	File=fopen(FileName, "r");
 	if (!File)
@@ -376,8 +342,8 @@ ErrVal CreateNewUnit(Chart *OperateChart,int CreateCount,char (*NewTitleSet)[32]
 	return SUCCESS;
 }
 
-
-
+/*****************************分割线*******************************/
+/**************************以下代码作废****************************/
 
 #if (0)
 /*

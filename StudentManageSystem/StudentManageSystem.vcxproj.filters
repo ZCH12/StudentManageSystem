@@ -18,7 +18,7 @@
     <ClCompile Include="DataBase.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Main.c">
+    <ClCompile Include="ZCHtest.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,10 +26,5 @@
     <ClInclude Include="DataBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="data.ini">
-      <Filter>资源文件</Filter>
-    </None>
   </ItemGroup>
 </Project>
