@@ -6,10 +6,13 @@
 Create By ZCR
 2016-12-04
 
+ 
 
 TODO:存在缺陷
 没有初始化函数
 */
+
+
 
 /*
 在调用函数时,会要求传入一个*list,
@@ -88,7 +91,25 @@ int StudentCapacity;		//用于记录StudentList的容量(提高效率,避免多�
 File 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
 */
-ErrVal ReadFromFile(char *FileName,Chart *OperateChart)
+
+ErrVal ReadIni(char *File, Chart *OperateChart);
+void WriteIni(char* File, int *list, int n);
+void NewUnit(char *title, int UnitLimits, char Default);
+int NewStudent(int *list, int *n);
+void DeleteUnit(int Unit);
+void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode);
+int StrCmp(const char *A, const char *B);
+int SearchHeadIndex(const char *ListHeadName);
+void Sort(int *list, int n, int sortBase, int Order);
+int Search(int *Sourcelist, int n, int *Resultlist, int SearchUnit, const char *destin);
+void GetList(int *list, int *n);
+void display(int *list, int n, int mode);
+void DestroyStudentList();
+char* GetString(int *list, int list_ID, int GetUnit);
+char* GetUnitTittle(int Unit);
+
+
+ErrVal ReadIni(char *FileName, Chart *OperateChart)
 {
 	FILE *File;
 	int Count, TitleCount;
