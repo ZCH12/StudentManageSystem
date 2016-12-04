@@ -10,55 +10,39 @@
 #include "DataBase.hpp"
 #define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}
 
-int list[1500];				//名单,里面保存的是学生的下标
-int list2[1500];
-int list3[1500];
-int n;
-int i;                      //for
+//int list[1500];				//名单,里面保存的是学生的下标
+//int list2[1500];
+//int list3[1500];
 int temp,temp2;
 char *temp3;
+
+int n;
+int i;
 Chart form1;
 Chart *OperateChart;
 
 
 
 
-void SortList();
-void SearchStudentByUnit();
-void AddNewInformationUnit();
-void DeleteInformationUnit();
-void AddNewStudent();
-void ChangeStudentInformation();
-void DeleteAStudentFromList();
-void ReadFromFile();
-void WriteToFile();
+void SortList_M();
+void SearchStudentByUnit_M();
+void AddNewInformationUnit_M();
+void DeleteInformationUnit_M();
+void AddNewStudent_M();
+void ChangeStudentInformation_M();
+void DeleteAStudentFromList_M();
+void ReadFromFile_M();
+void WriteToFile_M();
 
 
 
 
 
-
-
-//
-//
-//
-//     printf("\n取得第n个人的姓名\n");
-//     printf("%s\n", GetString(list, n-1, SearchHeadIndex("姓名")));
-//     printf("将数据保存到new.ini\n");
-//     WriteIni("new.ini", list, n);
-//     */
-//    printf("\n删除成绩1列\n");
-//    DeleteUnit(SearchHeadIndex("成绩1"));
-//    display(list, n);
-//
-//    //释放内存之后,不能再对表进行操作
-//    DestroyStudentList();
-//    system("pause");
 
 int main() {
     
-    ReadIni("data.ini", OperateChart);		//读取data.ini
-    GetList(list, &n);
+    ReadFromFile_M("data.ini", OperateChart);		//读取data.ini
+    GetList(form1.ChartLimits, &n);
     
     int mode = 0;
     
@@ -78,43 +62,43 @@ int main() {
     while(scanf("%d",&mode),mode==-1){                                          //当输入mode
         switch (mode) {
             case 0://"0.显示所有学生信息"//缺循环，单独选择显示一个或多个学生信息表，退出
-                display(list, n, 1);
+                display(form1., n, 1);
                 break;
                 
             case 1://"1.排序"
-                SortList();//允许排任何一列数据列，支持升降序使用                                   //完成
+                SortList_M();//允许排任何一列数据列，支持升降序使用                                   //完成
                 break;
                 
             case 2://"2.查找学生"
-                SearchStudentByUnit();//缺循环，第二条件，第三条件，无限条件，退出
+                SearchStudentByUnit_M();//缺循环，第二条件，第三条件，无限条件，退出
                 break;
                 
             case 3://"3.新增数据列\n"//缺循环，同时新增多个数据列，退出
-                AddNewInformationUnit();
+                AddNewInformationUnit_M();
                 break;
                 
             case 4://"4.删除数据列\n"//缺循环，同时删除多个数据列，退出
-                DeleteInformationUnit();
+                DeleteInformationUnit_M();
                 break;
                 
             case 5://"5.新增学生\n"//缺循环，同时新增多个学生，退出
-                AddNewStudent();
+                AddNewStudent_M();
                 break;
                 
             case 6://"6.修改学生信息\n"//缺循环，同时修改多个学生的信息，同时修改学生的多个信息，退出
-                ChangeStudentInformation();
+                ChangeStudentInformation_M();
                 break;
                 
             case 7://"7.删除指定学生\n"//缺循环，同时修删除多个指定学生的同一个信息，同时删除同一个学生的多个指定信息，退出
-                DeleteAStudentFromList();
+                DeleteAStudentFromList_M();
                 break;
                 
             case 8://"8.读取学生信息\n"//缺循环，同时读取多个文件，退出
-                ReadFromFile();
+                ReadFromFile_M();
                 break;
                 
             case 9://"9.保存学生信息\n"//缺循环,同时保持多个学生信息表，退出
-                WriteToFile();
+                WriteToFile_M();
                 break;
                 
         }
@@ -123,7 +107,7 @@ int main() {
 }
 
 //#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}
-void SortList() {
+void SortList_M() {
     
     int order;
     int sortbase;
@@ -152,34 +136,38 @@ A:                                                                      //标记
             }
         }
     }
-}
-
-void SearchStudentByUnit() {
-    
-    int order;
-    char searchunit[16];
-    char destin;
-    
-    while(printf("0.kai shi\n"
-                 "1.降序排序\n"
-                 "-1.退出\n\n"),
-          scanf("%d", &order), order!=-1) {
-        
-    }
-        
-    //缺循环，第二条件，第三条件，无限条件，退出
-    printf("请输入所需寻找的单元(如:姓名,成绩1)\n");
-    scanf("%s", searchunit);
-    printf("输入所需寻找的信息(如:张三,64)\n");
-    scanf("%s", &destin);
-    
-    temp=Search(list, n, list2, SearchHeadIndex(searchunit), &destin);
-    display(list2, n, 0);
-    
-    
     return;
 }
-void AddNewInformationUnit() {
+
+void SearchStudentByUnit_M() {
+    
+    int order;
+    int unitindex;
+    char destin;
+
+    
+    while(printf("0.搜索\n"
+                 "1."
+                 "-1.退出\n\n"),
+          scanf("%d", &order), order!=-1) {
+        OUTSCANFAGAIN(order, -1, 0);
+
+        while (1) {
+            for (i = 0; i < form1.TitleCount; i++) {                    //打印列表
+                printf("%d.%s\n", i, form1.ChartTitle[i]);
+            }
+            
+            scanf("%d", &unitindex);
+            printf("输入所需寻找的信息(如:张三,64)\n");
+            scanf("%s", &destin);
+            temp=Search(list, n, list2, unitindex, &destin);
+            display(list2, n, 0);
+        }
+    }
+            //缺循环，第二条件，第三条件，无限条件，退出
+    return;
+}
+void AddNewInformationUnit_M() {
     
     char title[16], defaul;
     int unitlimits;
@@ -193,7 +181,7 @@ void AddNewInformationUnit() {
     
     return;
 }
-void DeleteInformationUnit() {
+void DeleteInformationUnit_M() {
     char title[16];
     
     printf("请输入:所删除的单元名字\n");
@@ -204,7 +192,7 @@ void DeleteInformationUnit() {
     
     return;
 }
-void AddNewStudent() {
+void AddNewStudent_M() {
     //     printf("\n新增一个学生\n");
     //     NewStudent(list, &n);
     //     display(list, n);
@@ -216,7 +204,7 @@ void AddNewStudent() {
     return;
     
 }
-void ChangeStudentInformation() {
+void ChangeStudentInformation_M() {
     
     char getunit[16];
     int list_id;
@@ -238,7 +226,7 @@ void ChangeStudentInformation() {
     return;
     
 }
-void DeleteAStudentFromList() {
+void DeleteAStudentFromList_M() {
     
     int studentnumber, mode;
     
@@ -263,19 +251,19 @@ void DeleteAStudentFromList() {
     
     return;
 }
-void ReadFromFile() {
+void ReadFromFile_M() {
     
 
     char filename;
     printf("请输入所需读取的文件名字,如(data.ini)");
     scanf("%s", &filename);
     
-    ReadIni(&filename, OperateChart);       //读取data.ini
+    ReadFromFile(&filename, OperateChart);       //读取data.ini
     GetList(list, &n);    		//取得一个名单
     
     return;
 }
-void WriteToFile() {
+void WriteToFile_M() {
     
     char filename;
     
