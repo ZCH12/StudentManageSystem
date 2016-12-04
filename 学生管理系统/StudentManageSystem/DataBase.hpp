@@ -6,20 +6,16 @@
 Create By ZCR
 2016-12-04
 
- 
 
 TODO:存在缺陷
 没有初始化函数
 */
-
-
 
 /*
 在调用函数时,会要求传入一个*list,
 这是一个保存学生在表中的实际存放顺序的下标的数组
 它保存的数据是一个个下标,这些数据的顺序不会改变表本身,但是它会关系到显示和保存数据
 */
-#define WRONGEXIT(x) {printf("%s,程序将会退出\n",x);system("pause");exit(1);}
 #define ADDITIONAL 10		//一次增加10个学生
 
 
@@ -51,17 +47,17 @@ typedef char** ChartPiece_t;
 typedef struct
 {
 	//表
-	char*** Chart;				//整个表的入口首地址
+	Chart_t Chart;				//整个表的入口首地址
 
 	//标题
 	int TitleCount;				//存储标题的个数
-	char** ChartTitle;			//存储每个标题的字符(每个标题不得超过31个字母)
+	ChartPiece_t ChartTitle;	//存储每个标题的字符(每个标题不得超过31个字母)
 	int* ChartLimits;			//存储每一个标题下的单元格里的字符串的最大长度
 
 	//行
-	int AllocatedLines;			//表已分配的大小(此值大于等于UsedLines)
+	int AllocatedLines;			//表已分配的大小(此值大于等于UsedLines)(已分配但未使用的行未申请内存)
 	int UsedLines;				//在表中实际被使用的行
-	int isEmpty;				//记录这个表是否已经被初始化
+	int HadInit;				//记录这个表是否已经被初始化
 } Chart;
 
 //定义一个索引结构体,它是一个表的分身,表中元素的显示顺序不是Chart表决定的,而是由这个结构体中的索引数组的顺序决定的
@@ -74,42 +70,11 @@ typedef struct
 } IndexList;
 
 /*
-指向字符串数组的指针
-*/
-
-/*
-char ***StudentList;
-char **UnitHead;			//表头名称的字符串数组
-int *UnitHeadlimits;		//单元字符限制(数组)
-int UnitCount;
-int StudentCount;
-int StudentCapacity;		//用于记录StudentList的容量(提高效率,避免多次分配)
-*/
-
-/*
 从文件读取数据到指定表
 File 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
 */
-
-ErrVal ReadFromFile(char *File, Chart *OperateChart);
-void WriteIni(char* File, int *list, int n);
-void NewUnit(char *title, int UnitLimits, char Default);
-int NewStudent(int *list, int *n);
-void DeleteUnit(int Unit);
-void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode);
-int StrCmp(const char *A, const char *B);
-int SearchHeadIndex(const char *ListHeadName);
-void Sort(int *list, int n, int sortBase, int Order);
-int Search(int *Sourcelist, int n, int *Resultlist, int SearchUnit, const char *destin);
-void GetList(int *list, int *n);
-void display(int *list, int n, int mode);
-void DestroyStudentList();
-char* GetString(int *list, int list_ID, int GetUnit);
-char* GetUnitTittle(int Unit);
-
-
-ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
+ErrVal ReadFromFile(char *FileName,Chart *OperateChart)
 {
 	FILE *File;
 	int Count, TitleCount;
@@ -261,10 +226,158 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 			return ERR_NOTSTANDARDFILE;
 		temp4++;
 	}
-	OperateChart->isEmpty=0;
+	OperateChart->HadInit=1;
 	fclose(File);
 	return SUCCESS;
 }
+
+/*
+新增1个或多个新的标题
+OperateChart 要进行操作的表
+CreateCount 要新增的标题数目
+NewTitleSet 新增的标题名称数组
+NewTitleLimits 新增的标题的内容限制长度
+*/
+ErrVal CreateNewUnit(Chart *OperateChart,int CreateCount,char (*NewTitleSet)[32],int *NewTitleLimits)
+{
+	Chart_t NewChart;
+	ChartPiece_t NewChartTitle;
+	int* NewChartLimits;
+
+	int a,b,c,d;
+	char **temp;		//为了提高性能
+	int temp2,*temp3;
+
+
+	//开始新建表头
+	temp=OperateChart->ChartTitle;
+	temp2=OperateChart->TitleCount;
+	NewChartTitle=(ChartPiece_t)malloc(sizeof(char*)*(temp2+CreateCount));
+	NewChartLimits=(int*)malloc(sizeof(int)*(temp2+CreateCount));
+	if (!NewChartTitle)
+		return ERR_MEMORYNOTENOUGH;
+
+	if (!NewChartLimits)
+	{
+		free(NewChartTitle);
+		return ERR_MEMORYNOTENOUGH;
+	}
+	//拷贝标题到新的表头
+	temp3=OperateChart->ChartLimits;
+	for (a=0;a<temp2;a++)
+	{
+		NewChartTitle[a]=*temp;
+		NewChartLimits[a]=*temp3;
+		temp++;
+		temp3++;
+	}
+	temp2+=CreateCount;
+	for (;a<temp2;a++)
+	{
+		NewChartTitle[a]=(char*)malloc(sizeof(char)*32);
+		if (!NewChartTitle[a])
+		{
+			temp2=OperateChart->TitleCount;
+			for (a--;a>=temp2;a--)
+				free(NewChartTitle[a]);
+			free(NewChartTitle);
+			free(NewChartLimits);
+			return ERR_MEMORYNOTENOUGH;
+		}
+		strcpy(NewChartTitle[a],*NewTitleSet);
+		NewTitleSet++;
+	}
+
+
+	//开始新建一个新的表
+	temp2=OperateChart->TitleCount;
+	NewChart=(Chart_t)malloc(sizeof(ChartPiece_t)*OperateChart->UsedLines);
+	if (!NewChart){
+		for (a=temp2+CreateCount;a>=temp2;a--)
+			free(NewChartTitle[a]);
+		free(NewChartTitle);
+		free(NewChartLimits);
+
+		return ERR_MEMORYNOTENOUGH;
+	}
+	//对每个行分配单元格
+	temp2=OperateChart->TitleCount;
+	for (a=0;a<OperateChart->UsedLines;a++)
+	{
+		NewChart[a]=(ChartPiece_t)malloc((sizeof(char*))*temp2);
+		if (!NewChart[a])
+		{
+			//如果分配出现问题,则回收已分配内存,返回
+			for (a--;a>=0;a--)
+				free(NewChart[a]);
+			free(NewChart);
+			for (a=temp2+CreateCount;a>=temp2;a--)
+				free(NewChartTitle[a]);
+			free(NewChartTitle);
+			free(NewChartLimits);
+			return ERR_MEMORYNOTENOUGH;
+		}
+
+		//拷贝单元格
+		temp=OperateChart->Chart[a];
+		temp2=OperateChart->TitleCount;
+		for (b=0;b<temp2;b++)
+		{
+			NewChart[a][b]=temp[b];
+			//temp++;
+		}
+		//新的单元格进行分配内存
+		temp2+=CreateCount;
+		
+		for (c=0;c<CreateCount;b++,c++)
+		{
+			//d=NewTitleLimits[c]+1;
+			d=4;
+			NewChart[a][b]=(char*)calloc(sizeof(char)*(d>2?d:2),sizeof(char)*(d>2?d:2));
+			if (!NewChart[a][b])
+			{
+				for (b--;b>=0;b--)			//删除这一轮分配的内存
+					free(NewChart[a][b]);
+				for (a--;a>=0;a--)			//删除前几轮分配的内存
+				{
+					for (b=OperateChart->TitleCount;b<temp2;b++)
+						free(NewChart[a][b]);	
+					free(NewChart[a]);
+				}
+				free(NewChart);
+
+				for (a=temp2+CreateCount;a>=temp2;a--)
+					free(NewChartTitle[a]);
+				free(NewChartTitle);
+				free(NewChartLimits);
+				return ERR_MEMORYNOTENOUGH;
+			}
+		}
+	}
+	//运行到这里,新的表就分配好了
+	//把旧表内存释放掉,放入新表,就操作成功了
+
+	/*
+	for (a=0;a<OperateChart->UsedLines;a++)		//删除旧表,
+	{
+		temp=OperateChart->Chart[a];
+		for (b=0;b<OperateChart->TitleCount;b++)
+			free(temp[b]);
+		free(temp);
+	}
+	*/
+	//free(OperateChart->ChartTitle);
+	//free(OperateChart->ChartLimits);
+
+	OperateChart->TitleCount=temp2;
+	OperateChart->Chart=NewChart;
+	OperateChart->ChartTitle=NewChartTitle;
+	OperateChart->ChartLimits=NewChartLimits;
+	return SUCCESS;
+}
+
+
+
 
 #if (0)
 /*
