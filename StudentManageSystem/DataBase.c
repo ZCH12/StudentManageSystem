@@ -408,7 +408,8 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	temp2 = ShowLines->list;
 	for (a = 0; a < temp3; a++)
 	{
-		printf("%-*s ", temp5[*temp2], OperateChart->ChartTitle[*temp2]);
+		if (*temp2 < OperateChart->TitleCount)
+			printf("%-*s ", temp5[*temp2], OperateChart->ChartTitle[*temp2]);
 		temp2++;
 	}
 	printf("\n");
@@ -424,11 +425,13 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		for (a = 0; a < temp; a++)
 		{
 			temp22 = ShowTitle->list;
-			for (b = 0; b < temp3; b++)
-			{
-				printf("%-*s ", temp5[*temp22], temp4[*temp2][*temp22]);
-				temp22++;
-			}
+			if (*temp2 < OperateChart->UsedLines)
+				for (b = 0; b < temp3; b++)
+				{
+					if (*temp22 < OperateChart->TitleCount)
+						printf("%-*s ", temp5[*temp22], temp4[*temp2][*temp22]);
+					temp22++;
+				}
 			printf("\n");
 			temp2++;
 		}
@@ -456,6 +459,149 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		free(tempLinelist.list);
 	return SUCCESS;
 }
+
+/*
+按照IndexList对行进行排序
+SourceLines 包含在Chart表中lines的下标的数组,允许为NULL,将排序所有的行(按表中顺序)
+Mode 0升序
+Mode 1降序
+*/
+ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, int BaseTitleIndex, int Mode)
+{
+	int a, b;
+	int temp;		//交换时用于存储中间值的变量
+	int *list;		//下标数组
+	int Source = 0;	//零表示源来自外部,1表示内部动态创建,需要进行释放内存
+
+	if (SourceLines)
+	{
+		list = SourceLines->list;
+		for (a = 0; a < SourceLines->listCount; a++)
+			ResultList->list[a] = SourceLines->list[a];
+		ResultList->listCount = SourceLines->listCount;
+	}
+	else {
+		Source = 1;	//标记需要释放申请的内存
+		list = (int*)malloc(sizeof(int)*OperateChart->UsedLines);
+		if (!list)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < OperateChart->UsedLines; a++)
+			ResultList->list[a] = a;
+		ResultList->listCount = OperateChart->UsedLines;
+	}
+
+	
+	switch (Mode)
+	{
+	case 0:
+		//升序
+		for (a = 0; a < ResultList->listCount; a++)
+		{
+			for (b = a; b < ResultList->listCount; b++)
+			{
+				if (StrCmp(OperateChart->Chart[ResultList->list[a]][BaseTitleIndex], OperateChart->Chart[ResultList->list[b]][BaseTitleIndex]) > 0)
+				{
+					temp = ResultList->list[a];
+					ResultList->list[a] = ResultList->list[b];
+					ResultList->list[b] = temp;
+				}
+			}
+		}
+	break;
+	case 1:
+		//降序
+		for (a = 0; a < ResultList->listCount; a++)
+		{
+			for (b = a; b < ResultList->listCount; b++)
+			{
+				if (StrCmp(OperateChart->Chart[ResultList->list[a]][BaseTitleIndex], OperateChart->Chart[ResultList->list[b]][BaseTitleIndex]) < 0)
+				{
+					temp = ResultList->list[a];
+					ResultList->list[a] = ResultList->list[b];
+					ResultList->list[b] = temp;
+				}
+			}
+		}
+	break;
+	}
+	if (Source==1)
+	{
+		free(list);
+	}
+	return SUCCESS;
+}
+
+/*
+创建一个新的List
+Count 在List作为IndexList时一定不要超过表中的行数
+		在作为TitleList时一定不要超过表中的标题的数量
+OperateList 中的list成员如果是指向数组的指针请设置为0
+*/
+ErrVal InitList(List *OperateList, int Count)
+{
+	int a;
+	OperateList->list = (int*)malloc(sizeof(int)*Count);
+	if (!OperateList->list)
+		return ERR_MEMORYNOTENOUGH;
+	OperateList->listCount = Count;
+	OperateList->AllocatedList = Count;
+	OperateList->IsOnStack = 1;
+
+	for (a = 0; a < Count; a++)
+	{
+		OperateList->list[a] = a;
+	}
+	return SUCCESS;
+}
+
+/*
+
+*/
+ErrVal CopyList()
+{
+
+}
+
+/*
+两个字符串进行比较,兼容数字字符串比较
+*/
+int StrCmp(const char *A, const char *B)
+{
+	int isNumA = 1, isNumB = 1;
+	int lenA = 0, lenB = 0;
+	char *A2 = (char*)A, *B2 = (char*)B;
+
+	//计算长度并判断是否是纯数字
+	while (*A2) {
+		if (isNumA && (*A2<'0' || *A2>'9'))
+			isNumA = 0;
+		lenA++;
+		A2++;
+	}
+	while (*B2) {
+		if (isNumB && (*B2<'0' || *B2>'9'))
+			isNumB = 0;
+		lenB++;
+		B2++;
+	}
+
+	if (isNumA*isNumB == 1) {
+		//两个数字进行比较
+		if (lenA != lenB) {
+			//如果两个数字的长度不同,则长的数字大
+			return lenA - lenB;
+		}
+		else {
+			//如果数字长度相同,怎从高位到低位依次比较
+			return strcmp(A, B);
+		}
+	}
+	else {
+		//非数字进行比较
+		return strcmp(A, B);
+	}
+}
+
 
 
 /*****************************分割线*******************************/

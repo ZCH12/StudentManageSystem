@@ -48,12 +48,18 @@ typedef struct
 {
 	int *list;			//数组,里面的值存储的是指定表中的实际行(或列)的数组下标
 	int listCount;		//记录数组的个数
-} IndexList, TitleList;
+	int AllocatedList;	//已分配的内存
+	int IsOnStack;		//改值为1时表示list是动态分配的
+} List,IndexList, TitleList;
 
 
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
+
+ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, int BaseTitleIndex, int Mode);
+ErrVal InitList(List *OperateList, int Count);
+int StrCmp(const char *A, const char *B);
 
 /*
 以下函数未实现
