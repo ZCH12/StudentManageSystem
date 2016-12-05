@@ -7,7 +7,7 @@
 //  Created by wongziihou on 2/12/16.
 //  Copyright © 2016 wongziihou. All rights reserved.
 //
-#include "DataBase.hpp"
+#include "DataBase.h"
 #define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}
 
 //int list[1500];				//名单,里面保存的是学生的下标
@@ -138,7 +138,6 @@ A:                                                                      //标记
     }
     return;
 }
-
 void SearchStudentByUnit_M() {
     
     int order;
@@ -175,7 +174,7 @@ void AddNewInformationUnit_M() {
     
     printf("请输入:所添加的单元 单元字节范围 初始值\n");
     scanf("%s %d %c", title, &unitlimits, &defaul);
-    
+    CreateNewUnit(<#Chart *OperateChart#>, , <#char (*NewTitleSet)[32]#>, <#int *NewTitleLimits#>)
     NewUnit(title, unitlimits, defaul);
     display(list, n, 0);
     
@@ -183,8 +182,10 @@ void AddNewInformationUnit_M() {
 }
 void DeleteInformationUnit_M() {
     char title[16];
-    
-    printf("请输入:所删除的单元名字\n");
+    for (i = 0; i<; <#increment#>) {
+        <#statements#>
+    }
+    printf("%");
     scanf("%s", title);
     
     DeleteUnit(SearchHeadIndex(title));
@@ -253,7 +254,6 @@ void DeleteAStudentFromList_M() {
 }
 void ReadFromFile_M() {
     
-
     char filename;
     printf("请输入所需读取的文件名字,如(data.ini)");
     scanf("%s", &filename);
