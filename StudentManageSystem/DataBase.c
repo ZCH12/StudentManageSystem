@@ -405,7 +405,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	//显示表头
 	if (Mode == 1)
 		printf("编号   ");
-	temp2 = ShowLines->list;
+	temp2 = ShowTitle->list;
 	for (a = 0; a < temp3; a++)
 	{
 		if (*temp2 < OperateChart->TitleCount)
@@ -475,9 +475,9 @@ ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, 
 
 	if (SourceLines)
 	{
-		list = SourceLines->list;
 		for (a = 0; a < SourceLines->listCount; a++)
 			ResultList->list[a] = SourceLines->list[a];
+		list = ResultList->list;
 		ResultList->listCount = SourceLines->listCount;
 	}
 	else {
@@ -488,6 +488,8 @@ ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, 
 		for (a = 0; a < OperateChart->UsedLines; a++)
 			ResultList->list[a] = a;
 		ResultList->listCount = OperateChart->UsedLines;
+		ResultList->IsOnStack = 1;
+		ResultList->AllocatedList= OperateChart->UsedLines;
 	}
 
 	
