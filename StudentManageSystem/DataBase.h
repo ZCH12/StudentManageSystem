@@ -1,4 +1,5 @@
 ﻿#pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -50,10 +51,11 @@ typedef struct
 
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
+ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 
 /*
 以下函数未实现
 */
 //ErrVal InitChart(Chart *OperateChart,int LinesCount,int TitleCount);
-//ErrVal Display_Chart(Chart *OperateChart,IndexList ShowLines,TitleList ShowTitle);
+//
 //ErrVal Display_Piece(Chart *OperateChart, int ShowLineIndex, TitleList ShowTitle);
