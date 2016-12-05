@@ -8,10 +8,12 @@
 
 
 //错误代码
-#define SUCCESS 0
-#define ERR_OPENFILE 1
-#define ERR_NOTSTANDARDFILE 2
-#define ERR_MEMORYNOTENOUGH 3
+#define SUCCESS					0
+#define ERR_OPENFILE			1
+#define ERR_NOTSTANDARDFILE		2
+#define ERR_MEMORYNOTENOUGH		3
+#define ERR_ILLEGALCHART		4
+#define ERR_UNINITIALIZEDCHART	5
 
 //类型别名
 typedef int ErrVal;
@@ -46,7 +48,7 @@ typedef struct
 {
 	int *list;			//数组,里面的值存储的是指定表中的实际行(或列)的数组下标
 	int listCount;		//记录数组的个数
-} IndexList,TitleList;
+} IndexList, TitleList;
 
 
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);

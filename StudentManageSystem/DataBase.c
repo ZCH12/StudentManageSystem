@@ -49,6 +49,9 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 	char **temp2, ***temp4;	//用于提高性能
 	int *temp3;				//用于提高性能
 
+	if (!OperateChart)
+		return ERR_ILLEGALCHART;
+
 	File = fopen(FileName, "r");
 	if (!File)
 		return ERR_OPENFILE;
@@ -67,7 +70,7 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 	OperateChart->AllocatedLines = Count;
 
 	//分配内存
-	OperateChart->Chart = (Chart_t)malloc(sizeof(Chart_t)*Count);
+	OperateChart->Chart = (Chart_t)malloc(sizeof(ChartPiece_t)*Count);
 	OperateChart->ChartTitle = (ChartPiece_t)malloc(sizeof(ChartPiece_t)*TitleCount);
 	OperateChart->ChartLimits = (int*)malloc(sizeof(int)*TitleCount);
 
@@ -125,8 +128,8 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 	temp4 = OperateChart->Chart;
 	temp3 = OperateChart->ChartLimits;
 	for (a = 0; a < Count; a++) {
-		*temp4 = (ChartPiece_t)malloc(sizeof(char*)*TitleCount);
-		if (!(*temp4))
+		temp4[0] = (ChartPiece_t)malloc(sizeof(char*)*TitleCount);
+		if (!temp4[0])
 		{
 			fclose(File);
 			temp2 = OperateChart->ChartTitle;
@@ -138,21 +141,22 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 			free(OperateChart->ChartLimits);
 			free(OperateChart->ChartTitle);
 			free(OperateChart->Chart);
+			return ERR_MEMORYNOTENOUGH;
 		}
 		for (b = 0; b < TitleCount; b++) {
-			(*temp4)[b] = (char*)malloc(sizeof(char)*(*temp3 + 1));
-			if (!(*temp4)[b])
+			temp4[0][b] = (char*)malloc(sizeof(char)*(*temp3 + 1));
+			if (!temp4[0][b])
 			{
 				fclose(File);
 				//先释放只分配了一半的数组
 				for (b--; b >= 0; b--)
-					free((*temp4)[b]);
+					free(temp4[0][b]);
 
 				//再释放前a轮已分配的数组
 				for (temp4--, a--; a >= 0; a--)
 				{
 					for (b = 0; b < TitleCount; b++)
-						free((*temp4)[b]);
+						free(temp4[0][b]);
 					temp4--;
 				}
 				//释放表头
@@ -165,9 +169,10 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 				free(OperateChart->ChartLimits);
 				free(OperateChart->ChartTitle);
 				free(OperateChart->Chart);
+				return ERR_MEMORYNOTENOUGH;
 			}
 
-			if (fscanf(File, "%s", (*temp4)[b]) != 1)
+			if (fscanf(File, "%s", temp4[0][b]) != 1)
 			{
 				fclose(File);
 				for (; a >= 0; a--)
@@ -186,6 +191,7 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 				free(OperateChart->ChartLimits);
 				free(OperateChart->ChartTitle);
 				free(OperateChart->Chart);
+				return ERR_NOTSTANDARDFILE;
 			}
 		}
 		if (fgetc(File) != '\n')
@@ -214,11 +220,22 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	char **temp;		//为了提高性能
 	int temp2, *temp3;
 
+	if (CreateCount <= 0)
+		return SUCCESS;
+
+	if (!OperateChart)
+		return ERR_ILLEGALCHART;
+
+
 	//开始新建表头
-	temp = OperateChart->ChartTitle;
-	temp2 = OperateChart->TitleCount;
-	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*(temp2 + CreateCount));
-	NewChartLimits = (int*)malloc(sizeof(int)*(temp2 + CreateCount));
+
+	temp2 = OperateChart->TitleCount + CreateCount;
+
+	if (OperateChart->UsedLines <= 0 || OperateChart->TitleCount <= 0)
+		return ERR_UNINITIALIZEDCHART;
+
+	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*temp2);
+	NewChartLimits = (int*)malloc(sizeof(int)*temp2);
 	if (!NewChartTitle)
 		return ERR_MEMORYNOTENOUGH;
 
@@ -228,16 +245,16 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 		return ERR_MEMORYNOTENOUGH;
 	}
 	//拷贝标题到新的表头
+	temp = OperateChart->ChartTitle;
 	temp3 = OperateChart->ChartLimits;
-	for (a = 0; a < temp2; a++)
+	for (a = 0; a < OperateChart->TitleCount; a++)
 	{
 		NewChartTitle[a] = *temp;
 		NewChartLimits[a] = *temp3;
 		temp++;
 		temp3++;
 	}
-	temp2 += CreateCount;
-	for (; a < temp2; a++)
+	for (a = OperateChart->TitleCount; a < temp2; a++)
 	{
 		NewChartTitle[a] = (char*)malloc(sizeof(char) * 32);
 		if (!NewChartTitle[a])
@@ -249,33 +266,32 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 			free(NewChartLimits);
 			return ERR_MEMORYNOTENOUGH;
 		}
+		NewChartLimits[a] = *NewTitleLimits;
 		strcpy(NewChartTitle[a], *NewTitleSet);
+		NewTitleLimits++;
 		NewTitleSet++;
 	}
 
 	//开始新建一个新的表
-	temp2 = OperateChart->TitleCount;
 	NewChart = (Chart_t)malloc(sizeof(ChartPiece_t)*OperateChart->UsedLines);
 	if (!NewChart) {
-		for (a = temp2 + CreateCount; a >= temp2; a--)
+		for (a = OperateChart->TitleCount; a < temp2; a++)
 			free(NewChartTitle[a]);
 		free(NewChartTitle);
 		free(NewChartLimits);
-
 		return ERR_MEMORYNOTENOUGH;
 	}
 	//对每个行分配单元格
-	temp2 = OperateChart->TitleCount;
 	for (a = 0; a < OperateChart->UsedLines; a++)
 	{
-		NewChart[a] = (ChartPiece_t)malloc((sizeof(char*))*temp2);
+		NewChart[a] = (ChartPiece_t)malloc(sizeof(char*)*temp2);
 		if (!NewChart[a])
 		{
 			//如果分配出现问题,则回收已分配内存,返回
 			for (a--; a >= 0; a--)
 				free(NewChart[a]);
 			free(NewChart);
-			for (a = temp2 + CreateCount; a >= temp2; a--)
+			for (a = temp2 - 1; a >= OperateChart->TitleCount; a--)
 				free(NewChartTitle[a]);
 			free(NewChartTitle);
 			free(NewChartLimits);
@@ -284,32 +300,31 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 
 		//拷贝单元格
 		temp = OperateChart->Chart[a];
-		temp2 = OperateChart->TitleCount;
-		for (b = 0; b < temp2; b++)
+		for (b = 0; b < OperateChart->TitleCount; b++)
 			NewChart[a][b] = temp[b];
 
 		//新的单元格进行分配内存
-		temp2 += CreateCount;
-
-		for (c = 0; c < CreateCount; b++, c++)
+		//temp2 = OperateChart->TitleCount+CreateCount;
+		for (c = 0; c < CreateCount&&b < temp2; b++, c++)
 		{
 			d = NewTitleLimits[c] + 1;
-			//d=4;
-			//##################################
-			NewChart[a][b] = (char*)calloc(sizeof(char)*(d > 2 ? d : 2), sizeof(char)*(d > 2 ? d : 2));
+			d = sizeof(char)*(d > 2 ? d : 2);
+			NewChart[a][b] = (char*)calloc(d, d);
 			if (!NewChart[a][b])
 			{
 				for (b--; b >= 0; b--)			//删除这一轮分配的内存
 					free(NewChart[a][b]);
+				free(NewChart[a]);
 				for (a--; a >= 0; a--)			//删除前几轮分配的内存
 				{
-					for (b = OperateChart->TitleCount; b < temp2; b++)
+					for (b = OperateChart->TitleCount - 1; b < temp2; b++)
 						free(NewChart[a][b]);
 					free(NewChart[a]);
 				}
+
 				free(NewChart);
 
-				for (a = temp2 + CreateCount; a >= temp2; a--)
+				for (a = temp2 - 1; a >= OperateChart->TitleCount; a--)
 					free(NewChartTitle[a]);
 				free(NewChartTitle);
 				free(NewChartLimits);
@@ -346,7 +361,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	IndexList tempLinelist = { 0 };
 	TitleList tempTitlelist = { 0 };
 	int temp, temp3;			//用于提高性能
-	int *temp2,*temp22, *temp5;	//用于提高性能
+	int *temp2, *temp22, *temp5;	//用于提高性能
 	char ***temp4;				//用于提高性能
 
 	if (!ShowLines)
@@ -433,7 +448,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		}
 		break;
 	}
-	
+
 	//释放临时申请的内存
 	if (tempTitlelist.list)
 		free(tempTitlelist.list);

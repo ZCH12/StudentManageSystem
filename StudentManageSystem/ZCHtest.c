@@ -4,10 +4,10 @@
 int main()
 {
 	Chart chart = {0};
-	char list[2][32] = { "±àºÅ","ĞÕÃû" };
-	int list2[2] = { 1,1 };
+	char list[2][32] = { "°à¼¶","µØÖ·" };
+	int list2[2] = { 6,20 };
 	printf("%d\n",ReadFromFile("data.ini", &chart));
-	//CreateNewUnit(&chart, 2, list, list2);
+	CreateNewUnit(&chart, 2, list, list2);
 	//strcpy(chart.Chart[0][5], "sd");
 
 	Display_Chart(&chart,NULL,NULL,1);
