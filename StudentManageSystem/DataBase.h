@@ -15,6 +15,8 @@
 #define ERR_ILLEGALCHART		4		//非法的表
 #define ERR_UNINITIALIZEDCHART	5		//未初始化的表
 #define ERR_ILLEGALPARAM		6		//非法的参数
+#define ERR_EMTYLIST			7		//空List
+#define ERR_UNINITIALIZEDLIST	7		//未初始化的表
 
 //助记常量
 #define SORT_ASCENDING	0		//按升序进行排序
@@ -62,16 +64,21 @@ typedef struct
 } List,IndexList, TitleList;
 
 
+//输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
+
+//对List操作的函数
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode);
-
-
-ErrVal InitList(List *OperateList, int Count);
+ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex, char * DestinString);
+ErrVal InitList(List *OperateList, int Count, int ListData, ...);
+ErrVal FillList(List *OperateList, int Count);
+ErrVal FreeList(List *OperateList);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 
+//基础功能函数
 int StrCmp(const char *A, const char *B);
 int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName);
 

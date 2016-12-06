@@ -14,16 +14,15 @@ int main()
 	printf("%d\n",ReadFromFile("data.ini", &chart));
 	WirteToIntArray(list2, 2, 20, 20);
 	CreateNewUnit(&chart, 2, list, list2);
-
-	//InitList(&il, 15);
-	//InitList(&tl, 3);
-	InitList(&ll, 1000);
-
+	FillList(&ll, 1000);
+	InitList(&tl, 4, 1, 0, 2, 3, 4, 5);
 	//Display_Piece(&chart, 999, &ll);
-
-	Sort(&chart,&ll, SHI(&chart, "ÐÕÃû"), SORT_ASCENDING);
-	Display_Chart(&chart,&ll,NULL,0);
-
+	Search(&chart, &ll, &ll, 3, "99");
+	//Search(&chart, &ll, &ll, 2, "99");
+	//Sort(&chart,&ll, SHI(&chart, "ÐÕÃû"), SORT_ASCENDING);
+	Display_Chart(&chart,&ll,&tl,0);
+	FreeList(&ll);
+	FreeList(&tl);
 	system("pause");
 
 }

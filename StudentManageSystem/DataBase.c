@@ -618,12 +618,12 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 }
 
 /*
-创建一个新的List
+填充一个List(包含IndexList和TitleList),从0开始填充
 Count 在List作为IndexList时一定不要超过表中的行数
 		在作为TitleList时一定不要超过表中的标题的数量
 OperateList 中的list成员如果是指向数组的指针请设置为0
 */
-ErrVal InitList(List *OperateList, int Count)
+ErrVal FillList(List *OperateList, int Count)
 {
 	int a;
 
@@ -638,9 +638,50 @@ ErrVal InitList(List *OperateList, int Count)
 	OperateList->IsOnStack = 1;
 
 	for (a = 0; a < Count; a++)
-	{
 		OperateList->list[a] = a;
-	}
+	return SUCCESS;
+}
+
+/*
+按照提供的值初始化一个List
+OperateList 要进行初始化的结构体
+Count ListData的参数个数
+它与FillList的差别在于能否在初始化时自定义每一个元素
+*/
+ErrVal InitList(List *OperateList, int Count, int ListData, ...)
+{
+	va_list ap;
+	int a;
+	va_start(ap, ListData);
+
+	if (Count <= 0)
+		return ERR_ILLEGALPARAM;
+
+	OperateList->list = (int*)malloc(sizeof(int)*Count);
+	if (!OperateList->list)
+		return ERR_MEMORYNOTENOUGH;
+
+	OperateList->listCount = Count;
+	OperateList->AllocatedList = Count;
+	OperateList->IsOnStack = 1;
+	OperateList->list[0] = ListData;
+	for (a = 1; a < Count; a++)
+		OperateList->list[a] = va_arg(ap, int);
+	return SUCCESS;
+}
+
+/*
+释放一个List
+*/
+ErrVal FreeList(List *OperateList)
+{
+	if (!OperateList)
+		return ERR_EMTYLIST;
+	if (!OperateList->IsOnStack)
+		return ERR_UNINITIALIZEDLIST;
+	if (!OperateList->AllocatedList)
+		return ERR_UNINITIALIZEDLIST;
+	free(OperateList->list);
 	return SUCCESS;
 }
 
