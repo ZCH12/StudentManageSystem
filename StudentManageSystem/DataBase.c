@@ -8,18 +8,8 @@ Create By ZCR
 
 TODO:存在缺陷
 没有初始化函数
+
 */
-
-/*
-在调用函数时,会要求传入一个*list,
-这是一个保存学生在表中的实际存放顺序的下标的数组
-它保存的数据是一个个下标,这些数据的顺序不会改变表本身,但是它会关系到显示和保存数据
-*/
-
-
-
-
-
 
 /*
 初始化一个空表
@@ -529,70 +519,101 @@ SourceLines 包含在Chart表中lines的下标的数组,允许为NULL,将排序�
 Mode 0升序
 Mode 1降序
 */
-ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, int BaseTitleIndex, int Mode)
+ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode)
 {
 	int a, b;
 	int temp;		//交换时用于存储中间值的变量
-	int *list;		//下标数组
 	int Source = 0;	//零表示源来自外部,1表示内部动态创建,需要进行释放内存
-
-	if (SourceLines)
-	{
-		for (a = 0; a < SourceLines->listCount; a++)
-			ResultList->list[a] = SourceLines->list[a];
-		list = ResultList->list;
-		ResultList->listCount = SourceLines->listCount;
-	}
-	else {
-		Source = 1;	//标记需要释放申请的内存
-		list = (int*)malloc(sizeof(int)*OperateChart->UsedLines);
-		if (!list)
-			return ERR_MEMORYNOTENOUGH;
-		for (a = 0; a < OperateChart->UsedLines; a++)
-			ResultList->list[a] = a;
-		ResultList->listCount = OperateChart->UsedLines;
-		ResultList->IsOnStack = 1;
-		ResultList->AllocatedList = OperateChart->UsedLines;
-	}
-
 
 	switch (Mode)
 	{
 	case 0:
 		//升序
-		for (a = 0; a < ResultList->listCount; a++)
+		for (a = 0; a < OperateList->listCount; a++)
 		{
-			for (b = a; b < ResultList->listCount; b++)
+			for (b = a; b < OperateList->listCount; b++)
 			{
-				if (StrCmp(OperateChart->Chart[ResultList->list[a]][BaseTitleIndex], OperateChart->Chart[ResultList->list[b]][BaseTitleIndex]) > 0)
+				if (StrCmp(OperateChart->Chart[OperateList->list[a]][BaseTitleIndex], OperateChart->Chart[OperateList->list[b]][BaseTitleIndex]) > 0)
 				{
-					temp = ResultList->list[a];
-					ResultList->list[a] = ResultList->list[b];
-					ResultList->list[b] = temp;
+					temp = OperateList->list[a];
+					OperateList->list[a] = OperateList->list[b];
+					OperateList->list[b] = temp;
 				}
 			}
 		}
 		break;
 	case 1:
 		//降序
-		for (a = 0; a < ResultList->listCount; a++)
+		for (a = 0; a < OperateList->listCount; a++)
 		{
-			for (b = a; b < ResultList->listCount; b++)
+			for (b = a; b < OperateList->listCount; b++)
 			{
-				if (StrCmp(OperateChart->Chart[ResultList->list[a]][BaseTitleIndex], OperateChart->Chart[ResultList->list[b]][BaseTitleIndex]) < 0)
+				if (StrCmp(OperateChart->Chart[OperateList->list[a]][BaseTitleIndex], OperateChart->Chart[OperateList->list[b]][BaseTitleIndex]) < 0)
 				{
-					temp = ResultList->list[a];
-					ResultList->list[a] = ResultList->list[b];
-					ResultList->list[b] = temp;
+					temp = OperateList->list[a];
+					OperateList->list[a] = OperateList->list[b];
+					OperateList->list[b] = temp;
 				}
 			}
 		}
 		break;
 	}
-	if (Source == 1)
+	return SUCCESS;
+}
+
+/*
+在SearchList的范围内搜索符合条件的行,并返回给ResultList
+OperateChart	要进行查找的表
+SearchList		寻找的范围,允许为NULL,如果为NULL,将查找整个表
+ResultList		将结果返回的结构体
+BaseTitleIndex	进行比较的基准(选择以那个列作为基准)
+*/
+ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex,char * DestinString)
+{
+	int a;
+	int list_p = 0;
+	int temp,*temp2;
+	IndexList tempLinelist = {0};
+	int isNULL=0;
+
+	if (!OperateChart)
+		return ERR_ILLEGALPARAM;
+
+	if (BaseTitleIndex >= OperateChart->TitleCount)
+		return ERR_ILLEGALPARAM;
+
+	if (!SearchList)
 	{
-		free(list);
+		isNULL = 1;
+		//如果ShowLines为空,则初始化一个IndexList
+		temp = OperateChart->UsedLines;
+		if (!temp)
+		{
+			ResultList->listCount = 0;
+			return SUCCESS;
+		}
+		tempLinelist.listCount = temp;
+		tempLinelist.list = (int*)malloc(sizeof(int)*temp);
+		if (!tempLinelist.list)
+			return ERR_MEMORYNOTENOUGH;
+
+		temp2 = tempLinelist.list;
+		for (a = 0; a < temp; a++) {
+			*temp2 = a;
+			temp2++;
+		}
+		SearchList = &tempLinelist;
 	}
+	if (SearchList->listCount>0)
+	for (a = 0; a < SearchList->listCount; a++) {
+		if ((SearchList->list[a]<OperateChart->UsedLines)&&(!strcmp(OperateChart->Chart[SearchList->list[a]][BaseTitleIndex], DestinString))) {
+			ResultList->list[list_p++] = SearchList->list[a];
+		}
+	}
+	ResultList->listCount = list_p;
+	if (isNULL)
+		free(tempLinelist.list);
+
 	return SUCCESS;
 }
 
@@ -924,49 +945,6 @@ void DestroyStudentList()
 	StudentList = NULL;
 }
 
-
-
-
-
-
-/*
-传入一个下标数组,存储学生按指定的基准进行排序后新的顺序,list中仅储存这个学生在数据库中的实际顺序
-list 当前正在处理的学生的下标集合
-n list中元素的个数
-Order==0 升序排序
-Order==1 降序排序
-*/
-void Sort(int *list, int n, int sortBase, int Order)
-{
-	int j, k;
-	int temp;
-	switch (Order) {
-	case 0:
-		for (j = 0; j < n; j++) {
-			for (k = j; k < n; k++) {
-				if (StrCmp(StudentList[list[j]][sortBase], StudentList[list[k]][sortBase]) > 0) {
-					temp = list[j];
-					list[j] = list[k];
-					list[k] = temp;
-				}
-			}
-		}
-		break;
-	case 1:
-		for (j = 0; j < n; j++) {
-			for (k = j; k < n; k++) {
-				if (StrCmp(StudentList[list[j]][sortBase], StudentList[list[k]][sortBase]) < 0) {
-					temp = list[j];
-					list[j] = list[k];
-					list[k] = temp;
-				}
-			}
-		}
-		break;
-	}
-	return;
-}
-
 /*
 查找符合条件的学生
 返回值为找到的学生数
@@ -998,40 +976,6 @@ void GetList(int *list, int *n)
 	*n = StudentCount;
 	for (a = 0; a < StudentCount; a++) {
 		list[a] = a;
-	}
-	return;
-}
-
-/*
-根据list显示学生信息
-mode=1 显示编号
-mode=0 不显示编号
-*/
-void display(int *list, int n, int mode)
-{
-	int a, b;
-	if (mode == 1)
-		printf("编号 ");
-	for (a = 0; a < UnitCount; a++) {
-		printf("%-*s ", UnitHeadlimits[a], UnitHead[a]);
-	}
-	printf("\n");
-	if (mode == 0) {
-		for (a = 0; a < n; a++) {
-			for (b = 0; b < UnitCount; b++) {
-				printf("%-*s ", UnitHeadlimits[b], StudentList[list[a]][b]);
-			}
-			printf("\n");
-		}
-	}
-	else {
-		for (a = 0; a < n; a++) {
-			printf("%-4d ", a);
-			for (b = 0; b < UnitCount; b++) {
-				printf("%-*s ", UnitHeadlimits[b], StudentList[list[a]][b]);
-			}
-			printf("\n");
-		}
 	}
 	return;
 }

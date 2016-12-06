@@ -8,13 +8,17 @@
 
 
 //错误代码
-#define SUCCESS					0
-#define ERR_OPENFILE			1
-#define ERR_NOTSTANDARDFILE		2
-#define ERR_MEMORYNOTENOUGH		3
-#define ERR_ILLEGALCHART		4
-#define ERR_UNINITIALIZEDCHART	5
-#define ERR_ILLEGALPARAM		6
+#define SUCCESS					0		//操作成功
+#define ERR_OPENFILE			1		//打开文件失败
+#define ERR_NOTSTANDARDFILE		2		//不是一个本程序可读的文件
+#define ERR_MEMORYNOTENOUGH		3		//内存不足,无法分配内存
+#define ERR_ILLEGALCHART		4		//非法的表
+#define ERR_UNINITIALIZEDCHART	5		//未初始化的表
+#define ERR_ILLEGALPARAM		6		//非法的参数
+
+//助记常量
+#define SORT_ASCENDING	0		//按升序进行排序
+#define SORT_DESCENDING	1		//按降序进行排序
 
 //函数短名
 #define WTIA WirteToIntArray
@@ -62,7 +66,9 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
-ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, int BaseTitleIndex, int Mode);
+ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode);
+
+
 ErrVal InitList(List *OperateList, int Count);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 
@@ -75,5 +81,7 @@ int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName);
 以下函数未实现
 */
 //ErrVal InitChart(Chart *OperateChart,int LinesCount,int TitleCount);
-//
-//ErrVal Display_Piece(Chart *OperateChart, int ShowLineIndex, TitleList ShowTitle);
+
+/*
+需要对表中的空元素存储时使用#代替空字符串
+*/

@@ -14,21 +14,15 @@ int main()
 	printf("%d\n",ReadFromFile("data.ini", &chart));
 	WirteToIntArray(list2, 2, 20, 20);
 	CreateNewUnit(&chart, 2, list, list2);
-	printf("%d\n", SHI(&chart, "µÿ÷∑"));
 
 	//InitList(&il, 15);
 	//InitList(&tl, 3);
-	//InitList(&ll, 1000);
-	WTIA(list3, 3, 0, 1, 2);
-	ll.list = list3;
-	ll.listCount = 3;
-	ll.AllocatedList = 3;
+	InitList(&ll, 1000);
 
-	Display_Piece(&chart, 999, &ll);
+	//Display_Piece(&chart, 999, &ll);
 
-	//Sort(&chart, NULL, &ll, 0, 1);
-
-	//Display_Chart(&chart,NULL,NULL,0);
+	Sort(&chart,&ll, SHI(&chart, "–’√˚"), SORT_ASCENDING);
+	Display_Chart(&chart,&ll,NULL,0);
 
 	system("pause");
 
