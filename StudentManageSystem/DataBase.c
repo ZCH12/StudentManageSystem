@@ -1,4 +1,5 @@
 ﻿#include "DataBase.h"
+#include <stdarg.h>
 /*
 数据库库
 Create By ZCR
@@ -215,10 +216,11 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	Chart_t NewChart;
 	ChartPiece_t NewChartTitle;
 	int* NewChartLimits;
-
+	int LinesCount = OperateChart->UsedLines;
+	int UnitCount=OperateChart->TitleCount, NewUnitCount= OperateChart->TitleCount+CreateCount;
 	int a, b, c, d;
 	char **temp;		//为了提高性能
-	int temp2, *temp3;
+	int  *temp3;
 
 	if (CreateCount <= 0)
 		return SUCCESS;
@@ -229,13 +231,11 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 
 	//开始新建表头
 
-	temp2 = OperateChart->TitleCount + CreateCount;
-
-	if (OperateChart->UsedLines <= 0 || OperateChart->TitleCount <= 0)
+	if (LinesCount <= 0 || UnitCount <= 0)
 		return ERR_UNINITIALIZEDCHART;
 
-	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*temp2);
-	NewChartLimits = (int*)malloc(sizeof(int)*temp2);
+	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
+	NewChartLimits = (int*)malloc(sizeof(int)*NewUnitCount);
 	if (!NewChartTitle)
 		return ERR_MEMORYNOTENOUGH;
 
@@ -247,51 +247,52 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	//拷贝标题到新的表头
 	temp = OperateChart->ChartTitle;
 	temp3 = OperateChart->ChartLimits;
-	for (a = 0; a < OperateChart->TitleCount; a++)
+	for (a = 0; a < UnitCount; a++)
 	{
 		NewChartTitle[a] = *temp;
 		NewChartLimits[a] = *temp3;
 		temp++;
 		temp3++;
 	}
-	for (a = OperateChart->TitleCount; a < temp2; a++)
+
+	temp3 = NewTitleLimits;
+	for (a =UnitCount; a < NewUnitCount; a++)
 	{
 		NewChartTitle[a] = (char*)malloc(sizeof(char) * 32);
 		if (!NewChartTitle[a])
 		{
-			temp2 = OperateChart->TitleCount;
-			for (a--; a >= temp2; a--)
+			for (a--; a >= UnitCount; a--)
 				free(NewChartTitle[a]);
 			free(NewChartTitle);
 			free(NewChartLimits);
 			return ERR_MEMORYNOTENOUGH;
 		}
-		NewChartLimits[a] = *NewTitleLimits;
+		NewChartLimits[a] = *temp3;
 		strcpy(NewChartTitle[a], *NewTitleSet);
-		NewTitleLimits++;
+		temp3++;
 		NewTitleSet++;
 	}
 
 	//开始新建一个新的表
 	NewChart = (Chart_t)malloc(sizeof(ChartPiece_t)*OperateChart->UsedLines);
 	if (!NewChart) {
-		for (a = OperateChart->TitleCount; a < temp2; a++)
+		for (a = UnitCount; a < NewUnitCount; a++)
 			free(NewChartTitle[a]);
 		free(NewChartTitle);
 		free(NewChartLimits);
 		return ERR_MEMORYNOTENOUGH;
 	}
 	//对每个行分配单元格
-	for (a = 0; a < OperateChart->UsedLines; a++)
+	for (a = 0; a < LinesCount; a++)
 	{
-		NewChart[a] = (ChartPiece_t)malloc(sizeof(char*)*temp2);
+		NewChart[a] = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
 		if (!NewChart[a])
 		{
 			//如果分配出现问题,则回收已分配内存,返回
 			for (a--; a >= 0; a--)
 				free(NewChart[a]);
 			free(NewChart);
-			for (a = temp2 - 1; a >= OperateChart->TitleCount; a--)
+			for (a = UnitCount; a < NewUnitCount; a++)
 				free(NewChartTitle[a]);
 			free(NewChartTitle);
 			free(NewChartLimits);
@@ -305,7 +306,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 
 		//新的单元格进行分配内存
 		//temp2 = OperateChart->TitleCount+CreateCount;
-		for (c = 0; c < CreateCount&&b < temp2; b++, c++)
+		for (c = 0; c < CreateCount&&b < NewUnitCount; b++, c++)
 		{
 			d = NewTitleLimits[c] + 1;
 			d = sizeof(char)*(d > 2 ? d : 2);
@@ -317,14 +318,13 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 				free(NewChart[a]);
 				for (a--; a >= 0; a--)			//删除前几轮分配的内存
 				{
-					for (b = OperateChart->TitleCount - 1; b < temp2; b++)
+					for (b = UnitCount; b < NewUnitCount; b++)
 						free(NewChart[a][b]);
 					free(NewChart[a]);
 				}
-
 				free(NewChart);
 
-				for (a = temp2 - 1; a >= OperateChart->TitleCount; a--)
+				for (a = UnitCount; a <NewUnitCount; a++)
 					free(NewChartTitle[a]);
 				free(NewChartTitle);
 				free(NewChartLimits);
@@ -340,7 +340,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	free(OperateChart->ChartTitle);
 	free(OperateChart->ChartLimits);
 
-	OperateChart->TitleCount = temp2;
+	OperateChart->TitleCount = NewUnitCount;
 	OperateChart->Chart = NewChart;
 	OperateChart->ChartTitle = NewChartTitle;
 	OperateChart->ChartLimits = NewChartLimits;
@@ -542,6 +542,10 @@ OperateList 中的list成员如果是指向数组的指针请设置为0
 ErrVal InitList(List *OperateList, int Count)
 {
 	int a;
+
+	if (Count <= 0)
+		return ERR_ILLEGALPARAM;
+
 	OperateList->list = (int*)malloc(sizeof(int)*Count);
 	if (!OperateList->list)
 		return ERR_MEMORYNOTENOUGH;
@@ -557,11 +561,32 @@ ErrVal InitList(List *OperateList, int Count)
 }
 
 /*
+用ListData参数表来给OperateArray赋值
+OperateArray	要进行赋值的数组
+n				被ListData列表参数的个数(一定要小于等于数组的容量)
+ListData		值列表,该列表中的前n个值会赋值到OperateArray数组中
+*/
+ErrVal WirteToIntArray(int* OperateArray,int n,int ListData,...)
+{
+	va_list ap;
+	int a;
+	va_start(ap, ListData);
+
+	if (n <= 0)
+		return ERR_ILLEGALPARAM;
+
+	OperateArray[0] = ListData;
+	for (a = 1; a < n; a++)
+		OperateArray[a] = va_arg(ap, int);
+	return SUCCESS;
+}
+
+/*
 
 */
 ErrVal CopyList()
 {
-
+	return SUCCESS;
 }
 
 /*

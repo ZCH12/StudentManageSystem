@@ -14,6 +14,7 @@
 #define ERR_MEMORYNOTENOUGH		3
 #define ERR_ILLEGALCHART		4
 #define ERR_UNINITIALIZEDCHART	5
+#define ERR_ILLEGALPARAM		6
 
 //类型别名
 typedef int ErrVal;
@@ -60,6 +61,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, int BaseTitleIndex, int Mode);
 ErrVal InitList(List *OperateList, int Count);
 int StrCmp(const char *A, const char *B);
+ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 
 /*
 以下函数未实现
