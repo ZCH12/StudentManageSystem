@@ -217,7 +217,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	ChartPiece_t NewChartTitle;
 	int* NewChartLimits;
 	int LinesCount = OperateChart->UsedLines;
-	int UnitCount=OperateChart->TitleCount, NewUnitCount= OperateChart->TitleCount+CreateCount;
+	int UnitCount = OperateChart->TitleCount, NewUnitCount = OperateChart->TitleCount + CreateCount;
 	int a, b, c, d;
 	char **temp;		//为了提高性能
 	int  *temp3;
@@ -256,7 +256,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	}
 
 	temp3 = NewTitleLimits;
-	for (a =UnitCount; a < NewUnitCount; a++)
+	for (a = UnitCount; a < NewUnitCount; a++)
 	{
 		NewChartTitle[a] = (char*)malloc(sizeof(char) * 32);
 		if (!NewChartTitle[a])
@@ -324,7 +324,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 				}
 				free(NewChart);
 
-				for (a = UnitCount; a <NewUnitCount; a++)
+				for (a = UnitCount; a < NewUnitCount; a++)
 					free(NewChartTitle[a]);
 				free(NewChartTitle);
 				free(NewChartLimits);
@@ -461,6 +461,69 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 }
 
 /*
+按照ShowLines和ShowTitle的顺序显示信息
+OperateLineIndex 在Chart表中行的下标
+ShowTitle 包含在Chart表中ShowTitle的下标的数组,允许为NULL,将输出所有的列(按表中顺序)
+*/
+ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle)
+{
+	int a, b;
+	TitleList tempTitlelist = { 0 };
+	int temp, temp3;			//用于提高性能
+	int *temp2, *temp22, *temp5;	//用于提高性能
+	char **temp4;				//用于提高性能
+
+	if (OperateLineIndex >= OperateChart->UsedLines)
+		return ERR_ILLEGALPARAM;
+
+	if (!ShowTitle)
+	{
+		//如果ShowTitle为空,则初始化一个ShowTitle
+		temp = OperateChart->TitleCount;
+		tempTitlelist.listCount = temp;
+		tempTitlelist.list = (int*)malloc(sizeof(int)*temp);
+		if (!tempTitlelist.list) {
+			return ERR_MEMORYNOTENOUGH;
+		}
+		temp2 = tempTitlelist.list;
+		for (a = 0; a < temp; a++) {
+			*temp2 = a;
+			temp2++;
+		}
+		ShowTitle = &tempTitlelist;
+	}
+	temp3 = ShowTitle->listCount;
+	temp5 = OperateChart->ChartLimits;		//取得长度限制的数组
+
+	//显示表头
+	temp2 = ShowTitle->list;
+	for (a = 0; a < temp3; a++)
+	{
+		if (*temp2 < OperateChart->TitleCount)
+			printf("%-*s ", temp5[*temp2], OperateChart->ChartTitle[*temp2]);
+		temp2++;
+	}
+	printf("\n");
+
+	temp4 = OperateChart->Chart[OperateLineIndex];
+	temp5 = OperateChart->ChartLimits;
+
+	temp22 = ShowTitle->list;
+	for (b = 0; b < temp3; b++)
+	{
+		if (*temp22 < OperateChart->TitleCount)
+			printf("%-*s ", temp5[*temp22], temp4[*temp22]);
+		temp22++;
+	}
+	printf("\n");
+
+	//释放临时申请的内存
+	if (tempTitlelist.list)
+		free(tempTitlelist.list);
+	return SUCCESS;
+}
+
+/*
 按照IndexList对行进行排序
 SourceLines 包含在Chart表中lines的下标的数组,允许为NULL,将排序所有的行(按表中顺序)
 Mode 0升序
@@ -489,10 +552,10 @@ ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, 
 			ResultList->list[a] = a;
 		ResultList->listCount = OperateChart->UsedLines;
 		ResultList->IsOnStack = 1;
-		ResultList->AllocatedList= OperateChart->UsedLines;
+		ResultList->AllocatedList = OperateChart->UsedLines;
 	}
 
-	
+
 	switch (Mode)
 	{
 	case 0:
@@ -509,7 +572,7 @@ ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, 
 				}
 			}
 		}
-	break;
+		break;
 	case 1:
 		//降序
 		for (a = 0; a < ResultList->listCount; a++)
@@ -524,9 +587,9 @@ ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, 
 				}
 			}
 		}
-	break;
+		break;
 	}
-	if (Source==1)
+	if (Source == 1)
 	{
 		free(list);
 	}
@@ -566,7 +629,7 @@ OperateArray	要进行赋值的数组
 n				被ListData列表参数的个数(一定要小于等于数组的容量)
 ListData		值列表,该列表中的前n个值会赋值到OperateArray数组中
 */
-ErrVal WirteToIntArray(int* OperateArray,int n,int ListData,...)
+ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...)
 {
 	va_list ap;
 	int a;
@@ -629,7 +692,20 @@ int StrCmp(const char *A, const char *B)
 	}
 }
 
-
+/*
+通过表头的标题找到表头对应的编号
+*/
+int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName)
+{
+	int a;
+	char **temp = OperateChart->ChartTitle;
+	for (a = 0; a < OperateChart->TitleCount; a++) {
+		if (!strcmp(*temp, UnitHeadName))
+			return a;
+		temp++;
+	}
+	return -1;
+}
 
 /*****************************分割线*******************************/
 /**************************以下代码作废****************************/
@@ -849,56 +925,9 @@ void DestroyStudentList()
 }
 
 
-/*
-两个字符串进行比较,兼容数字比较
-*/
-int StrCmp(const char *A, const char *B)
-{
-	int isNumA = 1, isNumB = 1;
-	int lenA = 0, lenB = 0;
-	char *A2 = (char*)A, *B2 = (char*)B;
-	//计算长度并判断是否是纯数字
-	while (*A2) {
-		if (isNumA && (*A2<'0' || *A2>'9'))
-			isNumA = 0;
-		lenA++;
-		A2++;
-	}
-	while (*B2) {
-		if (isNumB && (*B2<'0' || *B2>'9'))
-			isNumB = 0;
-		lenB++;
-		B2++;
-	}
-	if (isNumA*isNumB == 1) {
-		//两个数字进行比较
-		if (lenA != lenB) {
-			//如果两个数字的长度不同,则长的数字大
-			return lenA - lenB;
-		}
-		else {
-			//如果数字长度相同,怎从高位到低位依次比较
-			return strcmp(A, B);
-		}
-	}
-	else {
-		//非数字进行比较
-		return strcmp(A, B);
-	}
-}
 
-/*
-通过表头的标题找到表头对应的编号
-*/
-int SearchHeadIndex(const char *UnitHeadName)
-{
-	int a;
-	for (a = 0; a < UnitCount; a++) {
-		if (!strcmp(UnitHead[a], UnitHeadName))
-			return a;
-	}
-	return -1;
-}
+
+
 
 /*
 传入一个下标数组,存储学生按指定的基准进行排序后新的顺序,list中仅储存这个学生在数据库中的实际顺序

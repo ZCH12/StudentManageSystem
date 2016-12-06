@@ -16,6 +16,10 @@
 #define ERR_UNINITIALIZEDCHART	5
 #define ERR_ILLEGALPARAM		6
 
+//函数短名
+#define WTIA WirteToIntArray
+#define SHI SearchHeadIndex
+
 //类型别名
 typedef int ErrVal;
 typedef char*** Chart_t;
@@ -57,11 +61,15 @@ typedef struct
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
-
+ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 ErrVal Sort(Chart *OperateChart, IndexList *SourceLines, IndexList *ResultList, int BaseTitleIndex, int Mode);
 ErrVal InitList(List *OperateList, int Count);
-int StrCmp(const char *A, const char *B);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
+
+int StrCmp(const char *A, const char *B);
+int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName);
+
+
 
 /*
 以下函数未实现
