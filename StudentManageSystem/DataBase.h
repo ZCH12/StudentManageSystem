@@ -1,9 +1,4 @@
 ﻿#pragma once
-#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #define ADDITIONAL 10		//当需要重新分配内存时,一次增加十个行
 
 
@@ -21,6 +16,10 @@
 //助记常量
 #define SORT_ASCENDING	0		//按升序进行排序
 #define SORT_DESCENDING	1		//按降序进行排序
+#define DISPLAY_HIDENUMBER	0	//隐藏编号
+#define DISPLAY_SHOWNUMBER	1	//显示编号
+
+
 
 //函数短名
 #define WTIA WirteToIntArray

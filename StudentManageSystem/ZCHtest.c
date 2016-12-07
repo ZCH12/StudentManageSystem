@@ -1,65 +1,102 @@
 #include <stdio.h>
+#include <string.h>
 #include "DataBase.h"
+
+#define CRTDBG_MAP_ALLOC    
+#include <stdlib.h>  
+#include <crtdbg.h>    
+
+//测试创建表
+void Demo()
+{
+	Chart c;
+	int a;
+	IndexList stulist;
+	IndexList stulist2;
+	IndexList stulist3;
+	TitleList titlelist;
+
+	//初始化一个3*5的表
+	InitNewChart(&c, 5, 3, "姓名", 5, "班级", 5, "座号", 5);
+
+	//写入数据
+	strcpy(c.Chart[0][0], "张三");
+	strcpy(c.Chart[1][0], "李四");
+	strcpy(c.Chart[2][0], "王五");
+	strcpy(c.Chart[3][0], "冯八");
+	strcpy(c.Chart[4][0], "张三");
+	strcpy(c.Chart[0][1], "303");
+	strcpy(c.Chart[1][1], "302");
+	strcpy(c.Chart[2][1], "303");
+	strcpy(c.Chart[3][1], "301");
+	strcpy(c.Chart[4][1], "301");
+	strcpy(c.Chart[0][2], "1");
+	strcpy(c.Chart[1][2], "2");
+	strcpy(c.Chart[2][2], "3");
+	strcpy(c.Chart[3][2], "4");
+	strcpy(c.Chart[4][2], "5");
+
+	//初始化一个学生列表
+	FillList(&stulist, 5);
+
+	/*********************************************************/
+	//排序测试
+	//按姓名升序排序
+	printf("按姓名升序排序\n");
+	Sort(&c, &stulist, SHI(&c, "姓名"), SORT_ASCENDING);
+	Display_Chart(&c, &stulist, NULL, DISPLAY_HIDENUMBER);			//显示数据
+	printf("\n");
+
+	//按座号降序排序
+	printf("按座号降序排序\n");
+	Sort(&c, &stulist, SHI(&c, "座号"), SORT_DESCENDING);
+	Display_Chart(&c, &stulist, NULL, DISPLAY_HIDENUMBER);			//显示数据
+	/*********************************************************/
+	//筛选查找
+	FillList(&stulist2, 10);			//List使用之前要先进行初始化
+	FillList(&stulist3, 10);			//List使用之前要先进行初始化
+
+	Search(&c, &stulist, &stulist2, SHI(&c, "姓名"), "张三");
+
+	if (stulist2.listCount > 0) {
+		printf("\n找到姓名为张三的学生如下:\n");
+		Display_Chart(&c, &stulist2, NULL, DISPLAY_HIDENUMBER);
+	}
+	else printf("\n没有找到有关学生的信息\n");
+
+	Search(&c, &stulist2, &stulist3, SHI(&c, "班级"), "303");		//在之前搜索结果的基础上再搜索班级为303的学生
+	if (stulist3.listCount > 0)
+	{
+		printf("\n找到姓名为张三的学生如下:\n");
+		Display_Chart(&c, &stulist3, NULL, DISPLAY_HIDENUMBER);
+	}
+	else printf("\n没有找到有关学生的信息\n");
+	/**********************************************************/
+	//输出的时候如果觉得座号放在后面不合适,没关系,可以进行调整
+
+	printf("\n重新调整列之后的输出\n");
+	InitList(&titlelist, 3, SHI(&c, "座号"), SHI(&c, "班级"), SHI(&c, "姓名"));
+	Display_Chart(&c, &stulist, &titlelist, DISPLAY_HIDENUMBER);
+
+	printf("\n再按座号升序排序一下\n");
+	Sort(&c, &stulist, SHI(&c, "座号"), SORT_ASCENDING);
+	Display_Chart(&c, &stulist, &titlelist, DISPLAY_HIDENUMBER);
+
+	//测试完毕后释放内存,防止指针丢失造成内存泄露
+	FreeList(&stulist);
+	FreeList(&stulist2);
+	FreeList(&stulist3);
+	FreeList(&titlelist);
+	FreeChart(&c);
+}
 
 int main()
 {
-	Chart chart = {0};
-	char list[2][32] = { "班级","地址" };
-	int list2[2];
-	int list3[5];
-	IndexList il = { 0 };
-	TitleList tl = { 0 };
-	IndexList ll = { 0 };
+	Demo();
 
-	printf("%d\n",ReadFromFile("data.ini", &chart));
-	WirteToIntArray(list2, 2, 20, 20);
-	CreateNewUnit(&chart, 2, list, list2);
-	FillList(&ll, 1000);
-	InitList(&tl, 4, 1, 0, 2, 3, 4, 5);
-	//Display_Piece(&chart, 999, &ll);
-	Search(&chart, &ll, &ll, 3, "99");
-	//Search(&chart, &ll, &ll, 2, "99");
-	//Sort(&chart,&ll, SHI(&chart, "姓名"), SORT_ASCENDING);
-	Display_Chart(&chart,&ll,&tl,0);
-	FreeList(&ll);
-	FreeList(&tl);
+	_CrtDumpMemoryLeaks();
 	system("pause");
 
-
-
-
-}
-
-Chart **charthead;
-
-ErrVal CreatNewChart() {
-	Chart *creat;
-	static int had_creat_chart_num = 0;             //静态变量 已创建的表格数量
-	int creatchartnum;                              //所需创建的表格数量
-	printf("请输入所需创建表的数量\n");
-	scanf("%d", &creatchartnum);
-
-
-	charthead = (Chart **)malloc(sizeof(Chart *));
-	if (charthead == NULL) {
-		return ERR_MEMORYNOTENOUGH;
-	}
-	for (had_creat_chart_num = 0; had_creat_chart_num < creatchartnum; had_creat_chart_num++) {
-		creat = (Chart *)malloc(sizeof(Chart));
-		if (creat == NULL) {
-			return ERR_MEMORYNOTENOUGH;
-		}
-		charthead[had_creat_chart_num] = creat;
-	}
-
-
-	printf("表已创建完成\n");
-	//free(creat);
-	return SUCCESS;
 }
 
 
-void Test1()
-{
-	
-}

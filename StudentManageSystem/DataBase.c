@@ -1,5 +1,10 @@
-﻿#include "DataBase.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stdarg.h>
+#include "DataBase.h"
+
 /*
 数据库库
 Create By ZCR
@@ -788,6 +793,9 @@ ErrVal FillList(List *OperateList, int Count)
 	if (Count <= 0)
 		return ERR_ILLEGALPARAM;
 
+	if (OperateList->IsOnStack == 1 && (OperateList->list))
+		free(OperateList->list);
+
 	OperateList->list = (int*)malloc(sizeof(int)*Count);
 	if (!OperateList->list)
 		return ERR_MEMORYNOTENOUGH;
@@ -814,6 +822,10 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 
 	if (Count <= 0)
 		return ERR_ILLEGALPARAM;
+
+	if (OperateList->IsOnStack == 1 && (OperateList->list))
+		free(OperateList->list);
+
 
 	OperateList->list = (int*)malloc(sizeof(int)*Count);
 	if (!OperateList->list)
