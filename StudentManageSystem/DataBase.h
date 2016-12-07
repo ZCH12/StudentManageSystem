@@ -66,9 +66,13 @@ typedef struct
 
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
-ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
+
+//表操作函数
+ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
+ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...); 
+ErrVal FreeChart(Chart *OperateChart);
 
 //对List操作的函数
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode);
@@ -87,8 +91,8 @@ int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName);
 /*
 以下函数未实现
 */
-//ErrVal InitChart(Chart *OperateChart,int LinesCount,int TitleCount);
 
 /*
 需要对表中的空元素存储时使用#代替空字符串
+检查NewUnit的内存泄漏问题 
 */
