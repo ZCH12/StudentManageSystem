@@ -11,7 +11,7 @@
 #define ERR_UNINITIALIZEDCHART	5		//未初始化的表
 #define ERR_ILLEGALPARAM		6		//非法的参数
 #define ERR_EMTYLIST			7		//空List
-#define ERR_UNINITIALIZEDLIST	7		//未初始化的表
+#define ERR_UNINITIALIZEDLIST	8		//未初始化的表
 
 //助记常量
 #define SORT_ASCENDING	0		//按升序进行排序
