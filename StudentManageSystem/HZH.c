@@ -2,13 +2,14 @@
 #include <stdlib.h>
 
 int ChartCount;
+int AlloctedChartCount;
 Chart ** ChartHead;
 
 //表控制函数
 ErrVal NewChart(int CreateCount)
 {
 	int a;
-	Chart** OldChartSet; //原来的表集
+	Chart** NewChartSet; //原来的表集
 	int NewChartCount = ChartCount + CreateCount;
 	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
@@ -16,48 +17,75 @@ ErrVal NewChart(int CreateCount)
 	if (NewChartCount <= ChartCount)
 		return ERR_ILLEGALPARAM;
 
-	if (ChartCount == 0 || !ChartHead)
+	if (AlloctedChartCount <= 0)
 	{
-		//发现表还没初始化过,进行初始化
-		ChartHead = (Chart**)malloc(sizeof(Chart*)*CreateCount);
-		if (!ChartHead)
+		//全新初始化表
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*CreateCount);
+		if (!NewChartSet)
 			return ERR_MEMORYNOTENOUGH;
-
 		for (a = 0; a < CreateCount; a++)
 		{
-			ChartHead[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
-			if (!ChartHead[a])
+			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			if (!NewChartSet[a])
 			{
 				for (a--; a >= 0; a--)
-					free(ChartHead[a]);
-				free(ChartHead);
+					free(NewChartSet[a]);
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;
 			}
-			return ERR_MEMORYNOTENOUGH;
 		}
 	}
-	else {
-		OldChartSet = ChartHead;
-
-		ChartHead = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
-
-		if (!ChartHead)
+	else if (NewChartCount <= AlloctedChartCount)
+	{
+		//已分配空间新建表
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+		if (!NewChartSet)
 			return ERR_MEMORYNOTENOUGH;
-
 		for (a = 0; a < ChartCount; a++)
-			ChartHead[a] = OldChartSet[a];
+		{
+			NewChartSet[a] = ChartHead[a];
+		}
 		for (a = ChartCount; a < NewChartCount; a++)
 		{
-			ChartHead[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
-
-			if (!ChartHead[a])
+			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			if (!NewChartSet[a])
 			{
 				if (a != ChartCount)
 					for (a--; a >= ChartCount; a--)
-						free(ChartHead[a]);
-				free(ChartHead);
+						free(NewChartSet[a]);
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;;
 			}
 		}
 	}
+	else {
+		//增量初始化
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+		if (!NewChartSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < ChartCount; a++)
+		{
+			NewChartSet[a] = ChartHead[a];
+		}
+		for (; a < NewChartCount; a++)
+		{
+			NewChartSet[a] = (Chart*)malloc(sizeof(Chart));
+			if (!NewChartSet[a])
+			{
+				if (a != ChartCount)
+					for (a--; a >= ChartCount; a--)
+					{
+						free(NewChartSet[a]);
+					}
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;
+			}
+		}
+	}
+	free(ChartHead);
+	ChartHead = NewChartSet;
+	AlloctedChartCount = NewChartCount;
+	ChartCount = NewChartCount;
 	return SUCCESS;
 }
 
