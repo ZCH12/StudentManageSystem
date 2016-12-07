@@ -568,13 +568,13 @@ SearchList		寻找的范围,允许为NULL,如果为NULL,将查找整个表
 ResultList		将结果返回的结构体
 BaseTitleIndex	进行比较的基准(选择以那个列作为基准)
 */
-ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex,char * DestinString)
+ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex, char * DestinString)
 {
 	int a;
 	int list_p = 0;
-	int temp,*temp2;
-	IndexList tempLinelist = {0};
-	int isNULL=0;
+	int temp, *temp2;
+	IndexList tempLinelist = { 0 };
+	int isNULL = 0;
 
 	if (!OperateChart)
 		return ERR_ILLEGALPARAM;
@@ -604,12 +604,12 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 		}
 		SearchList = &tempLinelist;
 	}
-	if (SearchList->listCount>0)
-	for (a = 0; a < SearchList->listCount; a++) {
-		if ((SearchList->list[a]<OperateChart->UsedLines)&&(!strcmp(OperateChart->Chart[SearchList->list[a]][BaseTitleIndex], DestinString))) {
-			ResultList->list[list_p++] = SearchList->list[a];
+	if (SearchList->listCount > 0)
+		for (a = 0; a < SearchList->listCount; a++) {
+			if ((SearchList->list[a] < OperateChart->UsedLines) && (!strcmp(OperateChart->Chart[SearchList->list[a]][BaseTitleIndex], DestinString))) {
+				ResultList->list[list_p++] = SearchList->list[a];
+			}
 		}
-	}
 	ResultList->listCount = list_p;
 	if (isNULL)
 		free(tempLinelist.list);

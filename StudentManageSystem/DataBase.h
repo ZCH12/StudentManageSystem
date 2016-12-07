@@ -61,7 +61,7 @@ typedef struct
 	int listCount;		//记录数组的个数
 	int AllocatedList;	//已分配的内存
 	int IsOnStack;		//改值为1时表示list是动态分配的
-} List,IndexList, TitleList;
+} List, IndexList, TitleList;
 
 
 //输入输出函数

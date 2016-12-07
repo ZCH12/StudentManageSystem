@@ -25,4 +25,41 @@ int main()
 	FreeList(&tl);
 	system("pause");
 
+
+
+
+}
+
+Chart **charthead;
+
+ErrVal CreatNewChart() {
+	Chart *creat;
+	static int had_creat_chart_num = 0;             //静态变量 已创建的表格数量
+	int creatchartnum;                              //所需创建的表格数量
+	printf("请输入所需创建表的数量\n");
+	scanf("%d", &creatchartnum);
+
+
+	charthead = (Chart **)malloc(sizeof(Chart *));
+	if (charthead == NULL) {
+		return ERR_MEMORYNOTENOUGH;
+	}
+	for (had_creat_chart_num = 0; had_creat_chart_num < creatchartnum; had_creat_chart_num++) {
+		creat = (Chart *)malloc(sizeof(Chart));
+		if (creat == NULL) {
+			return ERR_MEMORYNOTENOUGH;
+		}
+		charthead[had_creat_chart_num] = creat;
+	}
+
+
+	printf("表已创建完成\n");
+	//free(creat);
+	return SUCCESS;
+}
+
+
+void Test1()
+{
+	
 }
