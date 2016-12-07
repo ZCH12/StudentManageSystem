@@ -461,6 +461,41 @@ ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* Titl
 }
 
 /*
+释放整个表所占的内存
+OperateChart 要进行销毁的表,表销毁之后处于未初始化的状态,需要重新初始化才能使用
+*/
+ErrVal FreeChart(Chart *OperateChart)
+{
+	int a,b; 
+	if (!OperateChart) 
+	{
+		return ERR_UNINITIALIZEDCHART; 
+	} 
+	if (OperateChart->HadInit!=1)
+	{
+		return ERR_UNINITIALIZEDCHART; 
+	} 
+	for (b=0;b<OperateChart->TitleCount;b++)
+	{
+		free(OperateChart->ChartTitle[b]); 
+	} 
+	free(OperateChart->ChartTitle); 
+	
+	for (a=0;a<OperateChart->UsedLines;a++)
+	{
+		for (b=0;b<OperateChart->TitleCount;b++)
+		{
+			free(OperateChart->Chart[a][b]); 
+		} 
+		free(OperateChart->Chart[a]); 
+	} 
+	free(OperateChart->Chart);
+	free(OperateChart->ChartLimits);
+	OperateChart->HadInit=0;
+	return SUCCESS; 
+}
+
+/*
 按照ShowLines和ShowTitle的顺序显示信息
 ShowLines 包含在Chart表中lines的下标的数组,允许为NULL,将输出所有的行(按表中顺序)
 ShowTitle 包含在Chart表中ShowTitle的下标的数组,允许为NULL,将输出所有的列(按表中顺序)
