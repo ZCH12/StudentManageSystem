@@ -10,7 +10,6 @@
 Create By ZCR
 2016-12-04
 
-
 TODO:存在缺陷
 没有初始化函数
 
@@ -199,7 +198,6 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 	return SUCCESS;
 }
 
-
 /*
 从两个文件中读取信息
 ParamFileName	表头与配置文件的路径
@@ -373,8 +371,6 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	return SUCCESS;
 }
 
-
-
 /*
 新增1个或多个新的标题
 OperateChart 要进行操作的表
@@ -400,11 +396,10 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 		return ERR_ILLEGALCHART;
 
 
-	//开始新建表头
-
 	if (LinesCount <= 0 || UnitCount <= 0)
 		return ERR_UNINITIALIZEDCHART;
 
+	//开始新建表头
 	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
 	NewChartLimits = (int*)malloc(sizeof(int)*NewUnitCount);
 	if (!NewChartTitle)
@@ -638,6 +633,34 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 	OperateChart->UsedLines = LinesCount;
 	OperateChart->HadInit = 1;
 
+	return SUCCESS;
+}
+
+/*
+把数字代码解释为字符串
+OperateChart	进行操作的表
+TitleIndex		进行转换的列
+MapStruct		存储映射关系的表
+*/
+ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
+{
+	int a, b;
+	char *temp;
+	char **list = MapStruct->String;
+	char **Val = MapStruct->Val;
+	for (a = 0; a < OperateChart->UsedLines; a++)
+	{
+		temp = OperateChart->Chart[a][TitleIndex];
+		for (b = 0; b < MapStruct->Count; b++)
+		{
+			if (!strcmp(temp, Val[b]))
+			{
+				//匹配,进行翻译
+				strcpy(temp, list[b]);
+				break;
+			}
+		}
+	}
 	return SUCCESS;
 }
 
@@ -1314,5 +1337,77 @@ void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
 	}
 }
 
+/*
+当学生表不再需要时,调用它可以释放内存,但是释放内存之后不能再对表进行操作,除非重新读取表信息
+*/
+void DestroyStudentList()
+{
+	int a, b;
+	for (a = 0; a < StudentCount; a++)
+	{
+		for (b = 0; b < UnitCount; b++)
+		{
+			free(StudentList[a][b]);
+		}
+		free(StudentList[a]);
+	}
+	free(StudentList);
+	StudentList = NULL;
+}
+
+/*
+查找符合条件的学生
+返回值为找到的学生数
+Sourcelist 当前正在处理的学生的下标集合
+n list中元素的个数
+Resultlist 处理之后返回的学生的下标集合(允许与Sourcelist一样)
+destin 寻找的目标字符串
+*/
+int Search(int *Sourcelist, int n, int *Resultlist, int SearchUnit, const char *destin)
+{
+	int a;
+	int list_p = 0;
+	for (a = 0; a < n; a++) {
+		if (!strcmp(StudentList[Sourcelist[a]][SearchUnit], destin)) {
+			Resultlist[list_p++] = Sourcelist[a];
+		}
+	}
+	return list_p;
+}
+
+/*
+取得整张表的原理就是把所有索引都传递出去
+list用于返回学生名单
+n返回学生数
+*/
+void GetList(int *list, int *n)
+{
+	int a;
+	*n = StudentCount;
+	for (a = 0; a < StudentCount; a++) {
+		list[a] = a;
+	}
+	return;
+}
+
+/*
+该函数取得指定学生的指定信息的指针
+可以用于显示它的值或修改它的值
+list 名单
+list_ID 学生在名单中的位置(从0开始计)
+GetUnit 表头的
+*/
+char* GetString(int *list, int list_ID, int GetUnit)
+{
+	return StudentList[list[list_ID]][GetUnit];
+}
+
+/*
+返回第Unit个单元的名称
+*/
+char* GetUnitTittle(int Unit)
+{
+	return UnitHead[Unit];
+}
 
 #endif

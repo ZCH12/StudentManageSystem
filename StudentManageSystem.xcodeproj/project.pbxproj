@@ -28,6 +28,7 @@
 		D71C8CAF1DF1E580007BD820 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D77A5C141DF47B040036449B /* DataBase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataBase.c; sourceTree = "<group>"; };
 		D77A5C151DF47B040036449B /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
+		D7D4EAEA1DF72311004063BC /* asdasd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = asdasd.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 				D77A5C141DF47B040036449B /* DataBase.c */,
 				D77A5C151DF47B040036449B /* DataBase.h */,
 				D71C8CAF1DF1E580007BD820 /* main.c */,
+				D7D4EAEA1DF72311004063BC /* asdasd.h */,
 			);
 			path = StudentManageSystem;
 			sourceTree = "<group>";
