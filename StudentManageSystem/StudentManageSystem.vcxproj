@@ -175,6 +175,7 @@
   <ItemGroup>
     <Text Include="C_info.txt" />
     <Text Include="Stu_info.txt" />
+    <Text Include="stu_param.txt" />
     <Text Include="S_info.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

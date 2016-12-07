@@ -48,5 +48,8 @@
     <Text Include="Stu_info.txt">
       <Filter>资源文件</Filter>
     </Text>
+    <Text Include="stu_param.txt">
+      <Filter>资源文件</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -225,13 +225,11 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 		fclose(File);
 		return ERR_NOTSTANDARDFILE;
 	}
+	
 	if (fgetc(File) != '\n')
 		return ERR_NOTSTANDARDFILE;
 
 	//参数读取成功,关闭ParamFileName
-	fclose(File);
-
-	File = fopen(ParamFileName, "r");
 	//对表进行初始化
 	OperateChart->TitleCount = TitleCount;
 	OperateChart->UsedLines = Count;
@@ -291,6 +289,12 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	}
 	if (fgetc(File) != '\n')
 		return ERR_NOTSTANDARDFILE;
+
+	fclose(File);
+	File = fopen(DataFileName, "r");
+
+	
+	
 
 	//读取数据入表
 	temp4 = OperateChart->Chart;

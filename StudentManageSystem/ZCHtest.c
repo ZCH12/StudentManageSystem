@@ -98,6 +98,7 @@ void test1()
 {
 	//初始化表
 	NewChart(5);
+	/*
 	InitNewChart(ChartHead[0], 5, 3, "姓名", 5, "班级", 5, "座号", 5);
 	//写入数据
 	strcpy(ChartHead[0]->Chart[0][0], "张三");
@@ -115,10 +116,8 @@ void test1()
 	strcpy(ChartHead[0]->Chart[2][2], "3");
 	strcpy(ChartHead[0]->Chart[3][2], "4");
 	strcpy(ChartHead[0]->Chart[4][2], "5");
-
-
-
-
+	*/
+	ReadFromTwoFile("stu_param.txt", "Stu_info.txt", ChartHead[0]);
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 
 }
