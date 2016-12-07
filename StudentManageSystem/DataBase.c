@@ -200,6 +200,180 @@ ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 }
 
 /*
+从两个文件中读取信息
+ParamFileName	表头与配置文件的路径
+DataFileName	表中数据的路径
+OperateChart 要用来存储读入的数据的表
+*/
+ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateChart)
+{
+	FILE *File;
+	int Count, TitleCount;
+	int a, b;				//循环变量
+	char temp;				//用于扔掉无用的数据
+	char **temp2, ***temp4;	//用于提高性能
+	int *temp3;				//用于提高性能
+
+	if (!OperateChart)
+		return ERR_ILLEGALCHART;
+
+	File = fopen(ParamFileName, "r");
+	if (!File)
+		return ERR_OPENFILE;
+
+	if (fscanf(File, "%d%d", &Count, &TitleCount) != 2)		//从文件读取两个参数,分别对应两个
+	{
+		fclose(File);
+		return ERR_NOTSTANDARDFILE;
+	}
+	if (fgetc(File) != '\n')
+		return ERR_NOTSTANDARDFILE;
+
+	//参数读取成功,关闭ParamFileName
+	fclose(File);
+
+	File = fopen(ParamFileName, "r");
+	//对表进行初始化
+	OperateChart->TitleCount = TitleCount;
+	OperateChart->UsedLines = Count;
+	OperateChart->AllocatedLines = Count;
+
+	//分配内存
+	OperateChart->Chart = (Chart_t)malloc(sizeof(ChartPiece_t)*Count);
+	OperateChart->ChartTitle = (ChartPiece_t)malloc(sizeof(ChartPiece_t)*TitleCount);
+	OperateChart->ChartLimits = (int*)malloc(sizeof(int)*TitleCount);
+
+	if (!(OperateChart->Chart&&OperateChart->ChartTitle&&OperateChart->ChartLimits))
+	{
+		fclose(File);
+		if (OperateChart->Chart)
+			free(OperateChart->Chart);
+		if (OperateChart->ChartTitle)
+			free(OperateChart->ChartTitle);
+		if (OperateChart->ChartLimits)
+			free(OperateChart->ChartLimits);
+		return ERR_MEMORYNOTENOUGH;
+	}
+
+	temp2 = OperateChart->ChartTitle;
+	temp3 = OperateChart->ChartLimits;
+	for (a = 0; a < TitleCount; a++) {
+		*temp2 = (char*)malloc(sizeof(char) * 32);
+		if (!*temp2)
+		{
+			fclose(File);
+			temp2--;
+			for (a--; a >= 0; a--)
+			{
+				free(*temp2);
+				temp2--;
+			}
+			free(OperateChart->ChartLimits);
+			free(OperateChart->ChartTitle);
+			free(OperateChart->Chart);
+			return ERR_MEMORYNOTENOUGH;
+		}
+		//写入标题文字
+		if (fscanf(File, "%s%c%d", *temp2, &temp, temp3) != 3)
+		{
+			fclose(File);
+			for (; a >= 0; a--)
+			{
+				free(*temp2);
+				temp2--;
+			}
+			free(OperateChart->ChartLimits);
+			free(OperateChart->ChartTitle);
+			free(OperateChart->Chart);
+			return ERR_NOTSTANDARDFILE;
+		}
+		temp2++;
+		temp3++;
+	}
+	if (fgetc(File) != '\n')
+		return ERR_NOTSTANDARDFILE;
+
+	//读取数据入表
+	temp4 = OperateChart->Chart;
+	temp3 = OperateChart->ChartLimits;
+	for (a = 0; a < Count; a++) {
+		temp4[0] = (ChartPiece_t)malloc(sizeof(char*)*TitleCount);
+		if (!temp4[0])
+		{
+			fclose(File);
+			temp2 = OperateChart->ChartTitle;
+			for (a = 0; a < TitleCount; a++)
+			{
+				free(*temp2);
+				temp2++;
+			}
+			free(OperateChart->ChartLimits);
+			free(OperateChart->ChartTitle);
+			free(OperateChart->Chart);
+			return ERR_MEMORYNOTENOUGH;
+		}
+		for (b = 0; b < TitleCount; b++) {
+			temp4[0][b] = (char*)malloc(sizeof(char)*(*temp3 + 1));
+			if (!temp4[0][b])
+			{
+				fclose(File);
+				//先释放只分配了一半的数组
+				for (b--; b >= 0; b--)
+					free(temp4[0][b]);
+
+				//再释放前a轮已分配的数组
+				for (temp4--, a--; a >= 0; a--)
+				{
+					for (b = 0; b < TitleCount; b++)
+						free(temp4[0][b]);
+					temp4--;
+				}
+				//释放表头
+				temp2 = OperateChart->ChartTitle;
+				for (a = 0; a < TitleCount; a++)
+				{
+					free(*temp2);
+					temp2++;
+				}
+				free(OperateChart->ChartLimits);
+				free(OperateChart->ChartTitle);
+				free(OperateChart->Chart);
+				return ERR_MEMORYNOTENOUGH;
+			}
+
+			if (fscanf(File, "%s", temp4[0][b]) != 1)
+			{
+				fclose(File);
+				for (; a >= 0; a--)
+				{
+					for (b = 0; b < TitleCount; b++)
+						free((*temp4)[b]);
+					temp4--;
+				}
+				//释放表头
+				temp2 = OperateChart->ChartTitle;
+				for (a = 0; a < TitleCount; a++)
+				{
+					free(*temp2);
+					temp2++;
+				}
+				free(OperateChart->ChartLimits);
+				free(OperateChart->ChartTitle);
+				free(OperateChart->Chart);
+				return ERR_NOTSTANDARDFILE;
+			}
+		}
+		if (fgetc(File) != '\n')
+			return ERR_NOTSTANDARDFILE;
+		temp4++;
+	}
+	OperateChart->HadInit = 1;
+	fclose(File);
+	return SUCCESS;
+}
+
+
+/*
 新增1个或多个新的标题
 OperateChart 要进行操作的表
 CreateCount 要新增的标题数目
@@ -463,6 +637,149 @@ ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* Titl
 	OperateChart->HadInit=1; 
 
 	return SUCCESS; 
+}
+
+ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...)
+{
+	Chart_t tempChart;
+	int* tempChartLimits;
+	ChartPiece_t tempChartTitle; 
+	int a,b; 
+	va_list ap; 
+	int* temp; 
+	
+	if (!OperateChart)
+		return ERR_ILLEGALPARAM; 
+	if (LinesCount<=0||TitleCount<=0)
+		return ERR_ILLEGALPARAM; 
+	
+	//初始化标题列表
+	tempChartTitle=(ChartPiece_t)malloc(sizeof(char*)*TitleCount);
+	if (!tempChartTitle) 
+		return ERR_MEMORYNOTENOUGH; 
+	tempChartLimits=(int*)malloc(sizeof(int)*TitleCount);
+	if (!tempChartLimits)
+	{
+		free(tempChartTitle);
+		return ERR_MEMORYNOTENOUGH; 
+	} 
+	*tempChartTitle=(char*)malloc(sizeof(char)*32);
+	if (!*tempChartTitle)
+	{
+		free(tempChartLimits);
+		free(tempChartTitle);
+		return ERR_MEMORYNOTENOUGH; 
+	}
+	strcpy(*tempChartTitle,TitleList);		//写入第一个标题 
+	*tempChartLimits=TitleLimits;			//写入第一个标题的内容长度限制
+	 
+	//对第2-TitleCount个数进行处理
+	va_start(ap, TitleLimits);
+	
+	for (a=1;a<TitleCount;a++)
+	{
+		tempChartTitle[a]=(char*)malloc(sizeof(char)*32);
+		if (!tempChartTitle[a])
+		{
+			for (a--;a>=0;a--)
+				free(tempChartTitle[a]);		//释放已经分配的内存 
+			free(tempChartLimits);
+			free(tempChartTitle);
+			return ERR_MEMORYNOTENOUGH; 
+		}
+		strcpy(tempChartTitle[a],va_arg(ap,char*));
+		tempChartLimits[a]= va_arg(ap,int); 
+	} 
+	
+	//初始化表 
+	tempChart=(Chart_t)malloc(sizeof(ChartPiece_t)*LinesCount);
+	if (!tempChart) 
+	{
+		for (a=0;a<TitleCount;a++)
+			free(tempChartTitle[a]); 
+		free(tempChartTitle);
+		free(tempChartLimits);
+		return ERR_MEMORYNOTENOUGH; 
+	}
+	for (a=0;a<LinesCount;a++)
+	{
+		tempChart[a]=(ChartPiece_t)malloc(sizeof(char*)*TitleCount);
+		if (!tempChart[a])
+		{
+			for (a--;a>=0;a--){ 
+				for (b=0;b<TitleCount;b++)
+					free(tempChart[a][b]); 
+				free(tempChart[a]); 
+			} 
+			free(tempChart); 
+			for (a=0;a<TitleCount;a++)
+				free(tempChartTitle[a]); 
+			free(tempChartTitle);
+			free(tempChartLimits);
+			return ERR_MEMORYNOTENOUGH; 
+		}
+		temp=tempChartLimits; 
+		for (b=0;b<TitleCount;b++)
+		{
+			tempChart[a][b]=(char*)calloc(sizeof(char)*(*temp),sizeof(char)*(*temp));
+			if (!tempChart[a][b]) 
+			{
+				for (b--;b>=0;b--)
+					free(tempChart[a][b]); 
+				for (a--;a>=0;a--){ 
+					for(b=0;b<TitleCount;b++)
+						free(tempChart[a][b]);
+					free(tempChart[a]); 
+				} 
+				free(tempChart); 
+				for (a=0;a<TitleCount;a++)
+					free(tempChartTitle[a]); 
+				free(tempChartTitle);
+				free(tempChartLimits);
+				return ERR_MEMORYNOTENOUGH; 
+			} 
+			temp++;
+		} 
+	} 
+	//初始化表的其他信息
+	
+	OperateChart->Chart=tempChart;
+	OperateChart->ChartLimits=tempChartLimits;
+	OperateChart->ChartTitle=tempChartTitle;
+	OperateChart->TitleCount=TitleCount;
+	OperateChart->AllocatedLines=LinesCount;
+	OperateChart->UsedLines= LinesCount;
+	OperateChart->HadInit=1; 
+
+	return SUCCESS; 
+}
+
+/*
+把数字代码解释为字符串
+OperateChart	进行操作的表
+TitleIndex		进行转换的列
+MapStruct		存储映射关系的表
+*/
+ErrVal Translate(Chart *OperateChart,int TitleIndex,InfoMap *MapStruct)
+{
+	int a,b;
+	char *temp;
+	char **list=MapStruct->String;
+	char **Val=MapStruct->Val;
+	for (a=0;a<OperateChart->UsedLines;a++)
+	{
+		temp=OperateChart->Chart[a][TitleIndex];
+		for (b=0;b<MapStruct->Count;b++)
+		{
+			if (!strcmp(temp,Val[b]))
+			{
+				//匹配,进行翻译
+				strcpy(temp,list[b]);
+				break;
+			}
+		}
+	}
+	return SUCCESS;
 }
 
 /*

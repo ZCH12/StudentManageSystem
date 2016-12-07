@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #define ADDITIONAL 10		//当需要重新分配内存时,一次增加十个行
 
 
@@ -38,7 +38,7 @@ typedef struct
 
 	//标题
 	int TitleCount;				//存储标题的个数
-	ChartPiece_t ChartTitle;	//存储每个标题的字符(每个标题不得超过31个字母)
+	ChartPiece_t ChartTitle;	//存储每个标题的字符串(每个标题不得超过31个字母)
 	int* ChartLimits;			//存储每一个标题下的单元格里的字符串的最大长度
 
 	//行
@@ -62,15 +62,25 @@ typedef struct
 	int IsOnStack;		//改值为1时表示list是动态分配的
 } List, IndexList, TitleList;
 
+typedef struct
+{
+	char** Val;
+	char** String;
+	int Count;
+} InfoMap;
+
 
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
+
+
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...); 
+ErrVal Translate(Chart *OperateChart,int TitleIndex,InfoMap *MapStruct);
 ErrVal FreeChart(Chart *OperateChart);
 
 //对List操作的函数
