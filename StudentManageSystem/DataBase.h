@@ -72,7 +72,7 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...); 
-
+ErrVal FreeChart(Chart *OperateChart);
 
 //对List操作的函数
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode);
