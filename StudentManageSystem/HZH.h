@@ -1,3 +1,3 @@
-#include "DataBase.h"
+﻿#include "DataBase.h"
 extern int ChartCount;
 extern Chart ** ChartHead;

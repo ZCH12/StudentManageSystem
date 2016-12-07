@@ -1,24 +1,27 @@
+ï»¿#include "HZH.h"
+#include <stdlib.h>
+
 int ChartCount;
 Chart ** ChartHead;
 
-//±í¿ØÖÆº¯Êı
+//è¡¨æ§åˆ¶å‡½æ•°
 ErrVal NewChart(int CreateCount)
 {
 	int a;
-	Chart** OldChartSet;			//Ô­À´µÄ±í¼¯
+	Chart** OldChartSet;			//åŸæ¥çš„è¡¨é›†
 	int NewChartCount=ChartCount+CreateCount;
 	if (CreateCount<=0)
 		return ERR_ILLEGALPARAM;
 
 	if (ChartCount==0)
 	{
-		//·¢ÏÖ±í»¹Ã»³õÊ¼»¯¹ı,½øĞĞ³õÊ¼»¯
+		//å‘ç°è¡¨è¿˜æ²¡åˆå§‹åŒ–è¿‡,è¿›è¡Œåˆå§‹åŒ–
 		ChartHead=(Chart**)malloc(sizeof(Chart*)*CreateCount);
-		//ÅĞ¶Ï´íÎó
+		//åˆ¤æ–­é”™è¯¯
 		for (a=0;a<CreateCount;a++)
 		{
 			ChartHead[a]=(Chart*)calloc(sizeof(Chart),sizeof(Chart));
-			//ÅĞ¶Ï´íÎó
+			//åˆ¤æ–­é”™è¯¯
 		}
 	} else {
 		OldChartSet=ChartHead;
@@ -28,7 +31,7 @@ ErrVal NewChart(int CreateCount)
 		for (a=ChartCount;a<NewChartCount;a++)
 		{
 			ChartHead[a]=(Chart*)calloc(sizeof(Chart),sizeof(Chart));
-			//ÅĞ¶Ï´íÎó
+			//åˆ¤æ–­é”™è¯¯
 		}
 	}
 }

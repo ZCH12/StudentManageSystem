@@ -39,6 +39,7 @@ void Demo()
 	//初始化一个学生列表
 	FillList(&stulist, 5);
 
+	Display_Chart(&c,NULL,NULL,DISPLAY_HIDENUMBER);
 	/*********************************************************/
 	//排序测试
 	//按姓名升序排序
@@ -92,11 +93,16 @@ void Demo()
 
 int main()
 {
-	Demo();
+	//Demo();
+	//int *a=(int*)malloc(sizeof(int)*10);
+	//*a=0;
+	int a[10]={1,2,3};
+	printf("%d",*a);
 
 	_CrtDumpMemoryLeaks();
 	system("pause");
 
 }
+
 
 

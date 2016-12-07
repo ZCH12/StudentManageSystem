@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #define ADDITIONAL 10		//当需要重新分配内存时,一次增加十个行
 
 
@@ -72,6 +72,8 @@ typedef struct
 
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
+ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateChart);
+ErrVal ReadMapFile(char* MapFileName,InfoMap *MapStruct);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 

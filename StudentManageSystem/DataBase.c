@@ -10,7 +10,6 @@
 Create By ZCR
 2016-12-04
 
-
 TODO:存在缺陷
 没有初始化函数
 
@@ -372,6 +371,10 @@ ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateCha
 	return SUCCESS;
 }
 
+ErrVal ReadMapFile(char* MapFileName,InfoMap *MapStruct)
+{
+
+}
 
 /*
 新增1个或多个新的标题
@@ -397,12 +400,11 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
 
-
-	//开始新建表头
-
+	
 	if (LinesCount <= 0 || UnitCount <= 0)
 		return ERR_UNINITIALIZEDCHART;
 
+	//开始新建表头
 	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
 	NewChartLimits = (int*)malloc(sizeof(int)*NewUnitCount);
 	if (!NewChartTitle)
@@ -524,121 +526,6 @@ LineCount		行数
 TitleCount		列数
 TitleList,TitleLimits	标题初始化列表(有TitleCount组) 
 */
-ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...)
-{
-	Chart_t tempChart;
-	int* tempChartLimits;
-	ChartPiece_t tempChartTitle; 
-	int a,b; 
-	va_list ap; 
-	int* temp; 
-	
-	if (!OperateChart)
-		return ERR_ILLEGALPARAM; 
-	if (LinesCount<=0||TitleCount<=0)
-		return ERR_ILLEGALPARAM; 
-	
-	//初始化标题列表
-	tempChartTitle=(ChartPiece_t)malloc(sizeof(char*)*TitleCount);
-	if (!tempChartTitle) 
-		return ERR_MEMORYNOTENOUGH; 
-	tempChartLimits=(int*)malloc(sizeof(int)*TitleCount);
-	if (!tempChartLimits)
-	{
-		free(tempChartTitle);
-		return ERR_MEMORYNOTENOUGH; 
-	} 
-	*tempChartTitle=(char*)malloc(sizeof(char)*32);
-	if (!*tempChartTitle)
-	{
-		free(tempChartLimits);
-		free(tempChartTitle);
-		return ERR_MEMORYNOTENOUGH; 
-	}
-	strcpy(*tempChartTitle,TitleList);		//写入第一个标题 
-	*tempChartLimits=TitleLimits;			//写入第一个标题的内容长度限制
-	 
-	//对第2-TitleCount个数进行处理
-	va_start(ap, TitleLimits);
-	
-	for (a=1;a<TitleCount;a++)
-	{
-		tempChartTitle[a]=(char*)malloc(sizeof(char)*32);
-		if (!tempChartTitle[a])
-		{
-			for (a--;a>=0;a--)
-				free(tempChartTitle[a]);		//释放已经分配的内存 
-			free(tempChartLimits);
-			free(tempChartTitle);
-			return ERR_MEMORYNOTENOUGH; 
-		}
-		strcpy(tempChartTitle[a],va_arg(ap,char*));
-		tempChartLimits[a]= va_arg(ap,int); 
-	} 
-	
-	//初始化表 
-	tempChart=(Chart_t)malloc(sizeof(ChartPiece_t)*LinesCount);
-	if (!tempChart) 
-	{
-		for (a=0;a<TitleCount;a++)
-			free(tempChartTitle[a]); 
-		free(tempChartTitle);
-		free(tempChartLimits);
-		return ERR_MEMORYNOTENOUGH; 
-	}
-	for (a=0;a<LinesCount;a++)
-	{
-		tempChart[a]=(ChartPiece_t)malloc(sizeof(char*)*TitleCount);
-		if (!tempChart[a])
-		{
-			for (a--;a>=0;a--){ 
-				for (b=0;b<TitleCount;b++)
-					free(tempChart[a][b]); 
-				free(tempChart[a]); 
-			} 
-			free(tempChart); 
-			for (a=0;a<TitleCount;a++)
-				free(tempChartTitle[a]); 
-			free(tempChartTitle);
-			free(tempChartLimits);
-			return ERR_MEMORYNOTENOUGH; 
-		}
-		temp=tempChartLimits; 
-		for (b=0;b<TitleCount;b++)
-		{
-			tempChart[a][b]=(char*)calloc(sizeof(char)*(*temp),sizeof(char)*(*temp));
-			if (!tempChart[a][b]) 
-			{
-				for (b--;b>=0;b--)
-					free(tempChart[a][b]); 
-				for (a--;a>=0;a--){ 
-					for(b=0;b<TitleCount;b++)
-						free(tempChart[a][b]);
-					free(tempChart[a]); 
-				} 
-				free(tempChart); 
-				for (a=0;a<TitleCount;a++)
-					free(tempChartTitle[a]); 
-				free(tempChartTitle);
-				free(tempChartLimits);
-				return ERR_MEMORYNOTENOUGH; 
-			} 
-			temp++;
-		} 
-	} 
-	//初始化表的其他信息
-	
-	OperateChart->Chart=tempChart;
-	OperateChart->ChartLimits=tempChartLimits;
-	OperateChart->ChartTitle=tempChartTitle;
-	OperateChart->TitleCount=TitleCount;
-	OperateChart->AllocatedLines=LinesCount;
-	OperateChart->UsedLines= LinesCount;
-	OperateChart->HadInit=1; 
-
-	return SUCCESS; 
-}
-
 ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...)
 {
 	Chart_t tempChart;
@@ -1455,77 +1342,5 @@ void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
 	}
 }
 
-/*
-当学生表不再需要时,调用它可以释放内存,但是释放内存之后不能再对表进行操作,除非重新读取表信息
-*/
-void DestroyStudentList()
-{
-	int a, b;
-	for (a = 0; a < StudentCount; a++)
-	{
-		for (b = 0; b < UnitCount; b++)
-		{
-			free(StudentList[a][b]);
-		}
-		free(StudentList[a]);
-	}
-	free(StudentList);
-	StudentList = NULL;
-}
-
-/*
-查找符合条件的学生
-返回值为找到的学生数
-Sourcelist 当前正在处理的学生的下标集合
-n list中元素的个数
-Resultlist 处理之后返回的学生的下标集合(允许与Sourcelist一样)
-destin 寻找的目标字符串
-*/
-int Search(int *Sourcelist, int n, int *Resultlist, int SearchUnit, const char *destin)
-{
-	int a;
-	int list_p = 0;
-	for (a = 0; a < n; a++) {
-		if (!strcmp(StudentList[Sourcelist[a]][SearchUnit], destin)) {
-			Resultlist[list_p++] = Sourcelist[a];
-		}
-	}
-	return list_p;
-}
-
-/*
-取得整张表的原理就是把所有索引都传递出去
-list用于返回学生名单
-n返回学生数
-*/
-void GetList(int *list, int *n)
-{
-	int a;
-	*n = StudentCount;
-	for (a = 0; a < StudentCount; a++) {
-		list[a] = a;
-	}
-	return;
-}
-
-/*
-该函数取得指定学生的指定信息的指针
-可以用于显示它的值或修改它的值
-list 名单
-list_ID 学生在名单中的位置(从0开始计)
-GetUnit 表头的
-*/
-char* GetString(int *list, int list_ID, int GetUnit)
-{
-	return StudentList[list[list_ID]][GetUnit];
-}
-
-/*
-返回第Unit个单元的名称
-*/
-char* GetUnitTittle(int Unit)
-{
-	return UnitHead[Unit];
-}
 
 #endif
