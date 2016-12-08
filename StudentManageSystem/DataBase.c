@@ -482,11 +482,11 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	b = strlen(DataFileName);
 	Line = malloc(sizeof(char)*(a+b+4));
 	if (Line) {
-		for (c = a - 1; c >= 0; c++)
+		for (c = a - 1; c >= 0; c--)
 			if (ParamFileName[c] == '/' || ParamFileName[c] == '\\')
 				break;
 		a = c+1;
-		for (c = b - 1; c >= 0; c++)
+		for (c = b - 1; c >= 0; c--)
 			if (DataFileName[c] == '/' || DataFileName[c] == '\\')
 				break;
 		b = c+1;
@@ -496,7 +496,9 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 		strcpy(Line + c+4, DataFileName + b);
 
 		Piece = (char*)malloc(sizeof(char)*(strlen(Line) + 1));
-		strcpy(Piece, Line);
+		if (Piece) {
+			strcpy(Piece, Line);
+		}
 		free(Line);
 		OperateChart->ChartName = Piece;
 	}
@@ -555,7 +557,7 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 			free(MapStruct->String);
 			return ERR_MEMORYNOTENOUGH;
 		}
-		if (fscanf(File, "%s%c%s", MapStruct->Val[a], &temp, MapStruct->String[a], &temp) != 3)
+		if (fscanf(File, "%s%c%s", MapStruct->Val[a], &temp, MapStruct->String[a]) != 3)
 			break;
 		else
 			Count++;
@@ -887,6 +889,7 @@ ErrVal FreeChart(Chart *OperateChart)
 		}
 		free(OperateChart->Chart[a]);
 	}
+	free(OperateChart->ChartName);
 	free(OperateChart->Chart);
 	free(OperateChart->ChartLimits);
 	OperateChart->HadInit = 0;
