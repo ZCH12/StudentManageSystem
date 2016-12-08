@@ -26,8 +26,8 @@
 
 /* Begin PBXFileReference section */
 		D71C8CAC1DF1E580007BD820 /* StudentManageSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StudentManageSystem; sourceTree = BUILT_PRODUCTS_DIR; };
-		D71C8CAF1DF1E580007BD820 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		D76AA60A1DF9350100A294FF /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		D71C8CAF1DF1E580007BD820 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D76AA60A1DF9350100A294FF /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		D77A5C141DF47B040036449B /* DataBase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataBase.c; sourceTree = "<group>"; };
 		D77A5C151DF47B040036449B /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DataBase.h; sourceTree = "<group>"; };
 		D78B54401DF7F8A400F40455 /* HZHfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = HZHfunc.h; sourceTree = "<group>"; };
