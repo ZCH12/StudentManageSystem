@@ -100,6 +100,8 @@ void Demo()
 
 void test1()
 {
+	InfoMap im = { 0 }, im2 = {0};
+
 	//初始化表
 	NewChart(5);
 	/*
@@ -122,6 +124,16 @@ void test1()
 	strcpy(ChartHead[0]->Chart[4][2], "5");
 	*/
 	ReadFromTwoFile("ZCHtestFile\\stu_param.txt", "ZCHtestFile\\Stu_info.txt", ChartHead[0]);
+
+	//翻译学院代码为学院名称
+	ReadMapFile("ZCHtestFile\\C_info.txt", &im);
+	Translate(ChartHead[0],SHI(ChartHead[0],"学院名称"),&im);
+
+	//翻译性别
+	ReadMapFile("ZCHtestFile\\S_info.txt", &im2);
+	Translate(ChartHead[0], SHI(ChartHead[0], "性别"), &im2);
+
+
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 
 }

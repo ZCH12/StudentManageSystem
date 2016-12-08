@@ -34,6 +34,7 @@ TODO:存在缺陷
 从文件读取数据到指定表
 File 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
+//待重写
 */
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
 {
@@ -387,7 +388,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 		fgets(Line, LineCharCount, File);
 
 		//写入第一个值
-		tempChart[a][0] = (char*)malloc(sizeof(char)*tempChartTitleLimits[0]+1);
+		tempChart[a][0] = (char*)malloc(sizeof(char)*tempChartTitleLimits[0] + 1);
 		if (!tempChart[a][0])
 		{
 			for (a--; a >= 0; a--)
@@ -428,7 +429,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 		//读取第二到第TitleCount个值
 		for (b = 1; b < TitleCount; b++)
 		{
-			tempChart[a][b] = (char*)malloc(sizeof(char)*tempChartTitleLimits[b]+1);
+			tempChart[a][b] = (char*)malloc(sizeof(char)*tempChartTitleLimits[b] + 1);
 			Piece = strtok(NULL, Delimer);
 			//printf("'%s'\n", Piece);
 			if (!tempChart[a][b] || !Piece)
@@ -439,7 +440,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 							free(tempChart[a][b]);
 					}
 					else {
-						for (; b >= 0; b--){
+						for (; b >= 0; b--) {
 							free(tempChart[a][b]);
 						}
 					}
@@ -463,7 +464,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 				else
 					return ERR_MEMORYNOTENOUGH;
 			}
-			
+
 			strcpy(tempChart[a][b], Piece);
 		}
 	}
@@ -474,6 +475,65 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	OperateChart->UsedLines = LineCount;
 	OperateChart->TitleCount = TitleCount;
 	OperateChart->HadInit = 1;
+	return SUCCESS;
+}
+
+/*
+读取映射文件
+MapFileName 读取的映射文件的名称
+MapStruct 映射信息存储的结构体
+映射文件的格式为,直到文件结尾
+Val		String
+Val		String
+...
+*/
+ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
+{
+	FILE *File;
+	char temp;
+	int a;
+	int Count = 0;
+	File = fopen(MapFileName, "r");
+	if (!File)
+		return ERR_OPENFILE;
+	MapStruct->Val = (char**)malloc(sizeof(char*) * 100);
+	MapStruct->String = (char**)malloc(sizeof(char*) * 100);
+	if (!(MapStruct->Val&&MapStruct->String))
+	{
+		if (MapStruct->Val)
+			free(MapStruct->Val);
+		if (MapStruct->String)
+			free(MapStruct->String);
+		fclose(File);
+		return ERR_MEMORYNOTENOUGH;
+	}
+
+	for (a = 0; a < 100; a++)
+	{
+		MapStruct->Val[a] = (char*)malloc(sizeof(char) * 4);
+
+		MapStruct->String[a] = (char*)malloc(sizeof(char) * 20);
+		if (!(MapStruct->Val[a] && MapStruct->String[a]))
+		{
+			fclose(File);
+			if (MapStruct->Val[a])
+				free(MapStruct->Val[a]);
+			for (a--; a >= 0; a--)
+			{
+				free(MapStruct->Val[a]);
+				free(MapStruct->String[a]);
+			}
+			free(MapStruct->Val);
+			free(MapStruct->String);
+			return ERR_MEMORYNOTENOUGH;
+		}
+		if (fscanf(File, "%s%c%s", MapStruct->Val[a], &temp, MapStruct->String[a], &temp) != 3)
+			break;
+		else
+			Count++;
+	}
+	MapStruct->Count = Count;
+	fclose(File);
 	return SUCCESS;
 }
 
