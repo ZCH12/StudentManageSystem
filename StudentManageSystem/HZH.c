@@ -1,38 +1,92 @@
-#include "HZH.h"
+ï»¿#include "HZH.h"
+#include <stdlib.h>
+
 int ChartCount;
+int AlloctedChartCount;
 Chart ** ChartHead;
 
-//±í¿ØÖÆº¯Êı
+//è¡¨æ§åˆ¶å‡½æ•°
 ErrVal NewChart(int CreateCount)
 {
 	int a;
-	Chart** OldChartSet;			//Ô­À´µÄ±í¼¯
-	int NewChartCount=ChartCount+CreateCount;
-	if (CreateCount<=0)
+	Chart** NewChartSet; //åŸæ¥çš„è¡¨é›†
+	int NewChartCount = ChartCount + CreateCount;
+	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
 
-	if (ChartCount==0)
+	if (NewChartCount <= ChartCount)
+		return ERR_ILLEGALPARAM;
+
+	if (AlloctedChartCount <= 0)
 	{
-		//·¢ÏÖ±í»¹Ã»³õÊ¼»¯¹ı,½øĞĞ³õÊ¼»¯
-		ChartHead=(Chart**)malloc(sizeof(Chart*)*CreateCount);
-		//ÅĞ¶Ï´íÎó
-		for (a=0;a<CreateCount;a++)
+		//å…¨æ–°åˆå§‹åŒ–è¡¨
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*CreateCount);
+		if (!NewChartSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < CreateCount; a++)
 		{
-			ChartHead[a]=(Chart*)calloc(sizeof(Chart),sizeof(Chart));
-			//ÅĞ¶Ï´íÎó
-		}
-	} else {
-		OldChartSet=ChartHead;
-		ChartHead=(Chart**)malloc(sizeof(Chart*)*NewChartCount);
-		for (a=0;a<ChartCount;a++)
-			ChartHead[a]=OldChartSet[a];
-		for (a=ChartCount;a<NewChartCount;a++)
-		{
-			ChartHead[a]=(Chart*)calloc(sizeof(Chart),sizeof(Chart));
-			//ÅĞ¶Ï´íÎó
+			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			if (!NewChartSet[a])
+			{
+				for (a--; a >= 0; a--)
+					free(NewChartSet[a]);
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;
+			}
 		}
 	}
-    return SUCCESS;
+	else if (NewChartCount <= AlloctedChartCount)
+	{
+		//å·²åˆ†é…ç©ºé—´æ–°å»ºè¡¨
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+		if (!NewChartSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < ChartCount; a++)
+		{
+			NewChartSet[a] = ChartHead[a];
+		}
+		for (a = ChartCount; a < NewChartCount; a++)
+		{
+			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			if (!NewChartSet[a])
+			{
+				if (a != ChartCount)
+					for (a--; a >= ChartCount; a--)
+						free(NewChartSet[a]);
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;;
+			}
+		}
+	}
+	else {
+		//å¢é‡åˆå§‹åŒ–
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+		if (!NewChartSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < ChartCount; a++)
+		{
+			NewChartSet[a] = ChartHead[a];
+		}
+		for (; a < NewChartCount; a++)
+		{
+			NewChartSet[a] = (Chart*)malloc(sizeof(Chart));
+			if (!NewChartSet[a])
+			{
+				if (a != ChartCount)
+					for (a--; a >= ChartCount; a--)
+					{
+						free(NewChartSet[a]);
+					}
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;
+			}
+		}
+	}
+	free(ChartHead);
+	ChartHead = NewChartSet;
+	AlloctedChartCount = NewChartCount;
+	ChartCount = NewChartCount;
+	return SUCCESS;
 }
 
 

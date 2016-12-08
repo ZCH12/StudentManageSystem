@@ -1,6 +1,13 @@
-#pragma once
+﻿#pragma once
 #define ADDITIONAL 10		//当需要重新分配内存时,一次增加十个行
 
+/*
+我们小组的头文件和数据结构在此头文件中,一些函数还未做出,无法先做出声明
+张驰荣和黄智豪一组
+张驰荣负责核心代码的编写,黄智豪负责交互函数的编写
+目前头文件中的函数的数量还在不断增加
+恕无法给出完整的函数列表
+*/
 
 //错误代码
 #define SUCCESS					0		//操作成功
@@ -72,6 +79,8 @@ typedef struct
 
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
+ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateChart);
+ErrVal ReadMapFile(char* MapFileName,InfoMap *MapStruct);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
