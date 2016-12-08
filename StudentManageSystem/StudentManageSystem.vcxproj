@@ -162,11 +162,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataBase.c" />
+    <ClCompile Include="HZHfunc.c" />
     <ClCompile Include="ZCHtest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBase.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="HZHfunc.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ZCHtestFile\C_info.txt" />
