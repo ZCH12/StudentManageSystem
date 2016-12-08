@@ -10,18 +10,5 @@
 #define main_h
 
 
-void ReadFromFile_M();
-
-
-
-
-int i;
-int ChartCount;
-int AlloctedChartCount;
-Chart ** ChartHead;
-
-
-
-
 
 #endif /* main_h */
