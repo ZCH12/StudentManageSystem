@@ -523,6 +523,8 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 	char temp;
 	int a;
 	int Count = 0;
+	if (!MapStruct)
+		return ERR_ILLEGALPARAM;
 	File = fopen(MapFileName, "r");
 	if (!File)
 		return ERR_OPENFILE;
