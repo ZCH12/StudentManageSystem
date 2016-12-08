@@ -4,3 +4,4 @@ extern Chart ** ChartHead;
 
 
 ErrVal NewChart(int CreateCount);
+
