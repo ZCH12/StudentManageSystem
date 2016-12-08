@@ -40,11 +40,12 @@ typedef struct
 {
 	//表
 	Chart_t Chart;				//整个表的入口首地址
+	char *ChartName;			//这个表的名字
 
 	//标题
 	int TitleCount;				//存储标题的个数
 	ChartPiece_t ChartTitle;	//存储每个标题的字符串(每个标题不得超过31个字母)
-	int* ChartLimits;			//存储每一个标题下的单元格里的字符串的最大长度
+	int *ChartLimits;			//存储每一个标题下的单元格里的字符串的最大长度
 
 	//行
 	int AllocatedLines;			//表已分配的大小(此值大于等于UsedLines)(已分配但未使用的行未申请内存)
@@ -66,10 +67,14 @@ typedef struct
 	int IsOnStack;		//改值为1时表示list是动态分配的
 } List, IndexList, TitleList;
 
+/*
+映射方案存储结构
+用于存放从文件中读取的映射方案,用于代码到目标字符串的转换时
+*/
 typedef struct
 {
-	char** Val;
-	char** String;
+	char **Val;
+	char **String;
 	int Count;
 } InfoMap;
 
@@ -80,7 +85,6 @@ ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateCha
 ErrVal ReadMapFile(char* MapFileName,InfoMap *MapStruct);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
-
 
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
