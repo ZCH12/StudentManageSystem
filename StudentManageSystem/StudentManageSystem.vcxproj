@@ -169,13 +169,10 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data.ini" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="C_info.txt" />
-    <Text Include="Stu_info.txt" />
-    <Text Include="stu_param.txt" />
-    <Text Include="S_info.txt" />
+    <Text Include="ZCHtestFile\C_info.txt" />
+    <Text Include="ZCHtestFile\Stu_info.txt" />
+    <Text Include="ZCHtestFile\stu_param.txt" />
+    <Text Include="ZCHtestFile\S_info.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
