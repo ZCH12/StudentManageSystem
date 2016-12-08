@@ -26,8 +26,6 @@
 #define DISPLAY_HIDENUMBER	0	//隐藏编号
 #define DISPLAY_SHOWNUMBER	1	//显示编号
 
-
-
 //函数短名
 #define WTIA WirteToIntArray
 #define SHI SearchHeadIndex
@@ -60,7 +58,6 @@ IndexList是一个索引结构体,它里面的list是一个int数组,数组的�
 Title也是一个索引结构体,它里面的list是一个int数组,数组的每一个元素是标题在Chart表中的下标,在调用display时,此索引也同样可以影响display显示的标题和顺序
 警告:在使用时一定要与相应的表匹配,否则结果不正确.
 */
-//#####要确保listCount<UsedLines
 typedef struct
 {
 	int *list;			//数组,里面的值存储的是指定表中的实际行(或列)的数组下标
@@ -85,7 +82,6 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
 
-
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...); 
@@ -107,10 +103,8 @@ int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName);
 
 
 /*
-以下函数未实现
-*/
-
-/*
+TODO:
 需要对表中的空元素存储时使用#代替空字符串
 检查NewUnit的内存泄漏问题 
+输入函数存在内存泄漏的风险,以及容易出现无法读取文件的bug
 */

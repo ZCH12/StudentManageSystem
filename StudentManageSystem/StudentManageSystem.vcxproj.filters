@@ -21,15 +21,12 @@
     <ClCompile Include="ZCHtest.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="HZH.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="HZH.h">
+    <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

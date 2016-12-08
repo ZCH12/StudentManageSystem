@@ -162,12 +162,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataBase.c" />
-    <ClCompile Include="HZH.c" />
     <ClCompile Include="ZCHtest.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBase.h" />
-    <ClInclude Include="HZH.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data.ini" />

@@ -7,7 +7,6 @@
 #include <stdlib.h>  
 #include <crtdbg.h>    
 
-#include "HZH.h"
 
 //测试创建表
 void Demo()
@@ -42,7 +41,7 @@ void Demo()
 	//初始化一个学生列表
 	FillList(&stulist, 5);
 
-	Display_Chart(&c,NULL,NULL,DISPLAY_HIDENUMBER);
+	Display_Chart(&c, NULL, NULL, DISPLAY_HIDENUMBER);
 	/*********************************************************/
 	//排序测试
 	//按姓名升序排序
@@ -117,9 +116,9 @@ void test1()
 	strcpy(ChartHead[0]->Chart[3][2], "4");
 	strcpy(ChartHead[0]->Chart[4][2], "5");
 	*/
-	ReadFromTwoFile("stu_param.txt", "Stu_info.txt", ChartHead[0]);
+	printf("%d", ReadFromTwoFile("stu_param.txt", "Stu_info.txt", ChartHead[0]));
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
-
+	system("pause");
 }
 
 int main()
