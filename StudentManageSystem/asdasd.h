@@ -1,13 +1,3 @@
-//
-//  hzh.h
-//  StudentManageSystem
-//
-//  Created by wongziihou on 7/12/16.
-//  Copyright © 2016 Wongziihou. All rights reserved.
-//
-
-#ifndef hzh_h
-#define hzh_h
 #define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}
 
 
@@ -20,11 +10,8 @@ Chart **charthead;
 
 
 
-
-//
-//
-//void Display_Chart_M();
 void SortList_M();
+//void Display_Chart_M();
 //void SearchStudentByUnit_M();
 //void AddNewInformationUnit_M();
 //void DeleteInformationUnit_M();
@@ -33,13 +20,7 @@ void SortList_M();
 //void DeleteAStudentFromList_M();
 //void ReadFromFile_M();
 //void WriteToFile_M();
-//
-//
 
-//ErrVal CreatNewChart();
-//
-//
-//
 //void Display_Chart_M() {
 //    
 //    Display_Chart(&form, NULL, NULL, 0);
@@ -193,19 +174,19 @@ void SortList_M() {
 //    
 //    return;
 //}
-void ReadFromFile_M() {
-
-    int val= 0;
-    char filename[16];
-    printf("请输入所需读取的文件名字,如(data.ini)\n");
-    scanf("%s", filename);
-    
-    val = ReadFromFile(&filename, form1);       //读取data.ini
-    if (!val) {
-        printf("读取错误\n");
-    }
-    return;
-}
+//void ReadFromFile_M() {
+//
+//    int val= 0;
+//    char filename[16];
+//    printf("请输入所需读取的文件名字,如(data.ini)\n");
+//    scanf("%s", filename);
+//    
+//    val = ReadFromFile(&filename, form1);       //读取data.ini
+//    if (!val) {
+//        printf("读取错误\n");
+//    }
+//    return;
+//}
 //void WriteToFile_M() {
 //    
 //    char filename;
@@ -272,4 +253,4 @@ void ReadFromFile_M() {
 //    return SUCCESS;
 //}
 
-#endif /* hzh_h */
+

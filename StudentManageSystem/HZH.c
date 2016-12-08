@@ -1,3 +1,4 @@
+#include "HZH.h"
 int ChartCount;
 Chart ** ChartHead;
 
@@ -31,6 +32,7 @@ ErrVal NewChart(int CreateCount)
 			//ÅĞ¶Ï´íÎó
 		}
 	}
+    return SUCCESS;
 }
 
 

@@ -1,22 +1,6 @@
-
-//
-//
-//  main.h
-//  C
-//
-//  Created by wongziihou on 2/12/16.
-//  Copyright © 2016 wongziihou. All rights reserved.
-//
 #include "DataBase.h"
 #include "stdio.h"
 #include "hzh.h"
-
-
-//int list[1500];				//名单,里面保存的是学生的下标
-//int list2[1500];
-//int list3[1500];
-//
-
 
 
 
@@ -30,31 +14,35 @@
 //7. 修改系统密码*
 //0. 返回上一级菜单
 //*****************************
-int main() {
-    int mode = 0;
-    
-    printf("1. 原始文件读取\n"
-           "2. 按姓名排序，输出\n"
-           "3. 按平均成绩排序，输出\n"
-           "4. 输出给定学院学生\n"
-           "5. 修改给定学生成绩信息(修改后的信息，需输出到文件)\n"
-           "6. 按姓名查询学生，输出\n"
-           "7. 修改系统密码\n"
-           "0. 返回上一级菜单\n");
-    scanf("%d", &mode);
-    switch (mode) {
-        case 1:
-            ReadFromFile_M();
-            break;
-            
-        case 2:
-            SortList_M();
-            break;
-            
-        
-    }
-    return SUCCESS;
-}
+
+//int main() {
+//    
+//    
+//    
+//    int mode = 0;
+//    
+//    printf("1. 原始文件读取\n"
+//           "2. 按姓名排序，输出\n"
+//           "3. 按平均成绩排序，输出\n"
+//           "4. 输出给定学院学生\n"
+//           "5. 修改给定学生成绩信息(修改后的信息，需输出到文件)\n"
+//           "6. 按姓名查询学生，输出\n"
+//           "7. 修改系统密码\n"
+//           "0. 返回上一级菜单\n");
+//    scanf("%d", &mode);
+//    switch (mode) {
+//        case 1:
+//            ReadFromFile_M();
+//            break;
+//            
+//        case 2:
+//            SortList_M();
+//            break;
+//            
+//        
+//    }
+//    return SUCCESS;
+//}
 
 //
 //int main() {
@@ -72,7 +60,6 @@ int main() {
 //           " 7.删除指定学生\n"
 //           " 8.读取学生信息\n"
 //           " 9.保存学生信息\n"
-//           
 //           "-1.退出"
 //           );
 //    while(scanf("%d",&mode),mode==-1){                                          //当输入mode
@@ -124,5 +111,3 @@ int main() {
 //}
 //
 
-
-//#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<dline||obj>uline){printf("输入错误,请重新输入\n");continue;}}

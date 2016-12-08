@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		D71C8CB01DF1E580007BD820 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D71C8CAF1DF1E580007BD820 /* main.c */; };
 		D77A5C161DF47B040036449B /* DataBase.c in Sources */ = {isa = PBXBuildFile; fileRef = D77A5C141DF47B040036449B /* DataBase.c */; };
+		D78B54421DF7F8BA00F40455 /* HZH.c in Sources */ = {isa = PBXBuildFile; fileRef = D78B54411DF7F8BA00F40455 /* HZH.c */; };
+		D78B54451DF7FC5600F40455 /* hzhtest.c in Sources */ = {isa = PBXBuildFile; fileRef = D78B54441DF7FC5600F40455 /* hzhtest.c */; };
+		D78B54471DF809B700F40455 /* ZCHtest.c in Sources */ = {isa = PBXBuildFile; fileRef = D78B54461DF809B700F40455 /* ZCHtest.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,7 +30,11 @@
 		D71C8CAC1DF1E580007BD820 /* StudentManageSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StudentManageSystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		D71C8CAF1DF1E580007BD820 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D77A5C141DF47B040036449B /* DataBase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataBase.c; sourceTree = "<group>"; };
-		D77A5C151DF47B040036449B /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBase.h; sourceTree = "<group>"; };
+		D77A5C151DF47B040036449B /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DataBase.h; sourceTree = "<group>"; };
+		D78B54401DF7F8A400F40455 /* HZH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = HZH.h; sourceTree = "<group>"; };
+		D78B54411DF7F8BA00F40455 /* HZH.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = HZH.c; sourceTree = "<group>"; };
+		D78B54441DF7FC5600F40455 /* hzhtest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = hzhtest.c; sourceTree = "<group>"; };
+		D78B54461DF809B700F40455 /* ZCHtest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ZCHtest.c; sourceTree = "<group>"; };
 		D7D4EAEA1DF72311004063BC /* asdasd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = asdasd.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,10 +68,14 @@
 		D71C8CAE1DF1E580007BD820 /* StudentManageSystem */ = {
 			isa = PBXGroup;
 			children = (
+				D78B54461DF809B700F40455 /* ZCHtest.c */,
+				D78B54411DF7F8BA00F40455 /* HZH.c */,
+				D78B54401DF7F8A400F40455 /* HZH.h */,
 				D77A5C141DF47B040036449B /* DataBase.c */,
 				D77A5C151DF47B040036449B /* DataBase.h */,
 				D71C8CAF1DF1E580007BD820 /* main.c */,
 				D7D4EAEA1DF72311004063BC /* asdasd.h */,
+				D78B54441DF7FC5600F40455 /* hzhtest.c */,
 			);
 			path = StudentManageSystem;
 			sourceTree = "<group>";
@@ -126,6 +137,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D78B54451DF7FC5600F40455 /* hzhtest.c in Sources */,
+				D78B54471DF809B700F40455 /* ZCHtest.c in Sources */,
+				D78B54421DF7F8BA00F40455 /* HZH.c in Sources */,
 				D77A5C161DF47B040036449B /* DataBase.c in Sources */,
 				D71C8CB01DF1E580007BD820 /* main.c in Sources */,
 			);
