@@ -5,7 +5,7 @@
 
 #define CRTDBG_MAP_ALLOC    
 #include <stdlib.h>  
-#include <crtdbg.h>    
+//#include <crtdbg.h>
 
 
 //测试创建表
@@ -38,7 +38,22 @@ void Demo()
 	strcpy(c.Chart[3][2], "4");
 	strcpy(c.Chart[4][2], "5");
 
+<<<<<<< HEAD
+	//��ʼ��һ��ѧ���б�
+    
+    
+    FillList(&titlelist, 3);
+    titlelist.list[0]=1;
+    titlelist.list[1]=0;
+    titlelist.list[2]=2;
+    Display_Chart(c, <#IndexList *ShowLines#>, &titlelist, <#int Mode#>);
+    InitList(<#List *OperateList#>, <#int Count#>, <#int ListData, ...#>)
+    
+    
+    
+=======
 	//初始化一个学生列表
+>>>>>>> 3ed60c2fe34e919c6fbd10438b9e183d1f3e2ed4
 	FillList(&stulist, 5);
 
 	Display_Chart(&c, NULL, NULL, DISPLAY_HIDENUMBER);
