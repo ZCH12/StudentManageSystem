@@ -213,7 +213,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	//读取操作使用的变量
 	char* Line;		//存储一行的信息
 	char* Piece;	//存储一个信息点
-	int a, b;
+	int a, b,c;
 
 	//表信息
 	int LineCount;
@@ -232,6 +232,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	if (OperateChart->HadInit)
 	{
 		//已经初始化的表先释放
+		FreeChart(OperateChart);
 	}
 
 	//开始读取表参数文件
@@ -475,6 +476,33 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	OperateChart->UsedLines = LineCount;
 	OperateChart->TitleCount = TitleCount;
 	OperateChart->HadInit = 1;
+
+	//获取读取的文件的名字
+	a = strlen(ParamFileName);
+	b = strlen(DataFileName);
+	Line = malloc(sizeof(char)*(a+b+4));
+	if (Line) {
+		for (c = a - 1; c >= 0; c++)
+			if (ParamFileName[c] == '/' || ParamFileName[c] == '\\')
+				break;
+		a = c+1;
+		for (c = b - 1; c >= 0; c++)
+			if (DataFileName[c] == '/' || DataFileName[c] == '\\')
+				break;
+		b = c+1;
+		c = strlen(ParamFileName + a);
+		strcpy(Line, ParamFileName + a);
+		strcpy(Line + c, " && ");
+		strcpy(Line + c+4, DataFileName + b);
+
+		Piece = (char*)malloc(sizeof(char)*(strlen(Line) + 1));
+		strcpy(Piece, Line);
+		free(Line);
+		OperateChart->ChartName = Piece;
+	}
+	else
+		OperateChart->ChartName = NULL;
+	
 	return SUCCESS;
 }
 

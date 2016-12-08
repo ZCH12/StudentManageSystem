@@ -135,6 +135,7 @@ void test1()
 
 
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
+	printf("%s\n", ChartHead[0]->ChartName);
 
 }
 
