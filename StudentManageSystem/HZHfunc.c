@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "DataBase.h"
-
+#include "HZHfunc.h"
 
 
 
@@ -134,6 +134,31 @@ void ReadFromFile_M() {
 }
 
 
+void ReadFormTwoFile_M() {
+    
+    int i, Val;
+    int Filecount, FileNum;
+    char ParamFileName[32], DataFileName[32];
+    
+    printf("请输入读入文件的数量,若输入0则退出");
+    scanf("%d", &Filecount);
+    for (i = 0; i<Filecount; i++) {
+        
+        printf("请输入存储各单元名字的文件\n");
+        scanf("%s", ParamFileName);
+        printf("请输入存储各单元资料的文件\n");
+        scanf("%s", DataFileName);
+        printf("请输入保存的表的编号\n");
+        scanf("%d", &FileNum);
+        
+        Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[FileNum]);
+        if (Val != 0) {
+            printf("错误代码:%d,读入失败", Val);
+        }
+        printf("读入成功\n");
+    }
+}
+
 void SortList_M() {
     int Mode = 0, SortMode = 1, ChartId;
     int i;
@@ -150,6 +175,8 @@ void SortList_M() {
             continue;
         }
         printf("请输入所需排序的表格\n");
+        
+        
         scanf("%d", &ChartId);
         printf("排序方法:\n"
                "1.升序\n"
@@ -165,11 +192,11 @@ void SortList_M() {
             case 1:
                 Sort(ChartHead[ChartId], NULL, SHI(ChartHead[ChartId], ChartHead[ChartId]->ChartTitle[k]), SortMode-1);
                 break;
-//Sort(<#Chart *OperateChart#>, <#IndexList *OperateList#>, <#int BaseTitleIndex#>, <#int Mode#>)
+
 //            case 2:
-//                Sort(ChartHead[ChartId], NULL, NULL, SortMode);
+////                Sort(ChartHead[ChartId], <#IndexList *OperateList#>, <#int BaseTitleIndex#>, <#int Mode#>);
 //                break;
-//                
+//
 //            case 3:
 //                <#statements#>
 //                break;

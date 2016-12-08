@@ -22,8 +22,9 @@ int main() {
     
     
     while(printf("*****************************\n"
-                 "1. 原始文件读取\n"
-                 "2. 排序功能\n"
+                 "1. 原始文件读取旧\n"
+                 "2. 原始文件读取新\n"
+                 "3. 排序功能\n"
                  //姓名排序，平均成绩排序，按任意条件排序
                  "4. 输出给定学院学生\n"
                  "5. 修改给定学生成绩信息(修改后的信息，需输出到文件)\n"
@@ -35,10 +36,14 @@ int main() {
         , Mode != 0) {
         switch (Mode) {
             case 1:
-                ReadFromFile_M();
+                ReadFromTwoFile_M();
                 break;
                 
             case 2:
+                ReadFromFile_M();
+                break;
+                
+            case 3:
                 SortList_M();
                 break;
                 
