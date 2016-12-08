@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "HZHfunc.h"
-#include "DataBase.h"
+
 
 //******学生成绩系统菜单*******
 //1. 原始文件读取
@@ -36,16 +36,16 @@ int main() {
         , Mode != 0) {
         switch (Mode) {
             case 1:
-                ReadFromTwoFile_M();
+//                ReadFromTwoFile_M();
                 break;
-                
-            case 2:
-                ReadFromFile_M();
-                break;
-                
-            case 3:
-                SortList_M();
-                break;
+//                
+//            case 2:
+//                ReadFromFile_M();
+//                break;
+//                
+//            case 3:
+//                SortList_M();
+//                break;
                 
         }
     }

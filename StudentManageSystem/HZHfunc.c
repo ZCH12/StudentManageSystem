@@ -1,4 +1,5 @@
-﻿#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<=dline||obj>=uline){printf("输入错误,请重新输入\n");continue;}}
+﻿#define _CRT_SECURE_NO_WARNINGS
+#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<=dline||obj>=uline){printf("输入错误,请重新输入\n");continue;}}
 
 
 #include <stdlib.h>
@@ -97,7 +98,37 @@ ErrVal NewChart(int CreateCount)
 	return SUCCESS;
 }
 
+void ReadFromTwoFile_M() {
+
+    
+    int i, Val;
+    int Fileindex, ReadFileNum;
+    char ParamFileName[32], DataFileName[32];
+    
+    NewChart(ReadFileNum);
+    printf("请输入读入文件的数量,若输入0则退出");
+    scanf("%d", &ReadFileNum);
+    
+    for (i = 0; i<ReadFileNum; i++) {
+        
+        printf("请输入存储各单元名字的文件\n");
+        scanf("%s", ParamFileName);
+        printf("请输入存储各单元资料的文件\n");
+        scanf("%s", DataFileName);
+        printf("请输入保存的表的编号（1—%d）\n", ReadFileNum);
+        scanf("%d", &Fileindex);
+        
+        Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[Fileindex-1]);
+        if (Val != 0) {
+            printf("错误代码:%d,读入失败", Val);
+        }
+        printf("读入成功\n");
+    }
+}
+
+
 void ReadFromFile_M() {
+    
     
     int i;
     int Val, ReadFileNum;
@@ -133,31 +164,6 @@ void ReadFromFile_M() {
     
 }
 
-
-void ReadFormTwoFile_M() {
-    
-    int i, Val;
-    int Filecount, FileNum;
-    char ParamFileName[32], DataFileName[32];
-    
-    printf("请输入读入文件的数量,若输入0则退出");
-    scanf("%d", &Filecount);
-    for (i = 0; i<Filecount; i++) {
-        
-        printf("请输入存储各单元名字的文件\n");
-        scanf("%s", ParamFileName);
-        printf("请输入存储各单元资料的文件\n");
-        scanf("%s", DataFileName);
-        printf("请输入保存的表的编号\n");
-        scanf("%d", &FileNum);
-        
-        Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[FileNum]);
-        if (Val != 0) {
-            printf("错误代码:%d,读入失败", Val);
-        }
-        printf("读入成功\n");
-    }
-}
 
 void SortList_M() {
     int Mode = 0, SortMode = 1, ChartId;
