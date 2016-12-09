@@ -1,12 +1,7 @@
 ﻿#pragma once
-#define ADDITIONAL 10		//当需要重新分配内存时,一次增加十个行
-
 /*
-我们小组的头文件和数据结构在此头文件中,一些函数还未做出,无法先做出声明
-张驰荣和黄智豪一组
-张驰荣负责核心代码的编写,黄智豪负责交互函数的编写
-目前头文件中的函数的数量还在不断增加
-恕无法给出完整的函数列表
+Create By ZCR
+2016-12-09
 */
 
 //错误代码
@@ -48,7 +43,7 @@ typedef struct
 	int *ChartLimits;			//存储每一个标题下的单元格里的字符串的最大长度
 
 	//行
-	int AllocatedLines;			//表已分配的大小(此值大于等于UsedLines)(已分配但未使用的行未申请内存)
+	//int AllocatedLines;			//表已分配的大小(此值大于等于UsedLines)(已分配但未使用的行未申请内存)
 	int UsedLines;				//在表中实际被使用的行
 	int HadInit;				//记录这个表是否已经被初始化
 } Chart;
@@ -83,7 +78,6 @@ extern int ChartCount;				//已使用的表的个数
 extern Chart ** ChartHead;			//表的指针数组
 extern int AlloctedChartCount;		//已分配的表的个数
 
-
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateChart);
@@ -96,15 +90,18 @@ ErrVal FreeChartSet();
 
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
+ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList);
 ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...); 
 ErrVal Translate(Chart *OperateChart,int TitleIndex,InfoMap *MapStruct);
 ErrVal FreeChart(Chart *OperateChart);
+
 
 //对List操作的函数
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode);
 ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex, char * DestinString);
 ErrVal InitList(List *OperateList, int Count, int ListData, ...);
 ErrVal FillList(List *OperateList, int Count);
+ErrVal CopyList(List *SourceList, List *DestList);
 ErrVal FreeList(List *OperateList);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 

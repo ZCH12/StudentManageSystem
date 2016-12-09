@@ -1,18 +1,19 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
+#include <vld.h>
 #include "DataBase.h"
-
-
+/*
+//测试内存泄漏用
 #define CRTDBG_MAP_ALLOC
 #define _CRTDBG_MAP_ALLOC 
 #include <stdlib.h>  
 #include <crtdbg.h>
+*/
+//#include "HZHfunc.h"
 
-#include "HZHfunc.h"
-
-//测试创建表
-void Demo()
+//测试动态创建表
+void Demo0()
 {
 	Chart c;
 	int a;
@@ -100,67 +101,52 @@ void Demo()
 	FreeChart(&c);
 }
 
-void test1()
+//测试从双文件中读取数据
+void demo1()
 {
-	
 	InfoMap im = { 0 }, im2 = {0};
-
-	//初始化表
-	/*
-	InitNewChart(ChartHead[0], 5, 3, "姓名", 5, "班级", 5, "座号", 5);
-	//写入数据
-	strcpy(ChartHead[0]->Chart[0][0], "张三");
-	strcpy(ChartHead[0]->Chart[1][0], "李四");
-	strcpy(ChartHead[0]->Chart[2][0], "王五");
-	strcpy(ChartHead[0]->Chart[3][0], "冯八");
-	strcpy(ChartHead[0]->Chart[4][0], "张三");
-	strcpy(ChartHead[0]->Chart[0][1], "303");
-	strcpy(ChartHead[0]->Chart[1][1], "302");
-	strcpy(ChartHead[0]->Chart[2][1], "303");
-	strcpy(ChartHead[0]->Chart[3][1], "301");
-	strcpy(ChartHead[0]->Chart[4][1], "301");
-	strcpy(ChartHead[0]->Chart[0][2], "1");
-	strcpy(ChartHead[0]->Chart[1][2], "2");
-	strcpy(ChartHead[0]->Chart[2][2], "3");
-	strcpy(ChartHead[0]->Chart[3][2], "4");
-	strcpy(ChartHead[0]->Chart[4][2], "5");
-	*/
 	ReadFromTwoFile("ZCHtestFile\\stu_param.txt", "ZCHtestFile\\Stu_info.txt", ChartHead[0]);
 
 	//翻译学院代码为学院名称
 	ReadMapFile("ZCHtestFile\\C_info.txt", &im);
 	Translate(ChartHead[0],SHI(ChartHead[0],"学院名称"),&im);
-	/*
 	//翻译性别
 	ReadMapFile("ZCHtestFile\\S_info.txt", &im2);
 	Translate(ChartHead[0], SHI(ChartHead[0], "性别"), &im2);
-	*/
 
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 	printf("%s\n", ChartHead[0]->ChartName);
 	FreeMapStruct(&im);
 	FreeMapStruct(&im2);
 
-	//free(ChartHead);
 }
+
+//测试CreateNewLine
+void test2()
+{
+	ReadFromTwoFile("ZCHtestFile\\stu_param2.txt", "ZCHtestFile\\Stu_info2.txt", ChartHead[0]);
+	CreateNewLine(ChartHead[0], 5, NULL);
+	CreateNewLine(ChartHead[0], 5, NULL);
+	CreateNewLine(ChartHead[0], 5, NULL);
+	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
+
+}
+
 
 int main()
 {
-	NewChartSet(1);
-	//NewChartSet(1);
-
-
-
 	//_CrtSetBreakAlloc(65);
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF |_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	NewChartSet(5);
+
+	//char *ss = malloc(sizeof(char) * 10);
+	//ss[-1] = 45;
+
+	
 	//Demo();
-	test1();
-	//int *a=(int*)malloc(sizeof(int)*10);
-	//*a=0;
-	//int a[10]={1,2,3};
-	//printf("%d",*a);
+	//test1();
+	test2();
 	FreeChartSet();
-	//_CrtDumpMemoryLeaks();
 	system("pause");
 
 }
