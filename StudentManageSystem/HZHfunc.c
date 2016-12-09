@@ -7,30 +7,67 @@
 #include "DataBase.h"
 #include "HZHfunc.h"
 
-void ReadFromTwoFile_M() {
+void ReadFromTwoFile_M()
+{
+//    请输入读入文件的数量,若输入0则退出
+//    1
+//    请输入存储各单元名字的文件
+//    /Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/stu_param.txt
+//    请输入存储各单元资料的文件
+//    /Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/Stu_info.txt
+//    请输入保存的表的编号（1—1）
+//    1
 
+	int i, Val = 0;
+	int FileIndex = 1, ReadFileNum=1;
+    InfoMap im1 = {0}, im2 = {0};
+    char imps[128]="/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/S_info.txt", impc[128]="/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/C_info.txt";
+    char ParamFileName[128]= "/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/stu_param.txt"
+    , DataFileName[128] = "/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/Stu_info.txt";
 
-	int i, Val;
-	int Fileindex, ReadFileNum=0;
-	char ParamFileName[32], DataFileName[32];
-
-	printf("请输入读入文件的数量,若输入0则退出");
-	scanf("%d", &ReadFileNum);
+//	printf("\n请输入读入文件的数量,若输入0则退出\n");
+//	scanf("%d", &ReadFileNum);
+    
 	NewChartSet(ReadFileNum);
-	for (i = 0; i < ReadFileNum; i++) {
+	for (i = 0; i < ReadFileNum;)
+    {
 
-		printf("请输入存储各单元名字的文件\n");
-		scanf("%s", ParamFileName);
-		printf("请输入存储各单元资料的文件\n");
-		scanf("%s", DataFileName);
-		printf("请输入保存的表的编号（1—%d）\n", ReadFileNum);
-		scanf("%d", &Fileindex);
+//		printf("请输入存储各单元名字的文件\n");
+//		scanf("%s", ParamFileName);
+//		printf("请输入存储各单元资料的文件\n");
+//		scanf("%s", DataFileName);
+//		printf("请输入保存的表的编号（1—%d）\n", ReadFileNum);
+//		scanf("%d", &FileIndex);
 
-		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[Fileindex - 1]);
-		if (Val != 0) {
-			printf("错误代码:%d,读入失败", Val);
-		}
-		printf("读入成功\n");
+		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[FileIndex - 1]);
+		if (Val != 0)
+        {
+			printf("错误代码:%d\n"
+                   "读取文件出现错误\n"
+                   "1.重新输入\n"
+                   "0.退出\n", Val);
+            int Again;
+            scanf("%d", &Again);
+            if (Again == 1)
+            {
+                system("ls");
+                continue;
+            }
+        }
+        else
+        {
+            printf("读入成功\n");
+            Display_Chart(ChartHead[FileIndex-1], NULL, NULL, 0);
+            
+            int fasdi = ReadMapFile(imps, &im1);
+            Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "性别"), &im1);
+            printf("%d", fasdi);
+            ReadMapFile(impc, &im2);
+            int asdjiow = Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "学院名称"), &im2);
+            printf("%d", asdjiow);
+            Display_Chart(ChartHead[FileIndex-1], NULL, NULL, 0);
+            i++;
+        }
 	}
 }
 
@@ -44,16 +81,17 @@ void ReadFromFile_M() {
 
 	printf("请输入所需读取文件的数量,输入0退出\n");
 	while (scanf("%d", &ReadFileNum), ReadFileNum != 0) {
-		NewChartSet(ReadFileNum);
-
+		
+        NewChartSet(ReadFileNum);
 		printf("请输入文件名字(请使用空格将文件隔开，若文件不在此文件夹，请写上绝对地址。"
 			"如~//username/Desktop/xxx.txt)\n");
-
-		for (i = 0; i < ReadFileNum;) {
-			printf("表%d:\n", i + 1);
+		
+        for (i = 0; i < ReadFileNum;) {
+			
+            printf("表%d:\n", i+1);
 			scanf("%s", FileName);
-
-			Val = ReadFromFile(FileName, ChartHead[i]);
+			
+            Val = ReadFromFile(FileName, ChartHead[i]);
 			if (Val != 0) {
 				printf("错误代码:%d,读取文件出现错误。重新输入请按1,输入其他键则退出\n", Val);
 				int Again;

@@ -17,7 +17,7 @@
 
 
 int main() {
-    
+//    text();
     int Mode = 0;
     
     
@@ -39,10 +39,10 @@ int main() {
                 ReadFromTwoFile_M();
                 break;
                 
-            case 2:
-                ReadFromFile_M();
-                break;
-                
+//            case 2:
+//                ReadFromFile_M();
+//                break;
+//                
 //            case 3:
 //                SortList_M();
 //                break;

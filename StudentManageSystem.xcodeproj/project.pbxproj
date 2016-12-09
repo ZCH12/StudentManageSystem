@@ -27,6 +27,11 @@
 /* Begin PBXFileReference section */
 		D71C8CAC1DF1E580007BD820 /* StudentManageSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StudentManageSystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		D71C8CAF1DF1E580007BD820 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D739F7051DFA85790039186C /* C_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = C_info.txt; sourceTree = "<group>"; };
+		D739F7061DFA85790039186C /* data.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.txt; sourceTree = "<group>"; };
+		D739F7081DFA85790039186C /* S_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = S_info.txt; sourceTree = "<group>"; };
+		D739F7091DFA85790039186C /* Stu_info.txt */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = text; path = Stu_info.txt; sourceTree = "<group>"; };
+		D739F70A1DFA85790039186C /* stu_param.txt */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = text; path = stu_param.txt; sourceTree = "<group>"; };
 		D76AA60A1DF9350100A294FF /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		D77A5C141DF47B040036449B /* DataBase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataBase.c; sourceTree = "<group>"; };
 		D77A5C151DF47B040036449B /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DataBase.h; sourceTree = "<group>"; };
@@ -64,6 +69,11 @@
 		D71C8CAE1DF1E580007BD820 /* StudentManageSystem */ = {
 			isa = PBXGroup;
 			children = (
+				D739F7051DFA85790039186C /* C_info.txt */,
+				D739F7061DFA85790039186C /* data.txt */,
+				D739F7081DFA85790039186C /* S_info.txt */,
+				D739F7091DFA85790039186C /* Stu_info.txt */,
+				D739F70A1DFA85790039186C /* stu_param.txt */,
 				D77A5C141DF47B040036449B /* DataBase.c */,
 				D78B54411DF7F8BA00F40455 /* HZHfunc.c */,
 				D71C8CAF1DF1E580007BD820 /* main.c */,
