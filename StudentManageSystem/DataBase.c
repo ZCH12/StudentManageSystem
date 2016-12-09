@@ -1277,9 +1277,7 @@ ErrVal NewChartSet(int CreateCount)
 		if (!NewChartSet)
 			return ERR_MEMORYNOTENOUGH;
 		for (a = 0; a < ChartCount; a++)
-		{
 			NewChartSet[a] = ChartHead[a];
-		}
 		for (; a < NewChartCount; a++)
 		{
 			NewChartSet[a] = (Chart*)malloc(sizeof(Chart));
@@ -1329,7 +1327,7 @@ ErrVal FreeChartSet()
 
 /*
 按照IndexList对行进行排序
-SourceLines 包含在Chart表中lines的下标的数组,允许为NULL,将排序所有的行(按表中顺序)
+OperateList 包含在Chart表中lines的下标的数组,必须是一个合法的IndexList
 Mode 0升序
 Mode 1降序
 */
