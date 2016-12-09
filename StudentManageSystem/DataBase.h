@@ -78,6 +78,11 @@ typedef struct
 	int Count;
 } InfoMap;
 
+//全局变量
+extern int ChartCount;				//已使用的表的个数
+extern Chart ** ChartHead;			//表的指针数组
+extern int AlloctedChartCount;		//已分配的表的个数
+
 
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
@@ -85,6 +90,10 @@ ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateCha
 ErrVal ReadMapFile(char* MapFileName,InfoMap *MapStruct);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
+
+//表指针数组操作函数
+ErrVal NewChart(int CreateCount);
+
 
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
