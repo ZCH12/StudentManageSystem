@@ -36,13 +36,13 @@ int main() {
         , Mode != 0) {
         switch (Mode) {
             case 1:
-//                ReadFromTwoFile_M();
+                ReadFromTwoFile_M();
                 break;
-//                
-//            case 2:
-//                ReadFromFile_M();
-//                break;
-//                
+                
+            case 2:
+                ReadFromFile_M();
+                break;
+                
 //            case 3:
 //                SortList_M();
 //                break;
