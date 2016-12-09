@@ -19,8 +19,8 @@ void ReadFromTwoFile_M()
 //    1
 
 	int i, Val = 0;
-	int FileIndex = 1, ReadFileNum=1;
-    InfoMap im1 = {0}, im2 = {0};
+	int ChartId = 1, ReadFileNum=1;
+    InfoMap im1 = {0};
     char imps[128]="/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/S_info.txt", impc[128]="/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/C_info.txt";
     char ParamFileName[128]= "/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/stu_param.txt"
     , DataFileName[128] = "/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/Stu_info.txt";
@@ -39,20 +39,18 @@ void ReadFromTwoFile_M()
 //		printf("请输入保存的表的编号（1—%d）\n", ReadFileNum);
 //		scanf("%d", &FileIndex);
 
-		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[FileIndex - 1]);
+		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[ChartId - 1]);
 		if (Val != 0)
         {
 			printf("\n*****************************\n"
-                   "错误代码:%d\n"
                    "读取文件出现错误\n"
                    "1.重新输入\n"
                    "0.退出\n"
-                   "*****************************\n", Val);
+                   "*****************************\n");
             int Again;
             scanf("%d", &Again);
             if (Again == 1)
             {
-                system("ls");
                 continue;
             }
         }
@@ -62,16 +60,16 @@ void ReadFromTwoFile_M()
             int Pri = 0;
             printf("\n*****************************\n"
                    "1.输出表格\n"
-                   "0.保存退出\n"
+                   "0.保存\n"
                    "*****************************\n");
             scanf("%d", &Pri);
-            if (Pri==1) {
+            if (Pri==1)
+            {
                 ReadMapFile(imps, &im1);
-                Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "性别"), &im1);
-                
-                ReadMapFile(impc, &im2);
-                Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "学院名称"), &im2);
-                Display_Chart(ChartHead[FileIndex-1], NULL, NULL, 0);
+                Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "性别"), &im1);
+                ReadMapFile(impc, &im1);
+                Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "学院名称"), &im1);
+                Display_Chart(ChartHead[ChartId-1], NULL, NULL, 0);
             }
             i++;
         }
@@ -79,43 +77,43 @@ void ReadFromTwoFile_M()
 }
 
 
-void ReadFromFile_M() {
-
-
-	int i;
-	int Val, ReadFileNum;
-	char FileName[16];
-
-	printf("请输入所需读取文件的数量,输入0退出\n");
-	while (scanf("%d", &ReadFileNum), ReadFileNum != 0) {
-		
-        NewChartSet(ReadFileNum);
-		printf("请输入文件名字(请使用空格将文件隔开，若文件不在此文件夹，请写上绝对地址。"
-			"如~//username/Desktop/xxx.txt)\n");
-		
-        for (i = 0; i < ReadFileNum;) {
-			
-            printf("表%d:\n", i+1);
-			scanf("%s", FileName);
-			
-            Val = ReadFromFile(FileName, ChartHead[i]);
-			if (Val != 0) {
-				printf("错误代码:%d,读取文件出现错误。重新输入请按1,输入其他键则退出\n", Val);
-				int Again;
-				scanf("%d", &Again);
-				if (Again == 1) {
-					continue;
-				}
-				else
-					return;
-
-			}
-			i++;
-		}
-	}
-	return;
-
-}
+//void ReadFromFile_M() {
+//
+//
+//	int i;
+//	int Val, ReadFileNum;
+//	char FileName[16];
+//
+//	printf("请输入所需读取文件的数量,输入0退出\n");
+//	while (scanf("%d", &ReadFileNum), ReadFileNum != 0) {
+//		
+//        NewChartSet(ReadFileNum);
+//		printf("请输入文件名字(请使用空格将文件隔开，若文件不在此文件夹，请写上绝对地址。"
+//			"如~//username/Desktop/xxx.txt)\n");
+//		
+//        for (i = 0; i < ReadFileNum;) {
+//			
+//            printf("表%d:\n", i+1);
+//			scanf("%s", FileName);
+//			
+//            Val = ReadFromFile(FileName, ChartHead[i]);
+//			if (Val != 0) {
+//				printf("错误代码:%d,读取文件出现错误。重新输入请按1,输入其他键则退出\n", Val);
+//				int Again;
+//				scanf("%d", &Again);
+//				if (Again == 1) {
+//					continue;
+//				}
+//				else
+//					return;
+//
+//			}
+//			i++;
+//		}
+//	}
+//	return;
+//
+//}
 
 
 void SortList_M() {
@@ -123,34 +121,43 @@ void SortList_M() {
 	int i;
 	int k;
 
-	printf("1.按照姓名排序\n"
+	printf("\n*****************************\n"
+           "1.按照姓名排序\n"
 		"2.按照平均成绩排序\n"
 		"3.按照任意条件排序\n"
-		"0.退出\n");
+		"0.退出\n"
+           "*****************************\n");
 	while (scanf("%d", &Mode),
 		Mode != 0) {
 		if (Mode <= 0 || Mode >= 3) {
 			printf("输入错误\n");
 			continue;
 		}
+        for (i = 0; i<ChartCount; i++) {
+            printf("%d.%s\n", i+1, ChartHead[i]->ChartName);
+        }
 		printf("请输入所需排序的表格\n");
+        
 
 
 		scanf("%d", &ChartId);
-		printf("排序方法:\n"
+		printf("\n*****************************\n"
 			"1.升序\n"
-			"2.降序\n");
+			"2.降序\n"
+               "*****************************\n");
 		scanf("%d", &SortMode);
 		for (i = 0; i < ChartCount; i++) {
-			printf("%d.%s\n", i, ChartHead[ChartId]->ChartTitle[i]);
+			printf("%d.%s\n", i+1, ChartHead[ChartId-1]->ChartTitle[i]);
 		}
 		scanf("%d", &k);
 
-
 		switch (Mode) {
 		case 1:
-			Sort(ChartHead[ChartId], NULL, SHI(ChartHead[ChartId], ChartHead[ChartId]->ChartTitle[k]), SortMode - 1);
+			Sort(ChartHead[ChartId-1], NULL, SHI(ChartHead[ChartId-1], "学号"), SortMode - 1);
+                Display_Chart(ChartHead[ChartId], NULL, NULL, 1);
+
 			break;
+
 
 			//            case 2:
 			////                Sort(ChartHead[ChartId], <#IndexList *OperateList#>, <#int BaseTitleIndex#>, <#int Mode#>);
