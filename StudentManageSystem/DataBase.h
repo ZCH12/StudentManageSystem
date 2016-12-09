@@ -87,13 +87,12 @@ extern int AlloctedChartCount;		//已分配的表的个数
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateChart);
-ErrVal ReadMapFile(char* MapFileName,InfoMap *MapStruct);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
 //表指针数组操作函数
-ErrVal NewChart(int CreateCount);
-
+ErrVal NewChartSet(int CreateCount);
+ErrVal FreeChartSet();
 
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
@@ -108,6 +107,10 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...);
 ErrVal FillList(List *OperateList, int Count);
 ErrVal FreeList(List *OperateList);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
+
+//映射关系操作函数
+ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct);
+ErrVal FreeMapStruct(InfoMap *MapStruct);
 
 //基础功能函数
 int StrCmp(const char *A, const char *B);

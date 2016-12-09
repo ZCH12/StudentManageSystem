@@ -483,8 +483,8 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	OperateChart->HadInit = 1;
 
 	//获取读取的文件的名字
-	a = strlen(ParamFileName);
-	b = strlen(DataFileName);
+	a = (int)strlen(ParamFileName);
+	b = (int)strlen(DataFileName);
 	Line = malloc(sizeof(char)*(a+b+4));
 	if (Line) {
 		for (c = a - 1; c >= 0; c--)
@@ -495,7 +495,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 			if (DataFileName[c] == '/' || DataFileName[c] == '\\')
 				break;
 		b = c+1;
-		c = strlen(ParamFileName + a);
+		c = (int)strlen(ParamFileName + a);
 		strcpy(Line, ParamFileName + a);
 		strcpy(Line + c, " && ");
 		strcpy(Line + c+4, DataFileName + b);
@@ -571,6 +571,23 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 	}
 	MapStruct->Count = Count;
 	fclose(File);
+	return SUCCESS;
+}
+
+ErrVal FreeMapStruct(InfoMap * MapStruct)
+{
+	int a;
+	if (!MapStruct)
+		return SUCCESS;
+	for (a = 0; a < MapStruct->Count; a++)
+	{
+		free(MapStruct->String[a]);
+		free(MapStruct->Val[a]);
+	}
+	free(MapStruct->String);
+	free(MapStruct->Val);
+	//free(MapStruct);
+
 	return SUCCESS;
 }
 
@@ -1079,11 +1096,15 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 	return SUCCESS;
 }
 
-ErrVal NewChart(int CreateCount)
+/*
+对表集进行扩充或初始化
+CreateCount 要新增的表的数量
+*/
+ErrVal NewChartSet(int CreateCount)
 {
 
 	int a;
-	Chart** NewChartSet; //原来的表集
+	Chart** NewChartSet; //新的表集
 	int NewChartCount = ChartCount + CreateCount;
 	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
@@ -1161,6 +1182,26 @@ ErrVal NewChart(int CreateCount)
 	ChartHead = NewChartSet;
 	AlloctedChartCount = NewChartCount;
 	ChartCount = NewChartCount;
+	return SUCCESS;
+}
+
+/*
+把已经初始化好的表集销毁
+!!!此操作会同时销毁所有表
+*/
+ErrVal FreeChartSet()
+{
+	int a;
+	if (!ChartHead)
+		return SUCCESS;
+	for (a = 0; a < ChartCount; a++)
+	{
+		if (ChartHead[a]){
+			FreeChart(ChartHead[a]);		//销毁每一个表
+			free(ChartHead[a]);
+		}
+	}
+	free(ChartHead);
 	return SUCCESS;
 }
 

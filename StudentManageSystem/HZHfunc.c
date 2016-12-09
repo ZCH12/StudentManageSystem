@@ -11,13 +11,12 @@ void ReadFromTwoFile_M() {
 
 
 	int i, Val;
-	int Fileindex, ReadFileNum;
+	int Fileindex, ReadFileNum=0;
 	char ParamFileName[32], DataFileName[32];
 
-	NewChart(ReadFileNum);
 	printf("请输入读入文件的数量,若输入0则退出");
 	scanf("%d", &ReadFileNum);
-
+	NewChartSet(ReadFileNum);
 	for (i = 0; i < ReadFileNum; i++) {
 
 		printf("请输入存储各单元名字的文件\n");
@@ -45,7 +44,7 @@ void ReadFromFile_M() {
 
 	printf("请输入所需读取文件的数量,输入0退出\n");
 	while (scanf("%d", &ReadFileNum), ReadFileNum != 0) {
-		NewChart(ReadFileNum);
+		NewChartSet(ReadFileNum);
 
 		printf("请输入文件名字(请使用空格将文件隔开，若文件不在此文件夹，请写上绝对地址。"
 			"如~//username/Desktop/xxx.txt)\n");

@@ -126,27 +126,32 @@ void test1()
 	strcpy(ChartHead[0]->Chart[4][2], "5");
 	*/
 	ReadFromTwoFile("ZCHtestFile\\stu_param.txt", "ZCHtestFile\\Stu_info.txt", ChartHead[0]);
-	/*
+/*
 	//翻译学院代码为学院名称
 	ReadMapFile("ZCHtestFile\\C_info.txt", &im);
 	Translate(ChartHead[0],SHI(ChartHead[0],"学院名称"),&im);
-
+	
 	//翻译性别
 	ReadMapFile("ZCHtestFile\\S_info.txt", &im2);
 	Translate(ChartHead[0], SHI(ChartHead[0], "性别"), &im2);
-	*/
 
+*/
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 	printf("%s\n", ChartHead[0]->ChartName);
-	FreeChart(ChartHead[0]);
+	//FreeMapStruct(&im);
+	//FreeMapStruct(&im2);
+
 	//free(ChartHead);
 }
 
 int main()
 {
-	NewChart(1);
+	NewChartSet(1);
+	//NewChartSet(1);
 
-	//_CrtSetBreakAlloc(64);
+
+
+	//_CrtSetBreakAlloc(65);
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//Demo();
 	test1();
@@ -154,8 +159,7 @@ int main()
 	//*a=0;
 	//int a[10]={1,2,3};
 	//printf("%d",*a);
-	free(ChartHead[0]);
-	free(ChartHead);
+	FreeChartSet();
 	//_CrtDumpMemoryLeaks();
 	system("pause");
 
