@@ -548,7 +548,6 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 	for (a = 0; a < 100; a++)
 	{
 		MapStruct->Val[a] = (char*)malloc(sizeof(char) * 4);
-
 		MapStruct->String[a] = (char*)malloc(sizeof(char) * 20);
 		if (!(MapStruct->Val[a] && MapStruct->String[a]))
 		{
@@ -565,7 +564,11 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 			return ERR_MEMORYNOTENOUGH;
 		}
 		if (fscanf(File, "%s%c%s", MapStruct->Val[a], &temp, MapStruct->String[a]) != 3)
+		{
+			free(MapStruct->Val[a]);
+			free(MapStruct->String[a]);
 			break;
+		}
 		else
 			Count++;
 	}
@@ -586,7 +589,6 @@ ErrVal FreeMapStruct(InfoMap * MapStruct)
 	}
 	free(MapStruct->String);
 	free(MapStruct->Val);
-	//free(MapStruct);
 
 	return SUCCESS;
 }
