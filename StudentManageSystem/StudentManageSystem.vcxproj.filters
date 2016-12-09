@@ -17,10 +17,10 @@
     <ClCompile Include="DataBase.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ZCHtest.c">
+    <ClCompile Include="HZHfunc.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="HZHfunc.c">
+    <ClCompile Include="ZCHtest.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

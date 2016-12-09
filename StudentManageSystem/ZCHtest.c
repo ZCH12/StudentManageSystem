@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <vld.h>
+#include <time.h>
 #include "DataBase.h"
 /*
 //测试内存泄漏用
@@ -121,14 +122,21 @@ void demo1()
 
 }
 
-//测试CreateNewLine
+//测试CreateNewLine效率
 void test2()
 {
+	clock_t t1, t2,t3;
+	t1 = clock();
 	ReadFromTwoFile("ZCHtestFile\\stu_param2.txt", "ZCHtestFile\\Stu_info2.txt", ChartHead[0]);
+	t2 = clock();
 	CreateNewLine(ChartHead[0], 5, NULL);
 	CreateNewLine(ChartHead[0], 5, NULL);
 	CreateNewLine(ChartHead[0], 5, NULL);
-	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
+	t3 = clock();
+	printf("总用时:%ld\n", t3 - t1);
+	printf("读取文件用时:%ld\n", t2 - t1);
+	printf("分配新行用时:%ld\n", t3 - t2);
+	//Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 
 }
 

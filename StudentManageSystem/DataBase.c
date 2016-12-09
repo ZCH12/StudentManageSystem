@@ -32,7 +32,7 @@ TODO:存在缺陷
 //全局变量
 int ChartCount;				//已使用的表的个数
 int AlloctedChartCount;		//表的指针数组
-Chart ** ChartHead;			//已分配的表的个数
+Chart ** ChartHead=(void*)0;			//已分配的表的个数
 
 
 /*
@@ -537,10 +537,12 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 	MapStruct->String = (char**)malloc(sizeof(char*) * 100);
 	if (!(MapStruct->Val&&MapStruct->String))
 	{
-		if (MapStruct->Val)
-			free(MapStruct->Val);
 		if (MapStruct->String)
 			free(MapStruct->String);
+		if (MapStruct->Val)
+			free(MapStruct->Val);
+		
+
 		fclose(File);
 		return ERR_MEMORYNOTENOUGH;
 	}
@@ -606,7 +608,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	ChartPiece_t NewChartTitle;
 	int* NewChartLimits;
 	int LinesCount = OperateChart->UsedLines;
-	int UnitCount = OperateChart->TitleCount, NewUnitCount = OperateChart->TitleCount + CreateCount;
+	int UnitCount = OperateChart->TitleCount, NewUnitCount;
 	int a, b, c, d;
 	char **temp;		//为了提高性能
 	int  *temp3;
@@ -617,9 +619,10 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
 
-
 	if (LinesCount <= 0 || UnitCount <= 0)
 		return ERR_UNINITIALIZEDCHART;
+
+	NewUnitCount = OperateChart->TitleCount + CreateCount;
 
 	//开始新建表头
 	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
@@ -750,8 +753,9 @@ ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
 
-	if (!OperateChart || OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0)
+	if (!OperateChart || OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0||NewLine<=OperateChart->UsedLines)
 		return ERR_ILLEGALCHART;
+
 	/*
 	if (NewLine <= OperateChart->AllocatedLines)
 	{
@@ -787,6 +791,7 @@ ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 	tempChart = (Chart_t)malloc(sizeof(ChartPiece_t)*NewLine);
 	if (!tempChart)
 		return ERR_MEMORYNOTENOUGH;
+
 	for (a = 0; a < OperateChart->UsedLines; a++)
 		tempChart[a] = OperateChart->Chart[a];
 	for (; a < NewLine; a++)
@@ -1215,14 +1220,18 @@ ErrVal NewChartSet(int CreateCount)
 {
 
 	int a;
-	Chart** NewChartSet; //新的表集
-	int NewChartCount = ChartCount + CreateCount;
+	Chart** NewChartSet=NULL; //新的表集
+	int NewChartCount;
 	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
 
+	if (ChartCount < 0)
+		ChartCount = 0;
+
+	NewChartCount = ChartCount + CreateCount;
 	if (NewChartCount <= ChartCount)
 		return ERR_ILLEGALPARAM;
-
+	
 	if (AlloctedChartCount <= 0)
 	{
 		//全新初始化表
@@ -1248,9 +1257,7 @@ ErrVal NewChartSet(int CreateCount)
 		if (!NewChartSet)
 			return ERR_MEMORYNOTENOUGH;
 		for (a = 0; a < ChartCount; a++)
-		{
 			NewChartSet[a] = ChartHead[a];
-		}
 		for (a = ChartCount; a < NewChartCount; a++)
 		{
 			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
@@ -1305,6 +1312,7 @@ ErrVal FreeChartSet()
 	int a;
 	if (!ChartHead)
 		return SUCCESS;
+	
 	for (a = 0; a < ChartCount; a++)
 	{
 		if (ChartHead[a]) {
@@ -1313,6 +1321,9 @@ ErrVal FreeChartSet()
 		}
 	}
 	free(ChartHead);
+	ChartHead = NULL;
+	ChartCount = 0;
+	AlloctedChartCount = 0;
 	return SUCCESS;
 }
 
