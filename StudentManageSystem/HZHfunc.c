@@ -102,13 +102,13 @@ void ReadFromTwoFile_M() {
 
     
     int i, Val;
-    int Fileindex, ReadFileNum;
+    int Fileindex, ReadFileNum = 1;
     char ParamFileName[32], DataFileName[32];
     
-    NewChart(ReadFileNum);
-    printf("请输入读入文件的数量,若输入0则退出");
+
+    printf("请输入读入文件的数量,若输入0则退出\n");
     scanf("%d", &ReadFileNum);
-    
+    NewChart(ReadFileNum);
     for (i = 0; i<ReadFileNum; i++) {
         
         printf("请输入存储各单元名字的文件\n");
@@ -120,9 +120,11 @@ void ReadFromTwoFile_M() {
         
         Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[Fileindex-1]);
         if (Val != 0) {
-            printf("错误代码:%d,读入失败", Val);
+            printf("错误代码:%d,读入失败\n", Val);
+            return;
         }
         printf("读入成功\n");
+        return;
     }
 }
 
