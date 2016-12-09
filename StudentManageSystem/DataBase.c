@@ -29,6 +29,11 @@ TODO:存在缺陷
 */
 
 
+//全局变量
+int ChartCount;				//已使用的表的个数
+int AlloctedChartCount;		//表的指针数组
+Chart ** ChartHead;			//已分配的表的个数
+
 
 /*
 从文件读取数据到指定表
@@ -478,8 +483,8 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	OperateChart->HadInit = 1;
 
 	//获取读取的文件的名字
-	a = strlen(ParamFileName);
-	b = strlen(DataFileName);
+	a = (int)strlen(ParamFileName);
+	b = (int)strlen(DataFileName);
 	Line = malloc(sizeof(char)*(a+b+4));
 	if (Line) {
 		for (c = a - 1; c >= 0; c--)
@@ -490,7 +495,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 			if (DataFileName[c] == '/' || DataFileName[c] == '\\')
 				break;
 		b = c+1;
-		c = strlen(ParamFileName + a);
+		c = (int)strlen(ParamFileName + a);
 		strcpy(Line, ParamFileName + a);
 		strcpy(Line + c, " && ");
 		strcpy(Line + c+4, DataFileName + b);
@@ -523,6 +528,8 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 	char temp;
 	int a;
 	int Count = 0;
+	if (!MapStruct)
+		return ERR_ILLEGALPARAM;
 	File = fopen(MapFileName, "r");
 	if (!File)
 		return ERR_OPENFILE;
@@ -541,7 +548,6 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 	for (a = 0; a < 100; a++)
 	{
 		MapStruct->Val[a] = (char*)malloc(sizeof(char) * 4);
-
 		MapStruct->String[a] = (char*)malloc(sizeof(char) * 20);
 		if (!(MapStruct->Val[a] && MapStruct->String[a]))
 		{
@@ -558,12 +564,32 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 			return ERR_MEMORYNOTENOUGH;
 		}
 		if (fscanf(File, "%s%c%s", MapStruct->Val[a], &temp, MapStruct->String[a]) != 3)
+		{
+			free(MapStruct->Val[a]);
+			free(MapStruct->String[a]);
 			break;
+		}
 		else
 			Count++;
 	}
 	MapStruct->Count = Count;
 	fclose(File);
+	return SUCCESS;
+}
+
+ErrVal FreeMapStruct(InfoMap * MapStruct)
+{
+	int a;
+	if (!MapStruct)
+		return SUCCESS;
+	for (a = 0; a < MapStruct->Count; a++)
+	{
+		free(MapStruct->String[a]);
+		free(MapStruct->Val[a]);
+	}
+	free(MapStruct->String);
+	free(MapStruct->Val);
+
 	return SUCCESS;
 }
 
@@ -1069,6 +1095,115 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 	//释放临时申请的内存
 	if (tempTitlelist.list)
 		free(tempTitlelist.list);
+	return SUCCESS;
+}
+
+/*
+对表集进行扩充或初始化
+CreateCount 要新增的表的数量
+*/
+ErrVal NewChartSet(int CreateCount)
+{
+
+	int a;
+	Chart** NewChartSet; //新的表集
+	int NewChartCount = ChartCount + CreateCount;
+	if (CreateCount <= 0)
+		return ERR_ILLEGALPARAM;
+
+	if (NewChartCount <= ChartCount)
+		return ERR_ILLEGALPARAM;
+
+	if (AlloctedChartCount <= 0)
+	{
+		//全新初始化表
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*CreateCount);
+		if (!NewChartSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < CreateCount; a++)
+		{
+			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			if (!NewChartSet[a])
+			{
+				for (a--; a >= 0; a--)
+					free(NewChartSet[a]);
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;
+			}
+		}
+	}
+	else if (NewChartCount <= AlloctedChartCount)
+	{
+		//已分配空间新建表
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+		if (!NewChartSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < ChartCount; a++)
+		{
+			NewChartSet[a] = ChartHead[a];
+		}
+		for (a = ChartCount; a < NewChartCount; a++)
+		{
+			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			if (!NewChartSet[a])
+			{
+				if (a != ChartCount)
+					for (a--; a >= ChartCount; a--)
+						free(NewChartSet[a]);
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;;
+			}
+		}
+	}
+	else {
+		//增量初始化
+		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+		if (!NewChartSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < ChartCount; a++)
+		{
+			NewChartSet[a] = ChartHead[a];
+		}
+		for (; a < NewChartCount; a++)
+		{
+			NewChartSet[a] = (Chart*)malloc(sizeof(Chart));
+			if (!NewChartSet[a])
+			{
+				if (a != ChartCount)
+					for (a--; a >= ChartCount; a--)
+					{
+						free(NewChartSet[a]);
+					}
+				free(NewChartSet);
+				return ERR_MEMORYNOTENOUGH;
+			}
+		}
+	}
+	if (ChartHead)
+		free(ChartHead);
+	ChartHead = NewChartSet;
+	AlloctedChartCount = NewChartCount;
+	ChartCount = NewChartCount;
+	return SUCCESS;
+}
+
+/*
+把已经初始化好的表集销毁
+!!!此操作会同时销毁所有表
+*/
+ErrVal FreeChartSet()
+{
+	int a;
+	if (!ChartHead)
+		return SUCCESS;
+	for (a = 0; a < ChartCount; a++)
+	{
+		if (ChartHead[a]){
+			FreeChart(ChartHead[a]);		//销毁每一个表
+			free(ChartHead[a]);
+		}
+	}
+	free(ChartHead);
 	return SUCCESS;
 }
 

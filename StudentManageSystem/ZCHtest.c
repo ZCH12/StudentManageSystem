@@ -3,7 +3,9 @@
 #include <string.h>
 #include "DataBase.h"
 
-#define CRTDBG_MAP_ALLOC    
+
+#define CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC 
 #include <stdlib.h>  
 #include <crtdbg.h>
 
@@ -100,10 +102,10 @@ void Demo()
 
 void test1()
 {
-	//InfoMap im = { 0 }, im2 = {0};
+	
+	InfoMap im = { 0 }, im2 = {0};
 
 	//初始化表
-	NewChart(1);
 	/*
 	InitNewChart(ChartHead[0], 5, 3, "姓名", 5, "班级", 5, "座号", 5);
 	//写入数据
@@ -124,11 +126,11 @@ void test1()
 	strcpy(ChartHead[0]->Chart[4][2], "5");
 	*/
 	ReadFromTwoFile("ZCHtestFile\\stu_param.txt", "ZCHtestFile\\Stu_info.txt", ChartHead[0]);
-	/*
+
 	//翻译学院代码为学院名称
 	ReadMapFile("ZCHtestFile\\C_info.txt", &im);
 	Translate(ChartHead[0],SHI(ChartHead[0],"学院名称"),&im);
-
+	/*
 	//翻译性别
 	ReadMapFile("ZCHtestFile\\S_info.txt", &im2);
 	Translate(ChartHead[0], SHI(ChartHead[0], "性别"), &im2);
@@ -136,20 +138,29 @@ void test1()
 
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 	printf("%s\n", ChartHead[0]->ChartName);
-	FreeChart(ChartHead[0]);
+	FreeMapStruct(&im);
+	FreeMapStruct(&im2);
 
+	//free(ChartHead);
 }
 
 int main()
 {
+	NewChartSet(1);
+	//NewChartSet(1);
+
+
+
+	//_CrtSetBreakAlloc(65);
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//Demo();
 	test1();
 	//int *a=(int*)malloc(sizeof(int)*10);
 	//*a=0;
 	//int a[10]={1,2,3};
 	//printf("%d",*a);
-	free(ChartHead);
-	_CrtDumpMemoryLeaks();
+	FreeChartSet();
+	//_CrtDumpMemoryLeaks();
 	system("pause");
 
 }
