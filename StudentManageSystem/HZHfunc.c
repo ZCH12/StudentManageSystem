@@ -42,10 +42,12 @@ void ReadFromTwoFile_M()
 		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[FileIndex - 1]);
 		if (Val != 0)
         {
-			printf("错误代码:%d\n"
+			printf("\n*****************************\n"
+                   "错误代码:%d\n"
                    "读取文件出现错误\n"
                    "1.重新输入\n"
-                   "0.退出\n", Val);
+                   "0.退出\n"
+                   "*****************************\n", Val);
             int Again;
             scanf("%d", &Again);
             if (Again == 1)
@@ -57,15 +59,20 @@ void ReadFromTwoFile_M()
         else
         {
             printf("读入成功\n");
-            Display_Chart(ChartHead[FileIndex-1], NULL, NULL, 0);
-            
-            int fasdi = ReadMapFile(imps, &im1);
-            Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "性别"), &im1);
-            printf("%d", fasdi);
-            ReadMapFile(impc, &im2);
-            int asdjiow = Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "学院名称"), &im2);
-            printf("%d", asdjiow);
-            Display_Chart(ChartHead[FileIndex-1], NULL, NULL, 0);
+            int Pri = 0;
+            printf("\n*****************************\n"
+                   "1.输出表格\n"
+                   "0.保存退出\n"
+                   "*****************************\n");
+            scanf("%d", &Pri);
+            if (Pri==1) {
+                ReadMapFile(imps, &im1);
+                Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "性别"), &im1);
+                
+                ReadMapFile(impc, &im2);
+                Translate(ChartHead[FileIndex-1], SearchHeadIndex(ChartHead[FileIndex-1], "学院名称"), &im2);
+                Display_Chart(ChartHead[FileIndex-1], NULL, NULL, 0);
+            }
             i++;
         }
 	}
