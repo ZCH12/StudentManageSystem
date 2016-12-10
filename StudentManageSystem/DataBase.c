@@ -543,8 +543,8 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 
 
 	File = fopen(FileName, "rb");
-	fread(temp, sizeof(BIN_HEAD) + sizeof(char), 1, File);
-	fread(temp, sizeof("CHECK") + sizeof(char), 1, File);
+	fread(temp, sizeof(BIN_HEAD), 1, File);
+	fread(temp, sizeof("CHECK"), 1, File);
 	if (strcmp(temp, "CHECK") != 0) {
 		fclose(File);
 		return ERR_WRONGPASSWORD;
@@ -734,9 +734,9 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 		return ERR_OPENFILE;
 
 	//写入标头
-	fwrite(BIN_HEAD, sizeof(BIN_HEAD) + sizeof(char), 1, File);
+	fwrite(BIN_HEAD, sizeof(BIN_HEAD), 1, File);
 	//解密是否成功的字符串
-	fwrite("CHECK", sizeof("CHECK") + sizeof(char), 1, File);
+	fwrite("CHECK", sizeof("CHECK"), 1, File);
 	fwrite(&OperateChart->UsedLines, sizeof(int), 1, File);
 	fwrite(&OperateChart->TitleCount, sizeof(int), 1, File);
 	for (a = 0; a < OperateChart->TitleCount; a++)
@@ -2069,37 +2069,3 @@ char* GetFileName(const char* Path)
 		strcpy(returnVal, Path + b);
 	return returnVal;
 }
-/*****************************分割线*******************************/
-/**************************以下代码作废****************************/
-
-#if (0)
-/*
-写入数据到文件
-File要进行写入的文件路径,
-list 当前正在处理的学生的下标集合
-n list中元素的个数
-*/
-void WriteIni(char* File, int *list, int n)
-{
-	FILE *f;
-	int a, b;
-	f = fopen(File, "w+");
-	if (!f)
-		WRONGEXIT("打开文件失败")
-		fprintf(f, "%d %d\n", n, UnitCount);
-	for (a = 0; a < UnitCount; a++) {
-		fprintf(f, "%s %d ", UnitHead[a], UnitHeadlimits[a]);
-	}
-	fprintf(f, "\n");
-	for (a = 0; a < n; a++) {
-		for (b = 0; b < UnitCount; b++)
-			fprintf(f, "%s ", StudentList[list[a]][b]);
-		fprintf(f, "\n");
-	}
-	fclose(f);
-	return;
-}
-
-
-
-#endif
