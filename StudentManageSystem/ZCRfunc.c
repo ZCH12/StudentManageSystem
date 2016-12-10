@@ -3,8 +3,12 @@
 #include "HZHfunc.h"
 //#include "DataBase.h"
 
-#ifdef __APPLE__ && __MACH__
+#ifdef __APPLE__ 
+#ifdef __MACH__ 
 #define COMMAND_CLEAR() system("clear")
+#else
+#define COMMAND_CLEAR() system("cls")
+#endif
 #else
 #define COMMAND_CLEAR() system("cls")
 #endif

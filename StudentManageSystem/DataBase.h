@@ -14,6 +14,8 @@ Create By ZCR
 #define ERR_ILLEGALPARAM		6		//非法的参数
 #define ERR_EMTYLIST			7		//空List
 #define ERR_UNINITIALIZEDLIST	8		//未初始化的表
+#define ERR_WRONGPASSWORD		9		//错误的密码
+#define ERR_ILLEGALBINFILE		10		//错误的二进制文件
 
 //助记常量
 #define SORT_ASCENDING	0		//按升序进行排序
@@ -96,12 +98,15 @@ extern int AlloctedTitleListCount;	//全局:已分配的TitleList的个数
 
 
 //输入输出函数
-ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
-ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateChart);
-ErrVal WriteToTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateChart);
+ErrVal ReadFromFile(const char *FileName, Chart *OperateChart);
+ErrVal ReadFromTwoFile(const char *ParamFileName,const char * DataFileName,Chart *OperateChart);
+ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart);
+//ErrVal WriteToFile_Chart();
+ErrVal WriteToTwoFile_Chart(const char *ParamFileName,const char * DataFileName, Chart *OperateChart);
+ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);
+ErrVal WriteToBinFile_Chart(const char *File, const char *PassWord, Chart *OperateChart);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
-//ErrVal WriteToFile(char *FileName, Chart *OperateChart);
 
 
 //表集操作函数
