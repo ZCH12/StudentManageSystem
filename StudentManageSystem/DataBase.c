@@ -1218,7 +1218,6 @@ CreateCount 要新增的表的数量
 */
 ErrVal NewChartSet(int CreateCount)
 {
-
 	int a;
 	Chart** NewChartSet=NULL; //新的表集
 	int NewChartCount;
@@ -1229,9 +1228,10 @@ ErrVal NewChartSet(int CreateCount)
 		ChartCount = 0;
 
 	NewChartCount = ChartCount + CreateCount;
+	/*
 	if (NewChartCount <= ChartCount)
 		return ERR_ILLEGALPARAM;
-	
+	*/
 	if (AlloctedChartCount <= 0)
 	{
 		//全新初始化表
