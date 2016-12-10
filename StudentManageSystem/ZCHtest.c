@@ -140,12 +140,29 @@ void test2()
 
 }
 
+void test3()
+{
+	void SearchBy(const char* SearchTitle);
+	void Search_M();
+	void SearchBy(const char* SearchTitle);
+	//printf("%s",GetFileName("C:\\456\\123.txt"));
+	NewChartSet(1);
+
+	ReadFromTwoFile("ZCHtestFile\\stu_param2.txt", "ZCHtestFile\\Stu_info2.txt", ChartHead[0]);
+
+	NewListSet(5, 1);
+	NewListSet(5, 0);
+	FillList(TitleListHeadSet[0], 5);
+	FillList(IndexListHeadSet[0], ChartHead[0]->UsedLines);
+	FillList(IndexListHeadSet[1], ChartHead[0]->UsedLines);
+	Search_M();
+}
 
 int main()
 {
 	//_CrtSetBreakAlloc(65);
 	//_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF |_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	NewChartSet(5);
+	//NewChartSet(5);
 
 	//char *ss = malloc(sizeof(char) * 10);
 	//ss[-1] = 45;
@@ -153,8 +170,11 @@ int main()
 	
 	//Demo();
 	//test1();
-	test2();
+	//test2();
+	test3();
 	FreeChartSet();
+	FreeListSet(0);
+	FreeListSet(1);
 	system("pause");
 
 }

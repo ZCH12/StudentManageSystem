@@ -166,6 +166,7 @@
     <ClCompile Include="DataBase.c" />
     <ClCompile Include="HZHfunc.c" />
     <ClCompile Include="ZCHtest.c" />
+    <ClCompile Include="ZCRfunc.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBase.h" />
