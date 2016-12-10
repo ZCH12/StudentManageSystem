@@ -199,6 +199,18 @@ void test6()
 	Display_Chart(ChartHead[0], IndexListHeadSet[0], TitleListHeadSet[0], DISPLAY_HIDENUMBER);
 }
 
+//加密解密测试
+void test7()
+{
+	ErrVal Encrypt(char *ResultString, char* SourceString, const char* PassWord);
+	char str1[100] = "张驰荣";
+	char str2[100] = "";
+	printf("%s'%d\n", str1,strlen(str1));
+	Encrypt(str2, str1, "123456");
+	printf("%d'%d\n", str2[6],strlen(str2));
+	Encrypt(str2, str2, "123456");
+	printf("%d'%d\n", str2[6], strlen(str2));
+}
 
 int main()
 {
@@ -216,7 +228,8 @@ int main()
 	//test3();
 	//test4();
 	//test5();
-	test6();
+	//test6();
+	test7();
 	FreeChartSet();
 	FreeListSet(0);
 	FreeListSet(1);
