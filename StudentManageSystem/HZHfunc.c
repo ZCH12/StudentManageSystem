@@ -9,6 +9,8 @@
 
 void ReadFromTwoFile_M()
 {
+	int Again;
+	int Pri = 0;
 //    请输入读入文件的数量,若输入0则退出
 //    1
 //    请输入存储各单元名字的文件
@@ -47,7 +49,7 @@ void ReadFromTwoFile_M()
                    "1.重新输入\n"
                    "0.退出\n"
                    "*****************************\n");
-            int Again;
+            
             scanf("%d", &Again);
             if (Again == 1)
             {
@@ -57,7 +59,7 @@ void ReadFromTwoFile_M()
         else
         {
             printf("读入成功\n");
-            int Pri = 0;
+            
             printf("\n*****************************\n"
                    "1.输出表格\n"
                    "0.保存\n"
