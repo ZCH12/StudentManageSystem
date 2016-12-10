@@ -140,12 +140,71 @@ void test2()
 
 }
 
+void test3()
+{
+	void SearchBy(const char* SearchTitle);
+	void Search_M();
+	void SearchBy(const char* SearchTitle);
+	//printf("%s",GetFileName("C:\\456\\123.txt"));
+	NewChartSet(1);
+
+	//ReadFromTwoFile("ZCHtestFile\\stu_param2.txt", "ZCHtestFile\\Stu_info2.txt", ChartHead[0]);
+
+	printf("%d",ReadFromTwoFile("ZCHtestFile\\123_p.txt", "ZCHtestFile\\123_data.txt", ChartHead[0]));
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	NewListSet(5, LISTTYPE_TITLELIST);
+	FillList(TitleListHeadSet[0], 5);
+	FillList(IndexListHeadSet[0], ChartHead[0]->UsedLines);
+	FillList(IndexListHeadSet[1], ChartHead[0]->UsedLines);
+
+	WriteToTwoFile_Chart("123_p.txt", "123_data.txt", ChartHead[0]);
+	Search_M();
+}
+
+//测试文件的写入
+void test4()
+{
+	NewChartSet(5);
+	printf("%d", ReadFromTwoFile("ZCHtestFile\\123_p.txt", "ZCHtestFile\\123_data.txt", ChartHead[0]));
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	NewListSet(5, LISTTYPE_TITLELIST);
+	FillList(IndexListHeadSet[0], 20);
+	FillList(TitleListHeadSet[0], 8);
+	WriteToTwoFileByList("123_p.txt", "123_data.txt", ChartHead[0], IndexListHeadSet[0], TitleListHeadSet[0]);
+
+}
+
+void test5()
+{
+	NewChartSet(5);
+	printf("%d", ReadFromTwoFile("ZCHtestFile\\123_p.txt", "ZCHtestFile\\123_data.txt", ChartHead[0]));
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	NewListSet(5, LISTTYPE_TITLELIST);
+	FillList(IndexListHeadSet[0], 20);
+	FillList(TitleListHeadSet[0], 8);
+	WriteToBinFile_Chart("1.dat", "0", ChartHead[0]);
+	FreeChart(ChartHead[0]);
+	//ReadFromBinFile("1.dat", " ", ChartHead[1]);
+	//Display_Chart(ChartHead[1], IndexListHeadSet[0], TitleListHeadSet[0], DISPLAY_HIDENUMBER);
+}
+//测试从二进制文件读取数据
+void test6()
+{
+	NewChartSet(5);
+	printf("%d",ReadFromBinFile("1.dat", " ", ChartHead[0]));
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	NewListSet(5, LISTTYPE_TITLELIST);
+	FillList(IndexListHeadSet[0], 20);
+	FillList(TitleListHeadSet[0], 8);
+	Display_Chart(ChartHead[0], IndexListHeadSet[0], TitleListHeadSet[0], DISPLAY_HIDENUMBER);
+}
+
 
 int main()
 {
 	//_CrtSetBreakAlloc(65);
 	//_CrtSetDbgFlag(_CRTDBG_CHECK_ALWAYS_DF |_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	NewChartSet(5);
+	//NewChartSet(5);
 
 	//char *ss = malloc(sizeof(char) * 10);
 	//ss[-1] = 45;
@@ -153,8 +212,14 @@ int main()
 	
 	//Demo();
 	//test1();
-	test2();
+	//test2();
+	//test3();
+	//test4();
+	//test5();
+	test6();
 	FreeChartSet();
+	FreeListSet(0);
+	FreeListSet(1);
 	system("pause");
 
 }

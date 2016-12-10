@@ -23,6 +23,9 @@
     <ClCompile Include="ZCHtest.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ZCRfunc.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBase.h">

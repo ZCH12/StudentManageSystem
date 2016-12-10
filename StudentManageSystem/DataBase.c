@@ -8,11 +8,12 @@
 /*
 数据库库
 Create By ZCR
-2016-12-04
+2016-12-10
 
 TODO:存在缺陷
-没有初始化函数
-
+WriteToFile()
+WriteToTwoFile()
+加密解密
 */
 
 /*
@@ -28,12 +29,22 @@ TODO:存在缺陷
 注意表头的长度限制为31个英文字符
 */
 
+#ifndef BIN_HEAD
+#define BIN_HEAD "DataBaseChartBIN"
+#endif
 
 //全局变量
-int ChartCount;				//已使用的表的个数
-int AlloctedChartCount;		//表的指针数组
-Chart ** ChartHead=(void*)0;			//已分配的表的个数
+Chart ** ChartHead = NULL;			//已分配的表的个数
+int ChartCount = 0;					//已使用的表的个数
+int AlloctedChartCount = 0;			//表的指针数组
 
+IndexList **IndexListHeadSet = NULL;	//IndexList的指针数组
+int IndexListCount = 0;				//已使用的IndexList的个数
+int AlloctedIndexListCount = 0;		//已分配的IndexList的个数
+
+TitleList **TitleListHeadSet = NULL;	//TitleList的指针数组
+int TitleListCount = 0;				//已使用的TitleList的个数
+int AlloctedTitleListCount = 0;		//已分配的TitleList的个数
 
 /*
 从文件读取数据到指定表
@@ -41,7 +52,7 @@ File 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
 //待重写
 */
-ErrVal ReadFromFile(char *FileName, Chart *OperateChart)
+ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 {
 	FILE *File;
 	int Count, TitleCount;
@@ -210,7 +221,7 @@ ParamFileName	表头与配置文件的路径
 DataFileName	表中数据的路径
 OperateChart 要用来存储读入的数据的表
 */
-ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateChart)
+ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Chart *OperateChart)
 {
 	FILE *File;		//当前正在读取的文件
 	const char *Delimer = " \t\n\r";
@@ -279,7 +290,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 
 	free(Line);
 	LineCharCount = 38 * TitleCount;	//计算下一行的最长长度
-	Line = malloc(sizeof(char) * LineCharCount);
+	Line = (char*)malloc(sizeof(char) * LineCharCount);
 	fgets(Line, LineCharCount, File);	//读取下一行
 
 	tempChartPiece[0] = (char*)malloc(sizeof(char) * 32);
@@ -437,7 +448,6 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 		{
 			tempChart[a][b] = (char*)malloc(sizeof(char)*tempChartTitleLimits[b] + 1);
 			Piece = strtok(NULL, Delimer);
-			//printf("'%s'\n", Piece);
 			if (!tempChart[a][b] || !Piece)
 			{
 				if (b != 0) {
@@ -485,7 +495,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	//获取读取的文件的名字
 	a = (int)strlen(ParamFileName);
 	b = (int)strlen(DataFileName);
-	Line = malloc(sizeof(char)*(a + b + 4));
+	Line = (char*)malloc(sizeof(char)*(a + b + 4));
 	if (Line) {
 		for (c = a - 1; c >= 0; c--)
 			if (ParamFileName[c] == '/' || ParamFileName[c] == '\\')
@@ -510,6 +520,238 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 	else
 		OperateChart->ChartName = NULL;
 
+	return SUCCESS;
+}
+
+/*
+从本程序创建的二进制文件读取信息
+*/
+ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart)
+{
+	Chart *tempChart = (Chart*)malloc(sizeof(Chart));
+	int NewChartLinesCount = 0;
+	int NewChartTitleCount = 0;
+	int a, b;
+	char *Piece;
+	FILE *File;
+	char temp[512];
+	if (!OperateChart)
+		return ERR_ILLEGALCHART;
+
+	if (OperateChart->HadInit)
+		FreeChart(OperateChart);//已经初始化的表先释放
+
+
+	File = fopen(FileName, "rb");
+	fread(temp, sizeof(BIN_HEAD) + sizeof(char), 1, File);
+	fread(temp, sizeof("CHECK") + sizeof(char), 1, File);
+	if (strcmp(temp, "CHECK") != 0) {
+		fclose(File);
+		return ERR_WRONGPASSWORD;
+	}
+	fread(&NewChartLinesCount, sizeof(int), 1, File);
+	fread(&NewChartTitleCount, sizeof(int), 1, File);
+	if (NewChartLinesCount <= 0 || NewChartTitleCount <= 0) {
+		fclose(File);
+		return ERR_ILLEGALBINFILE;
+	}
+
+	tempChart->ChartTitle = (ChartPiece_t)malloc(sizeof(char*)*NewChartTitleCount);
+	tempChart->ChartLimits = (int*)malloc(sizeof(int)*NewChartTitleCount);
+	if (!tempChart->ChartTitle || !tempChart->ChartLimits)
+	{
+		if (tempChart->ChartTitle)
+			free(tempChart->ChartTitle);
+		fclose(File);
+		return ERR_MEMORYNOTENOUGH;
+	}
+	for (a = 0; a < NewChartTitleCount; a++)
+	{
+		tempChart->ChartTitle[a] = (char*)malloc(sizeof(char) * 32);
+		if (!tempChart->ChartTitle[a])
+		{
+			fclose(File);
+			for (a--; a >= 0; a--)
+				free(tempChart->ChartTitle[a]);
+			free(tempChart->ChartTitle);
+			free(tempChart);
+			return ERR_MEMORYNOTENOUGH;
+		}
+		fread(tempChart->ChartTitle[a], sizeof(char), 32, File);
+		fread(&tempChart->ChartLimits[a], sizeof(int), 1, File);
+	}
+
+	tempChart->Chart = (Chart_t)malloc(sizeof(ChartPiece_t)*NewChartLinesCount);
+	if (!tempChart->Chart)
+	{
+		fclose(File);
+		for (a = 0; a < NewChartTitleCount; a++)
+			free(tempChart->ChartTitle[a]);
+		free(tempChart->ChartTitle);
+		free(tempChart->ChartLimits);
+		free(tempChart);
+		return ERR_MEMORYNOTENOUGH;
+	}
+
+	for (a = 0; a < NewChartLinesCount; a++)
+	{
+		tempChart->Chart[a] = (ChartPiece_t)malloc(sizeof(char*)*NewChartTitleCount);
+		for (b = 0; b < NewChartTitleCount; b++)
+		{
+			tempChart->Chart[a][b] = (char*)malloc(sizeof(char)*(tempChart->ChartLimits[b] + 1));
+			if (!tempChart->Chart[a][b])
+			{
+				fclose(File);
+				for (b--; b >= 0; b--)
+					free(tempChart->ChartTitle[a][b]);
+				free(tempChart->Chart[a]);
+				for (a--; a >= NewChartLinesCount; a--)
+				{
+					for (b = 0; b < NewChartTitleCount; b++)
+						free(tempChart->Chart[a][b]);
+					free(tempChart->Chart[a]);
+				}
+				free(tempChart->Chart);
+
+				for (a = 0; a < NewChartTitleCount; a++)
+					free(tempChart->ChartTitle[a]);
+				free(tempChart->ChartTitle);
+				free(tempChart->ChartLimits);
+				free(tempChart);
+				return ERR_MEMORYNOTENOUGH;
+			}
+			fread(tempChart->Chart[a][b], tempChart->ChartLimits[b] + 1, 1, File);
+		}
+	}
+	OperateChart->Chart = tempChart->Chart;
+	OperateChart->ChartLimits = tempChart->ChartLimits;
+	OperateChart->ChartName = GetFileName(FileName);
+	OperateChart->ChartTitle = tempChart->ChartTitle;
+	OperateChart->HadInit = 1;
+	OperateChart->TitleCount = NewChartTitleCount;
+	OperateChart->UsedLines = NewChartLinesCount;
+	return SUCCESS;
+}
+
+/*
+将表写入到两个文件中去
+ParamFileName 要写入参数的文件路径
+DataFileName 要写入表中数据的文件路径
+*/
+ErrVal WriteToTwoFile_Chart(const char * ParamFileName, const char * DataFileName, Chart * OperateChart)
+{
+	FILE *File;
+	int a, b;
+
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+	if (OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0)
+		return ERR_ILLEGALCHART;
+
+	File = fopen(ParamFileName, "w");
+	if (!File)
+		return ERR_OPENFILE;
+
+	//写入参数头部
+	fprintf(File, "%d %d\n", OperateChart->UsedLines, OperateChart->TitleCount);
+	for (a = 0; a < OperateChart->TitleCount; a++)
+		fprintf(File, "%s %d ", OperateChart->ChartTitle[a], OperateChart->ChartLimits[a]);
+	fprintf(File, "\n");
+	fclose(File);
+
+	//开始写入表中数据
+	File = fopen(DataFileName, "w");
+	if (!File)
+		return ERR_OPENFILE;
+	for (a = 0; a < OperateChart->UsedLines; a++)
+	{
+		for (b = 0; b < OperateChart->TitleCount; b++)
+			fprintf(File, "%s ", OperateChart->Chart[a][b]);
+		fprintf(File, "\n");
+	}
+	fclose(File);
+	return SUCCESS;
+}
+
+/*
+按照List的顺序把表写入到文件中去,与WriteToTwoFile_Chart()不同的是这个函数支持将部分数据写入表
+ParamFileName 要写入参数的文件路径
+DataFileName 要写入表中数据的文件路径
+WriteLine 将要进行写入的行的数据
+WriteTitle 将要进行写入的列的数据
+*/
+ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle)
+{
+	FILE *File;
+	int a, b;
+
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+	if (OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0)
+		return ERR_ILLEGALCHART;
+
+	File = fopen(ParamFileName, "w");
+	if (!File)
+		return ERR_OPENFILE;
+
+	//写入参数头部
+	fprintf(File, "%d %d\n", WriteLine->listCount, WriteTitle->listCount);
+	for (a = 0; a < WriteTitle->listCount; a++)
+		fprintf(File, "%s %d ", OperateChart->ChartTitle[WriteTitle->list[a]], OperateChart->ChartLimits[WriteTitle->list[a]]);
+	fprintf(File, "\n");
+	fclose(File);
+
+	//开始写入表中数据
+	File = fopen(DataFileName, "w");
+	if (!File)
+		return ERR_OPENFILE;
+	for (a = 0; a < WriteLine->listCount; a++)
+	{
+		for (b = 0; b < WriteTitle->listCount; b++)
+			fprintf(File, "%s ", OperateChart->Chart[WriteLine->list[a]][WriteTitle->list[b]]);
+		fprintf(File, "\n");
+	}
+	fclose(File);
+
+	return SUCCESS;
+}
+
+/*
+将表中的数据写入到表
+*/
+ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart)
+{
+	FILE *File;
+	int a, b;
+
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+	if (OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0)
+		return ERR_ILLEGALCHART;
+
+	File = fopen(FileName, "wb");
+	if (!File)
+		return ERR_OPENFILE;
+
+	//写入标头
+	fwrite(BIN_HEAD, sizeof(BIN_HEAD) + sizeof(char), 1, File);
+	//解密是否成功的字符串
+	fwrite("CHECK", sizeof("CHECK") + sizeof(char), 1, File);
+	fwrite(&OperateChart->UsedLines, sizeof(int), 1, File);
+	fwrite(&OperateChart->TitleCount, sizeof(int), 1, File);
+	for (a = 0; a < OperateChart->TitleCount; a++)
+	{
+		fwrite(OperateChart->ChartTitle[a], sizeof(char), 32, File);
+		fwrite(&OperateChart->ChartLimits[a], sizeof(int), 1, File);
+	}
+	for (a = 0; a < OperateChart->UsedLines; a++)
+	{
+		for (b = 0; b < OperateChart->TitleCount; b++)
+		{
+			fwrite(OperateChart->Chart[a][b], sizeof(char), OperateChart->ChartLimits[b] + 1, File);
+		}
+	}
+	fclose(File);
 	return SUCCESS;
 }
 
@@ -541,7 +783,7 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 			free(MapStruct->String);
 		if (MapStruct->Val)
 			free(MapStruct->Val);
-		
+
 
 		fclose(File);
 		return ERR_MEMORYNOTENOUGH;
@@ -575,10 +817,15 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 			Count++;
 	}
 	MapStruct->Count = Count;
+	MapStruct->MapName = GetFileName(MapFileName);
 	fclose(File);
 	return SUCCESS;
 }
 
+/*
+释放映射关系结构体
+MapStruct 要释放的结构体
+*/
 ErrVal FreeMapStruct(InfoMap * MapStruct)
 {
 	int a;
@@ -753,41 +1000,41 @@ ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
 
-	if (!OperateChart || OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0||NewLine<=OperateChart->UsedLines)
+	if (!OperateChart || OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0 || NewLine <= OperateChart->UsedLines)
 		return ERR_ILLEGALCHART;
 
 	/*
 	if (NewLine <= OperateChart->AllocatedLines)
 	{
-		//内存充足
-		tempChart = OperateChart->Chart;
-		for (a = OperateChart->UsedLines; a < NewLine; a++)
-		{
-			for (b = 0; b < OperateChart->TitleCount; b++)
-			{
-				tempChart[a][b] = (char*)malloc(sizeof(char)*OperateChart->ChartLimits[b]);
-				if (!tempChart[a][b])
-				{
-					for (b--; b >= 0; b--)
-						free(tempChart[a][b]);
-					free(tempChart[a]);
+	//内存充足
+	tempChart = OperateChart->Chart;
+	for (a = OperateChart->UsedLines; a < NewLine; a++)
+	{
+	for (b = 0; b < OperateChart->TitleCount; b++)
+	{
+	tempChart[a][b] = (char*)malloc(sizeof(char)*OperateChart->ChartLimits[b]);
+	if (!tempChart[a][b])
+	{
+	for (b--; b >= 0; b--)
+	free(tempChart[a][b]);
+	free(tempChart[a]);
 
-					for (a--; a >= 0; a--)
-					{
-						for (b = 0; b < OperateChart->TitleCount; b++)
-							free(tempChart[a][b]);
-						free(tempChart[a]);
-					}
-					return ERR_MEMORYNOTENOUGH;
-				}
+	for (a--; a >= 0; a--)
+	{
+	for (b = 0; b < OperateChart->TitleCount; b++)
+	free(tempChart[a][b]);
+	free(tempChart[a]);
+	}
+	return ERR_MEMORYNOTENOUGH;
+	}
 
-			}
-		}
+	}
+	}
 	}
 	else
 	{
-		*/
-		//内存不够,需要重新分配内存并复制
+	*/
+	//内存不够,需要重新分配内存并复制
 	tempChart = (Chart_t)malloc(sizeof(ChartPiece_t)*NewLine);
 	if (!tempChart)
 		return ERR_MEMORYNOTENOUGH;
@@ -1000,6 +1247,34 @@ ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 }
 
 /*
+把为字符串解释数字代码
+OperateChart	进行操作的表
+TitleIndex		进行转换的列
+MapStruct		存储映射关系的表
+*/
+ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
+{
+	int a, b;
+	char *temp;
+	char **list = MapStruct->Val;
+	char **Val = MapStruct->String;
+	for (a = 0; a < OperateChart->UsedLines; a++)
+	{
+		temp = OperateChart->Chart[a][TitleIndex];
+		for (b = 0; b < MapStruct->Count; b++)
+		{
+			if (!strcmp(temp, Val[b]))
+			{
+				//匹配,进行逆翻译
+				strcpy(temp, list[b]);
+				break;
+			}
+		}
+	}
+	return SUCCESS;
+}
+
+/*
 释放整个表所占的内存
 OperateChart 要进行销毁的表,表销毁之后处于未初始化的状态,需要重新初始化才能使用
 */
@@ -1041,8 +1316,8 @@ ErrVal FreeChart(Chart *OperateChart)
 ShowLines 包含在Chart表中lines的下标的数组,允许为NULL,将输出所有的行(按表中顺序)
 ShowTitle 包含在Chart表中ShowTitle的下标的数组,允许为NULL,将输出所有的列(按表中顺序)
 Mode是控制显示的一个参数
-	Mode=1 输出一个编号(用于给用户进行选择)
-	Mode=0 不输出编号
+Mode=1 输出一个编号(用于给用户进行选择)
+Mode=0 不输出编号
 */
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
 {
@@ -1220,7 +1495,7 @@ ErrVal NewChartSet(int CreateCount)
 {
 
 	int a;
-	Chart** NewChartSet=NULL; //新的表集
+	Chart** tempChartSet = NULL; //新的表集
 	int NewChartCount;
 	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
@@ -1231,71 +1506,74 @@ ErrVal NewChartSet(int CreateCount)
 	NewChartCount = ChartCount + CreateCount;
 	if (NewChartCount <= ChartCount)
 		return ERR_ILLEGALPARAM;
-	
+
 	if (AlloctedChartCount <= 0)
 	{
 		//全新初始化表
-		NewChartSet = (Chart**)malloc(sizeof(Chart*)*CreateCount);
-		if (!NewChartSet)
+		tempChartSet = (Chart**)malloc(sizeof(Chart*)*CreateCount);
+		if (!tempChartSet)
 			return ERR_MEMORYNOTENOUGH;
 		for (a = 0; a < CreateCount; a++)
 		{
-			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
-			if (!NewChartSet[a])
+			tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			if (!tempChartSet[a])
 			{
 				for (a--; a >= 0; a--)
-					free(NewChartSet[a]);
-				free(NewChartSet);
+					free(tempChartSet[a]);
+				free(tempChartSet);
 				return ERR_MEMORYNOTENOUGH;
 			}
 		}
 	}
+	/*
+	//
 	else if (NewChartCount <= AlloctedChartCount)
 	{
-		//已分配空间新建表
-		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
-		if (!NewChartSet)
-			return ERR_MEMORYNOTENOUGH;
-		for (a = 0; a < ChartCount; a++)
-			NewChartSet[a] = ChartHead[a];
-		for (a = ChartCount; a < NewChartCount; a++)
-		{
-			NewChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
-			if (!NewChartSet[a])
-			{
-				if (a != ChartCount)
-					for (a--; a >= ChartCount; a--)
-						free(NewChartSet[a]);
-				free(NewChartSet);
-				return ERR_MEMORYNOTENOUGH;;
-			}
-		}
+	//已分配空间新建表
+	tempChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+	if (!tempChartSet)
+	return ERR_MEMORYNOTENOUGH;
+	for (a = 0; a < ChartCount; a++)
+	tempChartSet[a] = ChartHead[a];
+	for (a = ChartCount; a < NewChartCount; a++)
+	{
+	tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+	if (!tempChartSet[a])
+	{
+	if (a != ChartCount)
+	for (a--; a >= ChartCount; a--)
+	free(tempChartSet[a]);
+	free(tempChartSet);
+	return ERR_MEMORYNOTENOUGH;;
 	}
+	}
+	}
+	*/
 	else {
 		//增量初始化
-		NewChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
-		if (!NewChartSet)
+		tempChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
+		if (!tempChartSet)
 			return ERR_MEMORYNOTENOUGH;
 		for (a = 0; a < ChartCount; a++)
-			NewChartSet[a] = ChartHead[a];
+			tempChartSet[a] = ChartHead[a];
 		for (; a < NewChartCount; a++)
 		{
-			NewChartSet[a] = (Chart*)malloc(sizeof(Chart));
-			if (!NewChartSet[a])
+			tempChartSet[a] = (Chart*)malloc(sizeof(Chart));
+			if (!tempChartSet[a])
 			{
 				if (a != ChartCount)
 					for (a--; a >= ChartCount; a--)
 					{
-						free(NewChartSet[a]);
+						free(tempChartSet[a]);
 					}
-				free(NewChartSet);
+				free(tempChartSet);
 				return ERR_MEMORYNOTENOUGH;
 			}
 		}
 	}
 	if (ChartHead)
 		free(ChartHead);
-	ChartHead = NewChartSet;
+	ChartHead = tempChartSet;
 	AlloctedChartCount = NewChartCount;
 	ChartCount = NewChartCount;
 	return SUCCESS;
@@ -1310,7 +1588,7 @@ ErrVal FreeChartSet()
 	int a;
 	if (!ChartHead)
 		return SUCCESS;
-	
+
 	for (a = 0; a < ChartCount; a++)
 	{
 		if (ChartHead[a]) {
@@ -1431,7 +1709,7 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 /*
 填充一个List(包含IndexList和TitleList),从0开始填充,会自动初始化内存
 Count 在List作为IndexList时一定不要超过表中的行数
-		在作为TitleList时一定不要超过表中的标题的数量
+在作为TitleList时一定不要超过表中的标题的数量
 OperateList 中的list成员如果是指向数组的指针请设置为0
 */
 ErrVal FillList(List *OperateList, int Count)
@@ -1525,6 +1803,183 @@ ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...)
 }
 
 /*
+对表集进行扩充或初始化
+CreateCount 要新增的表的数量
+ListType 要进行初始化的List类型
+ListType=0	对IndexListHeadSet进行操作
+ListType=1	对TitleListHeadSet进行操作
+*/
+ErrVal NewListSet(int CreateCount, int ListType)
+{
+	int a;
+	List** tempListSet = NULL;	//新的List集
+	int NewListCount;
+	List** OperateList;
+	int ListCount, AlloctedListCount;
+
+	//把信息对应到指定类型的表
+	switch (ListType)
+	{
+	case 0:
+		OperateList = IndexListHeadSet;
+		ListCount = IndexListCount;
+		AlloctedListCount = AlloctedIndexListCount;
+		break;
+	case 1:
+		OperateList = TitleListHeadSet;
+		ListCount = TitleListCount;
+		AlloctedListCount = AlloctedTitleListCount;
+		break;
+	default:
+		return ERR_ILLEGALPARAM;
+		break;
+	}
+
+	if (CreateCount <= 0)
+		return ERR_ILLEGALPARAM;
+
+	if (ListCount < 0)
+		ListCount = 0;
+
+	NewListCount = ListCount + CreateCount;
+	if (NewListCount <= ListCount)
+		return ERR_ILLEGALPARAM;
+
+	if (AlloctedListCount <= 0)
+	{
+		//全新初始化List集
+		tempListSet = (List**)malloc(sizeof(List*)*CreateCount);
+		if (!tempListSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < CreateCount; a++)
+		{
+			tempListSet[a] = (List*)calloc(sizeof(List), sizeof(List));
+			if (!tempListSet[a])
+			{
+				for (a--; a >= 0; a--)
+					free(tempListSet[a]);
+				free(tempListSet);
+				return ERR_MEMORYNOTENOUGH;
+			}
+		}
+	}/*
+	 //这种情况暂时不会有
+	 else if (NewListCount <= AlloctedListCount)
+	 {
+	 //已分配空间新建表
+	 tempListSet = (List**)malloc(sizeof(List*)*NewListCount);
+	 if (!tempListSet)
+	 return ERR_MEMORYNOTENOUGH;
+	 for (a = 0; a < ListCount; a++)
+	 tempListSet[a] = OperateList[a];
+	 for (a = ListCount; a < NewListCount; a++)
+	 {
+	 tempListSet[a] = (List*)calloc(sizeof(List), sizeof(List));
+	 if (!tempListSet[a])
+	 {
+	 if (a != ListCount)
+	 for (a--; a >= ListCount; a--)
+	 free(tempListSet[a]);
+	 free(tempListSet);
+	 return ERR_MEMORYNOTENOUGH;;
+	 }
+	 }
+	 }*/
+	else {
+		//增量初始化
+		tempListSet = (List**)malloc(sizeof(List*)*NewListCount);
+		if (!tempListSet)
+			return ERR_MEMORYNOTENOUGH;
+		for (a = 0; a < ListCount; a++)
+			tempListSet[a] = OperateList[a];
+		for (; a < NewListCount; a++)
+		{
+			tempListSet[a] = (List*)calloc(sizeof(List), sizeof(List));
+			if (!tempListSet[a])
+			{
+				if (a != ListCount)
+					for (a--; a >= ListCount; a--)
+					{
+						free(tempListSet[a]);
+					}
+				free(tempListSet);
+				return ERR_MEMORYNOTENOUGH;
+			}
+		}
+	}
+	if (OperateList)
+		free(OperateList);
+	switch (ListType)
+	{
+	case 0:
+		IndexListHeadSet = tempListSet;
+		AlloctedIndexListCount = NewListCount;
+		IndexListCount = NewListCount;
+		break;
+	case 1:
+		TitleListHeadSet = tempListSet;
+		AlloctedTitleListCount = NewListCount;
+		TitleListCount = NewListCount;
+		break;
+	}
+	return SUCCESS;
+}
+
+/*
+释放List集
+当不用到所有对应类型(IndexList或TitleList)的表集时,可调用此函数对List集进行内存释放
+ListType 要进行释放的List类型
+ListType=0	对IndexListHeadSet进行操作
+ListType=1	对TitleListHeadSet进行操作
+*/
+ErrVal FreeListSet(int ListType)
+{
+	int a;
+	int ListCount;
+	List** OperateList;
+	switch (ListType)
+	{
+	case 0:
+		if (!IndexListHeadSet)
+			return SUCCESS;
+		OperateList = IndexListHeadSet;
+		ListCount = IndexListCount;
+		break;
+	case 1:
+		if (!TitleListHeadSet)
+			return SUCCESS;
+		OperateList = TitleListHeadSet;
+		ListCount = TitleListCount;
+		break;
+	default:
+		return ERR_ILLEGALPARAM;
+	}
+
+	for (a = 0; a < ListCount; a++)
+	{
+		if (OperateList[a]) {
+			FreeList(OperateList[a]);		//销毁每一个List
+			free(OperateList[a]);
+		}
+	}
+	free(OperateList);
+	switch (ListType)
+	{
+	case 0:
+		IndexListHeadSet = NULL;
+		IndexListCount = 0;
+		AlloctedIndexListCount = 0;
+		break;
+	case 1:
+		TitleListHeadSet = NULL;
+		TitleListCount = 0;
+		AlloctedTitleListCount = 0;
+		break;
+	}
+	return SUCCESS;
+}
+
+/*
 将DestList表复制到SourceList
 */
 ErrVal CopyList(List *SourceList, List *DestList)
@@ -1596,6 +2051,24 @@ int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName)
 	return -1;
 }
 
+/*
+从路径字符串中读取文件名称
+*/
+char* GetFileName(const char* Path)
+{
+	int b;
+	char *returnVal = NULL;
+
+	for (b = (int)strlen(Path); b >= 0; b--)
+		if (Path[b] == '/' || Path[b] == '\\')
+			break;
+	b++;
+
+	returnVal = (char*)malloc(sizeof(char)*(strlen(Path + b) + 1));
+	if (returnVal)
+		strcpy(returnVal, Path + b);
+	return returnVal;
+}
 /*****************************分割线*******************************/
 /**************************以下代码作废****************************/
 
@@ -1625,117 +2098,6 @@ void WriteIni(char* File, int *list, int n)
 	}
 	fclose(f);
 	return;
-}
-
-
-/*
-加入一个新的学生
-list 当前正在处理的学生的下标集合
-n list中元素的个数
-*/
-int NewStudent(int *list, int *n)
-{
-	char ***temp;
-	int a;
-	//确定是否有空间保存数据
-	if (StudentCapacity <= StudentCount) {
-		StudentCapacity = StudentCount + ADDITIONAL;
-		temp = (char***)malloc(sizeof(char**)*StudentCapacity);
-		if (!temp)
-			WRONGEXIT("内存不足");
-		for (a = 0; a < StudentCount; a++)
-			temp[a] = StudentList[a];
-		free(StudentList);
-		StudentList = temp;
-	}
-	//对最后一个元素进行写入,到这里可以确定StudentList[StudentCount]一定可以保存数据
-	if (UnitCount > 0) {
-		StudentList[StudentCount] = (char**)malloc(sizeof(char*)*UnitCount);
-		if (!StudentList[StudentCount])
-			WRONGEXIT("内存不足");
-		for (a = 0; a < UnitCount; a++) {
-			if (UnitHeadlimits[a] < 1) {
-				UnitHeadlimits[a] = 1;
-			}
-			StudentList[StudentCount][a] = (char*)malloc(sizeof(char)*(UnitHeadlimits[a] + 1));
-			if (!StudentList[StudentCount][a])
-				WRONGEXIT("内存不足");
-			StudentList[StudentCount][a][0] = '0';		//初始化单元格数据
-			StudentList[StudentCount][a][1] = 0;
-		}
-	}
-
-	list[*n] = StudentCount;//把新的学生的下标传递给名单
-	*n += 1;
-	StudentCount++;
-	return *n;
-}
-
-/*
-删除指定列
-Unit要删除的列的下标
-*/
-void DeleteUnit(int Unit)
-{
-	int a, b, c;
-	for (a = 0, b = 0; a < UnitCount; a++)
-	{
-		UnitHead[b] = UnitHead[a];
-		UnitHeadlimits[b] = UnitHeadlimits[a];
-		if (a != Unit)
-			b++;
-		else
-			free(UnitHead[a]);
-	}
-	for (a = 0; a < StudentCount; a++)
-	{
-		for (b = 0, c = 0; b < UnitCount; b++)
-		{
-			StudentList[a][c] = StudentList[a][b];
-			if (b != Unit)
-				c++;
-			else
-				free(StudentList[a][b]);
-		}
-	}
-	UnitCount--;
-}
-
-/*
-从名单中剔除某个学生(此函数不会对表进行改动)
-list是要进行修改的表
-n是list表的长度
-StudentNumber是学生在表中的实际编号
-mode是删除模式 0表示删除后取最后一个元素来填补空缺(效率高) 1表示将按原来的顺序
-*/
-void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
-{
-	int a, b = 0;
-	switch (mode)
-	{
-	case 0:
-		//删除指定学生之后用最后一个学生信息填充
-		for (a = 0; a < *n; a++)
-		{
-			if (list[a] == StudentNumber)
-			{
-				list[a] = list[*n - 1];
-				*n -= 1;
-				return;
-			}
-		}
-		break;
-	case 1:
-		//删除指定学生之后,空位之后的学生上移,以此填补空位
-		for (a = 0; a < *n; a++)
-		{
-			list[b] = list[a];
-			if (list[a] != StudentNumber)
-				b++;
-		}
-		*n -= 1;
-		return;
-	}
 }
 
 
