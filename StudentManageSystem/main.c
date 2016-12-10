@@ -37,6 +37,7 @@ int main() {
         switch (Mode) {
             case 1:
                 ReadFromTwoFile_M();
+                printf("SHI is %d",SHI(ChartHead[0], "学号"));
                 break;
                 
 //            case 2:

@@ -57,6 +57,7 @@ void ReadFromTwoFile_M()
         else
         {
             printf("读入成功\n");
+                            printf("SHI is %d",SHI(ChartHead[ChartId-1], "学号"));
             int Pri = 0;
             printf("\n*****************************\n"
                    "1.输出表格\n"
@@ -153,8 +154,9 @@ void SortList_M() {
 
 		switch (Mode) {
 		case 1:
+                printf("SHI is %d",SHI(ChartHead[ChartId-1], "学号"));
 			Sort(ChartHead[ChartId-1], NULL, SHI(ChartHead[ChartId-1], "学号"), SortMode - 1);
-                Display_Chart(ChartHead[ChartId], NULL, NULL, 1);
+            Display_Chart(ChartHead[ChartId-1], NULL, NULL, 1);
 
 			break;
 
