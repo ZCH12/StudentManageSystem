@@ -2069,3 +2069,24 @@ char* GetFileName(const char* Path)
 		strcpy(returnVal, Path + b);
 	return returnVal;
 }
+
+/*
+对字符串进行加密
+*/
+ErrVal Encrypt(char *ResultString, char* SourceString,const char* PassWord)
+{
+	int a,b;
+	int temp;
+	int PassWord_len = (int)strlen(PassWord);
+	int StringLen=(int)strlen(SourceString);
+	for (b=0; StringLen>=0; StringLen--,b=(b+1)%PassWord_len)
+	{
+		temp = *SourceString;
+		temp ^= PassWord[b]+ PassWord_len;
+		*ResultString = (char)temp;
+		ResultString++;
+		SourceString++;
+	}
+	*ResultString = 0;
+	return SUCCESS;
+}
