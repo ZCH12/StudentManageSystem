@@ -20,6 +20,8 @@ Create By ZCR
 #define SORT_DESCENDING	1		//按降序进行排序
 #define DISPLAY_HIDENUMBER	0	//隐藏编号
 #define DISPLAY_SHOWNUMBER	1	//显示编号
+#define LISTTYPE_INDEXLIST	0	//指定为IndexList类型的结构体
+#define LISTTYPE_TITLELIST	1	//指定为TitleList类型的结构体
 
 //函数短名
 #define WTIA WirteToIntArray
@@ -35,7 +37,7 @@ typedef struct
 {
 	//表
 	Chart_t Chart;				//整个表的入口首地址
-	char *ChartName;			//这个表的名字
+	char *ChartName;			//这个表的名称
 
 	//标题
 	int TitleCount;				//存储标题的个数
@@ -59,7 +61,8 @@ typedef struct
 	int *list;			//数组,里面的值存储的是指定表中的实际行(或列)的数组下标
 	int listCount;		//记录数组的个数
 	int AllocatedList;	//已分配的内存
-	int IsOnStack;		//改值为1时表示list是动态分配的
+	int IsOnStack;		//该值为1时表示list是动态分配的
+	char *ListName;		//这个List的名称
 } List, IndexList, TitleList;
 
 /*
@@ -68,15 +71,29 @@ typedef struct
 */
 typedef struct
 {
-	char **Val;
-	char **String;
-	int Count;
+	char **Val;				//映射方案的键存放的位置的首指针
+	char **String;			//映射方案的值存放的位置的首指针
+	int Count;				//映射方案中元素的个数
+	char *MapName;			//此映射方案的名字,默认为读取的文件名称
 } InfoMap;
 
-//全局变量
-extern int ChartCount;				//已使用的表的个数
-extern Chart ** ChartHead;			//表的指针数组
-extern int AlloctedChartCount;		//已分配的表的个数
+/*
+全局外部变量的声明
+*/
+//表集的声明
+extern Chart ** ChartHead;			//全局:表的指针数组
+extern int ChartCount;				//全局:已使用的表的个数
+extern int AlloctedChartCount;		//全局:已分配的表的个数
+
+//两种List的声明
+extern IndexList **IndexListHeadSet;//全局:IndexList的指针数组
+extern int IndexListCount;			//全局:已使用的IndexList的个数
+extern int AlloctedIndexListCount;	//全局:已分配的IndexList的个数
+
+extern TitleList **TitleListHeadSet;//全局:TitleList的指针数组
+extern int TitleListCount;			//全局:已使用的TitleList的个数
+extern int AlloctedTitleListCount;	//全局:已分配的TitleList的个数
+
 
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
@@ -84,7 +101,7 @@ ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateCha
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
-//表指针数组操作函数
+//表集操作函数
 ErrVal NewChartSet(int CreateCount);
 ErrVal FreeChartSet();
 
@@ -95,7 +112,6 @@ ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* Titl
 ErrVal Translate(Chart *OperateChart,int TitleIndex,InfoMap *MapStruct);
 ErrVal FreeChart(Chart *OperateChart);
 
-
 //对List操作的函数
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode);
 ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex, char * DestinString);
@@ -105,6 +121,10 @@ ErrVal CopyList(List *SourceList, List *DestList);
 ErrVal FreeList(List *OperateList);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 
+//List集操作函数
+ErrVal NewListSet(int CreateCount,int ListType);
+ErrVal FreeListSet(int ListType);
+
 //映射关系操作函数
 ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct);
 ErrVal FreeMapStruct(InfoMap *MapStruct);
@@ -112,7 +132,7 @@ ErrVal FreeMapStruct(InfoMap *MapStruct);
 //基础功能函数
 int StrCmp(const char *A, const char *B);
 int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName);
-
+char* GetFileName(const char* Path);
 
 
 /*
