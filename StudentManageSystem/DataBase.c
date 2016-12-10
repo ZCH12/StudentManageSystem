@@ -11,7 +11,6 @@ Create By ZCR
 2016-12-10
 
 TODO:存在缺陷
-Untranslate()
 WriteToFile()
 WriteToTwoFile()
 
@@ -523,6 +522,20 @@ ErrVal ReadFromTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateC
 }
 
 /*
+将表写入到两个文件中去
+ParamFileName 要写入参数的文件路径
+DataFileName 要写入表中数据的文件路径
+*/
+ErrVal WriteToTwoFile(char * ParamFileName, char * DataFileName, Chart * OperateChart)
+{
+
+
+
+	return SUCCESS;
+}
+
+
+/*
 读取映射文件
 MapFileName 读取的映射文件的名称
 MapStruct 映射信息存储的结构体
@@ -589,6 +602,10 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 	return SUCCESS;
 }
 
+/*
+释放映射关系结构体
+MapStruct 要释放的结构体
+*/
 ErrVal FreeMapStruct(InfoMap * MapStruct)
 {
 	int a;
@@ -1001,6 +1018,33 @@ ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 			if (!strcmp(temp, Val[b]))
 			{
 				//匹配,进行翻译
+				strcpy(temp, list[b]);
+				break;
+			}
+		}
+	}
+	return SUCCESS;
+}
+/*
+把为字符串解释数字代码
+OperateChart	进行操作的表
+TitleIndex		进行转换的列
+MapStruct		存储映射关系的表
+*/
+ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
+{
+	int a, b;
+	char *temp;
+	char **list = MapStruct->Val;
+	char **Val = MapStruct->String;
+	for (a = 0; a < OperateChart->UsedLines; a++)
+	{
+		temp = OperateChart->Chart[a][TitleIndex];
+		for (b = 0; b < MapStruct->Count; b++)
+		{
+			if (!strcmp(temp, Val[b]))
+			{
+				//匹配,进行逆翻译
 				strcpy(temp, list[b]);
 				break;
 			}
@@ -1833,117 +1877,6 @@ void WriteIni(char* File, int *list, int n)
 	}
 	fclose(f);
 	return;
-}
-
-
-/*
-加入一个新的学生
-list 当前正在处理的学生的下标集合
-n list中元素的个数
-*/
-int NewStudent(int *list, int *n)
-{
-	char ***temp;
-	int a;
-	//确定是否有空间保存数据
-	if (StudentCapacity <= StudentCount) {
-		StudentCapacity = StudentCount + ADDITIONAL;
-		temp = (char***)malloc(sizeof(char**)*StudentCapacity);
-		if (!temp)
-			WRONGEXIT("内存不足");
-		for (a = 0; a < StudentCount; a++)
-			temp[a] = StudentList[a];
-		free(StudentList);
-		StudentList = temp;
-	}
-	//对最后一个元素进行写入,到这里可以确定StudentList[StudentCount]一定可以保存数据
-	if (UnitCount > 0) {
-		StudentList[StudentCount] = (char**)malloc(sizeof(char*)*UnitCount);
-		if (!StudentList[StudentCount])
-			WRONGEXIT("内存不足");
-		for (a = 0; a < UnitCount; a++) {
-			if (UnitHeadlimits[a] < 1) {
-				UnitHeadlimits[a] = 1;
-			}
-			StudentList[StudentCount][a] = (char*)malloc(sizeof(char)*(UnitHeadlimits[a] + 1));
-			if (!StudentList[StudentCount][a])
-				WRONGEXIT("内存不足");
-			StudentList[StudentCount][a][0] = '0';		//初始化单元格数据
-			StudentList[StudentCount][a][1] = 0;
-		}
-	}
-
-	list[*n] = StudentCount;//把新的学生的下标传递给名单
-	*n += 1;
-	StudentCount++;
-	return *n;
-}
-
-/*
-删除指定列
-Unit要删除的列的下标
-*/
-void DeleteUnit(int Unit)
-{
-	int a, b, c;
-	for (a = 0, b = 0; a < UnitCount; a++)
-	{
-		UnitHead[b] = UnitHead[a];
-		UnitHeadlimits[b] = UnitHeadlimits[a];
-		if (a != Unit)
-			b++;
-		else
-			free(UnitHead[a]);
-	}
-	for (a = 0; a < StudentCount; a++)
-	{
-		for (b = 0, c = 0; b < UnitCount; b++)
-		{
-			StudentList[a][c] = StudentList[a][b];
-			if (b != Unit)
-				c++;
-			else
-				free(StudentList[a][b]);
-		}
-	}
-	UnitCount--;
-}
-
-/*
-从名单中剔除某个学生(此函数不会对表进行改动)
-list是要进行修改的表
-n是list表的长度
-StudentNumber是学生在表中的实际编号
-mode是删除模式 0表示删除后取最后一个元素来填补空缺(效率高) 1表示将按原来的顺序
-*/
-void DeleteStudentInList(int *list, int *n, int StudentNumber, int mode)
-{
-	int a, b = 0;
-	switch (mode)
-	{
-	case 0:
-		//删除指定学生之后用最后一个学生信息填充
-		for (a = 0; a < *n; a++)
-		{
-			if (list[a] == StudentNumber)
-			{
-				list[a] = list[*n - 1];
-				*n -= 1;
-				return;
-			}
-		}
-		break;
-	case 1:
-		//删除指定学生之后,空位之后的学生上移,以此填补空位
-		for (a = 0; a < *n; a++)
-		{
-			list[b] = list[a];
-			if (list[a] != StudentNumber)
-				b++;
-		}
-		*n -= 1;
-		return;
-	}
 }
 
 

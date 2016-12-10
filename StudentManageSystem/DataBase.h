@@ -98,8 +98,11 @@ extern int AlloctedTitleListCount;	//全局:已分配的TitleList的个数
 //输入输出函数
 ErrVal ReadFromFile(char *FileName, Chart *OperateChart);
 ErrVal ReadFromTwoFile(char *ParamFileName,char * DataFileName,Chart *OperateChart);
+ErrVal WriteToTwoFile(char *ParamFileName, char * DataFileName, Chart *OperateChart);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
+//ErrVal WriteToFile(char *FileName, Chart *OperateChart);
+
 
 //表集操作函数
 ErrVal NewChartSet(int CreateCount);
@@ -110,6 +113,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList);
 ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...); 
 ErrVal Translate(Chart *OperateChart,int TitleIndex,InfoMap *MapStruct);
+ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct);
 ErrVal FreeChart(Chart *OperateChart);
 
 //对List操作的函数

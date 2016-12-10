@@ -9,7 +9,7 @@
 #define COMMAND_CLEAR() system("cls")
 #endif
 
-#define DELIMS_LINE " ********************************************\n"
+#define DELIMS_LINE " *********************************************************************************************************\n"
 
 
 /*
@@ -42,12 +42,12 @@ void Search_M()
 			" 当前操作表:%s\n"\
 			" 当前操作名单:%s\n"\
 			DELIMS_LINE \
-			" 1.按姓名进行查找\n"\
-			" 2.按学号进行查找\n"\
-			" 3.筛选查找\n"\
-			" 4.在屏幕上输出信息\n"\
-			" 5.高级设置\n"\
-			" 0.返回主菜单\n"\
+			" [1].按姓名进行查找\n"\
+			" [2].按学号进行查找\n"\
+			" [3].筛选查找\n"\
+			" [4].在屏幕上输出信息\n"\
+			" [5].高级设置\n"\
+			" [0].返回主菜单\n"\
 			DELIMS_LINE,
 			ChartHead[CurrentChartIndex]->ChartName,
 			IndexListHeadSet[CurrentIndexListIndex]->ListName
@@ -100,6 +100,7 @@ void SearchBy(const char* SearchTitle)
 			for (a = 0; a < IndexListCount; a++)
 				printf("   [L#%-2d]. %s\n", a + 1, IndexListHeadSet[a]->ListName);
 		}
+		printf(" 搜索基准:%s\n",SearchTitle);
 		printf(DELIMS_LINE);
 		printf(
 			" [1]. 开始查找\n"\
