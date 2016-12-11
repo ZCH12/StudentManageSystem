@@ -17,7 +17,6 @@
 void Demo0()
 {
 	Chart c;
-	int a;
 	IndexList stulist;
 	IndexList stulist2;
 	IndexList stulist3;
@@ -171,18 +170,17 @@ void test4()
 	FillList(IndexListHeadSet[0], 20);
 	FillList(TitleListHeadSet[0], 8);
 	WriteToTwoFileByList("123_p.txt", "123_data.txt", ChartHead[0], IndexListHeadSet[0], TitleListHeadSet[0]);
-
 }
 
 void test5()
 {
 	NewChartSet(5);
-	printf("%d", ReadFromTwoFile("ZCHtestFile\\123_p.txt", "ZCHtestFile\\123_data.txt", ChartHead[0]));
+	printf("%d\n", ReadFromTwoFile("ZCHtestFile\\123_p.txt", "ZCHtestFile\\123_data.txt", ChartHead[0]));
 	NewListSet(5, LISTTYPE_INDEXLIST);
 	NewListSet(5, LISTTYPE_TITLELIST);
 	FillList(IndexListHeadSet[0], 20);
 	FillList(TitleListHeadSet[0], 8);
-	WriteToBinFile_Chart("1.dat", "0", ChartHead[0]);
+	WriteToBinFile_Chart("1.dat", "1234", ChartHead[0]);
 	FreeChart(ChartHead[0]);
 	//ReadFromBinFile("1.dat", " ", ChartHead[1]);
 	//Display_Chart(ChartHead[1], IndexListHeadSet[0], TitleListHeadSet[0], DISPLAY_HIDENUMBER);
@@ -191,7 +189,7 @@ void test5()
 void test6()
 {
 	NewChartSet(5);
-	printf("%d",ReadFromBinFile("1.dat", " ", ChartHead[0]));
+	printf("%d\n",ReadFromBinFile("1.dat", "1234", ChartHead[0]));
 	NewListSet(5, LISTTYPE_INDEXLIST);
 	NewListSet(5, LISTTYPE_TITLELIST);
 	FillList(IndexListHeadSet[0], 20);
@@ -202,14 +200,19 @@ void test6()
 //加密解密测试
 void test7()
 {
-	ErrVal Encrypt(char *ResultString, char* SourceString, const char* PassWord);
+	ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord);
 	char str1[100] = "张驰荣";
 	char str2[100] = "";
 	printf("%s'%d\n", str1,strlen(str1));
-	Encrypt(str2, str1, "123456");
-	printf("%d'%d\n", str2[6],strlen(str2));
-	Encrypt(str2, str2, "123456");
-	printf("%d'%d\n", str2[6], strlen(str2));
+	EncryptChar(str2, str1,strlen(str1), "123");
+	printf("%s'%d\n", str2,strlen(str2));
+	EncryptChar(str2, str2, strlen(str1),"123");
+	printf("%s'%d\n", str2, strlen(str2));
+	/*
+	Encrypt(&a1, &a2,sizeof(int), "123");
+	printf("%d\n",a1);
+	Encrypt(&a1, &a1, sizeof(int),"123");
+	printf("%d\n", a1);*/
 }
 
 int main()
@@ -228,8 +231,8 @@ int main()
 	//test3();
 	//test4();
 	//test5();
-	//test6();
-	test7();
+	test6();
+	//test7();
 	FreeChartSet();
 	FreeListSet(0);
 	FreeListSet(1);

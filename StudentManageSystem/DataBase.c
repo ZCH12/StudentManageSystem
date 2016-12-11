@@ -528,6 +528,7 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 */
 ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart)
 {
+	inline ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
 	Chart *tempChart = (Chart*)malloc(sizeof(Chart));
 	int NewChartLinesCount = 0;
 	int NewChartTitleCount = 0;
@@ -535,6 +536,7 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	char *Piece;
 	FILE *File;
 	char temp[512];
+	int PassWord_len = strlen(PassWord);
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
 
@@ -545,12 +547,14 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	File = fopen(FileName, "rb");
 	fread(temp, sizeof(BIN_HEAD), 1, File);
 	fread(temp, sizeof("CHECK"), 1, File);
+	EncryptChar(temp, temp, sizeof("CHECK")-1, PassWord,PassWord_len);
 	if (strcmp(temp, "CHECK") != 0) {
 		fclose(File);
 		return ERR_WRONGPASSWORD;
 	}
 	fread(&NewChartLinesCount, sizeof(int), 1, File);
 	fread(&NewChartTitleCount, sizeof(int), 1, File);
+
 	if (NewChartLinesCount <= 0 || NewChartTitleCount <= 0) {
 		fclose(File);
 		return ERR_ILLEGALBINFILE;
@@ -578,7 +582,9 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 			return ERR_MEMORYNOTENOUGH;
 		}
 		fread(tempChart->ChartTitle[a], sizeof(char), 32, File);
+		EncryptChar(tempChart->ChartTitle[a], tempChart->ChartTitle[a], sizeof(char)*31, PassWord, PassWord_len);
 		fread(&tempChart->ChartLimits[a], sizeof(int), 1, File);
+		
 	}
 
 	tempChart->Chart = (Chart_t)malloc(sizeof(ChartPiece_t)*NewChartLinesCount);
@@ -620,7 +626,9 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 				free(tempChart);
 				return ERR_MEMORYNOTENOUGH;
 			}
-			fread(tempChart->Chart[a][b], tempChart->ChartLimits[b] + 1, 1, File);
+			
+			fread(tempChart->Chart[a][b], tempChart->ChartLimits[b] + 1, sizeof(char), File);
+			EncryptChar(tempChart->Chart[a][b], tempChart->Chart[a][b], sizeof(char) * tempChart->ChartLimits[b], PassWord, PassWord_len);
 		}
 	}
 	OperateChart->Chart = tempChart->Chart;
@@ -721,8 +729,12 @@ ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileNam
 */
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart)
 {
+	inline ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
 	FILE *File;
 	int a, b;
+	char tempStr[512]="";
+	int tempInt;
+	int PassWord_len = strlen(PassWord);
 
 	if (!OperateChart || !OperateChart->HadInit)
 		return ERR_UNINITIALIZEDCHART;
@@ -736,19 +748,23 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 	//写入标头
 	fwrite(BIN_HEAD, sizeof(BIN_HEAD), 1, File);
 	//解密是否成功的字符串
-	fwrite("CHECK", sizeof("CHECK"), 1, File);
+
+	EncryptChar(tempStr, "CHECK", sizeof("CHECK")-sizeof(char), PassWord, PassWord_len);
+	fwrite(tempStr, sizeof("CHECK"), 1, File);
 	fwrite(&OperateChart->UsedLines, sizeof(int), 1, File);
 	fwrite(&OperateChart->TitleCount, sizeof(int), 1, File);
 	for (a = 0; a < OperateChart->TitleCount; a++)
 	{
-		fwrite(OperateChart->ChartTitle[a], sizeof(char), 32, File);
+		EncryptChar(tempStr, OperateChart->ChartTitle[a], sizeof(char)*31, PassWord, PassWord_len);
+		fwrite(tempStr, sizeof(char), 32, File);
 		fwrite(&OperateChart->ChartLimits[a], sizeof(int), 1, File);
 	}
 	for (a = 0; a < OperateChart->UsedLines; a++)
 	{
 		for (b = 0; b < OperateChart->TitleCount; b++)
 		{
-			fwrite(OperateChart->Chart[a][b], sizeof(char), OperateChart->ChartLimits[b] + 1, File);
+			EncryptChar(tempStr, OperateChart->Chart[a][b], OperateChart->ChartLimits[b], PassWord, PassWord_len);
+			fwrite(tempStr, sizeof(char), OperateChart->ChartLimits[b] + 1, File);
 		}
 	}
 	fclose(File);
@@ -1389,14 +1405,15 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		for (a = 0; a < temp; a++)
 		{
 			temp22 = ShowTitle->list;
-			if (*temp2 < OperateChart->UsedLines)
+			if (*temp2 < OperateChart->UsedLines){
 				for (b = 0; b < temp3; b++)
 				{
 					if (*temp22 < OperateChart->TitleCount)
 						printf("%-*s ", temp5[*temp22], temp4[*temp2][*temp22]);
 					temp22++;
 				}
-			printf("\n");
+				printf("\n");
+			}
 			temp2++;
 		}
 		break;
@@ -1404,13 +1421,15 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		for (a = 0; a < temp; a++)
 		{
 			temp22 = ShowTitle->list;
-			printf("%-7d ", a);
-			for (b = 0; b < temp3; b++)
-			{
-				printf("%-*s ", temp5[*temp22], temp4[*temp2][*temp22]);
-				temp22++;
+			if (*temp2 < OperateChart->UsedLines) {
+				printf("%-7d ", a);
+				for (b = 0; b < temp3; b++)
+				{
+					printf("%-*s ", temp5[*temp22], temp4[*temp2][*temp22]);
+					temp22++;
+				}
+				printf("\n");
 			}
-			printf("\n");
 			temp2++;
 		}
 		break;
@@ -2070,23 +2089,17 @@ char* GetFileName(const char* Path)
 	return returnVal;
 }
 
+
+/***********************************内部函数******************************************/
 /*
-对字符串进行加密
+对字符串进行简单加密解密
 */
-ErrVal Encrypt(char *ResultString, char* SourceString,const char* PassWord)
+inline ErrVal EncryptChar(const char *ResultString,const char *SourceString,int size,const char* PassWord,int PassWord_len)
 {
-	int a,b;
-	int temp;
-	int PassWord_len = (int)strlen(PassWord);
-	int StringLen=(int)strlen(SourceString);
-	for (b=0; StringLen>=0; StringLen--,b=(b+1)%PassWord_len)
-	{
-		temp = *SourceString;
-		temp ^= PassWord[b]+ PassWord_len;
-		*ResultString = (char)temp;
-		ResultString++;
-		SourceString++;
-	}
-	*ResultString = 0;
+	int b;
+	char *SStr = (char*)SourceString,*RStr=(char*)ResultString;
+	for (b=0,size--; size>=0; size--,b=(b+1)%PassWord_len)
+		*RStr++ = ((int)(*SStr++)) ^ (PassWord[b] + PassWord_len);
+	*RStr = 0;
 	return SUCCESS;
 }
