@@ -20,10 +20,10 @@
     <ClCompile Include="HZHfunc.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ZCHtest.c">
+    <ClCompile Include="ZCRfunc.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ZCRfunc.c">
+    <ClCompile Include="main.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

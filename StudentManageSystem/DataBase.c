@@ -547,7 +547,7 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	File = fopen(FileName, "rb");
 	fread(temp, sizeof(BIN_HEAD), 1, File);
 	fread(temp, sizeof("CHECK"), 1, File);
-	EncryptChar(temp, temp, sizeof("CHECK")-1, PassWord,PassWord_len);
+	EncryptChar(temp, temp, sizeof("CHECK") - 1, PassWord, PassWord_len);
 	if (strcmp(temp, "CHECK") != 0) {
 		fclose(File);
 		return ERR_WRONGPASSWORD;
@@ -582,9 +582,9 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 			return ERR_MEMORYNOTENOUGH;
 		}
 		fread(tempChart->ChartTitle[a], sizeof(char), 32, File);
-		EncryptChar(tempChart->ChartTitle[a], tempChart->ChartTitle[a], sizeof(char)*31, PassWord, PassWord_len);
+		EncryptChar(tempChart->ChartTitle[a], tempChart->ChartTitle[a], sizeof(char) * 31, PassWord, PassWord_len);
 		fread(&tempChart->ChartLimits[a], sizeof(int), 1, File);
-		
+
 	}
 
 	tempChart->Chart = (Chart_t)malloc(sizeof(ChartPiece_t)*NewChartLinesCount);
@@ -626,7 +626,7 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 				free(tempChart);
 				return ERR_MEMORYNOTENOUGH;
 			}
-			
+
 			fread(tempChart->Chart[a][b], tempChart->ChartLimits[b] + 1, sizeof(char), File);
 			EncryptChar(tempChart->Chart[a][b], tempChart->Chart[a][b], sizeof(char) * tempChart->ChartLimits[b], PassWord, PassWord_len);
 		}
@@ -732,7 +732,7 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 	inline ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
 	FILE *File;
 	int a, b;
-	char tempStr[512]="";
+	char tempStr[512] = "";
 	int tempInt;
 	int PassWord_len = strlen(PassWord);
 
@@ -749,13 +749,13 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 	fwrite(BIN_HEAD, sizeof(BIN_HEAD), 1, File);
 	//解密是否成功的字符串
 
-	EncryptChar(tempStr, "CHECK", sizeof("CHECK")-sizeof(char), PassWord, PassWord_len);
+	EncryptChar(tempStr, "CHECK", sizeof("CHECK") - sizeof(char), PassWord, PassWord_len);
 	fwrite(tempStr, sizeof("CHECK"), 1, File);
 	fwrite(&OperateChart->UsedLines, sizeof(int), 1, File);
 	fwrite(&OperateChart->TitleCount, sizeof(int), 1, File);
 	for (a = 0; a < OperateChart->TitleCount; a++)
 	{
-		EncryptChar(tempStr, OperateChart->ChartTitle[a], sizeof(char)*31, PassWord, PassWord_len);
+		EncryptChar(tempStr, OperateChart->ChartTitle[a], sizeof(char) * 31, PassWord, PassWord_len);
 		fwrite(tempStr, sizeof(char), 32, File);
 		fwrite(&OperateChart->ChartLimits[a], sizeof(int), 1, File);
 	}
@@ -1405,7 +1405,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		for (a = 0; a < temp; a++)
 		{
 			temp22 = ShowTitle->list;
-			if (*temp2 < OperateChart->UsedLines){
+			if (*temp2 < OperateChart->UsedLines) {
 				for (b = 0; b < temp3; b++)
 				{
 					if (*temp22 < OperateChart->TitleCount)
@@ -2094,11 +2094,11 @@ char* GetFileName(const char* Path)
 /*
 对字符串进行简单加密解密
 */
-inline ErrVal EncryptChar(const char *ResultString,const char *SourceString,int size,const char* PassWord,int PassWord_len)
+ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len)
 {
 	int b;
-	char *SStr = (char*)SourceString,*RStr=(char*)ResultString;
-	for (b=0,size--; size>=0; size--,b=(b+1)%PassWord_len)
+	char *SStr = (char*)SourceString, *RStr = (char*)ResultString;
+	for (b = 0, size--; size >= 0; size--, b = (b + 1) % PassWord_len)
 		*RStr++ = ((int)(*SStr++)) ^ (PassWord[b] + PassWord_len);
 	*RStr = 0;
 	return SUCCESS;
