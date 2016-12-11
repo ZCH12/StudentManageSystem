@@ -104,7 +104,7 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 //ErrVal WriteToFile_Chart();
 ErrVal WriteToTwoFile_Chart(const char *ParamFileName,const char * DataFileName, Chart *OperateChart);
 ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);
-ErrVal WriteToBinFile_Chart(const char *File, const char *PassWord, Chart *OperateChart);
+ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
