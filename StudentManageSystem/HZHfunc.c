@@ -1,15 +1,15 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #define OUTSCANFAGAIN(obj, dline, uline) {if(obj<=dline||obj>=uline){printf("输入错误,请重新输入\n");continue;}}
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include "DataBase.h"
 #include "HZHfunc.h"
 
+
 void ReadFromTwoFile_M()
 {
-	int Again;
+	int Again = 0;
 	int Pri = 0;
 //    请输入读入文件的数量,若输入0则退出
 //    1
@@ -44,11 +44,14 @@ void ReadFromTwoFile_M()
 		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[ChartId - 1]);
 		if (Val != 0)
         {
-			printf("\n*****************************\n"
+            COMMAND_CLEAR();
+			printf(
+                   DELIMS_LINE
                    "读取文件出现错误\n"
-                   "1.重新输入\n"
-                   "0.退出\n"
-                   "*****************************\n");
+                   " [1].重新输入\n"
+                   " [0].返回上级菜单\n"
+                   DELIMS_LINE
+                   );
             
             scanf("%d", &Again);
             if (Again == 1)
@@ -58,24 +61,31 @@ void ReadFromTwoFile_M()
         }
         else
         {
-            printf("读入成功\n");
+            ReadMapFile(imps, &im1);
+            Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "性别"), &im1);
+            ReadMapFile(impc, &im1);
+            Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "学院名称"), &im1);
             
-            printf("\n*****************************\n"
-                   "1.输出表格\n"
-                   "0.保存\n"
-                   "*****************************\n");
+            COMMAND_CLEAR();
+            printf("读入成功\n");
+            printf(
+                   DELIMS_LINE
+                   " [1].输出表格\n"
+                   " [0].保存\n"
+                   DELIMS_LINE
+                   );
             scanf("%d", &Pri);
             if (Pri==1)
             {
-                ReadMapFile(imps, &im1);
-                Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "性别"), &im1);
-                ReadMapFile(impc, &im1);
-                Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "学院名称"), &im1);
-                Display_Chart(ChartHead[ChartId-1], NULL, NULL, 0);
+                COMMAND_CLEAR();
+                Display_Chart(ChartHead[ChartId-1], NULL, NULL, DISPLAY_HIDENUMBER);
             }
             i++;
         }
+        
+
 	}
+    return;
 }
 
 
@@ -119,18 +129,26 @@ void ReadFromTwoFile_M()
 
 
 void SortList_M() {
-	int Mode = 0, SortMode = 1, ChartId;
+    
+    char newunitname[32]="平均成绩";
+    int TitleLimits = 1;
+    
+	int Mode = 0, SortMode = 1, ChartId = 0;
 	int i;
-	int k;
-
-	printf("\n*****************************\n"
-           "1.按照姓名排序\n"
-		"2.按照平均成绩排序\n"
-		"3.按照任意条件排序\n"
-		"0.退出\n"
-           "*****************************\n");
-	while (scanf("%d", &Mode),
-		Mode != 0) {
+    
+    while (COMMAND_CLEAR(),
+            printf(
+                  DELIMS_LINE
+                  " [1].按照姓名排序\n"
+                  " [2].按照平均成绩排序\n"
+                  " [3].按照任意条件排序\n"
+                  " [0].返回主菜单\n"
+                  DELIMS_LINE
+                  ),
+            scanf("%d", &Mode),
+            Mode != 0)
+    {
+            COMMAND_CLEAR();
 		if (Mode <= 0 || Mode >= 3) {
 			printf("输入错误\n");
 			continue;
@@ -138,35 +156,44 @@ void SortList_M() {
         for (i = 0; i<ChartCount; i++) {
             printf("%d.%s\n", i+1, ChartHead[i]->ChartName);
         }
-		printf("请输入所需排序的表格\n");
         
-
-
+		printf("请输入所需排序的表格\n");
 		scanf("%d", &ChartId);
-		printf("\n*****************************\n"
-			"1.升序\n"
-			"2.降序\n"
-               "*****************************\n");
+		printf(
+               DELIMS_LINE
+               " [1].升序排序\n"
+               " [2].降序排序\n"
+               DELIMS_LINE
+               );
 		scanf("%d", &SortMode);
-		for (i = 0; i < ChartCount; i++) {
-			printf("%d.%s\n", i+1, ChartHead[ChartId-1]->ChartTitle[i]);
-		}
-		scanf("%d", &k);
-
 		switch (Mode) {
 		case 1:
-			Sort(ChartHead[ChartId-1], NULL, SHI(ChartHead[ChartId-1], "学号"), SortMode - 1);
-                Display_Chart(ChartHead[ChartId], NULL, NULL, 1);
+                FillList(IndexListHeadSet[ChartId-1], ChartHead[ChartId-1]->UsedLines);
+                Sort(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "学号"), SORT_ASCENDING);
+                Display_Chart(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], NULL, DISPLAY_HIDENUMBER);
 
-			break;
+                continue;
+        case 2:
+                FillList(IndexListHeadSet[ChartId-1], ChartHead[ChartId-1]->UsedLines);
+                
+                CreateNewUnit(ChartHead[ChartId-1], 1, &newunitname, &TitleLimits);
+//                TitleListHeadSet[ChartId-1]->
+                
+                
+                
+                
+                
+                
+                Sort(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "平均成绩"), SORT_ASCENDING);
+                
+                Display_Chart(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], NULL, DISPLAY_HIDENUMBER);
+                
+                continue;
 
-
-			//            case 2:
-			////                Sort(ChartHead[ChartId], <#IndexList *OperateList#>, <#int BaseTitleIndex#>, <#int Mode#>);
-			//                break;
+            
 			//
 			//            case 3:
-			//                <#statements#>
+			//                
 			//                break;
 
 			//            case 0:
@@ -181,7 +208,7 @@ void SortList_M() {
 }
 
 
-//for (i = 0; i<ChartHead[0]->TitleCount; i++) {
+//for (i = 0; i<ChartHead[0]->TitleC<#statements#>ount; i++) {
 //    atoi(ChartHead[0]->Chart[0][SHI(ChartHead[0],"成绩1")]);//第一个表里 的第一个同学的第一个成绩
 //}
 
