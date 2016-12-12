@@ -4,7 +4,7 @@
 #include "menu.h"
 
 
-int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList=0;		//仅作为开关
+int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//仅作为开关
 int CurrentChartIndex = 0;
 int CurrentIndexListIndex = 0;
 int CurrentTitleListIndex = 0;
@@ -25,8 +25,12 @@ void InitALL()
 	NewListSet(5, LISTTYPE_TITLELIST);
 	for (a = 0; a < 5; a++)
 	{
-		FillList(IndexListHeadSet[a], 5);
-		FillList(TitleListHeadSet[a], 5);
+		//IndexListHeadSet[a] = NULL;
+		//TitleListHeadSet[a] = NULL;
+		FillList(IndexListHeadSet[a], 0);
+		strcpy(IndexListHeadSet[a]->ListName, "(未初始化)");
+		FillList(TitleListHeadSet[a], 0);
+		strcpy(TitleListHeadSet[a]->ListName, "(未初始化)");
 	}
 	return;
 }
@@ -55,7 +59,10 @@ void Menu_DisplaySubMenu() {
 	if (ShowChartList)
 	{
 		for (a = 0; a < ChartCount; a++)
-			printf("   [C#%-2d]. %s\n", a + 1, ChartHead[a]->ChartName);
+			if (ChartHead[a] && ChartHead[a]->ChartName)
+				printf("   [C#%-2d]. %s\n", a + 1, ChartHead[a]->ChartName);
+			else
+				printf("   [C#%-2d]. (NULL)\n", a + 1);
 	}
 
 	//名单
@@ -70,7 +77,10 @@ void Menu_DisplaySubMenu() {
 	if (ShowListList)
 	{
 		for (a = 0; a < IndexListCount; a++)
-			printf("   [L#%-2d]. %s\n", a + 1, IndexListHeadSet[a]->ListName);
+			if (IndexListHeadSet[a] && IndexListHeadSet[a]->ListName)
+				printf("   [L#%-2d]. %s\n", a + 1, IndexListHeadSet[a]->ListName);
+			else
+				printf("   [L#%-2d]. (NULL)\n", a + 1);
 	}
 
 	//列配置文件
@@ -85,7 +95,10 @@ void Menu_DisplaySubMenu() {
 	if (ShowTitleList)
 	{
 		for (a = 0; a < TitleListCount; a++)
-			printf("   [T#%-2d]. %s\n", a + 1, TitleListHeadSet[a]->ListName);
+			if (TitleListHeadSet[a] && TitleListHeadSet[a]->ListName)
+				printf("   [T#%-2d]. %s\n", a + 1, TitleListHeadSet[a]->ListName);
+			else
+				printf("   [T#%-2d]. (NULL)\n", a + 1);
 	}
 	return;
 }

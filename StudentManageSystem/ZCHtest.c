@@ -1,7 +1,7 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <string.h>
-#include <vld.h>
+//#include <vld.h>
 #include <time.h>
 #include "DataBase.h"
 #include "menu.h"
@@ -259,7 +259,18 @@ void testmain()
 	FreeAll();
 }
 
+void test10()
+{
+	void SubMenu_Search();
+	InitALL();
+	ReadFromBinFile("1.dat", "1234", ChartHead[0]);
 
+	SubMenu_Search();
+
+	//printf("%s", IndexListHeadSet[0]->ListName);
+	//FillList(IndexListHeadSet[0],50);
+	FreeAll();
+}
 
 int main()
 {
@@ -281,7 +292,8 @@ int main()
 	//test7();
 	//test8();
 	//test9();
-	testmain();
+	//testmain();
+	test10();
 	//FreeChartSet();
 	//FreeListSet(0);
 	//FreeListSet(1);
