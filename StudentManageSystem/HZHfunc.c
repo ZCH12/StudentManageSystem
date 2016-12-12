@@ -7,6 +7,7 @@
 #include "HZHfunc.h"
 
 
+
 void ReadFromTwoFile_M()
 {
 	int Again = 0;
@@ -130,11 +131,12 @@ void ReadFromTwoFile_M()
 
 void SortList_M() {
     
-    char newunitname[32]="平均成绩";
-    int TitleLimits = 1;
     
 	int Mode = 0, SortMode = 1, ChartId = 0;
-	int i;
+	int i, t;
+    
+    
+    
     
     while (COMMAND_CLEAR(),
             printf(
@@ -144,9 +146,7 @@ void SortList_M() {
                   " [3].按照任意条件排序\n"
                   " [0].返回主菜单\n"
                   DELIMS_LINE
-                  ),
-            scanf("%d", &Mode),
-            Mode != 0)
+                  ), scanf("%d", &Mode), Mode != 0)
     {
             COMMAND_CLEAR();
 		if (Mode <= 0 || Mode >= 3) {
@@ -156,7 +156,6 @@ void SortList_M() {
         for (i = 0; i<ChartCount; i++) {
             printf("%d.%s\n", i+1, ChartHead[i]->ChartName);
         }
-        
 		printf("请输入所需排序的表格\n");
 		scanf("%d", &ChartId);
 		printf(
@@ -171,31 +170,29 @@ void SortList_M() {
                 FillList(IndexListHeadSet[ChartId-1], ChartHead[ChartId-1]->UsedLines);
                 Sort(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "学号"), SORT_ASCENDING);
                 Display_Chart(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], NULL, DISPLAY_HIDENUMBER);
-
                 continue;
+                
         case 2:
+                
                 FillList(IndexListHeadSet[ChartId-1], ChartHead[ChartId-1]->UsedLines);
                 
+                
                 CreateNewUnit(ChartHead[ChartId-1], 1, &newunitname, &TitleLimits);
-//                TitleListHeadSet[ChartId-1]->
+                
+                for (i = 0; i < ChartHead[ChartId-1]->UsedLines; i++) {
+                    for (t = 4, sum = 0; t < ChartHead[ChartId-1]->TitleCount-1; t++) {
+                        sum += atof(ChartHead[ChartId-1]->Chart[i][t]);
+                    }
+                    sprintf(ChartHead[ChartId-1]->Chart[i][t], "%.1lf", sum/10);
+                }
                 
                 
-                
-                
-                
-                
-                Sort(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "平均成绩"), SORT_ASCENDING);
-                
+                Sort(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], SHI(ChartHead[ChartId-1], "平均成绩"), SORT_ASCENDING);
                 Display_Chart(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], NULL, DISPLAY_HIDENUMBER);
-                
                 continue;
-
-            
-			//
-			//            case 3:
-			//                
-			//                break;
-
+//			            case 3:
+//			                
+//			                break;
 			//            case 0:
 			//                <#statements#>
 			//                break;
@@ -212,6 +209,12 @@ void SortList_M() {
 //    atoi(ChartHead[0]->Chart[0][SHI(ChartHead[0],"成绩1")]);//第一个表里 的第一个同学的第一个成绩
 //}
 
+void Average() {
+    char newunitname[32]="平均成绩";
+    int TitleLimits = 1;
+    double sum;
+    
+}
 
 
 
