@@ -205,49 +205,49 @@ void SortList_M() {
 
 void Average(int ChartId) {
     int i, t;
-    char NewUnitName[32] = "";
-    int TitleLimits = 0;
+    int ObjNum;
+    char NewUnitName[32] = "平均成绩";
+    int TitleLimits = 1;
     double sum;
-    int Int;
+    
     //我要写的是按照成绩排序，然后我需要吧新建单元独立出来。,
     //average创建一个新的单元，计算之前的平均成绩
     while (1) {
         COMMAND_CLEAR();
         printf(DELIMS_LINE
-               "                 新增单元"
+               "                 计算平均成绩"
                DELIMS_LINE);
         Menu_DisplaySubMenu();
         printf(
                DELIMS_LINE
-               " [1].新增单元数量:%d\n"
-               " [2].新增单元名字:%s\n"
-               " [3].选择计算平均成绩的对象:"
+               " [1].选择计算平均成绩的对象的数量:%d\n"
+               " [2].选择计算平均成绩的对象:"
                " Tip:输入对应数字进行输入数据\n"
                DELIMS_LINE
-               " [4].开始计算\n"
+               " [3].开始计算\n"
                " [0].返回上一级\n"
-               ,TitleLimits, NewUnitName);
+               ,ObjNum, );
         switch (Event_Input()) {
             case 1:
-                printf("请输入新增单元数量\n");
-                scanf("%d", &TitleLimits);
+                printf("请输入计算平均成绩的对象的数量\n");
+                scanf("%d", &ObjNum);
                 break;
             case 2:
-                printf("请输入新增单元名字\n");
-                for (i=0; i<TitleLimits; i++) {
-                    printf("%d.",i+1);
-                    scanf("%s", NewUnitName);
+                printf("请输入计算平均成绩的对象\n");
+                for (i=0; i<ObjNum; i++) {
+                    scanf("%d",xxxxx[i]);
+                    //待完善
+                    
                 }
+                
                 break;
             case 3:
-                break;
-            case 4:
                 CreateNewUnit(ChartHead[ChartId-1], 1, &NewUnitName, &TitleLimits);
                 for (i = 0; i < ChartHead[ChartId-1]->UsedLines; i++) {
                     for (t = 4, sum = 0; t < ChartHead[ChartId-1]->TitleCount-1; t++) {
                         sum += atof(ChartHead[ChartId-1]->Chart[i][t]);
                     }
-                    sprintf(ChartHead[ChartId-1]->Chart[i][t], "%.1lf", sum/10);
+                    sprintf(ChartHead[ChartId-1]->Chart[i][t], "%.1lf", sum/);
                 }
                 
                 
