@@ -1,10 +1,10 @@
-
+ï»¿
 #include <stdio.h>
 #include <stdlib.h>
 #include "menu.h"
 
 
-int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//½ö×÷Îª¿ª¹Ø
+int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//ä»…ä½œä¸ºå¼€å…³
 int CurrentChartIndex = 0;
 int CurrentIndexListIndex = 0;
 int CurrentTitleListIndex = 0;
@@ -15,7 +15,7 @@ int CurrentTitleIndex = 0;
 char InputBuffer[256];
 
 /*
-¸ù¾İÔ¤ÉèÖµ½«ËùÓĞµÄ±äÁ¿½øĞĞ³õÊ¼»¯
+æ ¹æ®é¢„è®¾å€¼å°†æ‰€æœ‰çš„å˜é‡è¿›è¡Œåˆå§‹åŒ–
 */
 void InitALL()
 {
@@ -28,9 +28,9 @@ void InitALL()
 		//IndexListHeadSet[a] = NULL;
 		//TitleListHeadSet[a] = NULL;
 		FillList(IndexListHeadSet[a], 0);
-		strcpy(IndexListHeadSet[a]->ListName, "(Î´³õÊ¼»¯)");
+		strcpy(IndexListHeadSet[a]->ListName, "(æœªåˆå§‹åŒ–)");
 		FillList(TitleListHeadSet[a], 0);
-		strcpy(TitleListHeadSet[a]->ListName, "(Î´³õÊ¼»¯)");
+		strcpy(TitleListHeadSet[a]->ListName, "(æœªåˆå§‹åŒ–)");
 	}
 	return;
 }
@@ -47,15 +47,15 @@ void Menu_DisplaySubMenu() {
 	int a;
 	char* Temp;
 
-	//±í
+	//è¡¨
 	if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) {
 		Temp = ChartHead[CurrentChartIndex]->ChartName;
-		Temp = Temp ? Temp : "Î´ÃüÃû";
+		Temp = Temp ? Temp : "æœªå‘½å";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %c[C] µ±Ç°½øĞĞ²Ù×÷µÄ±í:%s(%d)\n", ShowChartList ? '-' : '+', Temp, CurrentChartIndex);
+	printf(" %c[C] å½“å‰è¿›è¡Œæ“ä½œçš„è¡¨:%s(%d)\n", ShowChartList ? '-' : '+', Temp, CurrentChartIndex);
 	if (ShowChartList)
 	{
 		for (a = 0; a < ChartCount; a++)
@@ -65,15 +65,15 @@ void Menu_DisplaySubMenu() {
 				printf("   [C#%-2d]. (NULL)\n", a + 1);
 	}
 
-	//Ãûµ¥
+	//åå•
 	if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->AllocatedList > 0) {
 		Temp = IndexListHeadSet[CurrentIndexListIndex]->ListName;
-		Temp = Temp ? Temp : "Î´ÃüÃû";
+		Temp = Temp ? Temp : "æœªå‘½å";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %c[L] µ±Ç°½øĞĞ²Ù×÷µÄÃûµ¥:%s(%d)\n", ShowListList ? '-' : '+', Temp, CurrentIndexListIndex);
+	printf(" %c[L] å½“å‰è¿›è¡Œæ“ä½œçš„åå•:%s(%d)\n", ShowListList ? '-' : '+', Temp, CurrentIndexListIndex);
 	if (ShowListList)
 	{
 		for (a = 0; a < IndexListCount; a++)
@@ -83,15 +83,15 @@ void Menu_DisplaySubMenu() {
 				printf("   [L#%-2d]. (NULL)\n", a + 1);
 	}
 
-	//ÁĞÅäÖÃÎÄ¼ş
+	//åˆ—é…ç½®æ–‡ä»¶
 	if (TitleListHeadSet[CurrentTitleListIndex] && TitleListHeadSet[CurrentTitleListIndex]->AllocatedList > 0) {
 		Temp = TitleListHeadSet[CurrentTitleListIndex]->ListName;
-		Temp = Temp ? Temp : "Î´ÃüÃû";
+		Temp = Temp ? Temp : "æœªå‘½å";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %c[T] µ±Ç°½øĞĞ²Ù×÷µÄÁĞÅäÖÃ:%s(%d)\n", ShowTitleList ? '-' : '+', Temp, CurrentTitleListIndex);
+	printf(" %c[T] å½“å‰è¿›è¡Œæ“ä½œçš„åˆ—é…ç½®:%s(%d)\n", ShowTitleList ? '-' : '+', Temp, CurrentTitleListIndex);
 	if (ShowTitleList)
 	{
 		for (a = 0; a < TitleListCount; a++)
@@ -108,12 +108,12 @@ void Menu_DisplaySubMenu_Search()
 	char* Temp;
 	if (ChartHead[CurrentIndexListIndex] && ChartHead[CurrentIndexListIndex]->HadInit != 0) {
 		Temp = ChartHead[CurrentIndexListIndex]->ChartTitle[CurrentTitleIndex];
-		Temp = Temp ? Temp : "Î´ÃüÃû";
+		Temp = Temp ? Temp : "æœªå‘½å";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %s µ±Ç°½øĞĞËÑË÷µÄÁĞ±êÌâ:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
+	printf(" %s å½“å‰è¿›è¡Œæœç´¢çš„åˆ—æ ‡é¢˜:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
 	if (ShowSearchTitleList)
 	{
 		for (a = 0; a < ChartHead[CurrentIndexListIndex]->TitleCount; a++)
@@ -125,7 +125,7 @@ void Menu_DisplaySubMenu_Search()
 
 
 
-//ÏìÓ¦×Ó²Ëµ¥ÊÂ¼ş
+//å“åº”å­èœå•äº‹ä»¶
 int Event_Input()
 {
 	char Choice[5];

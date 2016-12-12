@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
@@ -14,21 +14,21 @@ void MainMenu()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                     Ö÷²Ëµ¥\n"\
+			"                     ä¸»èœå•\n"\
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 
 		printf(
 			DELIMS_LINE\
-			" [1].¶ÁÈ¡ÎÄ¼ş\n"\
-			" [2].¶ÔÑ§Éú½øĞĞÅÅĞò\n"\
-			" [3].²éÕÒÖ¸¶¨Ñ§Éú\n"\
-			" [4].ĞŞ¸ÄÑ§ÉúĞÅÏ¢\n"\
-			" [5].ÏÔÊ¾Ñ§ÉúĞÅÏ¢\n"\
-			" [6].±£´æ(µ¼³ö)ĞÅÏ¢\n"\
-			" [7].¸ß¼¶ÉèÖÃ\n"\
-			" [0].ÍË³öÏµÍ³\n"\
+			" [1].è¯»å–æ–‡ä»¶\n"\
+			" [2].å¯¹å­¦ç”Ÿè¿›è¡Œæ’åº\n"\
+			" [3].æŸ¥æ‰¾æŒ‡å®šå­¦ç”Ÿ\n"\
+			" [4].ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯\n"\
+			" [5].æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯\n"\
+			" [6].ä¿å­˜(å¯¼å‡º)ä¿¡æ¯\n"\
+			" [7].é«˜çº§è®¾ç½®\n"\
+			" [0].é€€å‡ºç³»ç»Ÿ\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -37,23 +37,23 @@ void MainMenu()
 			SubMenu_Read();
 			break;
 		case 2:
-			//ÅÅĞò
+			//æ’åº
 			break;
 		case 3:
-			//²éÕÒ
+			//æŸ¥æ‰¾
 			SubMenu_Search();
 			break;
 		case 4:
-			//ĞŞ¸Ä
+			//ä¿®æ”¹
 			break;
 		case 5:
-			//ÏÔÊ¾Ñ§ÉúĞÅÏ¢
+			//æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯
 			break;
 		case 6:
-			//±£´æĞÅÏ¢
+			//ä¿å­˜ä¿¡æ¯
 			break;
 		case 7:
-			//¸ß¼¶ÉèÖÃ
+			//é«˜çº§è®¾ç½®
 			break;
 		case 0:
 			exit(0);
@@ -62,7 +62,7 @@ void MainMenu()
 	return 0;
 }
 
-//¶ÁÈ¡Êı¾İ×Ó²Ëµ¥
+//è¯»å–æ•°æ®å­èœå•
 void SubMenu_Read()
 {
 	void Sub_ChoiceFileToRead1();
@@ -72,25 +72,25 @@ void SubMenu_Read()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    ¶ÁÈ¡ÎÄ¼ş\n"
+			"                    è¯»å–æ–‡ä»¶\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].´ÓÎÄ±¾ÎÄ¼ş¶ÁÈ¡\n"\
-			" [2].´Ó¶ş½øÖÆÎÄ¼ş¶ÁÈ¡\n"\
-			" [0].·µ»ØÖ÷²Ëµ¥\n"
+			" [1].ä»æ–‡æœ¬æ–‡ä»¶è¯»å–\n"\
+			" [2].ä»äºŒè¿›åˆ¶æ–‡ä»¶è¯»å–\n"\
+			" [0].è¿”å›ä¸»èœå•\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			//´ÓÎÄ±¾¶ÁÈ¡Êı¾İ
+			//ä»æ–‡æœ¬è¯»å–æ•°æ®
 			Sub_ChoiceFileToRead1();
 			break;
 		case 2:
-			//´Ó¶ş½øÖÆÎÄ¼ş¶ÁÈ¡Êı¾İ
+			//ä»äºŒè¿›åˆ¶æ–‡ä»¶è¯»å–æ•°æ®
 			Sub_ChoiceFileToRead2();
 			break;
 		case 0:
@@ -98,7 +98,7 @@ void SubMenu_Read()
 		}
 	}
 }
-//´ÓÎÄ±¾¶ÁÈ¡Êı¾İ
+//ä»æ–‡æœ¬è¯»å–æ•°æ®
 void Sub_ChoiceFileToRead1()
 {
 	char ParamFilePath[512] = "";
@@ -112,57 +112,57 @@ void Sub_ChoiceFileToRead1()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                 Ñ¡ÔñÒª¶ÁÈ¡µÄÎÄ¼ş\n"
+			"                 é€‰æ‹©è¦è¯»å–çš„æ–‡ä»¶\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 
 		printf(
 			DELIMS_LINE\
-			" [1].²ÎÊıÁĞ±íÎÄ¼şÂ·¾¶:%s\n"\
-			" [2].Êı¾İÎÄ¼şÂ·¾¶:%s\n"\
-			" [3].ĞÔ±ğÓ³ÉäÎÄ¼şÂ·¾¶:%s\n"\
-			" [4].Ñ§ÔºĞÅÏ¢Ó³ÉäÎÄ¼şÂ·¾¶:%s\n"
-			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n",
+			" [1].å‚æ•°åˆ—è¡¨æ–‡ä»¶è·¯å¾„:%s\n"\
+			" [2].æ•°æ®æ–‡ä»¶è·¯å¾„:%s\n"\
+			" [3].æ€§åˆ«æ˜ å°„æ–‡ä»¶è·¯å¾„:%s\n"\
+			" [4].å­¦é™¢ä¿¡æ¯æ˜ å°„æ–‡ä»¶è·¯å¾„:%s\n"
+			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n",
 			ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath
 		);
 		printf(
 			DELIMS_LINE\
-			" [5].¿ªÊ¼¶ÁÈ¡\n"\
-			" [0].·µ»ØÉÏÒ»¼¶\n"
+			" [5].å¼€å§‹è¯»å–\n"\
+			" [0].è¿”å›ä¸Šä¸€çº§\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("ÇëÊäÈë²ÎÊıÁĞ±íÎÄ¼şÂ·¾¶:\n");
+			printf("è¯·è¾“å…¥å‚æ•°åˆ—è¡¨æ–‡ä»¶è·¯å¾„:\n");
 			scanf("%s", ParamFilePath);
 			break;
 		case 2:
-			printf("ÇëÊäÈëÊı¾İÎÄ¼şÂ·¾¶:\n");
+			printf("è¯·è¾“å…¥æ•°æ®æ–‡ä»¶è·¯å¾„:\n");
 			scanf("%s", DataFilePath);
 			break;
 		case 3:
-			printf("ÇëÊäÈëĞÔ±ğÓ³ÉäÎÄ¼şÂ·¾¶:\n");
+			printf("è¯·è¾“å…¥æ€§åˆ«æ˜ å°„æ–‡ä»¶è·¯å¾„:\n");
 			scanf("%s", SexTranslateFilePath);
 			break;
 		case 4:
-			printf("ÇëÊäÈëÑ§ÔºĞÅÏ¢Ó³ÉäÎÄ¼şÂ·¾¶:\n");
+			printf("è¯·è¾“å…¥å­¦é™¢ä¿¡æ¯æ˜ å°„æ–‡ä»¶è·¯å¾„:\n");
 			scanf("%s", CollegeTranslateFilePath);
 			break;
 		case 5:
 			returnVal = ReadFromTwoFile(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex]);
 			if (!returnVal)
 			{
-				printf("¶ÁÈ¡Êı¾İÎÄ¼ş³É¹¦\n");
-				//¼ÌĞø·­Òë
-				returnVal = SHI(ChartHead[CurrentChartIndex], "ĞÔ±ğ");
+				printf("è¯»å–æ•°æ®æ–‡ä»¶æˆåŠŸ\n");
+				//ç»§ç»­ç¿»è¯‘
+				returnVal = SHI(ChartHead[CurrentChartIndex], "æ€§åˆ«");
 				if (returnVal != -1) {
 					ReadMapFile(SexTranslateFilePath, &im);
 					Translate(ChartHead[CurrentChartIndex], returnVal, &im);
 					FreeMapStruct(&im);
 				}
-				returnVal = SHI(ChartHead[CurrentChartIndex], "Ñ§ÔºÃû³Æ");
+				returnVal = SHI(ChartHead[CurrentChartIndex], "å­¦é™¢åç§°");
 				if (returnVal != -1) {
 					ReadMapFile(CollegeTranslateFilePath, &im);
 					Translate(ChartHead[CurrentChartIndex], returnVal, &im);
@@ -170,20 +170,20 @@ void Sub_ChoiceFileToRead1()
 				}
 			}
 			else if (returnVal == ERR_OPENFILE) {
-				printf("¶ÁÈ¡ÎÄ¼şÊ§°Ü,ÇëÈ·ÈÏÂ·¾¶ÊÇ·ñÕıÈ·,");
+				printf("è¯»å–æ–‡ä»¶å¤±è´¥,è¯·ç¡®è®¤è·¯å¾„æ˜¯å¦æ­£ç¡®,");
 			}
 			else if (returnVal == ERR_NOTSTANDARDFILE) {
-				printf("Ä¿±êÎÄ¼ş²»·ûºÏ±ê×¼,Çë»»Ò»¸öÎÄ¼şÔÙÊÔ\n");
+				printf("ç›®æ ‡æ–‡ä»¶ä¸ç¬¦åˆæ ‡å‡†,è¯·æ¢ä¸€ä¸ªæ–‡ä»¶å†è¯•\n");
 			}
 			getch();
-			//¶ÁÈ¡Êı¾İ
+			//è¯»å–æ•°æ®
 			break;
 		case 0:
 			return 0;
 		}
 	}
 }
-//´Ó¶ş½øÖÆÎÄ¼ş¶ÁÈ¡Êı¾İ
+//ä»äºŒè¿›åˆ¶æ–‡ä»¶è¯»å–æ•°æ®
 void Sub_ChoiceFileToRead2()
 {
 	char FilePath[512] = "";
@@ -194,38 +194,38 @@ void Sub_ChoiceFileToRead2()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                 Ñ¡ÔñÒª¶ÁÈ¡µÄÎÄ¼ş\n"
+			"                 é€‰æ‹©è¦è¯»å–çš„æ–‡ä»¶\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE
-			" [1].¶ş½øÖÆÎÄ¼ş´æ·ÅÂ·¾¶:%s\n"\
-			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n",
+			" [1].äºŒè¿›åˆ¶æ–‡ä»¶å­˜æ”¾è·¯å¾„:%s\n"\
+			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n",
 			FilePath
 		);
 		printf(
 			DELIMS_LINE\
-			" [2].¿ªÊ¼¶ÁÈ¡\n"\
-			" [0].·µ»ØÉÏÒ»¼¶\n"
+			" [2].å¼€å§‹è¯»å–\n"\
+			" [0].è¿”å›ä¸Šä¸€çº§\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("ÇëÊäÈë¶ş½øÖÆÎÄ¼ş´æ·ÅÂ·¾¶:\n");
+			printf("è¯·è¾“å…¥äºŒè¿›åˆ¶æ–‡ä»¶å­˜æ”¾è·¯å¾„:\n");
 			scanf("%s", FilePath);
 			break;
 		case 2:
-			printf("ÇëÊäÈëÎÄ¼şÃÜÂëÃÜÂë:\n");
+			printf("è¯·è¾“å…¥æ–‡ä»¶å¯†ç å¯†ç :\n");
 			scanf("%s", PassWord);
 			returnVal = ReadFromBinFile(FilePath, PassWord, ChartHead[CurrentChartIndex]);
 			if (!returnVal)
-				printf("¶ÁÈ¡ÎÄ¼ş³É¹¦\n");
+				printf("è¯»å–æ–‡ä»¶æˆåŠŸ\n");
 			else if (returnVal == ERR_WRONGPASSWORD)
-				printf("ÃÜÂë´íÎó,ÎŞ·¨¶ÁÈ¡ÎÄ¼ş\n");
+				printf("å¯†ç é”™è¯¯,æ— æ³•è¯»å–æ–‡ä»¶\n");
 			else if (returnVal == ERR_OPENFILE)
-				printf("ÎÄ¼şÂ·¾¶´íÎó\n");
+				printf("æ–‡ä»¶è·¯å¾„é”™è¯¯\n");
 			getch();
 			break;
 		case 0:
@@ -235,7 +235,7 @@ void Sub_ChoiceFileToRead2()
 }
 
 
-//ËÑË÷Êı¾İ×Ó²Ëµ¥
+//æœç´¢æ•°æ®å­èœå•
 void SubMenu_Search()
 {
 	void Sub_Search1();
@@ -245,34 +245,34 @@ void SubMenu_Search()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                     ËÑË÷ĞÅÏ¢\n"\
+			"                     æœç´¢ä¿¡æ¯\n"\
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		Menu_DisplaySubMenu_Search();
 		printf(
 			DELIMS_LINE\
-			" [1].°´ĞÕÃû½øĞĞ²éÕÒ\n"\
-			" [2].°´Ñ§ºÅ½øĞĞ²éÕÒ\n"\
-			" [3].°´Ñ¡¶¨ĞÅÏ¢µã½øĞĞ²éÕÒ\n"\
-			" [4].ÏÔÊ¾½á¹û\n"\
-			" [0].·µ»ØÖ÷²Ëµ¥\n"\
+			" [1].æŒ‰å§“åè¿›è¡ŒæŸ¥æ‰¾\n"\
+			" [2].æŒ‰å­¦å·è¿›è¡ŒæŸ¥æ‰¾\n"\
+			" [3].æŒ‰é€‰å®šä¿¡æ¯ç‚¹è¿›è¡ŒæŸ¥æ‰¾\n"\
+			" [4].æ˜¾ç¤ºç»“æœ\n"\
+			" [0].è¿”å›ä¸»èœå•\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			returnVal = SHI(ChartHead[0], "ĞÕÃû");
+			returnVal = SHI(ChartHead[0], "å§“å");
 			if (returnVal != -1)
 			{
 				CurrentTitleIndex = returnVal;
 				Sub_Search1();
 			}
 			getch();
-			//°´ĞÕÃû½øĞĞ²éÕÒ
+			//æŒ‰å§“åè¿›è¡ŒæŸ¥æ‰¾
 			break;
 		case 2:
-			returnVal = SHI(ChartHead[0], "Ñ§ºÅ");
+			returnVal = SHI(ChartHead[0], "å­¦å·");
 			if (returnVal != -1)
 			{
 				CurrentTitleIndex = returnVal;
@@ -293,16 +293,16 @@ void SubMenu_Search()
 		}
 	}
 }
-//Sub_Search1µÄ×Ó¹¦ÄÜ
+//Sub_Search1çš„å­åŠŸèƒ½
 void Sub_Search1()
 {
 	int WhichListSaveTo();
 	int returnVal, SaveIndex;
 	char SearchString[512];
 	if (CurrentChartIndex >= 0 && CurrentChartIndex < ChartHead[CurrentChartIndex]->TitleCount) {
-		printf("ÇëÊäÈëÒªËÑË÷µÄ%s:\n", ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex]);
+		printf("è¯·è¾“å…¥è¦æœç´¢çš„%s:\n", ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex]);
 		scanf("%s", SearchString);
-		printf("ÇëÑ¡Ôñ±£´æ½á¹ûµÄÃûµ¥:\n");
+		printf("è¯·é€‰æ‹©ä¿å­˜ç»“æœçš„åå•:\n");
 		SaveIndex = WhichListSaveTo();
 		if (!IndexListHeadSet[SaveIndex] || IndexListHeadSet[SaveIndex]->AllocatedList == 0)
 			if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0)
@@ -313,32 +313,32 @@ void Sub_Search1()
 		if (!returnVal)
 		{
 			if (IndexListHeadSet[SaveIndex]->listCount > 0) {
-				printf("³É¹¦ÕÒµ½ÒÔÏÂÊı¾İ\n");
+				printf("æˆåŠŸæ‰¾åˆ°ä»¥ä¸‹æ•°æ®\n");
 				Display_Chart(ChartHead[0], IndexListHeadSet[SaveIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
 				CurrentTitleIndex = SaveIndex;
-				printf("¹²ÕÒµ½%d¸ö½á¹û\n", IndexListHeadSet[SaveIndex]->listCount);
+				printf("å…±æ‰¾åˆ°%dä¸ªç»“æœ\n", IndexListHeadSet[SaveIndex]->listCount);
 			}
 			else
-				printf("Ã»ÓĞÕÒµ½Ïà¹ØÊı¾İ\n");
+				printf("æ²¡æœ‰æ‰¾åˆ°ç›¸å…³æ•°æ®\n");
 		}
 		else if (returnVal == ERR_ILLEGALCHART) {
-			printf("´íÎóµÄ±í,¿ÉÄÜÃ»ÓĞ¶ÁÈ¡¹ıÎÄ¼ş\n");
+			printf("é”™è¯¯çš„è¡¨,å¯èƒ½æ²¡æœ‰è¯»å–è¿‡æ–‡ä»¶\n");
 		}
 	}
 	else
-		printf("²Ù×÷Ê§°Ü\n");
+		printf("æ“ä½œå¤±è´¥\n");
 }
-//Sub_Search1µÄ×Ó¹¦ÄÜ
+//Sub_Search1çš„å­åŠŸèƒ½
 int WhichListSaveTo()
 {
 	int a, b = -1;
-	printf(" ÇëÎÊÄãĞèÒªÔÚÄÄ¸öÃûµ¥ÖĞ´æ·Å½á¹û\n");
-	printf("ÇëÊäÈëÒ»¸öÊı×Ö½øĞĞÑ¡Ôñ\n");
+	printf(" è¯·é—®ä½ éœ€è¦åœ¨å“ªä¸ªåå•ä¸­å­˜æ”¾ç»“æœ\n");
+	printf("è¯·è¾“å…¥ä¸€ä¸ªæ•°å­—è¿›è¡Œé€‰æ‹©\n");
 	for (a = 0; a < IndexListCount; a++)
 		if (IndexListHeadSet[a] && IndexListHeadSet[a]->ListName)
 			printf("  [%d]. %s\n", a + 1, IndexListHeadSet[a]->ListName);
 		else
-			printf("  [%d]. Î´ÃüÃû\n", a + 1);
+			printf("  [%d]. æœªå‘½å\n", a + 1);
 	while (b<1 || b>IndexListCount)
 		scanf("%d", &b);
 	return b - 1;
