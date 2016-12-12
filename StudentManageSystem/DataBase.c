@@ -543,8 +543,10 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	if (OperateChart->HadInit)
 		FreeChart(OperateChart);//已经初始化的表先释放
 
-
 	File = fopen(FileName, "rb");
+	if (!File)
+		return ERR_OPENFILE;
+
 	fread(temp, sizeof(BIN_HEAD), 1, File);
 	fread(temp, sizeof("CHECK"), 1, File);
 	EncryptChar(temp, temp, sizeof("CHECK") - 1, PassWord, PassWord_len);
@@ -1344,7 +1346,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	int *temp2, *temp22, *temp5;	//用于提高性能
 	char ***temp4;				//用于提高性能
 
-	if (!ShowLines)
+	if (!ShowLines||ShowLines->listCount==0)
 	{
 		//如果ShowLines为空,则初始化一个IndexList
 		temp = OperateChart->UsedLines;
@@ -1360,7 +1362,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		}
 		ShowLines = &tempLinelist;
 	}
-	if (!ShowTitle)
+	if (!ShowTitle||ShowTitle->listCount==0)
 	{
 		//如果ShowTitle为空,则初始化一个ShowTitle
 		temp = OperateChart->TitleCount;
@@ -1690,7 +1692,7 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 	if (BaseTitleIndex >= OperateChart->TitleCount)
 		return ERR_ILLEGALPARAM;
 
-	if (!SearchList)
+	if (!SearchList||SearchList->listCount==0)
 	{
 		isNULL = 1;
 		//如果ShowLines为空,则初始化一个IndexList
@@ -1734,12 +1736,24 @@ OperateList 中的list成员如果是指向数组的指针请设置为0
 ErrVal FillList(List *OperateList, int Count)
 {
 	int a;
+	//char temp[20];
 
-	if (Count <= 0)
-		return ERR_ILLEGALPARAM;
+	if (!OperateList)
+		return ERR_ILLEGALCHART;
 
 	if (OperateList->IsOnStack == 1 && (OperateList->list))
 		free(OperateList->list);
+
+	if (Count <= 0)
+	{
+		OperateList->IsOnStack = 0;
+		OperateList->listCount = 0;
+		OperateList->AllocatedList = 0;
+		if (!OperateList->ListName)
+			OperateList->ListName = (char*)malloc(sizeof(char) * 32);
+		strcpy(OperateList->ListName, "空List");
+		return SUCCESS;
+	}
 
 	OperateList->list = (int*)malloc(sizeof(int)*Count);
 	if (!OperateList->list)
@@ -1750,6 +1764,9 @@ ErrVal FillList(List *OperateList, int Count)
 
 	for (a = 0; a < Count; a++)
 		OperateList->list[a] = a;
+	if (!OperateList->ListName)
+		OperateList->ListName = (char*)malloc(sizeof(char) * 32);
+	sprintf(OperateList->ListName, "List(0-%d)", Count);
 	return SUCCESS;
 }
 
@@ -1763,14 +1780,21 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 {
 	va_list ap;
 	int a;
+	//char temp[20];
 	va_start(ap, ListData);
-
-	if (Count <= 0)
-		return ERR_ILLEGALPARAM;
 
 	if (OperateList->IsOnStack == 1 && (OperateList->list))
 		free(OperateList->list);
 
+	if (Count <= 0) {
+		OperateList->listCount = 0;
+		OperateList->IsOnStack = 0;
+		OperateList->AllocatedList = 0;
+		if (!OperateList->ListName)
+			OperateList->ListName = (char*)malloc(sizeof(char) * 32);
+		strcpy(OperateList->ListName, "未命名");
+		return SUCCESS;
+	}
 
 	OperateList->list = (int*)malloc(sizeof(int)*Count);
 	if (!OperateList->list)
@@ -1782,6 +1806,10 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 	OperateList->list[0] = ListData;
 	for (a = 1; a < Count; a++)
 		OperateList->list[a] = va_arg(ap, int);
+
+	if (!OperateList->ListName)
+		OperateList->ListName = (char*)malloc(sizeof(char) * 32);
+	sprintf(OperateList->ListName, "List(%d)", Count);
 	return SUCCESS;
 }
 
@@ -1796,6 +1824,8 @@ ErrVal FreeList(List *OperateList)
 		return ERR_UNINITIALIZEDLIST;
 	if (!OperateList->AllocatedList)
 		return ERR_UNINITIALIZEDLIST;
+	if (OperateList->ListName)
+		free(OperateList->ListName);
 	free(OperateList->list);
 	return SUCCESS;
 }
