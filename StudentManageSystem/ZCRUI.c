@@ -1,11 +1,10 @@
 ﻿#pragma once
+#define  _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 //#include <conio.h>
 #include "ZCRUI.h"
-#if 0
-#define GETCH() getchar()
-#endif
+
 
 void MainMenu()
 {
@@ -317,7 +316,7 @@ void Sub_Search1()
 		returnVal = Search(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], IndexListHeadSet[SaveIndex], CurrentTitleIndex, SearchString);
 		if (!returnVal)
 		{
-			if (IndexListHeadSet[SaveIndex]->listCount > 0) {
+			if (IndexListHeadSet[SaveIndex]&&IndexListHeadSet[SaveIndex]->listCount > 0) {
 				printf("成功找到以下数据\n");
 				Display_Chart(ChartHead[0], IndexListHeadSet[SaveIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
 				CurrentTitleIndex = SaveIndex;

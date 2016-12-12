@@ -40,10 +40,10 @@
     <ClInclude Include="HZHfunc.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
+    <ClInclude Include="ZCRUI.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ZCRUI.h">
+    <ClInclude Include="Menu.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

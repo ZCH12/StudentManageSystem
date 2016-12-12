@@ -1,4 +1,4 @@
-﻿
+﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -115,7 +115,7 @@ void Menu_DisplaySubMenu_Search()
 		Temp = NULL;
 	}
 	printf(" %s 当前进行搜索的列标题:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
-	if (ShowSearchTitleList)
+	if (ShowSearchTitleList&&ChartHead[CurrentIndexListIndex])
 	{
 		for (a = 0; a < ChartHead[CurrentIndexListIndex]->TitleCount; a++)
 			printf("   [S#%-2d]. %s\n", a + 1, ChartHead[CurrentIndexListIndex]->ChartTitle[a]);

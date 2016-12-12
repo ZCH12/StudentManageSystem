@@ -173,7 +173,7 @@
   <ItemGroup>
     <ClInclude Include="DataBase.h" />
     <ClInclude Include="HZHfunc.h" />
-    <ClInclude Include="menu.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="ZCRUI.h" />
   </ItemGroup>
   <ItemGroup>

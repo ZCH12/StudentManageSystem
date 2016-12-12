@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "DataBase.h"
 #include "HZHfunc.h"
-
+#include "menu.h"
 
 
 void ReadFromTwoFile_M()
@@ -208,7 +208,6 @@ void Average(int ChartId) {
     char NewUnitName[32] = "";
     int TitleLimits = 0;
     double sum;
-    int Int;
     //我要写的是按照成绩排序，然后我需要吧新建单元独立出来。,
     //average创建一个新的单元，计算之前的平均成绩
     while (1) {
@@ -257,7 +256,7 @@ void Average(int ChartId) {
     }
 }
 
-
+/*
 void Sub_ChoiceFileToRead1()
 {
     char ParamFilePath[512] = "";
@@ -345,3 +344,4 @@ void Sub_ChoiceFileToRead1()
 
 
 
+*/
