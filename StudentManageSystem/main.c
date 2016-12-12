@@ -19,19 +19,28 @@
 int main() {
 	//    text();
 	int Mode = 0;
-
-
-	while (printf("\n*****************************\n"
-		"1. 原始文件读取旧\n"
+    NewListSet(5, LISTTYPE_INDEXLIST);
+    NewListSet(5, LISTTYPE_TITLELIST);
+    
+    
+    
+    
+    
+    
+    COMMAND_CLEAR();
+	while (printf(
+        DELIMS_LINE
+        " [1]. 原始文件读取旧\n"
 		//                 "2. 原始文件读取新\n"
-		"3. 排序功能\n"
+		" [3]. 排序功能\n"
 		//姓名排序，平均成绩排序，按任意条件排序
-		"4. 输出给定学院学生\n"
-		"5. 修改给定学生成绩信息(修改后的信息，需输出到文件)\n"
-		"6. 按姓名查询学生，输出\n"
-		"7. 修改系统密码\n"
-		"0. 返回上一级菜单\n"
-		"*****************************\n")
+		" [4]. 输出给定学院学生\n"
+		" [5]. 修改给定学生成绩信息(修改后的信息，需输出到文件)\n"
+		" [6]. 按姓名查询学生，输出\n"
+		" [7]. 修改系统密码\n"
+		" [0]. 返回上一级菜单\n"
+		DELIMS_LINE
+                  )
 		, scanf("%d", &Mode)
 		, Mode != 0) {
 		switch (Mode) {
@@ -46,7 +55,10 @@ int main() {
 		case 3:
 			SortList_M();
 			break;
-
+        case 4:
+                
+                break;
+            
 		}
 	}
 	return SUCCESS;
