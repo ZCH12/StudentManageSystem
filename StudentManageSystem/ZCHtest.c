@@ -8,7 +8,6 @@
 #include <stdlib.h>
 #include <crtdbg.h>
 */
-//#include "HZHfunc.h"
 #if 0
 //测试动态创建表
 void Demo0()
