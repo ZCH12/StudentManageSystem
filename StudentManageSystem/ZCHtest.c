@@ -4,11 +4,13 @@
 #include <vld.h>
 #include <time.h>
 #include "DataBase.h"
+#include "menu.h"
+#include "ZCRUI.h"
 /*
 //测试内存泄漏用
 #define CRTDBG_MAP_ALLOC
-#define _CRTDBG_MAP_ALLOC 
-#include <stdlib.h>  
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
 #include <crtdbg.h>
 */
 //#include "HZHfunc.h"
@@ -42,14 +44,14 @@ void Demo0()
 	strcpy(c.Chart[3][2], "4");
 	strcpy(c.Chart[4][2], "5");
 
-    FillList(&titlelist, 3);
-    titlelist.list[0]=1;
-    titlelist.list[1]=0;
-    titlelist.list[2]=2;
-    
+	FillList(&titlelist, 3);
+	titlelist.list[0] = 1;
+	titlelist.list[1] = 0;
+	titlelist.list[2] = 2;
+
 	FillList(&stulist, 5);
 
-	Display_Chart(&c,NULL,NULL,DISPLAY_HIDENUMBER);
+	Display_Chart(&c, NULL, NULL, DISPLAY_HIDENUMBER);
 	/*********************************************************/
 	//排序测试
 	//按姓名升序排序
@@ -104,12 +106,12 @@ void Demo0()
 //测试从双文件中读取数据
 void demo1()
 {
-	InfoMap im = { 0 }, im2 = {0};
+	InfoMap im = { 0 }, im2 = { 0 };
 	ReadFromTwoFile("ZCHtestFile\\stu_param.txt", "ZCHtestFile\\Stu_info.txt", ChartHead[0]);
 
 	//翻译学院代码为学院名称
 	ReadMapFile("ZCHtestFile\\C_info.txt", &im);
-	Translate(ChartHead[0],SHI(ChartHead[0],"学院名称"),&im);
+	Translate(ChartHead[0], SHI(ChartHead[0], "学院名称"), &im);
 	//翻译性别
 	ReadMapFile("ZCHtestFile\\S_info.txt", &im2);
 	Translate(ChartHead[0], SHI(ChartHead[0], "性别"), &im2);
@@ -124,7 +126,7 @@ void demo1()
 //测试CreateNewLine效率
 void test2()
 {
-	clock_t t1, t2,t3;
+	clock_t t1, t2, t3;
 	t1 = clock();
 	ReadFromTwoFile("ZCHtestFile\\stu_param2.txt", "ZCHtestFile\\Stu_info2.txt", ChartHead[0]);
 	t2 = clock();
@@ -141,15 +143,15 @@ void test2()
 
 void test3()
 {
-	void SearchBy(const char* SearchTitle);
-	void Search_M();
-	void SearchBy(const char* SearchTitle);
+	//void SearchBy(const char* SearchTitle);
+	//void Search_M();
+	//void SearchBy(const char* SearchTitle);
 	//printf("%s",GetFileName("C:\\456\\123.txt"));
 	NewChartSet(1);
 
 	//ReadFromTwoFile("ZCHtestFile\\stu_param2.txt", "ZCHtestFile\\Stu_info2.txt", ChartHead[0]);
 
-	printf("%d",ReadFromTwoFile("ZCHtestFile\\123_p.txt", "ZCHtestFile\\123_data.txt", ChartHead[0]));
+	printf("%d", ReadFromTwoFile("ZCHtestFile\\123_p.txt", "ZCHtestFile\\123_data.txt", ChartHead[0]));
 	NewListSet(5, LISTTYPE_INDEXLIST);
 	NewListSet(5, LISTTYPE_TITLELIST);
 	FillList(TitleListHeadSet[0], 5);
@@ -157,7 +159,7 @@ void test3()
 	FillList(IndexListHeadSet[1], ChartHead[0]->UsedLines);
 
 	WriteToTwoFile_Chart("123_p.txt", "123_data.txt", ChartHead[0]);
-	Search_M();
+	//Search_M();
 }
 
 //测试文件的写入
@@ -189,7 +191,7 @@ void test5()
 void test6()
 {
 	NewChartSet(5);
-	printf("%d\n",ReadFromBinFile("1.dat", "1234", ChartHead[0]));
+	printf("%d\n", ReadFromBinFile("1.dat", "1234", ChartHead[0]));
 	NewListSet(5, LISTTYPE_INDEXLIST);
 	NewListSet(5, LISTTYPE_TITLELIST);
 	FillList(IndexListHeadSet[0], 20);
@@ -203,10 +205,10 @@ void test7()
 	ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord);
 	char str1[100] = "张驰荣";
 	char str2[100] = "";
-	printf("%s'%d\n", str1,strlen(str1));
-	EncryptChar(str2, str1,strlen(str1), "123");
-	printf("%s'%d\n", str2,strlen(str2));
-	EncryptChar(str2, str2, strlen(str1),"123");
+	printf("%s'%d\n", str1, strlen(str1));
+	EncryptChar(str2, str1, strlen(str1), "123");
+	printf("%s'%d\n", str2, strlen(str2));
+	EncryptChar(str2, str2, strlen(str1), "123");
 	printf("%s'%d\n", str2, strlen(str2));
 	/*
 	Encrypt(&a1, &a2,sizeof(int), "123");
@@ -214,6 +216,50 @@ void test7()
 	Encrypt(&a1, &a1, sizeof(int),"123");
 	printf("%d\n", a1);*/
 }
+
+/*
+测试显示菜单
+*/
+void test8()
+{
+	NewChartSet(5);
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	NewListSet(5, LISTTYPE_TITLELIST);
+	//void Display_M();
+	//Display_M();
+}
+
+//测试子菜单
+void test9()
+{
+	//InitALL();
+	NewChartSet(5);
+	printf("%d\n", ReadFromBinFile("1.dat", "1234", ChartHead[0]));
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	NewListSet(5, LISTTYPE_TITLELIST);
+	FillList(IndexListHeadSet[0], 20);
+	FillList(TitleListHeadSet[0], 8);
+	while (1) {
+		COMMAND_CLEAR();
+		printf(DELIMS_LINE);
+		Menu_DisplaySubMenu();
+		Menu_DisplaySubMenu_Search();
+		printf(DELIMS_LINE);
+		Event_Input();
+	}
+	system("pause");
+}
+
+//实验中的主菜单,将作为主函数
+void testmain()
+{
+	InitALL();
+
+	MainMenu();
+	FreeAll();
+}
+
+
 
 int main()
 {
@@ -224,18 +270,21 @@ int main()
 	//char *ss = malloc(sizeof(char) * 10);
 	//ss[-1] = 45;
 
-	
+
 	//Demo();
 	//test1();
 	//test2();
 	//test3();
 	//test4();
 	//test5();
-	test6();
+	//test6();
 	//test7();
-	FreeChartSet();
-	FreeListSet(0);
-	FreeListSet(1);
+	//test8();
+	//test9();
+	testmain();
+	//FreeChartSet();
+	//FreeListSet(0);
+	//FreeListSet(1);
 	system("pause");
 
 }

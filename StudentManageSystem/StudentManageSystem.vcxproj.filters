@@ -23,7 +23,13 @@
     <ClCompile Include="ZCRfunc.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="main.c">
+    <ClCompile Include="ZCHtest.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ZCRUI.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,6 +38,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="HZHfunc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ZCRUI.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
