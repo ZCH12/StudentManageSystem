@@ -29,6 +29,7 @@ WriteToTwoFile()
 注意表头的长度限制为31个英文字符
 */
 
+//生成的文件的标识头
 #ifndef BIN_HEAD
 #define BIN_HEAD "DataBaseChartBIN"
 #endif
@@ -46,12 +47,12 @@ TitleList **TitleListHeadSet = NULL;	//TitleList的指针数组
 int TitleListCount = 0;				//已使用的TitleList的个数
 int AlloctedTitleListCount = 0;		//已分配的TitleList的个数
 
-/*
-从文件读取数据到指定表
-File 要读取的文件路径
-OperateChart 要用来存储读入的数据的表
-//待重写
-*/
+									/*
+									从文件读取数据到指定表
+									File 要读取的文件路径
+									OperateChart 要用来存储读入的数据的表
+									//待重写
+									*/
 ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 {
 	FILE *File;
@@ -528,19 +529,20 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 */
 ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart)
 {
-	inline ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
+	ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
 	Chart *tempChart = (Chart*)malloc(sizeof(Chart));
 	int NewChartLinesCount = 0;
 	int NewChartTitleCount = 0;
 	int a, b;
+	char *Piece;
 	FILE *File;
 	char temp[512];
 	int PassWord_len = strlen(PassWord);
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
 
-	if (!tempChart)
-		return ERR_MEMORYNOTENOUGH;
+	if (OperateChart->HadInit)
+		FreeChart(OperateChart);//已经初始化的表先释放
 
 	File = fopen(FileName, "rb");
 	if (!File)
@@ -603,27 +605,6 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	for (a = 0; a < NewChartLinesCount; a++)
 	{
 		tempChart->Chart[a] = (ChartPiece_t)malloc(sizeof(char*)*NewChartTitleCount);
-		if (!tempChart->Chart[a])
-		{
-			fclose(File);
-			for (a--; a >= 0; a--)
-			{
-				for (b = 0; b < NewChartTitleCount; b++)
-				{
-					free(tempChart->Chart[a][b]);
-				}
-				free(tempChart->Chart[a]);
-			}
-			free(tempChart->Chart);
-
-			for (a = 0; a < NewChartTitleCount; a++)
-				free(tempChart->ChartTitle[a]);
-			free(tempChart->ChartTitle);
-			free(tempChart->ChartLimits);
-			free(tempChart);
-			return ERR_MEMORYNOTENOUGH;
-		}
-
 		for (b = 0; b < NewChartTitleCount; b++)
 		{
 			tempChart->Chart[a][b] = (char*)malloc(sizeof(char)*(tempChart->ChartLimits[b] + 1));
@@ -631,9 +612,9 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 			{
 				fclose(File);
 				for (b--; b >= 0; b--)
-					free(tempChart->Chart[a][b]);
+					free(tempChart->ChartTitle[a][b]);
 				free(tempChart->Chart[a]);
-				for (a--; a >= 0; a--)
+				for (a--; a >= NewChartLinesCount; a--)
 				{
 					for (b = 0; b < NewChartTitleCount; b++)
 						free(tempChart->Chart[a][b]);
@@ -643,7 +624,6 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 
 				for (a = 0; a < NewChartTitleCount; a++)
 					free(tempChart->ChartTitle[a]);
-
 				free(tempChart->ChartTitle);
 				free(tempChart->ChartLimits);
 				free(tempChart);
@@ -654,10 +634,6 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 			EncryptChar(tempChart->Chart[a][b], tempChart->Chart[a][b], sizeof(char) * tempChart->ChartLimits[b], PassWord, PassWord_len);
 		}
 	}
-	if (OperateChart->HadInit)
-		FreeChart(OperateChart);//已经初始化的表先释放
-
-
 	OperateChart->Chart = tempChart->Chart;
 	OperateChart->ChartLimits = tempChart->ChartLimits;
 	OperateChart->ChartName = GetFileName(FileName);
@@ -665,7 +641,6 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	OperateChart->HadInit = 1;
 	OperateChart->TitleCount = NewChartTitleCount;
 	OperateChart->UsedLines = NewChartLinesCount;
-	free(tempChart);
 	return SUCCESS;
 }
 
@@ -757,10 +732,11 @@ ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileNam
 */
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart)
 {
-	inline ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
+	ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
 	FILE *File;
 	int a, b;
 	char tempStr[512] = "";
+	int tempInt;
 	int PassWord_len = strlen(PassWord);
 
 	if (!OperateChart || !OperateChart->HadInit)
@@ -1180,7 +1156,7 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 	strcpy(*tempChartTitle, TitleList);		//写入第一个标题 
 	*tempChartLimits = TitleLimits;			//写入第一个标题的内容长度限制
 
-	//对第2-TitleCount个数进行处理
+											//对第2-TitleCount个数进行处理
 	va_start(ap, TitleLimits);
 
 	for (a = 1; a < TitleCount; a++)
@@ -1409,7 +1385,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	temp3 = ShowTitle->listCount;
 	temp5 = OperateChart->ChartLimits;		//取得长度限制的数组
 
-	//显示表头
+											//显示表头
 	if (Mode == 1)
 		printf("编号   ");
 	temp2 = ShowTitle->list;
@@ -1505,7 +1481,7 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 	temp3 = ShowTitle->listCount;
 	temp5 = OperateChart->ChartLimits;		//取得长度限制的数组
 
-	//显示表头
+											//显示表头
 	temp2 = ShowTitle->list;
 	for (a = 0; a < temp3; a++)
 	{
@@ -1604,7 +1580,7 @@ ErrVal NewChartSet(int CreateCount)
 			tempChartSet[a] = ChartHead[a];
 		for (; a < NewChartCount; a++)
 		{
-			tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+			tempChartSet[a] = (Chart*)malloc(sizeof(Chart));
 			if (!tempChartSet[a])
 			{
 				if (a != ChartCount)
@@ -1717,13 +1693,10 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 	if (BaseTitleIndex >= OperateChart->TitleCount)
 		return ERR_ILLEGALPARAM;
 
-	if (!ResultList)
-		return ERR_ILLEGALPARAM;
-
 	if (!SearchList || SearchList->listCount == 0)
 	{
 		isNULL = 1;
-		//如果SearchList为空,则初始化一个IndexList
+		//如果ShowLines为空,则初始化一个IndexList
 		temp = OperateChart->UsedLines;
 		if (!temp)
 		{
@@ -1779,8 +1752,7 @@ ErrVal FillList(List *OperateList, int Count)
 		OperateList->AllocatedList = 0;
 		if (!OperateList->ListName)
 			OperateList->ListName = (char*)malloc(sizeof(char) * 32);
-		if (OperateList->ListName)
-			strcpy(OperateList->ListName, "空List");
+		strcpy(OperateList->ListName, "空List");
 		return SUCCESS;
 	}
 
@@ -1795,8 +1767,7 @@ ErrVal FillList(List *OperateList, int Count)
 		OperateList->list[a] = a;
 	if (!OperateList->ListName)
 		OperateList->ListName = (char*)malloc(sizeof(char) * 32);
-	if (OperateList->ListName)
-		sprintf(OperateList->ListName, "List(0-%d)", Count);
+	sprintf(OperateList->ListName, "List(0-%d)", Count);
 	return SUCCESS;
 }
 
@@ -1822,8 +1793,7 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 		OperateList->AllocatedList = 0;
 		if (!OperateList->ListName)
 			OperateList->ListName = (char*)malloc(sizeof(char) * 32);
-		if (OperateList->ListName)
-			strcpy(OperateList->ListName, "未命名");
+		strcpy(OperateList->ListName, "未命名");
 		return SUCCESS;
 	}
 
@@ -1840,8 +1810,7 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 
 	if (!OperateList->ListName)
 		OperateList->ListName = (char*)malloc(sizeof(char) * 32);
-	if (OperateList->ListName)
-		sprintf(OperateList->ListName, "List(%d)", Count);
+	sprintf(OperateList->ListName, "List(%d)", Count);
 	return SUCCESS;
 }
 
@@ -2150,6 +2119,28 @@ char* GetFileName(const char* Path)
 		strcpy(returnVal, Path + b);
 	return returnVal;
 }
+
+/*
+该函数把一个字符串中的数字截取出来,存进list中
+*/
+ErrVal GetListFromString(char* Input, List *list)
+{
+	int len = strlen(Input);
+	char *temp;
+	int a = 0;
+	const char *Delimer = " \t\n\r";
+	if (list->AllocatedList <= 0 || !list->list)
+		FillList(0, len / 2);
+
+	list->list[0] = atoi(strtok(Input, Delimer));
+	for (a = 1; list != NULL; a++)
+	{
+		list->list[a] = atoi(strtok(Input, Delimer));
+	}
+	list->listCount = a;
+	return SUCCESS;
+}
+
 
 
 /***********************************内部函数******************************************/
