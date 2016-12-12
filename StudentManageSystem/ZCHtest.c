@@ -259,7 +259,7 @@ void test10()
 	InitALL();
 	ReadFromBinFile("1.dat", "1234", ChartHead[0]);
 
-	SubMenu_Search();
+	SubMenu_Display();
 
 	//printf("%s", IndexListHeadSet[0]->ListName);
 	//FillList(IndexListHeadSet[0],50);

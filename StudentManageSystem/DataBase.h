@@ -127,6 +127,7 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 ErrVal InitList(List *OperateList, int Count, int ListData, ...);
 ErrVal FillList(List *OperateList, int Count);
 ErrVal CopyList(List *SourceList, List *DestList);
+ErrVal GetListFromString(char* Input, List *list,int MaxIndex);
 ErrVal FreeList(List *OperateList);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 
