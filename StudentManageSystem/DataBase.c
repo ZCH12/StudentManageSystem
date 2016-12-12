@@ -1604,7 +1604,7 @@ ErrVal NewChartSet(int CreateCount)
 			tempChartSet[a] = ChartHead[a];
 		for (; a < NewChartCount; a++)
 		{
-			tempChartSet[a] = (Chart*)malloc(sizeof(Chart));
+			tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
 			if (!tempChartSet[a])
 			{
 				if (a != ChartCount)
@@ -1717,10 +1717,13 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 	if (BaseTitleIndex >= OperateChart->TitleCount)
 		return ERR_ILLEGALPARAM;
 
+	if (!ResultList)
+		return ERR_ILLEGALPARAM;
+
 	if (!SearchList || SearchList->listCount == 0)
 	{
 		isNULL = 1;
-		//如果ShowLines为空,则初始化一个IndexList
+		//如果SearchList为空,则初始化一个IndexList
 		temp = OperateChart->UsedLines;
 		if (!temp)
 		{

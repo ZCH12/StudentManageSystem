@@ -1,10 +1,5 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<=dline||obj>=uline){printf("输入错误,请重新输入\n");continue;}}
+﻿#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<=dline||obj>=uline){printf("输入错误,请重新输入\n");continue;}}
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "DataBase.h"
-#include "HZHfunc.h"
 #include "menu.h"
 
 

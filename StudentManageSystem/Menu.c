@@ -1,9 +1,8 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "menu.h"
+﻿#include "menu.h"
 
+/********************************************************************************
+窗体通用函数
+********************************************************************************/
 
 int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//仅作为开关
 int CurrentChartIndex = 0;
@@ -11,8 +10,6 @@ int CurrentIndexListIndex = 0;
 int CurrentTitleListIndex = 0;
 int CurrentTitleIndex = 0;
 
-
-//int Choice1;
 char InputBuffer[256];
 
 /*
@@ -26,8 +23,6 @@ void InitALL()
 	NewListSet(5, LISTTYPE_TITLELIST);
 	for (a = 0; a < 5; a++)
 	{
-		//IndexListHeadSet[a] = NULL;
-		//TitleListHeadSet[a] = NULL;
 		FillList(IndexListHeadSet[a], 0);
 		strcpy(IndexListHeadSet[a]->ListName, "(未初始化)");
 		FillList(TitleListHeadSet[a], 0);
@@ -121,10 +116,6 @@ void Menu_DisplaySubMenu_Search()
 			printf("   [S#%-2d]. %s\n", a + 1, ChartHead[CurrentIndexListIndex]->ChartTitle[a]);
 	}
 }
-
-
-
-
 
 //响应子菜单事件
 int Event_Input()
