@@ -1,11 +1,6 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <string.h>
-//#include <vld.h>
+﻿//#include <vld.h>
 #include <time.h>
-#include "DataBase.h"
 #include "menu.h"
-#include "ZCRUI.h"
 /*
 //测试内存泄漏用
 #define CRTDBG_MAP_ALLOC
@@ -14,7 +9,7 @@
 #include <crtdbg.h>
 */
 //#include "HZHfunc.h"
-
+#if 0
 //测试动态创建表
 void Demo0()
 {
@@ -249,7 +244,7 @@ void test9()
 	}
 	system("pause");
 }
-
+#endif
 //实验中的主菜单,将作为主函数
 void testmain()
 {

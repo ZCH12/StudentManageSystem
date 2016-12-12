@@ -167,14 +167,11 @@
     <ClCompile Include="HZHfunc.c" />
     <ClCompile Include="Menu.c" />
     <ClCompile Include="ZCHtest.c" />
-    <ClCompile Include="ZCRfunc.c" />
     <ClCompile Include="ZCRUI.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataBase.h" />
-    <ClInclude Include="HZHfunc.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="ZCRUI.h" />
+    <ClInclude Include="Menu.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ZCHtestFile\C_info.txt" />

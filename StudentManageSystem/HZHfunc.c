@@ -1,11 +1,6 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
-#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<=dline||obj>=uline){printf("输入错误,请重新输入\n");continue;}}
+﻿#define OUTSCANFAGAIN(obj, dline, uline) {if(obj<=dline||obj>=uline){printf("输入错误,请重新输入\n");continue;}}
 
-#include <stdlib.h>
-#include <stdio.h>
-#include "DataBase.h"
-#include "HZHfunc.h"
-
+#include "menu.h"
 
 
 void ReadFromTwoFile_M()
@@ -205,49 +200,48 @@ void SortList_M() {
 
 void Average(int ChartId) {
     int i, t;
-    int ObjNum;
-    char NewUnitName[32] = "平均成绩";
-    int TitleLimits = 1;
+    char NewUnitName[32] = "";
+    int TitleLimits = 0;
     double sum;
-    
     //我要写的是按照成绩排序，然后我需要吧新建单元独立出来。,
     //average创建一个新的单元，计算之前的平均成绩
     while (1) {
         COMMAND_CLEAR();
         printf(DELIMS_LINE
-               "                 计算平均成绩"
+               "                 新增单元"
                DELIMS_LINE);
         Menu_DisplaySubMenu();
         printf(
                DELIMS_LINE
-               " [1].选择计算平均成绩的对象的数量:%d\n"
-               " [2].选择计算平均成绩的对象:"
+               " [1].新增单元数量:%d\n"
+               " [2].新增单元名字:%s\n"
+               " [3].选择计算平均成绩的对象:"
                " Tip:输入对应数字进行输入数据\n"
                DELIMS_LINE
-               " [3].开始计算\n"
+               " [4].开始计算\n"
                " [0].返回上一级\n"
-               ,ObjNum, );
+               ,TitleLimits, NewUnitName);
         switch (Event_Input()) {
             case 1:
-                printf("请输入计算平均成绩的对象的数量\n");
-                scanf("%d", &ObjNum);
+                printf("请输入新增单元数量\n");
+                scanf("%d", &TitleLimits);
                 break;
             case 2:
-                printf("请输入计算平均成绩的对象\n");
-                for (i=0; i<ObjNum; i++) {
-                    scanf("%d",xxxxx[i]);
-                    //待完善
-                    
+                printf("请输入新增单元名字\n");
+                for (i=0; i<TitleLimits; i++) {
+                    printf("%d.",i+1);
+                    scanf("%s", NewUnitName);
                 }
-                
                 break;
             case 3:
+                break;
+            case 4:
                 CreateNewUnit(ChartHead[ChartId-1], 1, &NewUnitName, &TitleLimits);
                 for (i = 0; i < ChartHead[ChartId-1]->UsedLines; i++) {
                     for (t = 4, sum = 0; t < ChartHead[ChartId-1]->TitleCount-1; t++) {
                         sum += atof(ChartHead[ChartId-1]->Chart[i][t]);
                     }
-                    sprintf(ChartHead[ChartId-1]->Chart[i][t], "%.1lf", sum/);
+                    sprintf(ChartHead[ChartId-1]->Chart[i][t], "%.1lf", sum/10);
                 }
                 
                 
@@ -257,7 +251,7 @@ void Average(int ChartId) {
     }
 }
 
-
+/*
 void Sub_ChoiceFileToRead1()
 {
     char ParamFilePath[512] = "";
@@ -345,3 +339,4 @@ void Sub_ChoiceFileToRead1()
 
 
 
+*/
