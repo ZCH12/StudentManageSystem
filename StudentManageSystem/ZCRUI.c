@@ -1,11 +1,15 @@
 ﻿#pragma once
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
+//#include <conio.h>
 #include "ZCRUI.h"
+#if 0
+#define GETCH() getchar()
+#endif
 
 void MainMenu()
 {
+    
 	void SubMenu_Read();
 	void SubMenu_Search();
 
@@ -59,7 +63,7 @@ void MainMenu()
 			exit(0);
 		}
 	}
-	return 0;
+	return ;
 }
 
 //读取数据子菜单
@@ -175,11 +179,11 @@ void Sub_ChoiceFileToRead1()
 			else if (returnVal == ERR_NOTSTANDARDFILE) {
 				printf("目标文件不符合标准,请换一个文件再试\n");
 			}
-			getch();
+			GETCH();
 			//读取数据
 			break;
 		case 0:
-			return 0;
+			return ;
 		}
 	}
 }
@@ -226,10 +230,10 @@ void Sub_ChoiceFileToRead2()
 				printf("密码错误,无法读取文件\n");
 			else if (returnVal == ERR_OPENFILE)
 				printf("文件路径错误\n");
-			getch();
+			GETCH();
 			break;
 		case 0:
-			return 0;
+			return ;
 		}
 	}
 }
@@ -268,7 +272,7 @@ void SubMenu_Search()
 				CurrentTitleIndex = returnVal;
 				Sub_Search1();
 			}
-			getch();
+			GETCH();
 			//按姓名进行查找
 			break;
 		case 2:
@@ -278,15 +282,15 @@ void SubMenu_Search()
 				CurrentTitleIndex = returnVal;
 				Sub_Search1();
 			}
-			getch();
+			GETCH();
 			break;
 		case 3:
 			Sub_Search1();
-			getch();
+			GETCH();
 			break;
 		case 4:
 			Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
-			getch();
+			GETCH();
 			break;
 		case 0:
 			return;
@@ -304,11 +308,12 @@ void Sub_Search1()
 		scanf("%s", SearchString);
 		printf("请选择保存结果的名单:\n");
 		SaveIndex = WhichListSaveTo();
-		if (!IndexListHeadSet[SaveIndex] || IndexListHeadSet[SaveIndex]->AllocatedList == 0)
+        if (!IndexListHeadSet[SaveIndex] || IndexListHeadSet[SaveIndex]->AllocatedList == 0)
 			if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0)
-				FillList(IndexListHeadSet[SaveIndex], IndexListHeadSet[CurrentIndexListIndex]->list);
+				FillList(IndexListHeadSet[SaveIndex], IndexListHeadSet[CurrentIndexListIndex]->listCount);
 			else
-				FillList(IndexListHeadSet[SaveIndex], ChartHead[CurrentChartIndex]->UsedLines);
+                FillList(IndexListHeadSet[SaveIndex], ChartHead[CurrentChartIndex]->UsedLines);
+        
 		returnVal = Search(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], IndexListHeadSet[SaveIndex], CurrentTitleIndex, SearchString);
 		if (!returnVal)
 		{

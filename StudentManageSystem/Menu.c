@@ -1,6 +1,7 @@
 ﻿
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "menu.h"
 
 
@@ -137,8 +138,8 @@ int Event_Input()
 	case 'C':
 		if (Choice[1] == '#')
 		{
-			scanf("%d", &Choice);
-			if (Choice >= 1 && Choice1 <= ChartCount)
+			scanf("%d", &Choice1);
+			if (Choice1 >= 1 && Choice1 <= ChartCount)
 				CurrentChartIndex = Choice1 - 1;
 		}
 		else ShowChartList = !ShowChartList;
