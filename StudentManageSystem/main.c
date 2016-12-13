@@ -1,7 +1,7 @@
 ﻿#include <stdlib.h>
 #include <stdio.h>
-#include "HZHfunc.h"
-#include "ZCRUI.h"
+#include "menu.h"
+
 
 //******学生成绩系统菜单*******
 //1. 原始文件读取
@@ -18,25 +18,20 @@
 void testmain()
 {
     InitALL();
-    
     MainMenu();
     FreeAll();
 }
 
-
 int main() {
     testmain();
-    
+}
     
 //	//    text();
 //	int Mode = 0;
 //    NewListSet(5, LISTTYPE_INDEXLIST);
 //    NewListSet(5, LISTTYPE_TITLELIST);
 //    
-//    
-//    
-//    
-//    
+//
 //    
 //    COMMAND_CLEAR();
 //	while (printf(
@@ -74,7 +69,6 @@ int main() {
 //	}
 //	return SUCCESS;
 
-}
 
 
 

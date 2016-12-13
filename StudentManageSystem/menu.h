@@ -27,6 +27,8 @@ extern int CurrentTitleIndex;
 
 #define DELIMS_LINE " *********************************************************************************************************\n"
 
+
+
 void InitALL();
 void FreeAll();
 void Menu_DisplaySubMenu();
@@ -41,4 +43,6 @@ void ReadFromTwoFile_M();
 //void ReadFromFile_M();
 void SortList_M();
 void text();
-void Average();
+void WorkOutAverage();
+void SortByName1();
+void SortByEx1();
