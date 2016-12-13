@@ -5,10 +5,10 @@
 #include <string.h>
 #include "DataBase.h"
 
-extern int CurrentChartIndex;
-extern int CurrentIndexListIndex;
-extern int CurrentTitleListIndex;
-extern int CurrentTitleIndex;
+extern int CurrentChartIndex;				//最近在操作的表的编号
+extern int CurrentIndexListIndex;			//最近在操作的IndexList的编号
+extern int CurrentTitleListIndex;			//最近在操作的TitleList的编号
+extern int CurrentTitleIndex;				//最近在操作的Chart表中的列的编号
 
 #define CONFIGFILEPATH1 "Config1.config"	//配置文件的路径	
 #define CONFIGFILEPATH2 "Config2.config"	//配置文件的路径	

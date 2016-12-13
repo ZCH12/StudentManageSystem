@@ -4,10 +4,10 @@
 窗体通用函数
 ********************************************************************************/
 int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//仅作为开关
-int CurrentChartIndex = 0;
-int CurrentIndexListIndex = 0;
-int CurrentTitleListIndex = 0;
-int CurrentTitleIndex = 0;
+int CurrentChartIndex = 0;			//最近在操作的表的编号
+int CurrentIndexListIndex = 0;		//最近在操作的IndexList的编号
+int CurrentTitleListIndex = 0;		//最近在操作的TitleList的编号
+int CurrentTitleIndex = 0;			//最近在操作的Chart表中的列的编号
 
 char InputBuffer[256];
 
