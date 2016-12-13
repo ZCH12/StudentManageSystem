@@ -120,17 +120,6 @@ void Menu_DisplaySubMenu_Search()
 void Menu_DisplaySubMenu_Display()
 {
 	int a;
-	/*
-	char* Temp;
-	if (ChartHead[CurrentIndexListIndex] && ChartHead[CurrentIndexListIndex]->HadInit != 0) {
-		Temp = ChartHead[CurrentIndexListIndex]->ChartTitle[CurrentTitleIndex];
-		Temp = Temp ? Temp : "未命名";
-	}
-	else {
-		Temp = NULL;
-	}
-	*/
-	//printf(" %s 当前进行搜索的列标题:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
 	if (ChartHead[CurrentIndexListIndex])
 	{
 		for (a = 0; a < ChartHead[CurrentIndexListIndex]->TitleCount; a++)

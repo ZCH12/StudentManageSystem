@@ -2078,13 +2078,16 @@ ErrVal CopyList(List *SourceList, List *DestList)
 
 /*
 该函数把一个字符串中的数字截取出来,存进list中
+传入的数据 格式类似5 4 2 1 3
+list 存储的目标List
+MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一般是指定Chart表的TitleCount
 */
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 {
 	int len = strlen(Input);
 	char *temp, *temp2;
 	int a = 0;
-	const char *Delimer = " \t\n\r";
+	const char *Delimer = " \t";
 	if (!list)
 		return ERR_ILLEGALPARAM;
 
