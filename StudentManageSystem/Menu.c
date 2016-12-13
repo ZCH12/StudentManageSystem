@@ -3,7 +3,6 @@
 /********************************************************************************
 窗体通用函数
 ********************************************************************************/
-
 int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//仅作为开关
 int CurrentChartIndex = 0;
 int CurrentIndexListIndex = 0;
@@ -30,6 +29,60 @@ void InitALL()
 	}
 	return;
 }
+
+/*
+从配置文件读取配置
+*/
+void ReadConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
+{
+	FILE *File = fopen(CONFIGFILEPATH1, "r");
+	if (File)
+	{
+		fgets(ParamFileName, 512, File);
+		ParamFileName[strlen(ParamFileName) - 1] = 0;
+		fgets(DataFileName, 512, File);
+		DataFileName[strlen(DataFileName) - 1] = 0;
+		fgets(SexFileName, 512, File);
+		SexFileName[strlen(SexFileName) - 1] = 0;
+		fgets(CollageFileName, 512, File);
+		CollageFileName[strlen(CollageFileName) - 1] = 0;
+		fclose(File);
+	}
+}
+
+void ReadConfig2(char * FileName)
+{
+	FILE *File = fopen(CONFIGFILEPATH2, "r");
+	if (File)
+	{
+		fgets(FileName, 512, File);
+		FileName[strlen(FileName)-1]=0;
+		fclose(File);
+	}
+}
+
+void WriteConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
+{
+	FILE *File = fopen(CONFIGFILEPATH1, "w");
+	if (File)
+	{
+		fprintf(File, "%s\n", ParamFileName);
+		fprintf(File, "%s\n", DataFileName);
+		fprintf(File, "%s\n", SexFileName);
+		fprintf(File, "%s\n", CollageFileName);
+		fclose(File);
+	}
+}
+void WriteConfig2(char * FileName)
+{
+	FILE *File = fopen(CONFIGFILEPATH2, "w");
+	if (File)
+	{
+		fprintf(File, "%s\n", FileName);
+		fclose(File);
+	}
+}
+
 
 void FreeAll()
 {
@@ -109,7 +162,7 @@ void Menu_DisplaySubMenu_Search()
 	else {
 		Temp = NULL;
 	}
-	printf(" %s 当前进行搜索的列标题:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
+	printf(" %s 当前进行操作的列标题:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
 	if (ShowSearchTitleList&&ChartHead[CurrentIndexListIndex])
 	{
 		for (a = 0; a < ChartHead[CurrentIndexListIndex]->TitleCount; a++)

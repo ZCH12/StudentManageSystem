@@ -7,6 +7,8 @@ void MainMenu()
 
 	void SubMenu_Read();
 	void SubMenu_Search();
+	void SubMenu_Change();
+	void SubMenu_Display();
 
 	while (1)
 	{
@@ -43,9 +45,11 @@ void MainMenu()
 			SubMenu_Search();
 			break;
 		case 4:
+			SubMenu_Change();
 			//修改
 			break;
 		case 5:
+			SubMenu_Display();
 			//显示学生信息
 			break;
 		case 6:
@@ -61,7 +65,7 @@ void MainMenu()
 	return;
 }
 
-//读取数据子菜单
+//1读取数据子菜单
 void SubMenu_Read()
 {
 	void Sub_ChoiceFileToRead1();
@@ -106,6 +110,8 @@ void Sub_ChoiceFileToRead1()
 	char CollegeTranslateFilePath[512] = "";
 	int returnVal;
 	InfoMap im;
+	ReadConfig1(ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath);
+
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -122,6 +128,7 @@ void Sub_ChoiceFileToRead1()
 			" [2].数据文件路径:%s\n"\
 			" [3].性别映射文件路径:%s\n"\
 			" [4].学院信息映射文件路径:%s\n"
+			"\n"\
 			" Tip:输入对应数字进行输入数据\n",
 			ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath
 		);
@@ -135,19 +142,27 @@ void Sub_ChoiceFileToRead1()
 		{
 		case 1:
 			printf("请输入参数列表文件路径:\n");
-			scanf("%s", ParamFilePath);
+			getchar();
+			fgets(ParamFilePath, 512, stdin);
+			ParamFilePath[strlen(ParamFilePath) - 1] = 0;
 			break;
 		case 2:
 			printf("请输入数据文件路径:\n");
-			scanf("%s", DataFilePath);
+			getchar();
+			fgets(DataFilePath, 512, stdin);
+			DataFilePath[strlen(DataFilePath) - 1] = 0;
 			break;
 		case 3:
 			printf("请输入性别映射文件路径:\n");
-			scanf("%s", SexTranslateFilePath);
+			getchar();
+			fgets(SexTranslateFilePath, 512, stdin);
+			SexTranslateFilePath[strlen(SexTranslateFilePath) - 1] = 0;
 			break;
 		case 4:
 			printf("请输入学院信息映射文件路径:\n");
-			scanf("%s", CollegeTranslateFilePath);
+			getchar();
+			fgets(CollegeTranslateFilePath, 512, stdin);
+			CollegeTranslateFilePath[strlen(CollegeTranslateFilePath) - 1] = 0;
 			break;
 		case 5:
 			returnVal = ReadFromTwoFile(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex]);
@@ -167,6 +182,7 @@ void Sub_ChoiceFileToRead1()
 					Translate(ChartHead[CurrentChartIndex], returnVal, &im);
 					FreeMapStruct(&im);
 				}
+				WriteConfig1(ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath);
 			}
 			else if (returnVal == ERR_OPENFILE) {
 				printf("读取文件失败,请确认路径是否正确,");
@@ -188,6 +204,7 @@ void Sub_ChoiceFileToRead2()
 	char FilePath[512] = "";
 	char PassWord[32] = "";
 	int returnVal;
+	ReadConfig2(FilePath);
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -200,6 +217,7 @@ void Sub_ChoiceFileToRead2()
 		printf(
 			DELIMS_LINE
 			" [1].二进制文件存放路径:%s\n"\
+			"\n"\
 			" Tip:输入对应数字进行输入数据\n",
 			FilePath
 		);
@@ -213,14 +231,18 @@ void Sub_ChoiceFileToRead2()
 		{
 		case 1:
 			printf("请输入二进制文件存放路径:\n");
-			scanf("%s", FilePath);
+			getchar();
+			fgets(FilePath, 512, stdin);
+			FilePath[strlen(FilePath) - 1] = 0;
 			break;
 		case 2:
 			printf("请输入文件密码密码:\n");
 			scanf("%s", PassWord);
 			returnVal = ReadFromBinFile(FilePath, PassWord, ChartHead[CurrentChartIndex]);
-			if (!returnVal)
+			if (!returnVal) {
+				WriteConfig2(FilePath);
 				printf("读取文件成功\n");
+			}
 			else if (returnVal == ERR_WRONGPASSWORD)
 				printf("密码错误,无法读取文件\n");
 			else if (returnVal == ERR_OPENFILE)
@@ -234,7 +256,7 @@ void Sub_ChoiceFileToRead2()
 }
 
 
-//搜索数据子菜单
+//3搜索数据子菜单
 void SubMenu_Search()
 {
 	void Sub_Search1();
@@ -267,6 +289,10 @@ void SubMenu_Search()
 				CurrentTitleIndex = returnVal;
 				Sub_Search1();
 			}
+			else
+			{
+				printf("本表没有姓名字段\n");
+			}
 			GETCH();
 			//按姓名进行查找
 			break;
@@ -277,6 +303,10 @@ void SubMenu_Search()
 				CurrentTitleIndex = returnVal;
 				Sub_Search1();
 			}
+			else
+			{
+				printf("本表没有学号字段\n");
+			}
 			GETCH();
 			break;
 		case 3:
@@ -284,7 +314,11 @@ void SubMenu_Search()
 			GETCH();
 			break;
 		case 4:
-			Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
+
+			if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+			{
+				printf("显示失败\n");
+			}
 			GETCH();
 			break;
 		case 0:
@@ -344,12 +378,102 @@ int WhichListSaveTo()
 	return b - 1;
 }
 
+//4修改学生信息
+void SubMenu_Change()
+{
+	int returnVal;
+	int ChoiceLines = 0;
+	char *temp;
+	while (1)
+	{
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                     修改信息\n"\
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		Menu_DisplaySubMenu_Search();
+		if (ChartHead&&ChartHead[CurrentChartIndex]) {
+			returnVal = SHI(ChartHead[CurrentChartIndex], "姓名");
+			if (returnVal != -1) {
+				if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->Chart&&ChartHead[CurrentChartIndex]->Chart[ChoiceLines] && ChartHead[CurrentChartIndex]->Chart[ChoiceLines][returnVal])
+					temp = ChartHead[CurrentChartIndex]->Chart[ChoiceLines][returnVal];
+				else {
+					returnVal = 0;
+					temp = NULL;
+				}
+			}
+			else temp = NULL;
+		}
+		else temp = NULL;
+		printf(" 当前选择的学生:%s\n", temp);
+		printf(
+			DELIMS_LINE\
+			" [1].选择修改的学生\n"\
+			" [2].查看已选择的学生的信息\n"\
+			" [3].开始修改\n"\
+			" [0].返回主菜单\n"\
+			DELIMS_LINE
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			if (ChartHead&&ChartHead[CurrentChartIndex] && ChoiceLines >= 0 && ChoiceLines < ChartHead[CurrentChartIndex]->UsedLines)
+			{
+				printf(DELIMS_LINE);
+				Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_SHOWNUMBER);
+				printf(DELIMS_LINE\
+					"请通过编号选择学生:\n"
+				);
+				scanf("%d", &returnVal);
+				if (returnVal >= 0 && returnVal < ChartHead[CurrentChartIndex]->UsedLines)
+				{
+					ChoiceLines = returnVal;
+					printf("选择成功\n");
+				}
+				else {
+					printf("输入有误\n");
+				}
+			}
+			else printf("请先正确选择学生\n");
+			GETCH();
+			break;
+		case 2:
+			if (ChartHead&&ChartHead[CurrentChartIndex] && ChoiceLines >= 0 && ChoiceLines < ChartHead[CurrentChartIndex]->UsedLines)
+				Display_Piece(ChartHead[CurrentChartIndex], ChoiceLines, TitleListHeadSet[CurrentTitleListIndex]);
+			else
+				printf("请先正确选择操作学生\n");
+			GETCH();
+			break;
+		case 3:
+			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->Chart&&
+				ChoiceLines >= 0 && ChoiceLines < ChartHead[CurrentChartIndex]->UsedLines&&ChartHead[CurrentChartIndex]->Chart[ChoiceLines]
+				&& CurrentTitleIndex >= 0 && CurrentTitleIndex < ChartHead[CurrentChartIndex]->TitleCount) {
+				printf(
+					" 请输入【%s】的【%s】的值:\n"\
+					"原来的值为:%s\n",
+					temp,
+					ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex],
+					ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]
+				);
+				scanf("%s", ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]);
+			}
+			else {
+				printf("请先正确选择学生\n");
+			}
+			GETCH();
+			break;
+		case 0:
+			return;
+		}
+	}
+}
 
 //5显示学生信息
 void SubMenu_Display()
 {
 	extern int ShowTitleList;
-	int temp;
 	char tempChar[100];
 	while (1)
 	{
@@ -370,18 +494,30 @@ void SubMenu_Display()
 		switch (Event_Input())
 		{
 		case 1:
-			Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
+			if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+			{
+				printf("显示信息错误\n");
+			}
 			GETCH();
 			break;
 		case 2:
-			printf(DELIMS_LINE);
-			Menu_DisplaySubMenu_Display();
-			printf(DELIMS_LINE);
-			printf("请输入要显示的标题的序号,各个序号之间用空格隔开,用回车结束输入:\n");
-			getchar();
-			fgets(tempChar, 100,stdin);
-			GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+			if (ChartHead&&ChartHead[CurrentChartIndex]&&ChartHead[CurrentChartIndex]->ChartTitle) {
+				printf(DELIMS_LINE);
+				Menu_DisplaySubMenu_Display();
+				printf(DELIMS_LINE);
+				printf("请输入要显示的标题的序号,各个序号之间用空格隔开,用回车结束输入:\n");
+				getchar();
+				fgets(tempChar, 100, stdin);
+				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+				printf("编辑成功\n");
+			}
+			else {
+				printf("请先读取或创建表\n");
+			}
+			GETCH();
 			break;
+		case 0:
+			return;
 		}
 	}
 }

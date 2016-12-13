@@ -1370,7 +1370,10 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	int *temp2, *temp22, *temp5;	//用于提高性能
 	char ***temp4;				//用于提高性能
 
-	if (!ShowLines || ShowLines->listCount == 0)
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+
+	if (!ShowLines || !ShowLines->listCount)
 	{
 		//如果ShowLines为空,则初始化一个IndexList
 		temp = OperateChart->UsedLines;
@@ -1386,7 +1389,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		}
 		ShowLines = &tempLinelist;
 	}
-	if (!ShowTitle || ShowTitle->listCount == 0)
+	if (!ShowTitle || !ShowTitle->listCount)
 	{
 		//如果ShowTitle为空,则初始化一个ShowTitle
 		temp = OperateChart->TitleCount;
@@ -1485,7 +1488,7 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 	if (OperateLineIndex >= OperateChart->UsedLines)
 		return ERR_ILLEGALPARAM;
 
-	if (!ShowTitle)
+	if (!ShowTitle || !ShowTitle->AllocatedList)
 	{
 		//如果ShowTitle为空,则初始化一个ShowTitle
 		temp = OperateChart->TitleCount;
@@ -2085,20 +2088,27 @@ MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一�
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 {
 	int len = strlen(Input);
-	char *temp, *temp2;
+	char *temp2;
 	int a = 0;
+	int temp;
 	const char *Delimer = " \t";
 	if (!list)
 		return ERR_ILLEGALPARAM;
 
-	if (list->AllocatedList <= 0 || !list->list)
-		FillList(list, len);
+	if (len <= 0)
+		return ERR_ILLEGALPARAM;
+
+	if (list->AllocatedList <= 0 || !list->list) {
+		a = FillList(list, len);
+		if (!a)
+			return a;
+	}
 
 	temp2 = strtok(Input, Delimer);
-	for (a = 0; temp2 != NULL; ) {
-
-		list->list[a] = atoi(temp2) - 1;
-		if (list->list[a] >= 0 && list->list[a] < MaxIndex)
+	for (a = 0; temp2 != NULL&&a < list->AllocatedList; ) {
+		temp = atoi(temp2) - 1;
+		list->list[a] = temp;
+		if (temp >= 0 && temp < MaxIndex)
 			a++;
 		temp2 = strtok(NULL, Delimer);
 	}

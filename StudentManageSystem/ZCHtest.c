@@ -248,18 +248,17 @@ void test9()
 void testmain()
 {
 	InitALL();
-
 	MainMenu();
 	FreeAll();
 }
 
 void test10()
 {
-	void SubMenu_Search();
-	InitALL();
-	ReadFromBinFile("1.dat", "1234", ChartHead[0]);
+	//void SubMenu_Search();
+	//InitALL();
+	//ReadFromBinFile("1.dat", "1234", ChartHead[0]);
 
-	SubMenu_Display();
+	//SubMenu_Display();
 
 	//printf("%s", IndexListHeadSet[0]->ListName);
 	//FillList(IndexListHeadSet[0],50);
@@ -286,8 +285,8 @@ int main()
 	//test7();
 	//test8();
 	//test9();
-	//testmain();
-	test10();
+	testmain();
+	//test10();
 	//FreeChartSet();
 	//FreeListSet(0);
 	//FreeListSet(1);
