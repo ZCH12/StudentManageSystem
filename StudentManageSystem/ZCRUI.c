@@ -4,7 +4,7 @@
 
 void MainMenu()
 {
-    
+
 	void SubMenu_Read();
 	void SubMenu_Search();
 
@@ -58,7 +58,7 @@ void MainMenu()
 			exit(0);
 		}
 	}
-	return ;
+	return;
 }
 
 //读取数据子菜单
@@ -178,7 +178,7 @@ void Sub_ChoiceFileToRead1()
 			//读取数据
 			break;
 		case 0:
-			return ;
+			return;
 		}
 	}
 }
@@ -228,7 +228,7 @@ void Sub_ChoiceFileToRead2()
 			GETCH();
 			break;
 		case 0:
-			return ;
+			return;
 		}
 	}
 }
@@ -303,16 +303,16 @@ void Sub_Search1()
 		scanf("%s", SearchString);
 		printf("请选择保存结果的名单:\n");
 		SaveIndex = WhichListSaveTo();
-        if (!IndexListHeadSet[SaveIndex] || IndexListHeadSet[SaveIndex]->AllocatedList == 0)
+		if (!IndexListHeadSet[SaveIndex] || IndexListHeadSet[SaveIndex]->AllocatedList == 0)
 			if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0)
 				FillList(IndexListHeadSet[SaveIndex], IndexListHeadSet[CurrentIndexListIndex]->listCount);
 			else
-                FillList(IndexListHeadSet[SaveIndex], ChartHead[CurrentChartIndex]->UsedLines);
-        
+				FillList(IndexListHeadSet[SaveIndex], ChartHead[CurrentChartIndex]->UsedLines);
+
 		returnVal = Search(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], IndexListHeadSet[SaveIndex], CurrentTitleIndex, SearchString);
 		if (!returnVal)
 		{
-			if (IndexListHeadSet[SaveIndex]&&IndexListHeadSet[SaveIndex]->listCount > 0) {
+			if (IndexListHeadSet[SaveIndex] && IndexListHeadSet[SaveIndex]->listCount > 0) {
 				printf("成功找到以下数据\n");
 				Display_Chart(ChartHead[0], IndexListHeadSet[SaveIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
 				CurrentTitleIndex = SaveIndex;
@@ -342,4 +342,46 @@ int WhichListSaveTo()
 	while (b<1 || b>IndexListCount)
 		scanf("%d", &b);
 	return b - 1;
+}
+
+
+//5显示学生信息
+void SubMenu_Display()
+{
+	extern int ShowTitleList;
+	int temp;
+	char tempChar[100];
+	while (1)
+	{
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                    显示信息\n"
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		printf(
+			DELIMS_LINE\
+			" [1].显示信息\n"\
+			" [2].列配置编辑\n"\
+			" [0].返回主菜单\n"
+			DELIMS_LINE
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
+			GETCH();
+			break;
+		case 2:
+			printf(DELIMS_LINE);
+			Menu_DisplaySubMenu_Display();
+			printf(DELIMS_LINE);
+			printf("请输入要显示的标题的序号,各个序号之间用空格隔开,用回车结束输入:\n");
+			getchar();
+			fgets(tempChar, 100,stdin);
+			GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+			break;
+		}
+	}
 }

@@ -2077,6 +2077,37 @@ ErrVal CopyList(List *SourceList, List *DestList)
 }
 
 /*
+该函数把一个字符串中的数字截取出来,存进list中
+传入的数据 格式类似5 4 2 1 3
+list 存储的目标List
+MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一般是指定Chart表的TitleCount
+*/
+ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
+{
+	int len = strlen(Input);
+	char *temp, *temp2;
+	int a = 0;
+	const char *Delimer = " \t";
+	if (!list)
+		return ERR_ILLEGALPARAM;
+
+	if (list->AllocatedList <= 0 || !list->list)
+		FillList(list, len);
+
+	temp2 = strtok(Input, Delimer);
+	for (a = 0; temp2 != NULL; ) {
+
+		list->list[a] = atoi(temp2) - 1;
+		if (list->list[a] >= 0 && list->list[a] < MaxIndex)
+			a++;
+		temp2 = strtok(NULL, Delimer);
+	}
+
+	list->listCount = a;
+	return SUCCESS;
+}
+
+/*
 两个字符串进行比较,兼容数字字符串比较
 */
 int StrCmp(const char *A, const char *B)
@@ -2148,26 +2179,6 @@ char* GetFileName(const char* Path)
 	if (returnVal)
 		strcpy(returnVal, Path + b);
 	return returnVal;
-}
-/*
-该函数把一个字符串中的数字截取出来,存进list中
-*/
-ErrVal GetListFromString(char* Input, List *list)
-{
-	int len = strlen(Input);
-	char *temp;
-	int a = 0;
-	const char *Delimer = " \t\n\r";
-	if (list->AllocatedList <= 0 || !list->list)
-		FillList(0, len / 2);
-
-	list->list[0] = atoi(strtok(Input, Delimer));
-	for (a = 1; list != NULL; a++)
-	{
-		list->list[a] = atoi(strtok(Input, Delimer));
-	}
-	list->listCount = a;
-	return SUCCESS;
 }
 
 

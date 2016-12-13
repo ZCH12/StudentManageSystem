@@ -116,6 +116,16 @@ void Menu_DisplaySubMenu_Search()
 			printf("   [S#%-2d]. %s\n", a + 1, ChartHead[CurrentIndexListIndex]->ChartTitle[a]);
 	}
 }
+//Display的子函数
+void Menu_DisplaySubMenu_Display()
+{
+	int a;
+	if (ChartHead[CurrentIndexListIndex])
+	{
+		for (a = 0; a < ChartHead[CurrentIndexListIndex]->TitleCount; a++)
+			printf("   [%-2d]. %s\n", a + 1, ChartHead[CurrentIndexListIndex]->ChartTitle[a]);
+	}
+}
 
 //响应子菜单事件
 int Event_Input()
