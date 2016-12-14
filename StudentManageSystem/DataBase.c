@@ -535,7 +535,7 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	int a, b;
 	FILE *File;
 	char temp[512];
-	int PassWord_len = strlen(PassWord);
+	int PassWord_len = (int )strlen(PassWord);
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
 
@@ -760,7 +760,7 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 	FILE *File;
 	int a, b;
 	char tempStr[512] = "";
-	int PassWord_len = strlen(PassWord);
+	int PassWord_len = (int )strlen(PassWord);
 
 	if (!OperateChart || !OperateChart->HadInit)
 		return ERR_UNINITIALIZEDCHART;
@@ -2087,7 +2087,7 @@ MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一�
 */
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 {
-	int len = strlen(Input);
+	int len = (int )strlen(Input);
 	char *temp2;
 	int a = 0;
 	int temp;

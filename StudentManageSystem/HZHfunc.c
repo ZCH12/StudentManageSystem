@@ -62,11 +62,17 @@ void SortList_M() {
 //    atoi(ChartHead[0]->Chart[0][SHI(ChartHead[0],"成绩1")]);//第一个表里 的第一个同学的第一个成绩
 //}
 
-void WorkOutAverage(int ChartId) {
+void WorkOutAverage() {
     int i, t;
-    char NewUnitName[32] = "";
-    int TitleLimits = 0;
+    int ChartId = 0;
+    int ListId = 0;
+    int CaluUnitCount = 0;
     double sum;
+    int UnitNum[100] = {0};
+    char UnitName[32] = "平均成绩";
+    int NewTitleLimits = 8;
+    int returnVal = 0;
+
     while (1)
     {
         COMMAND_CLEAR();
@@ -79,14 +85,21 @@ void WorkOutAverage(int ChartId) {
         
         printf(
                DELIMS_LINE
-               " [1].表格编号:%d"
-               " [2].list的编号:%d"
-               " [3].计算平均成绩的科目数量:%d"
+               " [1].表格编号:%d\n"
+               " [2].list的编号:%d\n"
+               " [3].计算平均成绩的科目数量:%d\n"
+               " [4].计算平均成绩的科目:"
+               , ChartId+1, ListId+1, CaluUnitCount);
+        for (i = 4; i<ChartHead[ChartId-1]->UsedLines; i++) {
+            printf("%s ", ChartHead[ChartId-1]->ChartTitle[UnitNum[i-4]]);
+        }
+        printf(
+               
                " Tip:输入对应数字进行输入数据\n"
                DELIMS_LINE
-               " [4].开始排序"
-               " [0].返回上一级",
-               ChartId+1, ListId+1, SortMode);
+               " [5].开始计算"
+               " [0].返回上一级"
+               );
         while (Event_Input()) {
             switch (1) {
                 case 1:
@@ -98,18 +111,30 @@ void WorkOutAverage(int ChartId) {
                     scanf("%d", &ListId);
                     break;
                 case 3:
-                    printf("请输入排序方式:\n");
-                    scanf("%d", &SortMode);
+                    printf("请输入计算平均成绩的科目数量:\n");
+                    scanf("%d", &CaluUnitCount);
                     break;
                 case 4:
-                    
-                    CreateNewUnit(<#Chart *OperateChart#>, <#int CreateCount#>, <#char (*NewTitleSet)[32]#>, <#int *NewTitleLimits#>)
-                    
-                    ReturnVal = Sort(ChartHead[ChartId-1], IndexListHeadSet[ListId-1], SHI(ChartHead[ChartId-1], "姓名"), SortMode);
-                    if (!ReturnVal)
-                        printf("排序成功\n");
+                    printf("请输入计算平均成绩的科目:\n");
+                    for (i = 4; i<ChartHead[ChartId-1]->TitleCount; i++) {
+                        printf(" [%d].%s", i, ChartHead[ChartId-1]->ChartTitle[i]);
+                    }
+                    for (i = 0; i<CaluUnitCount; i++) {
+                        scanf("%d", &UnitNum[i]);
+                    }
+                    break;
+                case 5:
+                    returnVal = CreateNewUnit(ChartHead[ChartId-1], 1, &UnitName, &NewTitleLimits);
+                    for (i = 0; i<ChartHead[ChartId-1]->UsedLines; i++) {
+                        for (t = 4; t<ChartHead[ChartId-1]->TitleCount; t++) {
+                            sum += atof(ChartHead[ChartId-1]->Chart[i][t]);
+                        }
+                        sprintf(ChartHead[ChartId-1]->Chart[i][t], "%.1lf", sum/10);
+                    }
+                    if (returnVal == 0)
+                        printf("计算成功\n");
                     else
-                        printf("排序失败\n");
+                        printf("计算失败\n");
                     break;
                 case 0:
                     return ;
@@ -119,90 +144,6 @@ void WorkOutAverage(int ChartId) {
 }
 
 
-void Sub_ChoiceFileToRead1()
-{
-    char ParamFilePath[512] = "";
-    char DataFilePath[512] = "";
-    char SexTranslateFilePath[512] = "";
-    char CollegeTranslateFilePath[512] = "";
-    int returnVal;
-    InfoMap im;
-    while (1)
-    {
-        COMMAND_CLEAR();
-        printf(
-               DELIMS_LINE\
-               "                 选择要读取的文件\n"
-               DELIMS_LINE\
-               );
-        Menu_DisplaySubMenu();
-        
-        printf(
-               DELIMS_LINE\
-               " [1].参数列表文件路径:%s\n"\
-               " [2].数据文件路径:%s\n"\
-               " [3].性别映射文件路径:%s\n"\
-               " [4].学院信息映射文件路径:%s\n"
-               " Tip:输入对应数字进行输入数据\n",
-               ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath
-               );
-        printf(
-               DELIMS_LINE\
-               " [5].开始读取\n"\
-               " [0].返回上一级\n"
-               DELIMS_LINE
-               );
-        switch (Event_Input())
-        {
-            case 1:
-                printf("请输入参数列表文件路径:\n");
-                scanf("%s", ParamFilePath);
-                break;
-            case 2:
-                printf("请输入数据文件路径:\n");
-                scanf("%s", DataFilePath);
-                break;
-            case 3:
-                printf("请输入性别映射文件路径:\n");
-                scanf("%s", SexTranslateFilePath);
-                break;
-            case 4:
-                printf("请输入学院信息映射文件路径:\n");
-                scanf("%s", CollegeTranslateFilePath);
-                break;
-            case 5:
-                returnVal = ReadFromTwoFile(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex]);
-                if (!returnVal)
-                {
-                    printf("读取数据文件成功\n");
-                    //继续翻译
-                    returnVal = SHI(ChartHead[CurrentChartIndex], "性别");
-                    if (returnVal != -1) {
-                        ReadMapFile(SexTranslateFilePath, &im);
-                        Translate(ChartHead[CurrentChartIndex], returnVal, &im);
-                        FreeMapStruct(&im);
-                    }
-                    returnVal = SHI(ChartHead[CurrentChartIndex], "学院名称");
-                    if (returnVal != -1) {
-                        ReadMapFile(CollegeTranslateFilePath, &im);
-                        Translate(ChartHead[CurrentChartIndex], returnVal, &im);
-                        FreeMapStruct(&im);
-                    }
-                }
-                else if (returnVal == ERR_OPENFILE) {
-                    printf("读取文件失败,请确认路径是否正确,");
-                }
-                else if (returnVal == ERR_NOTSTANDARDFILE) {
-                    printf("目标文件不符合标准,请换一个文件再试\n");
-                }
-                GETCH();
-                //读取数据
-                break;
-            case 0:
-                return ;
-        }
-    }
-}
 
 
 void SortByName1() {
@@ -247,6 +188,7 @@ void SortByName1() {
                     break;
                 case 4:
                     ReturnVal = Sort(ChartHead[ChartId-1], IndexListHeadSet[ListId-1], SHI(ChartHead[ChartId-1], "姓名"), SortMode);
+                    
                     if (!ReturnVal)
                         printf("排序成功\n");
                     else
@@ -266,11 +208,12 @@ void SortByEx1(){
     int ListId = 0;
     int ReturnVal = 0;
     
+    
     while (1) {
         COMMAND_CLEAR();
         printf(
                DELIMS_LINE\
-               "                 按照十科平均成绩排序\n"
+               "                 按照平均成绩排序\n"
                DELIMS_LINE\
                );
         Menu_DisplaySubMenu();
@@ -301,9 +244,7 @@ void SortByEx1(){
                     break;
                 case 4:
                     
-//                    CreateNewUnit(<#Chart *OperateChart#>, <#int CreateCount#>, <#char (*NewTitleSet)[32]#>, <#int *NewTitleLimits#>)
-                    
-                    ReturnVal = Sort(ChartHead[ChartId-1], IndexListHeadSet[ListId-1], SHI(ChartHead[ChartId-1], "姓名"), SortMode);
+                    ReturnVal = Sort(ChartHead[ChartId-1], IndexListHeadSet[ListId-1], SHI(ChartHead[ChartId-1], "平均成绩"), SortMode);
                     if (!ReturnVal)
                         printf("排序成功\n");
                     else
@@ -434,5 +375,90 @@ void SortByEx1(){
 //}
 
 
+//注释
+//void Sub_ChoiceFileToRead1()
+//{
+//    char ParamFilePath[512] = "";
+//    char DataFilePath[512] = "";
+//    char SexTranslateFilePath[512] = "";
+//    char CollegeTranslateFilePath[512] = "";
+//    int returnVal;
+//    InfoMap im;
+//    while (1)
+//    {
+//        COMMAND_CLEAR();
+//        printf(
+//               DELIMS_LINE\
+//               "                 选择要读取的文件\n"
+//               DELIMS_LINE\
+//               );
+//        Menu_DisplaySubMenu();
+//
+//        printf(
+//               DELIMS_LINE\
+//               " [1].参数列表文件路径:%s\n"\
+//               " [2].数据文件路径:%s\n"\
+//               " [3].性别映射文件路径:%s\n"\
+//               " [4].学院信息映射文件路径:%s\n"
+//               " Tip:输入对应数字进行输入数据\n",
+//               ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath
+//               );
+//        printf(
+//               DELIMS_LINE\
+//               " [5].开始读取\n"\
+//               " [0].返回上一级\n"
+//               DELIMS_LINE
+//               );
+//        switch (Event_Input())
+//        {
+//            case 1:
+//                printf("请输入参数列表文件路径:\n");
+//                scanf("%s", ParamFilePath);
+//                break;
+//            case 2:
+//                printf("请输入数据文件路径:\n");
+//                scanf("%s", DataFilePath);
+//                break;
+//            case 3:
+//                printf("请输入性别映射文件路径:\n");
+//                scanf("%s", SexTranslateFilePath);
+//                break;
+//            case 4:
+//                printf("请输入学院信息映射文件路径:\n");
+//                scanf("%s", CollegeTranslateFilePath);
+//                break;
+//            case 5:
+//                returnVal = ReadFromTwoFile(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex]);
+//                if (!returnVal)
+//                {
+//                    printf("读取数据文件成功\n");
+//                    //继续翻译
+//                    returnVal = SHI(ChartHead[CurrentChartIndex], "性别");
+//                    if (returnVal != -1) {
+//                        ReadMapFile(SexTranslateFilePath, &im);
+//                        Translate(ChartHead[CurrentChartIndex], returnVal, &im);
+//                        FreeMapStruct(&im);
+//                    }
+//                    returnVal = SHI(ChartHead[CurrentChartIndex], "学院名称");
+//                    if (returnVal != -1) {
+//                        ReadMapFile(CollegeTranslateFilePath, &im);
+//                        Translate(ChartHead[CurrentChartIndex], returnVal, &im);
+//                        FreeMapStruct(&im);
+//                    }
+//                }
+//                else if (returnVal == ERR_OPENFILE) {
+//                    printf("读取文件失败,请确认路径是否正确,");
+//                }
+//                else if (returnVal == ERR_NOTSTANDARDFILE) {
+//                    printf("目标文件不符合标准,请换一个文件再试\n");
+//                }
+//                GETCH();
+//                //读取数据
+//                break;
+//            case 0:
+//                return ;
+//        }
+//    }
+//}
 
 
