@@ -87,7 +87,7 @@ extern Chart ** ChartHead;			//全局:表的指针数组
 extern int ChartCount;				//全局:已使用的表的个数
 extern int AlloctedChartCount;		//全局:已分配的表的个数
 
-//两种List的声明
+//两种List集的声明
 extern IndexList **IndexListHeadSet;//全局:IndexList的指针数组
 extern int IndexListCount;			//全局:已使用的IndexList的个数
 extern int AlloctedIndexListCount;	//全局:已分配的IndexList的个数

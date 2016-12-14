@@ -49,17 +49,17 @@ void ReadConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, ch
 		fclose(File);
 	}
 }
-
 void ReadConfig2(char * FileName)
 {
 	FILE *File = fopen(CONFIGFILEPATH2, "r");
 	if (File)
 	{
 		fgets(FileName, 512, File);
-		FileName[strlen(FileName)-1]=0;
+		FileName[strlen(FileName) - 1] = 0;
 		fclose(File);
 	}
 }
+
 
 void WriteConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
 {

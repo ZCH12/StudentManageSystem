@@ -8,7 +8,8 @@ void MainMenu()
 	void SubMenu_Change();
 	void SubMenu_Display();
 	void SubMenu_SaveToFile();
-
+	void SubMenu_Advantage();
+	extern void SortList_M();
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -27,7 +28,7 @@ void MainMenu()
 			" [4].修改学生信息\n"\
 			" [5].显示学生信息\n"\
 			" [6].保存(导出)信息\n"\
-			" [7].高级设置\n"\
+			" [7].高级功能\n"\
 			" [0].退出系统\n"\
 			DELIMS_LINE
 		);
@@ -37,7 +38,7 @@ void MainMenu()
 			SubMenu_Read();			//从文件读取信息
 			break;
 		case 2:
-			//排序
+			SortList_M();
 			break;
 		case 3:
 			SubMenu_Search();		//查找学生信息
@@ -52,7 +53,7 @@ void MainMenu()
 			SubMenu_SaveToFile();	//保存信息
 			break;
 		case 7:
-			//高级设置
+			SubMenu_Advantage();	//高级设置
 			break;
 		case 0:
 			exit(0);
@@ -734,6 +735,7 @@ void Sub_Save3()
 
 		case 2:
 			//开始输出
+			printf("请输入加密的密码(读取时需要此密码,无此密码无法读取)\n");
 			scanf("%s", PassWord);
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && IndexListHeadSet&&TitleListHeadSet) {
 				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
@@ -784,6 +786,8 @@ void Sub_Save4()
 			break;
 		case 3:
 			//开始输出
+			printf("请输入加密的密码(读取时需要此密码,无此密码无法读取)\n");
+			scanf("%s", PassWord);
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
 			{
 				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
@@ -866,6 +870,49 @@ void Sub_Save5()
 			}
 			else {
 				printf("请先读取文件\n");
+			}
+			GETCH();
+			break;
+		case 0:
+			return;
+		}
+	}
+}
+
+//7高级功能
+void SubMenu_Advantage()
+{
+	char tempChar[100];
+	while (1)
+	{
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                    高级功能\n"
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		printf(
+			DELIMS_LINE\
+			" [1].列配置编辑\n"\
+			" [2].计算平均成绩\n"\
+			" [0].返回主菜单\n"
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->ChartTitle) {
+				printf(DELIMS_LINE);
+				Menu_DisplaySubMenu_Display();
+				printf(DELIMS_LINE);
+				printf("请输入要显示的标题的序号,各个序号之间用空格隔开,用回车结束输入:\n");
+				getchar();
+				fgets(tempChar, 100, stdin);
+				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+				printf("编辑成功\n");
+			}
+			else {
+				printf("请先读取或创建表\n");
 			}
 			GETCH();
 			break;
