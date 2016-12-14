@@ -164,7 +164,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DataBase.c" />
-    <ClCompile Include="HZHfunc.c" />
     <ClCompile Include="Menu.c" />
     <ClCompile Include="ZCHtest.c" />
     <ClCompile Include="ZCRUI.c" />
