@@ -14,9 +14,8 @@ extern int CurrentTitleIndex;				//最近在操作的Chart表中的列的编号
 #define CONFIGFILEPATH2 "Config2.config"	//配置文件的路径	
 
 #ifdef __APPLE__ 
-#ifdef __MACH__ 
-#include <unistd.h>
-#define GETCH() pause()
+#ifdef __MACH__
+#define GETCH() getchar()
 #define COMMAND_CLEAR() system("clear")
 #else
 #define GETCH()  system("pause>nul")
@@ -52,7 +51,8 @@ void MainMenu();
 void ReadFromTwoFile_M();
 //void ReadFromFile_M();
 void SortList_M();
-void text();
-void WorkOutAverage();
+
+void CaluAverage();
 void SortByName1();
 void SortByEx1();
+void SortByWhatYouWant();
