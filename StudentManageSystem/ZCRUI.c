@@ -38,6 +38,7 @@ void MainMenu()
 			SubMenu_Read();
 			break;
 		case 2:
+            SortList_M();
 			//排序
 			break;
 		case 3:

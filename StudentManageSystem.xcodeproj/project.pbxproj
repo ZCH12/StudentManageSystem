@@ -34,10 +34,10 @@
 		D739F7081DFA85790039186C /* S_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = S_info.txt; sourceTree = "<group>"; };
 		D739F7091DFA85790039186C /* Stu_info.txt */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = text; path = Stu_info.txt; sourceTree = "<group>"; };
 		D739F70A1DFA85790039186C /* stu_param.txt */ = {isa = PBXFileReference; fileEncoding = 2147483673; lastKnownFileType = text; path = stu_param.txt; sourceTree = "<group>"; };
-		D76AA60A1DF9350100A294FF /* main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
 		D77A5C141DF47B040036449B /* DataBase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataBase.c; sourceTree = "<group>"; };
 		D77A5C151DF47B040036449B /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DataBase.h; sourceTree = "<group>"; };
 		D78B54411DF7F8BA00F40455 /* HZHfunc.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = HZHfunc.c; sourceTree = "<group>"; };
+		D7A625A31E011DBD00D30B4F /* 1.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = 1.dat; sourceTree = "<group>"; };
 		D7A85C2B1DFEA91B006BB60E /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		D7A85C2D1DFEA91B006BB60E /* Menu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Menu.c; sourceTree = "<group>"; };
 		D7A85C2E1DFEA91B006BB60E /* ZCRUI.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ZCRUI.c; sourceTree = "<group>"; };
@@ -73,13 +73,13 @@
 		D71C8CAE1DF1E580007BD820 /* StudentManageSystem */ = {
 			isa = PBXGroup;
 			children = (
+				D7A625A31E011DBD00D30B4F /* 1.dat */,
 				D77A5C141DF47B040036449B /* DataBase.c */,
 				D78B54411DF7F8BA00F40455 /* HZHfunc.c */,
 				D71C8CAF1DF1E580007BD820 /* main.c */,
 				D7A85C2D1DFEA91B006BB60E /* Menu.c */,
 				D7A85C2E1DFEA91B006BB60E /* ZCRUI.c */,
 				D77A5C151DF47B040036449B /* DataBase.h */,
-				D76AA60A1DF9350100A294FF /* main.h */,
 				D7A85C2B1DFEA91B006BB60E /* menu.h */,
 				D739F7051DFA85790039186C /* C_info.txt */,
 				D739F7061DFA85790039186C /* data.txt */,

@@ -1,27 +1,36 @@
 ﻿#include "menu.h"
 void SortList_M() {
-    
-    
-    
-    
-    COMMAND_CLEAR();
-    
-    printf(
-           DELIMS_LINE
-           " [1].按照姓名排序\n"
-           " [2].按照平均成绩排序\n"
-           " [3].按照任意条件排序\n"
-           " [0].返回主菜单\n"
-           DELIMS_LINE
-           );
-    switch (Event_Input())
-    {
-        case 1:
-            SortByName1();
-            break;
-        case 2:
-            SortByEx1();
-            break;
+    while (1) {
+        COMMAND_CLEAR();
+        printf(
+               DELIMS_LINE
+               "                    学生排序\n"
+               DELIMS_LINE
+               );
+        Menu_DisplaySubMenu();
+        printf(
+               DELIMS_LINE
+               " [1].按照姓名排序\n"
+               " [2].按照平均成绩排序\n"
+               " [3].按照任意条件排序\n"
+               " [0].返回主菜单\n"
+               DELIMS_LINE
+               );
+        
+        switch (Event_Input())
+        {
+            case 1:
+                SortByName1();
+                break;
+            case 2:
+                SortByEx1();
+                break;
+            case 3:
+                SortByWhatYouWant();
+            case 0:
+                return ;
+        }
+
     }
 }
 
@@ -31,7 +40,7 @@ void SortList_M() {
 //            printf("%d.%s\n", i+1, ChartHead[i]->ChartName);
 //        }
 //		printf("请输入所需排序的表格\n");
-//		scanf("%d", &ChartId);
+//		scanf("%d", &CurrentChartIndex);
 //		printf(
 //               DELIMS_LINE
 //               " [1].升序排序\n"
@@ -42,16 +51,16 @@ void SortList_M() {
 //		switch (Mode)
 //        {
 //		case 1:
-//                FillList(IndexListHeadSet[ChartId-1], ChartHead[ChartId-1]->UsedLines);
-//                Sort(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "学号"), SORT_ASCENDING);
-//                Display_Chart(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], NULL, DISPLAY_HIDENUMBER);
+//                FillList(IndexListHeadSet[CurrentChartIndex], ChartHead[CurrentChartIndex]->UsedLines);
+//                Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentChartIndex], SearchHeadIndex(ChartHead[CurrentChartIndex], "学号"), SORT_ASCENDING);
+//                Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentChartIndex], NULL, DISPLAY_HIDENUMBER);
 //                continue;
 //                
 //        case 2:
-//                FillList(IndexListHeadSet[ChartId-1], ChartHead[ChartId-1]->UsedLines);
-//                Average(ChartId);
-//                Sort(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], SHI(ChartHead[ChartId-1], "平均成绩"), SORT_ASCENDING);
-//                Display_Chart(ChartHead[ChartId-1], IndexListHeadSet[ChartId-1], NULL, DISPLAY_HIDENUMBER);
+//                FillList(IndexListHeadSet[CurrentChartIndex], ChartHead[CurrentChartIndex]->UsedLines);
+//                Average(CurrentChartIndex);
+//                Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentChartIndex], SHI(ChartHead[CurrentChartIndex], "平均成绩"), SORT_ASCENDING);
+//                Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentChartIndex], NULL, DISPLAY_HIDENUMBER);
 //                continue;
 //		}
 //	}
@@ -62,17 +71,20 @@ void SortList_M() {
 //    atoi(ChartHead[0]->Chart[0][SHI(ChartHead[0],"成绩1")]);//第一个表里 的第一个同学的第一个成绩
 //}
 
-void WorkOutAverage() {
-    int i, t;
-    int ChartId = 0;
-    int ListId = 0;
-    int CaluUnitCount = 0;
-    double sum;
-    int UnitNum[100] = {0};
-    char UnitName[32] = "平均成绩";
-    int NewTitleLimits = 8;
-    int returnVal = 0;
 
+
+//计算任意成绩平均值
+void CaluAverage() {
+    
+    int i, t;                       //循环常量
+    int CaluUnitCount = 0;          //所需计算平均的科目数量
+    int UnitNum[20] = {0};          //用于保存chart表中unit对应的index
+    int returnVal = 0;
+    double sum = 0;
+    char UnitName[32] = "平均成绩";     //用于创建新的unit(平均成绩)
+    int NewTitleLimits = 8;
+    int HadIntputRight = 0;
+    
     while (1)
     {
         COMMAND_CLEAR();
@@ -85,72 +97,90 @@ void WorkOutAverage() {
         
         printf(
                DELIMS_LINE
-               " [1].表格编号:%d\n"
-               " [2].list的编号:%d\n"
-               " [3].计算平均成绩的科目数量:%d\n"
-               " [4].计算平均成绩的科目:"
-               , ChartId+1, ListId+1, CaluUnitCount);
-        for (i = 4; i<ChartHead[ChartId-1]->UsedLines; i++) {
-            printf("%s ", ChartHead[ChartId-1]->ChartTitle[UnitNum[i-4]]);
+               " [1].计算平均成绩的科目数量:%d\n", CaluUnitCount);
+        printf(
+               " [2].计算平均成绩的科目:"
+               );
+        for (i = 4; i-4<CaluUnitCount; i++)
+        {
+            printf(                  "%s ", ChartHead[CurrentChartIndex]->ChartTitle[UnitNum[i-4]]);
         }
         printf(
-               
+               "\n"
                " Tip:输入对应数字进行输入数据\n"
                DELIMS_LINE
-               " [5].开始计算"
+               " [3].开始计算"
                " [0].返回上一级"
                );
-        while (Event_Input()) {
-            switch (1) {
-                case 1:
-                    printf("请输入表格编号:\n");
-                    scanf("%d", &ChartId);
-                    break;
-                case 2:
-                    printf("请输入list的编号:\n");
-                    scanf("%d", &ListId);
-                    break;
-                case 3:
-                    printf("请输入计算平均成绩的科目数量:\n");
-                    scanf("%d", &CaluUnitCount);
-                    break;
-                case 4:
-                    printf("请输入计算平均成绩的科目:\n");
-                    for (i = 4; i<ChartHead[ChartId-1]->TitleCount; i++) {
-                        printf(" [%d].%s", i, ChartHead[ChartId-1]->ChartTitle[i]);
+        switch (Event_Input())
+        {
+            case 1:
+                printf("请输入计算平均成绩的科目数量:\n");
+                scanf("%d", &CaluUnitCount);
+                if (CaluUnitCount < 0 || CaluUnitCount > ChartHead[CurrentChartIndex]->UsedLines)
+                {
+                    printf("输入错误，请重新输入\n");
+                }
+                break;
+            case 2:
+                printf("请输入计算平均成绩的科目:\n");
+                for (i = 4; i<ChartHead[CurrentChartIndex]->TitleCount; i++)
+                {
+                    printf(" [%d].%s", i, ChartHead[CurrentChartIndex]->ChartTitle[i]);
+                }
+                for (i = 0; i<CaluUnitCount;)
+                {
+                    printf("%d.", i);
+                    scanf("%d", &UnitNum[i]);
+                    if (UnitNum[i] < 0 && UnitNum[i] > ChartHead[CurrentChartIndex]->TitleCount)
+                    {
+                        printf("第%d个数据输入错误，请重新输入\n", i);
+                        continue;
                     }
-                    for (i = 0; i<CaluUnitCount; i++) {
-                        scanf("%d", &UnitNum[i]);
-                    }
-                    break;
-                case 5:
-                    returnVal = CreateNewUnit(ChartHead[ChartId-1], 1, &UnitName, &NewTitleLimits);
-                    for (i = 0; i<ChartHead[ChartId-1]->UsedLines; i++) {
-                        for (t = 4; t<ChartHead[ChartId-1]->TitleCount; t++) {
-                            sum += atof(ChartHead[ChartId-1]->Chart[i][t]);
-                        }
-                        sprintf(ChartHead[ChartId-1]->Chart[i][t], "%.1lf", sum/10);
-                    }
-                    if (returnVal == 0)
-                        printf("计算成功\n");
                     else
-                        printf("计算失败\n");
+                    {
+                        HadIntputRight++;
+                    }
+                    i++;
+                }
+                break;
+            case 3:
+                //检查是否输入 计算科目数量
+                if (!CaluUnitCount) {
+                    printf("计算失败，请重新输入所需计算平均的科目数量\n");
                     break;
-                case 0:
-                    return ;
-            }
+                }
+                if (!HadIntputRight) {
+                    printf("计算失败，请重新输入所需计算的科目\n");
+                    break;
+                }
+                returnVal = CreateNewUnit(ChartHead[CurrentChartIndex], 1, &UnitName, &NewTitleLimits);
+                for (i = 0; i<ChartHead[CurrentChartIndex]->UsedLines; i++)
+                {
+                    for (t = 0; t<CaluUnitCount; t++)
+                    {
+                        //atof(将字符串"Chart[i][t]"转化为浮点数)
+                        sum += atof(ChartHead[CurrentChartIndex]->Chart[i][UnitNum[t]]);
+                        //将已选择的科目求和
+                    }
+                    //sprintf(最后的平均值打印到Chart[CurrentChartIndex]表的平均成绩栏中)
+                    sprintf(ChartHead[CurrentChartIndex]->Chart[i][SHI(ChartHead[CurrentChartIndex], "平均成绩")], "%.1lf", sum/10);
+                }
+                if (returnVal == 0)
+                    printf("计算成功\n");
+                else
+                    printf("计算失败\n");
+                break;
+            case 0:
+                return;
         }
     }
 }
 
 
-
-
 void SortByName1() {
     
-    int SortMode = 0;
-    int ChartId = 0;
-    int ListId = 0;
+    int SortMode = 0;               //排序模式
     int ReturnVal = 0;
     
     while (1) {
@@ -161,90 +191,90 @@ void SortByName1() {
                DELIMS_LINE\
                );
         Menu_DisplaySubMenu();
-
         printf(
                DELIMS_LINE
-               " [1].表格编号:%d"
-               " [2].list的编号:%d"
-               " [3].排序方式:%d"
+               " [1].排序方式:%s\n"
+               "\n"
                " Tip:输入对应数字进行输入数据\n"
                DELIMS_LINE
-               " [4].开始排序"
-               " [0].返回上一级",
-               ChartId+1, ListId+1, SortMode);
-        while (Event_Input()) {
-            switch (1) {
-                case 1:
-                    printf("请输入表格编号:\n");
-                    scanf("%d", &ChartId);
+               " [2].开始排序\n"
+               " [0].返回上一级\n",
+               SortMode ? "降序" : "降序"
+               );
+        switch (Event_Input()) {
+            case 1:
+                printf(
+                       DELIMS_LINE
+                       "请输入排序方式:\n"
+                       " [1].降序\n"
+                       " [2].升序\n"
+                       DELIMS_LINE
+                       );
+                scanf("%d", &SortMode);
+                if (SortMode < 0 || SortMode > 2) {
+                    printf("输出错误,请重新输入\n");
                     break;
-                case 2:
-                    printf("请输入list的编号:\n");
-                    scanf("%d", &ListId);
-                    break;
-                case 3:
-                    printf("请输入排序方式:\n");
-                    scanf("%d", &SortMode);
-                    break;
-                case 4:
-                    ReturnVal = Sort(ChartHead[ChartId-1], IndexListHeadSet[ListId-1], SHI(ChartHead[ChartId-1], "姓名"), SortMode);
-                    
-                    if (!ReturnVal)
-                        printf("排序成功\n");
-                    else
-                        printf("排序失败\n");
-                    break;
-                case 0:
-                    return ;
-            }
+                }
+                break;
+            case 2:
+                //判断指针 IndexListHeadSet[CurrentChartIndex]是否为空，      (是否已初始化) ||
+                //IndexListHeadSet[CurrentChartIndex]中的list数组 是否小于0      (是否已初始化)
+                if (!IndexListHeadSet[CurrentChartIndex] || IndexListHeadSet[CurrentChartIndex]->listCount <= 0) {
+                    //如果 未初始化 则执行初始化函数FillList
+                    FillList(IndexListHeadSet[CurrentChartIndex], ChartHead[CurrentChartIndex]->UsedLines);
+                }
+                ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], SHI(ChartHead[CurrentChartIndex], "姓名"), SortMode);
+                if (!ReturnVal)
+                    printf("排序成功\n");
+                else
+                    printf("排序失败\n");
+                Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], NULL, DISPLAY_HIDENUMBER);
+                GETCH();
+                break;
+            case 0:
+                return;
         }
     }
 }
 
+    
+
 void SortByEx1(){
     
     int SortMode = 0;
-    int ChartId = 0;
-    int ListId = 0;
     int ReturnVal = 0;
     
     
     while (1) {
         COMMAND_CLEAR();
         printf(
-               DELIMS_LINE\
+               DELIMS_LINE
                "                 按照平均成绩排序\n"
-               DELIMS_LINE\
+               DELIMS_LINE
                );
         Menu_DisplaySubMenu();
         
         printf(
                DELIMS_LINE
-               " [1].表格编号:%d"
-               " [2].list的编号:%d"
-               " [3].排序方式:%d"
+               " [1].排序方式:%s\n"
                " Tip:输入对应数字进行输入数据\n"
                DELIMS_LINE
-               " [4].开始排序"
-               " [0].返回上一级",
-               ChartId+1, ListId+1, SortMode);
-        while (Event_Input()) {
-            switch (1) {
+               " [2].开始排序\n"
+               " [0].返回上一级\n"
+               , SortMode ? "降序" : "升序");
+            switch (Event_Input()) {
                 case 1:
-                    printf("请输入表格编号:\n");
-                    scanf("%d", &ChartId);
-                    break;
-                case 2:
-                    printf("请输入list的编号:\n");
-                    scanf("%d", &ListId);
-                    break;
-                case 3:
-                    printf("请输入排序方式:\n");
+                    printf(
+                           DELIMS_LINE
+                           "请输入排序方式:\n"
+                           " [1].降序\n"
+                           " [2].升序\n"
+                           DELIMS_LINE
+                           );
                     scanf("%d", &SortMode);
                     break;
-                case 4:
-                    
-                    ReturnVal = Sort(ChartHead[ChartId-1], IndexListHeadSet[ListId-1], SHI(ChartHead[ChartId-1], "平均成绩"), SortMode);
+                case 2:
+                    ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex-1], SHI(ChartHead[CurrentChartIndex], "平均成绩"), SortMode);
                     if (!ReturnVal)
                         printf("排序成功\n");
                     else
@@ -253,8 +283,23 @@ void SortByEx1(){
                 case 0:
                     return ;
             }
+
+    }
+}
+
+void SortByWhatYouWant() {
+    
+    while (1) {
+        switch (Event_Input()) {
+//            case <#constant#>:
+//                <#statements#>
+                break;
+                
+            default:
+                break;
         }
     }
+    
 }
 
 //void ReadFromTwoFile_M()
@@ -271,7 +316,7 @@ void SortByEx1(){
 ////    1
 //
 //	int i, Val = 0;
-//	int ChartId = 1, ReadFileNum=1;
+//	int CurrentChartIndex = 1, ReadFileNum=1;
 //    InfoMap im1 = {0};
 //    char imps[128]="/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/S_info.txt", impc[128]="/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/C_info.txt";
 //    char ParamFileName[128]= "/Users/wongziihou/Desktop/StudentManageSystem.v2/StudentManageSystem/stu_param.txt"
@@ -289,7 +334,7 @@ void SortByEx1(){
 ////		scanf("%s", DataFileName);
 ////		printf("请输入保存的表的编号（1—%d）\n", ReadFileNum);
 ////		scanf("%d", &FileIndex);
-//		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[ChartId - 1]);
+//		Val = ReadFromTwoFile(ParamFileName, DataFileName, ChartHead[CurrentChartIndex - 1]);
 //		if (Val != 0)
 //        {
 //            COMMAND_CLEAR();
@@ -310,9 +355,9 @@ void SortByEx1(){
 //        else
 //        {
 //            ReadMapFile(imps, &im1);
-//            Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "性别"), &im1);
+//            Translate(ChartHead[CurrentChartIndex], SearchHeadIndex(ChartHead[CurrentChartIndex], "性别"), &im1);
 //            ReadMapFile(impc, &im1);
-//            Translate(ChartHead[ChartId-1], SearchHeadIndex(ChartHead[ChartId-1], "学院名称"), &im1);
+//            Translate(ChartHead[CurrentChartIndex], SearchHeadIndex(ChartHead[CurrentChartIndex], "学院名称"), &im1);
 //
 //            COMMAND_CLEAR();
 //            printf("读入成功\n");
@@ -326,7 +371,7 @@ void SortByEx1(){
 //            if (Pri==1)
 //            {
 //                COMMAND_CLEAR();
-//                Display_Chart(ChartHead[ChartId-1], NULL, NULL, DISPLAY_HIDENUMBER);
+//                Display_Chart(ChartHead[CurrentChartIndex], NULL, NULL, DISPLAY_HIDENUMBER);
 //            }
 //            i++;
 //        }
