@@ -1,10 +1,11 @@
 ﻿#include "menu.h"
 
-
-
-
+//排序菜单
 void SortList_M()
 {
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -51,7 +52,9 @@ void CaluAverage()
 	char UnitName[32] = "平均成绩";     //用于创建新的unit(平均成绩)
 	int NewTitleLimits = 8;
 	int HadIntputRight = 0;
-
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -147,6 +150,9 @@ void SortByName1()
 {
 	int SortMode = 0;               //排序模式
 	int ReturnVal = 0;
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -211,6 +217,9 @@ void SortByEx1()
 {
 	int ReturnVal = 0;
 	int SortMode = 0;
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -270,6 +279,9 @@ void SortByWhatYouWant()
 	int SortMode = 0;
 	int ContentIndex = 0;
 	int ReturnVal = 0;
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();

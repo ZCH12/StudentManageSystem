@@ -10,15 +10,6 @@
 Create By ZCR
 2016-12-10
 
-TODO:存在缺陷
-WriteToFile()
-WriteToTwoFile()
-加密解密
-*/
-
-/*
-初始化一个空表
-以已有的表作为模板创建新表
 */
 
 /*
@@ -34,24 +25,24 @@ WriteToTwoFile()
 #endif
 
 //全局变量
-Chart ** ChartHead = NULL;			//已分配的表的个数
-int ChartCount = 0;					//已使用的表的个数
-int AlloctedChartCount = 0;			//表的指针数组
+Chart ** ChartHead = NULL;				//已分配的表的个数
+int ChartCount = 0;						//已使用的表的个数
+int AlloctedChartCount = 0;				//表的指针数组
 
 IndexList **IndexListHeadSet = NULL;	//IndexList的指针数组
-int IndexListCount = 0;				//已使用的IndexList的个数
-int AlloctedIndexListCount = 0;		//已分配的IndexList的个数
+int IndexListCount = 0;					//已使用的IndexList的个数
+int AlloctedIndexListCount = 0;			//已分配的IndexList的个数
 
 TitleList **TitleListHeadSet = NULL;	//TitleList的指针数组
-int TitleListCount = 0;				//已使用的TitleList的个数
-int AlloctedTitleListCount = 0;		//已分配的TitleList的个数
+int TitleListCount = 0;					//已使用的TitleList的个数
+int AlloctedTitleListCount = 0;			//已分配的TitleList的个数
 
-									/*
-									从文件读取数据到指定表
-									File 要读取的文件路径
-									OperateChart 要用来存储读入的数据的表
-									//待重写
-									*/
+/*
+从文件读取数据到指定表
+File 要读取的文件路径
+OperateChart 要用来存储读入的数据的表
+//待重写
+*/
 ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 {
 	FILE *File;
@@ -1672,30 +1663,6 @@ ErrVal NewChartSet(int CreateCount)
 			}
 		}
 	}
-	/*
-	//
-	else if (NewChartCount <= AlloctedChartCount)
-	{
-	//已分配空间新建表
-	tempChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
-	if (!tempChartSet)
-	return ERR_MEMORYNOTENOUGH;
-	for (a = 0; a < ChartCount; a++)
-	tempChartSet[a] = ChartHead[a];
-	for (a = ChartCount; a < NewChartCount; a++)
-	{
-	tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
-	if (!tempChartSet[a])
-	{
-	if (a != ChartCount)
-	for (a--; a >= ChartCount; a--)
-	free(tempChartSet[a]);
-	free(tempChartSet);
-	return ERR_MEMORYNOTENOUGH;;
-	}
-	}
-	}
-	*/
 	else {
 		//增量初始化
 		tempChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);

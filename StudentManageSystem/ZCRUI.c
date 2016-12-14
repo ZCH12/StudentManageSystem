@@ -1,4 +1,5 @@
 ﻿#include "menu.h"
+#include "time.h"
 
 
 void MainMenu()
@@ -10,8 +11,12 @@ void MainMenu()
 	void SubMenu_SaveToFile();
 	void SubMenu_Advantage();
 	extern void SortList_M();
+	char a;
 	while (1)
 	{
+#if RANDOMCOLOR
+		ChangeColor();
+#endif
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
@@ -56,7 +61,11 @@ void MainMenu()
 			SubMenu_Advantage();	//高级设置
 			break;
 		case 0:
-			exit(0);
+			printf("确定要退出吗?(按Y继续退出)\n如果退出,未保存的数据将会丢失\n");
+			getchar();
+			scanf("%c", &a);
+			if (a == 'Y'||a == 'y')
+				exit(0);
 		}
 	}
 	return;
@@ -67,6 +76,9 @@ void SubMenu_Read()
 {
 	void Sub_ChoiceFileToRead1();
 	void Sub_ChoiceFileToRead2();
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -106,8 +118,10 @@ void Sub_ChoiceFileToRead1()
 	char CollegeTranslateFilePath[512] = "";
 	int returnVal;
 	InfoMap im;
-	ReadConfig1(ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath);
-
+	ReadConfig1(CONFIGFILEPATH1, ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath);
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -178,7 +192,7 @@ void Sub_ChoiceFileToRead1()
 					Translate(ChartHead[CurrentChartIndex], returnVal, &im);
 					FreeMapStruct(&im);
 				}
-				WriteConfig1(ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath);
+				WriteConfig1(CONFIGFILEPATH1, ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath);
 			}
 			else if (returnVal == ERR_OPENFILE) {
 				printf("读取文件失败,请确认路径是否正确,");
@@ -199,7 +213,10 @@ void Sub_ChoiceFileToRead2()
 	char FilePath[512] = "";
 	char PassWord[32] = "";
 	int returnVal;
-	ReadConfig2(FilePath);
+	ReadConfig2(CONFIGFILEPATH2, FilePath);
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -235,7 +252,7 @@ void Sub_ChoiceFileToRead2()
 			scanf("%s", PassWord);
 			returnVal = ReadFromBinFile(FilePath, PassWord, ChartHead[CurrentChartIndex]);
 			if (!returnVal) {
-				WriteConfig2(FilePath);
+				WriteConfig2(CONFIGFILEPATH2, FilePath);
 				printf("读取文件成功\n");
 			}
 			else if (returnVal == ERR_WRONGPASSWORD)
@@ -250,13 +267,14 @@ void Sub_ChoiceFileToRead2()
 	}
 }
 
-
-
 //3搜索数据子菜单
 void SubMenu_Search()
 {
 	void Sub_Search1();
 	int returnVal;
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -387,6 +405,9 @@ void SubMenu_Change()
 	int returnVal;
 	int ChoiceLines = 0;
 	char *temp;
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -481,6 +502,9 @@ void SubMenu_Display()
 {
 	extern int ShowTitleList;
 	char tempChar[100];
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -536,6 +560,9 @@ void SubMenu_SaveToFile()
 	void Sub_Save3();
 	void Sub_Save4();
 	void Sub_Save5();
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -581,7 +608,10 @@ void Sub_Save1()
 {
 	char ParamFilePath[512] = { 0 };
 	char DataFilePath[512] = { 0 };
-
+	ReadConfig3(CONFIGFILEPATH3, ParamFilePath, DataFilePath);
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1) {
 		COMMAND_CLEAR();
 		printf(
@@ -618,8 +648,10 @@ void Sub_Save1()
 		case 3:
 			//开始输出
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0) {
-				if (!WriteToTwoFile_Chart(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex]))
+				if (!WriteToTwoFile_Chart(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex])) {
 					printf("保存到文件成功\n");
+					WriteConfig3(CONFIGFILEPATH3, ParamFilePath, DataFilePath);
+				}
 				else
 					printf("保存到文件失败\n");
 			}
@@ -637,7 +669,10 @@ void Sub_Save2()
 {
 	char ParamFilePath[512] = "";
 	char DataFilePath[512] = "";
-
+	ReadConfig3(CONFIGFILEPATH3, ParamFilePath, DataFilePath);
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1) {
 		COMMAND_CLEAR();
 		printf(
@@ -687,6 +722,7 @@ void Sub_Save2()
 					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
 				{
 					printf("保存到文件成功\n");
+					WriteConfig3(CONFIGFILEPATH3, ParamFilePath, DataFilePath);
 				}
 				else {
 					printf("保存到文件失败\n");
@@ -706,6 +742,10 @@ void Sub_Save3()
 {
 	char FilePath[512] = { 0 };
 	char PassWord[32] = { 0 };
+	ReadConfig2(CONFIGFILEPATH4, FilePath);
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1) {
 		COMMAND_CLEAR();
 		printf(
@@ -738,8 +778,10 @@ void Sub_Save3()
 			printf("请输入加密的密码(读取时需要此密码,无此密码无法读取)\n");
 			scanf("%s", PassWord);
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && IndexListHeadSet&&TitleListHeadSet) {
-				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
+				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex])) {
+					WriteConfig2(CONFIGFILEPATH4, FilePath);
 					printf("保存到文件成功\n");
+				}
 				else
 					printf("保存到文件失败\n");
 			}
@@ -757,7 +799,10 @@ void Sub_Save4()
 {
 	char FilePath[512] = { 0 };
 	char PassWord[32] = { 0 };
-
+	ReadConfig2(CONFIGFILEPATH4, FilePath);
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1) {
 		COMMAND_CLEAR();
 		printf(
@@ -801,6 +846,7 @@ void Sub_Save4()
 				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex],
 					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
 				{
+					WriteConfig2(CONFIGFILEPATH4, FilePath);
 					printf("保存到文件成功\n");
 				}
 				else {
@@ -820,7 +866,10 @@ void Sub_Save4()
 void Sub_Save5()
 {
 	char FilePath[512] = "";
-
+	ReadConfig2(CONFIGFILEPATH5, FilePath);
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1) {
 		COMMAND_CLEAR();
 		printf(
@@ -863,6 +912,7 @@ void Sub_Save5()
 					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
 				{
 					printf("保存到文件成功\n");
+					WriteConfig2(CONFIGFILEPATH5, FilePath);
 				}
 				else {
 					printf("保存到文件失败\n");
@@ -883,6 +933,9 @@ void Sub_Save5()
 void SubMenu_Advantage()
 {
 	char tempChar[100];
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -919,5 +972,40 @@ void SubMenu_Advantage()
 		case 0:
 			return;
 		}
+	}
+}
+
+/*
+随机改变颜色
+*/
+void ChangeColor()
+{
+	srand((int)time(NULL));
+	switch (rand()%8)
+	{
+	case 0:
+		system("color F1");
+		break;
+	case 1:
+		system("color F2");
+		break;
+	case 2:
+		system("color F3");
+		break;
+	case 3:
+		system("color F4");
+		break;
+	case 4:
+		system("color F5");
+		break;
+	case 5:
+		system("color F6");
+		break;
+	case 6:
+		system("color FC");
+		break;
+	case 7:
+		system("color FD");
+		break;
 	}
 }

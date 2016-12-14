@@ -27,15 +27,19 @@ void InitALL()
 		FillList(TitleListHeadSet[a], 0);
 		strcpy(TitleListHeadSet[a]->ListName, "(未初始化)");
 	}
+	system("title 学生管理系统");
+	system("mode con: cols=120 lines=10000");
+	system("color F9");
+
 	return;
 }
 
 /*
 从配置文件读取配置
 */
-void ReadConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
+void ReadConfig1(char *ConfigFile, char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
 {
-	FILE *File = fopen(CONFIGFILEPATH1, "r");
+	FILE *File = fopen(ConfigFile, "r");
 	if (File)
 	{
 		fgets(ParamFileName, 512, File);
@@ -49,9 +53,9 @@ void ReadConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, ch
 		fclose(File);
 	}
 }
-void ReadConfig2(char * FileName)
+void ReadConfig2(char *ConfigFile, char * FileName)
 {
-	FILE *File = fopen(CONFIGFILEPATH2, "r");
+	FILE *File = fopen(ConfigFile, "r");
 	if (File)
 	{
 		fgets(FileName, 512, File);
@@ -59,11 +63,22 @@ void ReadConfig2(char * FileName)
 		fclose(File);
 	}
 }
-
-
-void WriteConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
+void ReadConfig3(char * ConfigFile, char * ParamFileName, char * DataFileName)
 {
-	FILE *File = fopen(CONFIGFILEPATH1, "w");
+	FILE *File = fopen(ConfigFile, "r");
+	if (File)
+	{
+		fgets(ParamFileName, 512, File);
+		ParamFileName[strlen(ParamFileName) - 1] = 0;
+		fgets(DataFileName, 512, File);
+		DataFileName[strlen(DataFileName) - 1] = 0;
+		fclose(File);
+	}
+}
+
+void WriteConfig1(char *ConfigFile, char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
+{
+	FILE *File = fopen(ConfigFile, "w");
 	if (File)
 	{
 		fprintf(File, "%s\n", ParamFileName);
@@ -73,12 +88,22 @@ void WriteConfig1(char *ParamFileName, char * DataFileName, char *SexFileName, c
 		fclose(File);
 	}
 }
-void WriteConfig2(char * FileName)
+void WriteConfig2(char *ConfigFile, char * FileName)
 {
-	FILE *File = fopen(CONFIGFILEPATH2, "w");
+	FILE *File = fopen(ConfigFile, "w");
 	if (File)
 	{
 		fprintf(File, "%s\n", FileName);
+		fclose(File);
+	}
+}
+void WriteConfig3(char * ConfigFile, char * ParamFileName, char * DataFileName)
+{
+	FILE *File = fopen(ConfigFile, "w");
+	if (File)
+	{
+		fprintf(File, "%s\n", ParamFileName);
+		fprintf(File, "%s\n", DataFileName);
 		fclose(File);
 	}
 }
