@@ -102,9 +102,11 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart);
 ErrVal ReadFromTwoFile(const char *ParamFileName,const char * DataFileName,Chart *OperateChart);
 ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart);
 //ErrVal WriteToFile_Chart();
+ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * WriteLine, TitleList * WriteTitle);
 ErrVal WriteToTwoFile_Chart(const char *ParamFileName,const char * DataFileName, Chart *OperateChart);
 ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart);
+ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 

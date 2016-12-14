@@ -668,6 +668,37 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	return SUCCESS;
 }
 
+ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * WriteLine, TitleList * WriteTitle)
+{
+	FILE *File;
+	int a, b;
+
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+	if (OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0)
+		return ERR_ILLEGALCHART;
+
+	File = fopen(FileName, "w");
+	if (!File)
+		return ERR_OPENFILE;
+
+	//写入参数头部
+	for (a = 0; a < WriteTitle->listCount; a++)
+		fprintf(File, "%*s ", OperateChart->ChartLimits[WriteTitle->list[a]],OperateChart->ChartTitle[WriteTitle->list[a]]);
+	fprintf(File, "\n");
+
+	//开始写入表中数据
+	for (a = 0; a < WriteLine->listCount; a++)
+	{
+		for (b = 0; b < WriteTitle->listCount; b++)
+			fprintf(File, "%*s ", OperateChart->ChartLimits[WriteTitle->list[b]], OperateChart->Chart[WriteLine->list[a]][WriteTitle->list[b]]);
+		fprintf(File, "\n");
+	}
+	fclose(File);
+
+	return SUCCESS;
+}
+
 /*
 将表写入到两个文件中去
 ParamFileName 要写入参数的文件路径
@@ -753,6 +784,9 @@ ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileNam
 
 /*
 将表中的数据写入到表
+FileName 要写入的文件的路径
+PassWord 加密的密码
+OperateChart 要进行保存的表
 */
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart)
 {
@@ -791,6 +825,71 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 		{
 			EncryptChar(tempStr, OperateChart->Chart[a][b], OperateChart->ChartLimits[b], PassWord, PassWord_len);
 			fwrite(tempStr, sizeof(char), OperateChart->ChartLimits[b] + 1, File);
+		}
+	}
+	fclose(File);
+	return SUCCESS;
+}
+
+/*
+将表中的数据写入到表
+FileName 要写入的文件的路径
+PassWord 加密的密码
+OperateChart 要进行保存的表
+WriteLine 要写入的行的List
+WriteTitle 要写入的列的List
+*/
+ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle)
+{
+	ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len);
+	FILE *File;
+	int a, b;
+	char tempStr[512] = "";
+	int PassWord_len = (int)strlen(PassWord);
+
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+	if (OperateChart->TitleCount <= 0 || OperateChart->UsedLines <= 0)
+		return ERR_ILLEGALCHART;
+
+	if (!WriteLine || WriteLine->listCount <= 0)
+	{
+		FillList(WriteLine, OperateChart->UsedLines);
+		if (!WriteLine)
+			return ERR_ILLEGALPARAM;
+	}
+
+	if (!WriteTitle || WriteTitle->listCount <= 0)
+	{
+		FillList(WriteTitle, OperateChart->TitleCount);
+		if (!WriteTitle)
+			return ERR_ILLEGALPARAM;
+	}
+
+	File = fopen(FileName, "wb");
+	if (!File)
+		return ERR_OPENFILE;
+
+	//写入标头
+	fwrite(BIN_HEAD, sizeof(BIN_HEAD), 1, File);
+	//解密是否成功的字符串
+
+	EncryptChar(tempStr, "CHECK", sizeof("CHECK") - sizeof(char), PassWord, PassWord_len);
+	fwrite(tempStr, sizeof("CHECK"), 1, File);
+	fwrite(&WriteLine->listCount, sizeof(int), 1, File);
+	fwrite(&WriteTitle->listCount, sizeof(int), 1, File);
+	for (a = 0; a < WriteTitle->listCount; a++)
+	{
+		EncryptChar(tempStr, OperateChart->ChartTitle[WriteTitle->list[a]], sizeof(char) * 31, PassWord, PassWord_len);
+		fwrite(tempStr, sizeof(char), 32, File);
+		fwrite(&OperateChart->ChartLimits[WriteTitle->list[a]], sizeof(int), 1, File);
+	}
+	for (a = 0; a < WriteLine->listCount; a++)
+	{
+		for (b = 0; b < WriteTitle->listCount; b++)
+		{
+			EncryptChar(tempStr, OperateChart->Chart[WriteLine->list[a]][WriteTitle->list[b]], OperateChart->ChartLimits[WriteTitle->list[b]], PassWord, PassWord_len);
+			fwrite(tempStr, sizeof(char), OperateChart->ChartLimits[WriteTitle->list[b]] + 1, File);
 		}
 	}
 	fclose(File);

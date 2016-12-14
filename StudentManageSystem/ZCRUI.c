@@ -1,10 +1,8 @@
-﻿
-#include "menu.h"
+﻿#include "menu.h"
 
 
 void MainMenu()
 {
-
 	void SubMenu_Read();
 	void SubMenu_Search();
 	void SubMenu_Change();
@@ -36,26 +34,22 @@ void MainMenu()
 		switch (Event_Input())
 		{
 		case 1:
-			SubMenu_Read();
+			SubMenu_Read();			//从文件读取信息
 			break;
 		case 2:
 			//排序
 			break;
 		case 3:
-			//查找
-			SubMenu_Search();
+			SubMenu_Search();		//查找学生信息
 			break;
 		case 4:
-			SubMenu_Change();
-			//修改
+			SubMenu_Change();		//修改学生信息
 			break;
 		case 5:
-			SubMenu_Display();
-			//显示学生信息
+			SubMenu_Display();		//显示学生信息
 			break;
 		case 6:
-			//保存信息
-			SubMenu_SaveToFile();
+			SubMenu_SaveToFile();	//保存信息
 			break;
 		case 7:
 			//高级设置
@@ -103,7 +97,6 @@ void SubMenu_Read()
 		}
 	}
 }
-//从文本读取数据
 void Sub_ChoiceFileToRead1()
 {
 	char ParamFilePath[512] = "";
@@ -200,7 +193,6 @@ void Sub_ChoiceFileToRead1()
 		}
 	}
 }
-//从二进制文件读取数据
 void Sub_ChoiceFileToRead2()
 {
 	char FilePath[512] = "";
@@ -256,6 +248,7 @@ void Sub_ChoiceFileToRead2()
 		}
 	}
 }
+
 
 
 //3搜索数据子菜单
@@ -316,7 +309,7 @@ void SubMenu_Search()
 			GETCH();
 			break;
 		case 4:
-			if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount>0) {
+			if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0) {
 				if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
 				{
 					printf("显示失败\n");
@@ -332,7 +325,6 @@ void SubMenu_Search()
 		}
 	}
 }
-//Sub_Search1的子功能
 void Sub_Search1()
 {
 	int WhichListSaveTo();
@@ -373,7 +365,6 @@ void Sub_Search1()
 	else
 		printf("操作失败\n");
 }
-//Sub_Search1的子功能
 int WhichListSaveTo()
 {
 	int a, b = -1;
@@ -541,7 +532,9 @@ void SubMenu_SaveToFile()
 {
 	void Sub_Save1();
 	void Sub_Save2();
-
+	void Sub_Save3();
+	void Sub_Save4();
+	void Sub_Save5();
 	while (1)
 	{
 		COMMAND_CLEAR();
@@ -558,7 +551,7 @@ void SubMenu_SaveToFile()
 			" [3].保存全部数据到二进制文件\n"\
 			" [4].保存部分数据到二进制文件\n"\
 			" [5].导出数据到*.txt(自动对齐)\n"\
-			" [0].返回主菜单\n"
+			" [0].返回主菜单\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -570,13 +563,19 @@ void SubMenu_SaveToFile()
 			Sub_Save2();
 			break;
 		case 3:
-
+			Sub_Save3();
+			break;
+		case 4:
+			Sub_Save4();
+			break;
+		case 5:
+			Sub_Save5();
+			break;
 		case 0:
 			return;
 		}
 	}
 }
-
 void Sub_Save1()
 {
 	char ParamFilePath[512] = { 0 };
@@ -617,7 +616,7 @@ void Sub_Save1()
 			break;
 		case 3:
 			//开始输出
-			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines>0) {
+			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0) {
 				if (!WriteToTwoFile_Chart(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex]))
 					printf("保存到文件成功\n");
 				else
@@ -633,7 +632,6 @@ void Sub_Save1()
 		}
 	}
 }
-
 void Sub_Save2()
 {
 	char ParamFilePath[512] = "";
@@ -674,7 +672,7 @@ void Sub_Save2()
 			break;
 		case 3:
 			//开始输出
-			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines>0)
+			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
 			{
 				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
 				{
@@ -685,6 +683,179 @@ void Sub_Save2()
 					FillList(TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
 				}
 				if (!WriteToTwoFileByList(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex],
+					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
+				{
+					printf("保存到文件成功\n");
+				}
+				else {
+					printf("保存到文件失败\n");
+				}
+			}
+			else {
+				printf("请先读取文件\n");
+			}
+			GETCH();
+			break;
+		case 0:
+			return;
+		}
+	}
+}
+void Sub_Save3()
+{
+	char FilePath[512] = { 0 };
+	char PassWord[32] = { 0 };
+	while (1) {
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                    保存当前表的全部信息到二进制文件\n"
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		printf(
+			DELIMS_LINE\
+			" [1].二进制文件的存储位置:%s\n"\
+			, FilePath);
+		printf(
+			DELIMS_LINE\
+			" [2].保存数据到二进制文件文件\n"\
+			" [0].返回主菜单\n"
+			DELIMS_LINE
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			printf("请输入二进制文件的存储位置:\n");
+			getchar();
+			fgets(FilePath, 512, stdin);
+			FilePath[strlen(FilePath) - 1] = 0;
+			break;
+
+		case 2:
+			//开始输出
+			scanf("%s", PassWord);
+			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && IndexListHeadSet&&TitleListHeadSet) {
+				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
+					printf("保存到文件成功\n");
+				else
+					printf("保存到文件失败\n");
+			}
+			else {
+				printf("请先读取文件\n");
+			}
+			GETCH();
+			break;
+		case 0:
+			return;
+		}
+	}
+}
+void Sub_Save4()
+{
+	char FilePath[512] = { 0 };
+	char PassWord[32] = { 0 };
+
+	while (1) {
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                    保存当前表的部分信息到二进制文件\n"
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		printf(
+			DELIMS_LINE\
+			" [1].二进制文件的存储位置:%s\n"\
+			, FilePath);
+		printf(
+			DELIMS_LINE\
+			" [2].保存数据到二进制文件文件\n"\
+			" [0].返回主菜单\n"
+			DELIMS_LINE
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			printf("请输入参数文件的存储路径:\n");
+			getchar();
+			fgets(FilePath, 512, stdin);
+			FilePath[strlen(FilePath) - 1] = 0;
+			break;
+		case 3:
+			//开始输出
+			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
+			{
+				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
+				{
+					FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+				}
+				if (!TitleListHeadSet[CurrentTitleListIndex] || TitleListHeadSet[CurrentTitleListIndex]->listCount <= 0)
+				{
+					FillList(TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+				}
+				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex],
+					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
+				{
+					printf("保存到文件成功\n");
+				}
+				else {
+					printf("保存到文件失败\n");
+				}
+			}
+			else {
+				printf("请先读取文件\n");
+			}
+			GETCH();
+			break;
+		case 0:
+			return;
+		}
+	}
+}
+void Sub_Save5()
+{
+	char FilePath[512] = "";
+
+	while (1) {
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                    保存当前表的部分信息到文本文件\n"
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		printf(
+			DELIMS_LINE\
+			" [1].txt文件的存储位置:%s\n"\
+			, FilePath);
+		printf(
+			DELIMS_LINE\
+			" [2].保存数据到文本文件\n"\
+			" [0].返回主菜单\n"
+			DELIMS_LINE
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			printf("请输入参数文件的存储路径:\n");
+			getchar();
+			fgets(FilePath, 512, stdin);
+			FilePath[strlen(FilePath) - 1] = 0;
+			break;
+		case 2:
+			//开始输出
+			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
+			{
+				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
+				{
+					FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+				}
+				if (!TitleListHeadSet[CurrentTitleListIndex] || TitleListHeadSet[CurrentTitleListIndex]->listCount <= 0)
+				{
+					FillList(TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+				}
+				if (!ExportToTxt(FilePath, ChartHead[CurrentChartIndex],
 					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
 				{
 					printf("保存到文件成功\n");
