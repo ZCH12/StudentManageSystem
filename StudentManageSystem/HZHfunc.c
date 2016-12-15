@@ -158,12 +158,13 @@ void SortByName1()
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE
-			" [1].排序方式:%s\n"
-			"\n"
-			" Tip:输入对应数字进行输入数据\n"
-			DELIMS_LINE
-			" [2].开始排序\n"
-			" [0].返回上一级\n",
+			" [1].排序方式:%s\n"\
+			"\n"\
+			" Tip:输入对应数字进行输入数据\n"\
+			DELIMS_LINE\
+			" [2].开始排序\n"\
+			" [0].返回上一级\n"\
+			DELIMS_LINE,
 			SortMode ? "降序" : "降序"
 		);
 		switch (Event_Input())
@@ -219,12 +220,13 @@ void SortByEx1()
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE
-			" [1].排序方式:%s\n"
-			"\n"
-			" Tip:输入对应数字进行输入数据\n"
+			" [1].排序方式:%s\n"\
+			"\n"\
+			" Tip:输入对应数字进行输入数据\n"\
+			DELIMS_LINE\
+			" [2].开始排序\n"\
+			" [0].返回上一级\n"\
 			DELIMS_LINE
-			" [2].开始排序\n"
-			" [0].返回上一级\n"
 			, SortMode ? "降序" : "升序"
 		);
 		switch (Event_Input())
@@ -289,10 +291,11 @@ void SortByWhatYouWant()
 		}
 		printf("\n");
 		printf(
-			" Tip:输入对应数字进行输入数据\n"
+			" Tip:输入对应数字进行输入数据\n"\
+			DELIMS_LINE\
+			" [3].开始排序\n"\
+			" [0].返回上一级\n"\
 			DELIMS_LINE
-			" [3].开始排序\n"
-			" [0].返回上一级\n"
 		);
 		Menu_DisplaySubMenu();
 		switch (Event_Input())
