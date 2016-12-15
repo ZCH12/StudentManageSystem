@@ -131,6 +131,7 @@ void CaluAverage()
 					sum += atof(ChartHead[CurrentChartIndex]->Chart[i][UnitNum[t]]);
 				}
 				sprintf(ChartHead[CurrentChartIndex]->Chart[i][SHI(ChartHead[CurrentChartIndex], "平均成绩")], "%.1lf", sum / 10);
+                sum = 0;
 			}
 			if (returnVal == 0) {
 				printf("计算成功\n");
@@ -148,7 +149,7 @@ void CaluAverage()
 //按照名字排序
 void SortByName1()
 {
-	int SortMode = 0;               //排序模式
+	int SortMode = 1;               //排序模式
 	int ReturnVal = 0;
 #if RANDOMCOLOR
 	ChangeColor();
@@ -169,8 +170,8 @@ void SortByName1()
 			" Tip:输入对应数字进行输入数据\n"
 			DELIMS_LINE
 			" [2].开始排序\n"
-			" [0].返回上一级\n",
-			SortMode ? "降序" : "降序"
+			" [0].返回上一级\n"
+            , SortMode == 1 ? "降序" : "升序"
 		);
 		switch (Event_Input())
 		{
@@ -216,7 +217,7 @@ void SortByName1()
 void SortByEx1()
 {
 	int ReturnVal = 0;
-	int SortMode = 0;
+	int SortMode = 1;
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -237,7 +238,7 @@ void SortByEx1()
 			DELIMS_LINE
 			" [2].开始排序\n"
 			" [0].返回上一级\n"
-			, SortMode ? "降序" : "升序"
+			, SortMode == 1 ? "降序" : "升序"
 		);
 		switch (Event_Input())
 		{
@@ -276,7 +277,7 @@ void SortByEx1()
 void SortByWhatYouWant()
 {
 	int i;
-	int SortMode = 0;
+	int SortMode = 1;
 	int ContentIndex = 0;
 	int ReturnVal = 0;
 #if RANDOMCOLOR
@@ -292,12 +293,14 @@ void SortByWhatYouWant()
 		);
 		printf(
 			DELIMS_LINE
-			" [1].排序方式:%s\n"
-			" [2].排序的内容:", SortMode ? "降序" : "升序");
-		for (i = 0; i < ChartHead[CurrentChartIndex]->TitleCount; i++) {
-			printf("%s ", ChartHead[CurrentChartIndex]->ChartTitle[i]);
-		}
-		printf("\n");
+            " [1].排序方式:%s\n", SortMode == 1 ? "降序" : "升序"
+               );
+        
+       
+        printf(
+            " [2].排序内容:%s\n", ChartHead[CurrentChartIndex]->ChartTitle[ContentIndex]
+               );
+        printf("\n");
 		printf(
 			" Tip:输入对应数字进行输入数据\n"
 			DELIMS_LINE
@@ -319,6 +322,7 @@ void SortByWhatYouWant()
 			if (SortMode < 0 || SortMode > 2) {
 				printf("输出错误,请重新输入\n");
 			}
+            
 			break;
 		case 2:
 			printf("请选择排序的内容\n");
