@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 :start
 cls
 (
-	for /l %%a in (100001,1,200000) do (
+	for /l %%a in (100001,1,600000) do (
 		set /p b=160%%a <nul
 		set /a aa=!random!%%499
 		call :getXing "!aa!"

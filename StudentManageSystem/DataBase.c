@@ -2432,6 +2432,7 @@ ErrVal CopyList(List *SourceList, List *DestList)
 传入的数据 格式类似5 4 2 1 3
 list 存储的目标List
 MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一般是指定Chart表的TitleCount
+字符串中的值是从1开始的
 */
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 {
@@ -2448,8 +2449,13 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 
 	if (list->AllocatedList <= 0 || !list->list) {
 		a = FillList(list, len);
-		if (!a)
+		if (a)
+		{
+			if (a != ERR_MEMORYNOTENOUGH)
+				FreeList(list);
 			return a;
+		}
+			
 	}
 
 	temp2 = strtok(Input, Delimer);
