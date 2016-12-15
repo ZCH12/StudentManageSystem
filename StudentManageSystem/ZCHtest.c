@@ -265,6 +265,23 @@ void test10()
 	FreeAll();
 }
 
+void test11()
+{
+	NewChartSet(5);
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	NewListSet(5, LISTTYPE_TITLELIST);
+	ReadFromTwoFile("Windows测试文件\\stu_param.txt", "Windows测试文件\\stu_info.txt", ChartHead[0]);
+	InitList(IndexListHeadSet[0], 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11);
+
+	Display_Page(ChartHead[0], IndexListHeadSet[0], NULL, DISPLAY_SHOWNUMBER, 4, 0);
+	system("pause");
+	Display_Page(ChartHead[0], IndexListHeadSet[0], NULL, DISPLAY_SHOWNUMBER, 4, 1);
+	system("pause");
+	Display_Page(ChartHead[0], IndexListHeadSet[0], NULL, DISPLAY_SHOWNUMBER, 4, 2);
+	system("pause");
+	Display_Page(ChartHead[0], IndexListHeadSet[0], NULL, DISPLAY_SHOWNUMBER, 4, 3);
+}
+
 int main()
 {
 	//_CrtSetBreakAlloc(65);
@@ -285,8 +302,9 @@ int main()
 	//test7();
 	//test8();
 	//test9();
-	testmain();
+	//testmain();
 	//test10();
+	test11();
 	//FreeChartSet();
 	//FreeListSet(0);
 	//FreeListSet(1);
