@@ -566,6 +566,7 @@ void SubMenu_Display()
 			else
 			{
 				printf("预测将要输出的结果数量太大,是否使用分页显示结果?不使用分页显示请输入N,使用分页显示请输入任意字符\n");
+				getchar();
 				scanf("%c", &temp);
 				switch (temp)
 				{

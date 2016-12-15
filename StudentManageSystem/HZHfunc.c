@@ -100,7 +100,7 @@ void CaluAverage()
 				GETCH();
 			}
 			break;
-		case 3:
+		case 2:
 			//检查是否输入 计算科目数量
 			if (tempList.listCount <= 0) {
 				printf("请先选择要进行计算的科目\n");
