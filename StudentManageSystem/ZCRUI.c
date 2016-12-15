@@ -1,7 +1,7 @@
 ﻿#include "menu.h"
 #include "time.h"
 
-
+//主菜单入口
 void MainMenu()
 {
 	void SubMenu_Read();
@@ -64,7 +64,7 @@ void MainMenu()
 			printf("确定要退出吗?(按Y继续退出)\n如果退出,未保存的数据将会丢失\n");
 			getchar();
 			scanf("%c", &a);
-			if (a == 'Y'||a == 'y')
+			if (a == 'Y' || a == 'y')
 				exit(0);
 		}
 	}
@@ -271,7 +271,9 @@ void Sub_ChoiceFileToRead2()
 void SubMenu_Search()
 {
 	void Sub_Search1();
+	extern int ShowPageList;
 	int returnVal;
+	char temp;
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -285,12 +287,15 @@ void SubMenu_Search()
 		);
 		Menu_DisplaySubMenu();
 		Menu_DisplaySubMenu_Search();
+		Menu_DisplaySubMenu_Page();
 		printf(
 			DELIMS_LINE\
 			" [1].按姓名进行查找\n"\
 			" [2].按学号进行查找\n"\
 			" [3].按选定信息点进行查找\n"\
-			" [4].显示结果\n"\
+			" [4].显示全部结果\n"\
+			" [5].分页显示结果\n"\
+			" [6].初始化当前名单\n"\
 			" [0].返回主菜单\n"\
 			DELIMS_LINE
 		);
@@ -328,15 +333,40 @@ void SubMenu_Search()
 			GETCH();
 			break;
 		case 4:
-			if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0) {
-				if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+			if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet &&IndexListHeadSet[CurrentIndexListIndex]->listCount > 0) {
+				if ((IndexListHeadSet[CurrentIndexListIndex]->listCount <= WARNING_TOMUCHITEM) ||
+					(ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && ChartHead[CurrentChartIndex]->UsedLines <= WARNING_TOMUCHITEM)) {
+					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+						printf("显示信息错误\n");
+				}
+				else
 				{
-					printf("显示失败\n");
+					printf("预测将要输出的结果数量太大,是否使用分页显示结果?不使用分页显示请输入N,使用分页显示请输入任意字符\n");
+					scanf("%c", &temp);
+					switch (temp)
+					{
+					case 'N':
+					case 'n':
+						if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+							printf("显示信息错误\n");
+					default:
+						ShowPageList = 1;
+						if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
+							printf("显示信息错误\n");
+					}
 				}
 			}
-			else {
-				printf("请先进行筛选\n");
-			}
+			GETCH();
+			break;
+		case 5:
+			if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
+				printf("显示信息错误\n");
+			GETCH();
+			break;
+		case 6:
+			if (IndexListHeadSet&&ChartHead)
+				FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+			printf("初始化完毕\n");
 			GETCH();
 			break;
 		case 0:
@@ -501,7 +531,9 @@ void SubMenu_Change()
 void SubMenu_Display()
 {
 	extern int ShowTitleList;
+	extern int ShowPageList;
 	char tempChar[100];
+	char temp;
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -514,23 +546,51 @@ void SubMenu_Display()
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
+		Menu_DisplaySubMenu_Page();
 		printf(
 			DELIMS_LINE\
-			" [1].显示信息\n"\
-			" [2].列配置编辑\n"\
+			" [1].单页显示信息\n"\
+			" [2].分页显示信息\n"\
+			" [3].列配置编辑\n"\
 			" [0].返回主菜单\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+			if ((IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0 && IndexListHeadSet[CurrentIndexListIndex]->listCount <= WARNING_TOMUCHITEM) ||
+				(ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && ChartHead[CurrentChartIndex]->UsedLines <= WARNING_TOMUCHITEM)) {
+				if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+					printf("显示信息错误\n");
+			}
+			else
 			{
-				printf("显示信息错误\n");
+				printf("预测将要输出的结果数量太大,是否使用分页显示结果?不使用分页显示请输入N,使用分页显示请输入任意字符\n");
+				scanf("%c", &temp);
+				switch (temp)
+				{
+				case 'N':
+				case 'n':
+					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+						printf("显示信息错误\n");
+				default:
+					ShowPageList = 1;
+					if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
+						printf("显示信息错误\n");
+				}
 			}
 			GETCH();
 			break;
+
 		case 2:
+			if (ChartHead&&ChartHead[CurrentChartIndex] && IndexListHeadSet&&TitleListHeadSet)
+			{
+				if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
+					printf("显示信息错误\n");
+			}
+			GETCH();
+			break;
+		case 3:
 			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->ChartTitle) {
 				printf(DELIMS_LINE);
 				Menu_DisplaySubMenu_Display();
@@ -975,13 +1035,12 @@ void SubMenu_Advantage()
 	}
 }
 
-/*
-随机改变颜色
-*/
+
+//随机改变颜色
 void ChangeColor()
 {
 	srand((int)time(NULL));
-	switch (rand()%8)
+	switch (rand() % 8)
 	{
 	case 0:
 		system("color F1");

@@ -108,6 +108,7 @@ ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileNam
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart);
 ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode);
+ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode, int PageSize, int PageIndex);
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
 

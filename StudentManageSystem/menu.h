@@ -9,6 +9,7 @@ extern int CurrentChartIndex;				//最近在操作的表的编号
 extern int CurrentIndexListIndex;			//最近在操作的IndexList的编号
 extern int CurrentTitleListIndex;			//最近在操作的TitleList的编号
 extern int CurrentTitleIndex;				//最近在操作的Chart表中的列的编号
+extern int CurrentPageIndex;				//当前在操作的页
 
 #define CONFIGFILEPATH1 "Config\\Config1.config"	//配置文件的路径
 #define CONFIGFILEPATH2 "Config\\Config2.config"	//配置文件的路径
@@ -17,6 +18,8 @@ extern int CurrentTitleIndex;				//最近在操作的Chart表中的列的编号
 #define CONFIGFILEPATH5 "Config\\Config5.config"	//配置文件的路径
 
 #define RANDOMCOLOR 1//控制是否随机改变窗口颜色
+#define WARNING_TOMUCHITEM 2000				//控制何时警告输出的数量太多
+#define SIZE_PAGE 2000						//一页的大小
 
 #ifdef __APPLE__ 
 #ifdef __MACH__
@@ -38,6 +41,7 @@ void FreeAll();
 void Menu_DisplaySubMenu();
 void Menu_DisplaySubMenu_Search();
 void Menu_DisplaySubMenu_Display();
+void Menu_DisplaySubMenu_Page();
 int Event_Input();
 void ChangeColor();
 

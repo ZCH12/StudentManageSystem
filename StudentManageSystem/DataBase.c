@@ -1451,118 +1451,6 @@ Mode是控制显示的一个参数
 Mode=1 输出一个编号(用于给用户进行选择)
 Mode=0 不输出编号
 */
-/*
-ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
-{
-	int a, b;
-	IndexList tempLinelist = { 0 };
-	TitleList tempTitlelist = { 0 };
-	int temp, temp3;			//用于提高性能
-	int *temp2, *temp22, *temp5;	//用于提高性能
-	char ***temp4;				//用于提高性能
-
-	if (!OperateChart || !OperateChart->HadInit)
-		return ERR_UNINITIALIZEDCHART;
-
-	if (!ShowLines || !ShowLines->listCount)
-	{
-		//如果ShowLines为空,则初始化一个IndexList
-		temp = OperateChart->UsedLines;
-		tempLinelist.listCount = temp;
-		tempLinelist.list = (int*)malloc(sizeof(int)*temp);
-		if (!tempLinelist.list)
-			return ERR_MEMORYNOTENOUGH;
-
-		temp2 = tempLinelist.list;
-		for (a = 0; a < temp; a++) {
-			*temp2 = a;
-			temp2++;
-		}
-		ShowLines = &tempLinelist;
-	}
-	if (!ShowTitle || !ShowTitle->listCount)
-	{
-		//如果ShowTitle为空,则初始化一个ShowTitle
-		temp = OperateChart->TitleCount;
-		tempTitlelist.listCount = temp;
-		tempTitlelist.list = (int*)malloc(sizeof(int)*temp);
-		if (!tempTitlelist.list) {
-			free(tempLinelist.list);
-			return ERR_MEMORYNOTENOUGH;
-		}
-		temp2 = tempTitlelist.list;
-		for (a = 0; a < temp; a++) {
-			*temp2 = a;
-			temp2++;
-		}
-		ShowTitle = &tempTitlelist;
-	}
-
-	temp = ShowLines->listCount;
-	temp3 = ShowTitle->listCount;
-	temp5 = OperateChart->ChartLimits;		//取得长度限制的数组
-
-											//显示表头
-	if (Mode == 1)
-		printf("编号   ");
-	temp2 = ShowTitle->list;
-	for (a = 0; a < temp3; a++)
-	{
-		if (*temp2 < OperateChart->TitleCount)
-			printf("%-*s ", temp5[*temp2], OperateChart->ChartTitle[*temp2]);
-		temp2++;
-	}
-	printf("\n");
-
-	temp4 = OperateChart->Chart;
-	temp5 = OperateChart->ChartLimits;
-	temp2 = ShowLines->list;
-
-	//显示信息
-	switch (Mode)
-	{
-	case 0:
-		for (a = 0; a < temp; a++)
-		{
-			temp22 = ShowTitle->list;
-			if (*temp2 < OperateChart->UsedLines) {
-				for (b = 0; b < temp3; b++)
-				{
-					if (*temp22 < OperateChart->TitleCount)
-						printf("%-*s ", temp5[*temp22], temp4[*temp2][*temp22]);
-					temp22++;
-				}
-				printf("\n");
-			}
-			temp2++;
-		}
-		break;
-	case 1:
-		for (a = 0; a < temp; a++)
-		{
-			temp22 = ShowTitle->list;
-			if (*temp2 < OperateChart->UsedLines) {
-				printf("%-7d ", a);
-				for (b = 0; b < temp3; b++)
-				{
-					printf("%-*s ", temp5[*temp22], temp4[*temp2][*temp22]);
-					temp22++;
-				}
-				printf("\n");
-			}
-			temp2++;
-		}
-		break;
-	}
-
-	//释放临时申请的内存
-	if (tempTitlelist.list)
-		free(tempTitlelist.list);
-	if (tempLinelist.list)
-		free(tempLinelist.list);
-	return SUCCESS;
-}
-*/
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
 {
 	int a, b;
@@ -1675,7 +1563,6 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 				break;
 			}
 		}
-
 	}
 	else {
 		if (ShowTitle)
@@ -1695,7 +1582,6 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 					}
 					printf("\n");
 				}
-				tempLineList++;
 				break;
 			case 1:
 				for (a = 0; a < OperateChart->UsedLines; a++)
@@ -1710,7 +1596,6 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 					}
 					printf("\n");
 				}
-				tempLineList++;
 				break;
 			}
 		}
@@ -1816,6 +1701,209 @@ PageIndex 页的序号
 */
 ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode, int PageSize, int PageIndex)
 {
+	int a, b;
+	int *tempLineList, *tempTitleList;
+	int Start_index, End_index;
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+
+	if (ShowLines && ShowLines->listCount <= 0)
+	{
+		FreeList(ShowLines);
+		ShowLines = NULL;
+	}
+	if (PageIndex < 0)
+		return ERR_ILLEGALPARAM;
+
+	Start_index = PageSize*PageIndex;
+	if (!ShowLines)
+	{
+		if (Start_index >= OperateChart->UsedLines)
+			return ERR_ILLEGALPARAM;
+		else
+		{
+			if (Start_index + PageSize < OperateChart->UsedLines)
+			{
+				End_index = Start_index + PageSize;
+			}
+			else {
+				End_index = OperateChart->UsedLines;
+			}
+		}
+	}
+	else {
+		if (PageSize*PageIndex >= ShowLines->listCount)
+			return ERR_ILLEGALPARAM;
+		else
+		{
+			if (Start_index + PageSize < ShowLines->listCount)
+			{
+				End_index = Start_index + PageSize;
+			}
+			else {
+				End_index = ShowLines->listCount;
+			}
+		}
+	}
+
+	if (ShowTitle&&ShowTitle->listCount <= 0)
+	{
+		FreeList(ShowTitle);
+		ShowTitle = NULL;
+	}
+
+	if (Mode == 1)
+		printf("编号   ");
+	if (!ShowTitle)
+	{
+		//无指定标题将使用默认
+		for (a = 0; a < OperateChart->TitleCount; a++)
+			printf("%-*s ", OperateChart->ChartLimits[a], OperateChart->ChartTitle[a]);
+	}
+	else {
+		tempTitleList = ShowTitle->list;
+		for (a = 0; a < ShowTitle->listCount; a++)
+		{
+			if (*tempTitleList < OperateChart->TitleCount)
+				printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->ChartTitle[*tempTitleList]);
+			tempTitleList++;
+		}
+	}
+	printf("\n");
+
+	if (ShowLines)
+	{
+		tempLineList = ShowLines->list+Start_index;
+		//按List中显示信息
+		if (ShowTitle)
+		{
+			//按两表的数据显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = Start_index; a < End_index; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						tempTitleList = ShowTitle->list;
+						for (b = 0; b < ShowTitle->listCount; b++)
+						{
+							if (*tempTitleList < OperateChart->TitleCount)
+								printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[*tempLineList][*tempTitleList]);
+							tempTitleList++;
+						}
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			case 1:
+				for (a = Start_index; a < End_index; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						tempTitleList = ShowTitle->list;
+						printf("%-7d ", a);
+						for (b = 0; b < ShowTitle->listCount; b++)
+						{
+							if (*tempTitleList < OperateChart->TitleCount)
+								printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[*tempLineList][*tempTitleList]);
+							tempTitleList++;
+						}
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			}
+		}
+		else {
+			//只按IndexList表显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = Start_index; a < End_index; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						for (b = 0; b < OperateChart->TitleCount; b++)
+							printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[*tempLineList][b]);
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			case 1:
+				for (a = Start_index; a < End_index; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						printf("%-7d ", a);
+						for (b = 0; b < OperateChart->TitleCount; b++)
+							printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[*tempLineList][b]);
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			}
+		}
+	}
+	else {
+		if (ShowTitle)
+		{
+			//按TitleList表的数据显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = Start_index; a < End_index; a++)
+				{
+					tempTitleList = ShowTitle->list;
+					for (b = 0; b < ShowTitle->listCount; b++)
+					{
+						if (*tempTitleList < OperateChart->TitleCount)
+							printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[a][*tempTitleList]);
+						tempTitleList++;
+					}
+					printf("\n");
+				}
+				break;
+			case 1:
+				for (a = Start_index; a < End_index; a++)
+				{
+					tempTitleList = ShowTitle->list;
+					printf("%-7d ", a);
+					for (b = 0; b < ShowTitle->listCount; b++)
+					{
+						if (*tempTitleList < OperateChart->TitleCount)
+							printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[a][*tempTitleList]);
+						tempTitleList++;
+					}
+					printf("\n");
+				}
+				break;
+			}
+		}
+		else {
+			//不按任何表显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = Start_index; a < End_index; a++)
+				{
+					for (b = 0; b < OperateChart->TitleCount; b++)
+						printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[a][b]);
+					printf("\n");
+				}
+				break;
+			case 1:
+				for (a = Start_index; a < End_index; a++)
+				{
+					printf("%-7d ", a);
+					for (b = 0; b < OperateChart->TitleCount; b++)
+						printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[a][b]);
+					printf("\n");
+				}
+				break;
+			}
+		}
+	}
 	return SUCCESS;
 }
 
