@@ -526,7 +526,7 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	int a, b;
 	FILE *File;
 	char temp[512];
-	int PassWord_len = (int )strlen(PassWord);
+	int PassWord_len = (int)strlen(PassWord);
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
 
@@ -675,7 +675,7 @@ ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * Writ
 
 	//写入参数头部
 	for (a = 0; a < WriteTitle->listCount; a++)
-		fprintf(File, "%*s ", OperateChart->ChartLimits[WriteTitle->list[a]],OperateChart->ChartTitle[WriteTitle->list[a]]);
+		fprintf(File, "%*s ", OperateChart->ChartLimits[WriteTitle->list[a]], OperateChart->ChartTitle[WriteTitle->list[a]]);
 	fprintf(File, "\n");
 
 	//开始写入表中数据
@@ -785,7 +785,7 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 	FILE *File;
 	int a, b;
 	char tempStr[512] = "";
-	int PassWord_len = (int )strlen(PassWord);
+	int PassWord_len = (int)strlen(PassWord);
 
 	if (!OperateChart || !OperateChart->HadInit)
 		return ERR_UNINITIALIZEDCHART;
@@ -1451,6 +1451,7 @@ Mode是控制显示的一个参数
 Mode=1 输出一个编号(用于给用户进行选择)
 Mode=0 不输出编号
 */
+/*
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
 {
 	int a, b;
@@ -1561,6 +1562,184 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 		free(tempLinelist.list);
 	return SUCCESS;
 }
+*/
+ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
+{
+	int a, b;
+	int *tempLineList, *tempTitleList;
+	if (!OperateChart || !OperateChart->HadInit)
+		return ERR_UNINITIALIZEDCHART;
+
+	if (ShowLines && ShowLines->listCount <= 0)
+	{
+		FreeList(ShowLines);
+		ShowLines = NULL;
+	}
+
+	if (ShowTitle&&ShowTitle->listCount <= 0)
+	{
+		FreeList(ShowTitle);
+		ShowTitle = NULL;
+	}
+
+	if (Mode == 1)
+		printf("编号   ");
+	if (!ShowTitle)
+	{
+		//无指定标题将使用默认
+		for (a = 0; a < OperateChart->TitleCount; a++)
+			printf("%-*s ", OperateChart->ChartLimits[a], OperateChart->ChartTitle[a]);
+	}
+	else {
+		tempTitleList = ShowTitle->list;
+		for (a = 0; a < ShowTitle->listCount; a++)
+		{
+			if (*tempTitleList < OperateChart->TitleCount)
+				printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->ChartTitle[*tempTitleList]);
+			tempTitleList++;
+		}
+	}
+	printf("\n");
+
+	
+	if (ShowLines)
+	{
+		tempLineList = ShowLines->list;
+		//按List中显示信息
+		if (ShowTitle)
+		{
+			//按两表的数据显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = 0; a < ShowLines->listCount; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						tempTitleList = ShowTitle->list;
+						for (b = 0; b < ShowTitle->listCount; b++)
+						{
+							if (*tempTitleList < OperateChart->TitleCount)
+								printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[*tempLineList][*tempTitleList]);
+							tempTitleList++;
+						}
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			case 1:
+				for (a = 0; a < ShowLines->listCount; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						tempTitleList = ShowTitle->list;
+						printf("%-7d ", a);
+						for (b = 0; b < ShowTitle->listCount; b++)
+						{
+							if (*tempTitleList < OperateChart->TitleCount)
+								printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[*tempLineList][*tempTitleList]);
+							tempTitleList++;
+						}
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			}
+		}
+		else {
+			//只按IndexList表显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = 0; a < ShowLines->listCount; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						for (b = 0; b < OperateChart->TitleCount; b++)
+							printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[*tempLineList][b]);
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			case 1:
+				for (a = 0; a < ShowLines->listCount; a++)
+				{
+					if (*tempLineList < OperateChart->UsedLines) {
+						printf("%-7d ", a);
+						for (b = 0; b < OperateChart->TitleCount; b++)
+							printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[*tempLineList][b]);
+						printf("\n");
+					}
+					tempLineList++;
+				}
+				break;
+			}
+		}
+
+	}
+	else {
+		if (ShowTitle)
+		{
+			//按TitleList表的数据显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = 0; a < OperateChart->UsedLines; a++)
+				{
+					tempTitleList = ShowTitle->list;
+					for (b = 0; b < ShowTitle->listCount; b++)
+					{
+						if (*tempTitleList < OperateChart->TitleCount)
+							printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[a][*tempTitleList]);
+						tempTitleList++;
+					}
+					printf("\n");
+				}
+				tempLineList++;
+				break;
+			case 1:
+				for (a = 0; a < OperateChart->UsedLines; a++)
+				{
+					tempTitleList = ShowTitle->list;
+					printf("%-7d ", a);
+					for (b = 0; b < ShowTitle->listCount; b++)
+					{
+						if (*tempTitleList < OperateChart->TitleCount)
+							printf("%-*s ", OperateChart->ChartLimits[*tempTitleList], OperateChart->Chart[a][*tempTitleList]);
+						tempTitleList++;
+					}
+					printf("\n");
+				}
+				tempLineList++;
+				break;
+			}
+		}
+		else {
+			//不按任何表显示
+			switch (Mode)
+			{
+			case 0:
+				for (a = 0; a < OperateChart->UsedLines; a++)
+				{
+					for (b = 0; b < OperateChart->TitleCount; b++)
+						printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[a][b]);
+					printf("\n");
+				}
+				break;
+			case 1:
+				for (a = 0; a < OperateChart->UsedLines; a++)
+				{
+					printf("%-7d ", a);
+					for (b = 0; b < OperateChart->TitleCount; b++)
+						printf("%-*s ", OperateChart->ChartLimits[b], OperateChart->Chart[a][b]);
+					printf("\n");
+				}
+				break;
+			}
+		}
+	}
+	return SUCCESS;
+}
 
 /*
 按照ShowLines和ShowTitle的顺序显示信息
@@ -1622,6 +1801,21 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 	//释放临时申请的内存
 	if (tempTitlelist.list)
 		free(tempTitlelist.list);
+	return SUCCESS;
+}
+
+/*
+按照ShowLines和ShowTitle的顺序显示信息
+ShowLines 包含在Chart表中lines的下标的数组, 允许为NULL, 将输出所有的行(按表中顺序)
+ShowTitle 包含在Chart表中ShowTitle的下标的数组, 允许为NULL, 将输出所有的列(按表中顺序)
+Mode是控制显示的一个参数
+Mode = 1 输出一个编号(用于给用户进行选择)
+Mode = 0 不输出编号
+PageSize 一页的大小
+PageIndex 页的序号
+*/
+ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode, int PageSize, int PageIndex)
+{
 	return SUCCESS;
 }
 
@@ -2153,7 +2347,7 @@ MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一�
 */
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 {
-	int len = (int )strlen(Input);
+	int len = (int)strlen(Input);
 	char *temp2;
 	int a = 0;
 	int temp;
