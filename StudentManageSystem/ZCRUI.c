@@ -1029,6 +1029,9 @@ void SubMenu_Advantage()
 			}
 			GETCH();
 			break;
+		case 2:
+			CaluAverage();
+			break;
 		case 0:
 			return;
 		}

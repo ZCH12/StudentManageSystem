@@ -65,20 +65,20 @@ void CaluAverage()
 		);
 		Menu_DisplaySubMenu();
 		printf(
-			DELIMS_LINE
-			" [1].计算平均成绩的科目数量:%d\n", CaluUnitCount);
-		printf(
-			" [2].计算平均成绩的科目:"
-		);
+			DELIMS_LINE\
+			" [1].计算平均成绩的科目数量:%d\n"\
+			" [2].计算平均成绩的科目:"\
+			, CaluUnitCount);
 		for (i = 4; i - 4 < CaluUnitCount; i++) {
 			printf("%s ", ChartHead[CurrentChartIndex]->ChartTitle[UnitNum[i - 4]]);
 		}
 		printf(
 			"\n"
-			" Tip:输入对应数字进行输入数据\n"
+			" Tip:输入对应数字进行输入数据\n"\
+			DELIMS_LINE\
+			" [3].开始计算\n"\
+			" [0].返回上一级\n"\
 			DELIMS_LINE
-			" [3].开始计算"
-			" [0].返回上一级"
 		);
 		switch (Event_Input())
 		{
@@ -88,10 +88,12 @@ void CaluAverage()
 			if (CaluUnitCount < 0 || CaluUnitCount > ChartHead[CurrentChartIndex]->UsedLines) {
 				printf("输入错误，请重新输入\n");
 			}
+			GETCH();
 			break;
 		case 2:
 			if (!CaluUnitCount) {
 				printf("输入错误，请优先输入计算平均成绩的科目数量\n");
+				GETCH();
 				break;
 			}
 			printf("请输入计算平均成绩的科目:\n");
@@ -111,6 +113,7 @@ void CaluAverage()
 				}
 				i++;
 			}
+			GETCH();
 			break;
 		case 3:
 			//检查是否输入 计算科目数量
@@ -125,9 +128,9 @@ void CaluAverage()
 			returnVal = CreateNewUnit(ChartHead[CurrentChartIndex], 1, &UnitName, &NewTitleLimits);
 			for (i = 0; i < ChartHead[CurrentChartIndex]->UsedLines; i++)
 			{
+				sum = 0;
 				for (t = 0; t < CaluUnitCount; t++)
 				{
-
 					sum += atof(ChartHead[CurrentChartIndex]->Chart[i][UnitNum[t]]);
 				}
 				sprintf(ChartHead[CurrentChartIndex]->Chart[i][SHI(ChartHead[CurrentChartIndex], "平均成绩")], "%.1lf", sum / 10);
@@ -138,6 +141,7 @@ void CaluAverage()
 			else {
 				printf("计算失败\n");
 			}
+			GETCH();
 			break;
 		case 0:
 			return;
