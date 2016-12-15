@@ -1009,7 +1009,8 @@ void SubMenu_Advantage()
 			DELIMS_LINE\
 			" [1].列配置编辑\n"\
 			" [2].计算平均成绩\n"\
-			" [0].返回主菜单\n"
+			" [0].返回主菜单\n"\
+			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
@@ -1028,6 +1029,9 @@ void SubMenu_Advantage()
 				printf("请先读取或创建表\n");
 			}
 			GETCH();
+			break;
+		case 2:
+			CaluAverage();
 			break;
 		case 0:
 			return;

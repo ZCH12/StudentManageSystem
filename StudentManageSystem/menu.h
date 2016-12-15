@@ -51,7 +51,7 @@ void WriteConfig3(char *ConfigFile, char *ParamFileName, char * DataFileName);
 void ReadConfig1(char *ConfigFile, char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName);
 void ReadConfig2(char *ConfigFile, char * FileName);
 void ReadConfig3(char *ConfigFile, char *ParamFileName, char * DataFileName);
-int WhichListSaveTo();
+
 //主菜单的入口
 void MainMenu();
 
