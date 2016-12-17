@@ -1,5 +1,5 @@
 ﻿#include "menu.h"
-//#include <conio.h>  
+
 
 /********************************************************************************
 窗体通用函数
@@ -297,6 +297,7 @@ int Event_Input()
 	return -1;
 }
 
+#if GETPASSWORD==1
 //密码输入器,星号回显
 int InputPassWord(char *PassWord, int MaxSize)
 {
@@ -328,3 +329,13 @@ int InputPassWord(char *PassWord, int MaxSize)
 	}
 	return a;
 }
+#else
+
+int InputPassWord(char *PassWord, int MaxSize)
+{
+	getchar();
+	fgets(PassWord,MaxSize,stdin);
+	PassWord[strlen(PassWord)-1]=0;
+	return strlen(PassWord);
+}
+#endif
