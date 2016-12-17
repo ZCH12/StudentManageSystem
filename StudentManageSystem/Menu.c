@@ -155,13 +155,14 @@ void Menu_DisplaySubMenu() {
 	{
 		if (IndexListHeadSet)
 			for (a = 0; a < IndexListCount; a++)
-				if (IndexListHeadSet[a])
-                    if (IndexListHeadSet[a]->ListName)
+                if (IndexListHeadSet[a]){
+                    if (IndexListHeadSet[a]->ListName){
                         printf("   [L#%-2d]. %s{%d}\n", a + 1, IndexListHeadSet[a]->ListName, IndexListHeadSet[a]->listCount);
-                    else
+                    }
+                    else {
                         printf("   [L#%-2d]. (NULL){%d}\n", a + 1, IndexListHeadSet[a]->listCount);
-                        
-						
+                    }
+                }
 	}
 
 	//列配置文件
@@ -177,11 +178,14 @@ void Menu_DisplaySubMenu() {
 	{
 		if (TitleListHeadSet)
 			for (a = 0; a < TitleListCount; a++)
-				if (TitleListHeadSet[a])
-					if (TitleListHeadSet[a]->ListName)
-						printf("   [T#%-2d]. %s{%d}\n", a + 1, TitleListHeadSet[a]->ListName, TitleListHeadSet[a]->listCount);
-					else
-						printf("   [T#%-2d]. (NULL){%d}\n", a + 1, TitleListHeadSet[a]->listCount);
+                if (TitleListHeadSet[a]){
+                    if (TitleListHeadSet[a]->ListName){
+                        printf("   [T#%-2d]. %s{%d}\n", a + 1, TitleListHeadSet[a]->ListName, TitleListHeadSet[a]->listCount);
+                    }
+                    else {
+                        printf("   [T#%-2d]. (NULL){%d}\n", a + 1, TitleListHeadSet[a]->listCount);
+                    }
+                }
 	}
 	return;
 }
@@ -336,6 +340,6 @@ int InputPassWord(char *PassWord, int MaxSize)
 	getchar();
 	fgets(PassWord,MaxSize,stdin);
 	PassWord[strlen(PassWord)-1]=0;
-	return strlen(PassWord);
+	return (int )strlen(PassWord);
 }
 #endif
