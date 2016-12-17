@@ -80,6 +80,7 @@ void CaluAverage()
 			" Tip:输入对应数字进行输入数据\n"\
 			DELIMS_LINE\
 			" [2].开始计算\n"\
+			" [3].查看信息\n"\
 			" [0].返回上一级\n"\
 			DELIMS_LINE
 		);
@@ -142,6 +143,9 @@ void CaluAverage()
 			printf("计算平均成绩成功\n");
 			GETCH();
 			break;
+		case 3:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
@@ -172,7 +176,7 @@ void SortByName1()
 			" Tip:输入对应数字进行输入数据\n"\
 			DELIMS_LINE\
 			" [2].开始排序\n"\
-			" [3].显示结果\n"\
+			" [3].显示信息\n"\
 			" [0].返回上一级\n"\
 			DELIMS_LINE,
 			SortMode ? "降序" : "升序"
@@ -245,7 +249,7 @@ void SortByEx1()
 			" Tip:输入对应数字进行输入数据\n"\
 			DELIMS_LINE\
 			" [2].开始排序\n"\
-			" [3].显示结果\n"\
+			" [3].显示信息\n"\
 			" [0].返回上一级\n"\
 			DELIMS_LINE
 			, SortMode ? "降序" : "升序"
@@ -299,6 +303,7 @@ void SortByWhatYouWant()
 {
 	int SortMode = 0;
 	int ReturnVal = 0;
+	char* temp;
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -311,19 +316,22 @@ void SortByWhatYouWant()
 			DELIMS_LINE
 		);
 		Menu_DisplaySubMenu();
-		Menu_DisplaySubMenu_Search();
+		temp=Menu_DisplaySubMenu_Search();
 		printf(
 			DELIMS_LINE
 			" [1].排序方式:%s\n",
 			SortMode ? "降序" : "升序"
 		);
+
 		printf(
 			" Tip:输入对应数字进行输入数据\n"\
 			DELIMS_LINE\
-			" [2].开始排序\n"\
-			" [3].显示结果\n"\
+			" [2].按\"%s\"%s排序\n"\
+			" [3].显示信息\n"\
 			" [0].返回上一级\n"\
-			DELIMS_LINE
+			DELIMS_LINE, 
+			temp,
+			SortMode ? "降序" : "升序"
 		);
 
 		switch (Event_Input())
