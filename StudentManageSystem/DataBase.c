@@ -2115,7 +2115,7 @@ ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int
 	}
 	*/
 	return SUCCESS;
-	}
+}
 #endif
 
 
@@ -2481,26 +2481,29 @@ ErrVal CopyList(List *SourceList, List *DestList)
 }
 
 /*
-该函数把一个字符串中的数字截取出来,存进list中
+该函数把一个字符串中的数字或数字区间截取出来,存进list中
 传入的数据 格式类似5 4 2 1 3
+可以存在 1-5 这样的区间,这等同于1 2 3 4 5
 list 存储的目标List
 MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一般是指定Chart表的TitleCount
 字符串中的值是从1开始的
 */
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 {
-	int len = (int)strlen(Input),len2;
+	int len = (int)strlen(Input), len2;
 	char *temp2;
-	int a = 0,b;
-	char* c1,* c2;
-	int temp,temp3;
+	int a = 0, b;
+	char* c1, *c2;
+	int temp, temp3;
 	const char *Delimer = " \t\n";
 	const char *Delimer2 = "-";	//分割区间输入的符号
 
 	if (len <= 0)
 		return ERR_ILLEGALPARAM;
-	if (list) {
-		if (list->AllocatedList <= 0 || !list->list) {
+	if (list)
+	{
+		if (list->AllocatedList <= 0 || !list->list)
+		{
 			a = FillList(list, len);
 			if (a)
 			{
@@ -2508,15 +2511,12 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 					FreeList(list);
 				return a;
 			}
-
 		}
 	}
 	else return ERR_ILLEGALPARAM;
 
 	if (!list->list)
-	{
 		return ERR_EMTYLIST;
-	}
 
 	temp2 = strtok(Input, Delimer);
 	for (a = 0; temp2 != NULL&&a < list->AllocatedList; )
@@ -2524,11 +2524,11 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 		len2 = strlen(temp2);
 		c1 = temp2;
 		c2 = temp2;
-		for (b = 0; b < len2-1; b++)
+		for (b = 0; b < len2 - 1; b++)
 		{
 			if (temp2[b] == '-')
 			{
-				c2 = temp2+b+1;
+				c2 = temp2 + b + 1;
 				temp2[b] = 0;
 				break;
 			}
@@ -2591,7 +2591,6 @@ temp2 = strtok(NULL, Delimer);
 list->listCount = a;
 return SUCCESS;
 }
-
 */
 
 /*
