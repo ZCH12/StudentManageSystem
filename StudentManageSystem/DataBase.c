@@ -2489,11 +2489,13 @@ MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一�
 */
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 {
-	int len = (int)strlen(Input);
+	int len = (int)strlen(Input),len2;
 	char *temp2;
-	int a = 0;
-	int temp;
-	const char *Delimer = " \t";
+	int a = 0,b;
+	char* c1,* c2;
+	int temp,temp3;
+	const char *Delimer = " \t\n";
+	const char *Delimer2 = "-";	//分割区间输入的符号
 
 	if (len <= 0)
 		return ERR_ILLEGALPARAM;
@@ -2517,17 +2519,80 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 	}
 
 	temp2 = strtok(Input, Delimer);
-	for (a = 0; temp2 != NULL&&a < list->AllocatedList; ) {
-		temp = atoi(temp2) - 1;
-		list->list[a] = temp;
-		if (temp >= 0 && temp < MaxIndex)
-			a++;
+	for (a = 0; temp2 != NULL&&a < list->AllocatedList; )
+	{
+		len2 = strlen(temp2);
+		c1 = temp2;
+		c2 = temp2;
+		for (b = 0; b < len2-1; b++)
+		{
+			if (temp2[b] == '-')
+			{
+				c2 = temp2+b+1;
+				temp2[b] = 0;
+				break;
+			}
+		}
+		printf("%s   %s\n", c1, c2);
+		temp = atoi(c1) - 1;
+		temp3 = atoi(c2) - 1;
+		for (b = temp; b <= temp3; b++)
+		{
+			list->list[a] = b;
+			if (b >= 0 && b < MaxIndex)
+				a++;
+		}
 		temp2 = strtok(NULL, Delimer);
 	}
 
 	list->listCount = a;
 	return SUCCESS;
 }
+
+/*
+ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
+{
+int len = (int)strlen(Input);
+char *temp2;
+int a = 0;
+int temp;
+const char *Delimer = " \t";
+
+if (len <= 0)
+return ERR_ILLEGALPARAM;
+if (list) {
+if (list->AllocatedList <= 0 || !list->list) {
+a = FillList(list, len);
+if (a)
+{
+if (a != ERR_MEMORYNOTENOUGH)
+FreeList(list);
+return a;
+}
+
+}
+}
+else return ERR_ILLEGALPARAM;
+
+if (!list->list)
+{
+return ERR_EMTYLIST;
+}
+
+temp2 = strtok(Input, Delimer);
+for (a = 0; temp2 != NULL&&a < list->AllocatedList; ) {
+temp = atoi(temp2) - 1;
+list->list[a] = temp;
+if (temp >= 0 && temp < MaxIndex)
+a++;
+temp2 = strtok(NULL, Delimer);
+}
+
+list->listCount = a;
+return SUCCESS;
+}
+
+*/
 
 /*
 两个字符串进行比较,兼容数字字符串比较
