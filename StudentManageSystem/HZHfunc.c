@@ -49,7 +49,6 @@ void SortList_M()
 void CaluAverage()
 {
 	int i, t;                       //循环变量
-	int UnitNum[20] = { 0 };        //用于保存chart表中unit对应的index
 	int returnVal = 0;
 	double sum = 0;
 	char UnitName[1][32] = { "平均成绩" };     //用于创建新的unit(平均成绩)
@@ -333,7 +332,7 @@ void SortByWhatYouWant()
 			SortMode = !SortMode;
 			break;
 		case 2:
-			if (ChartHead && (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0 || !ChartHead[CurrentChartIndex])) {
+			if (ChartHead && ((ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) || (!ChartHead[CurrentChartIndex]))) {
 				if (IndexListHeadSet) {
 					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
 						FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);

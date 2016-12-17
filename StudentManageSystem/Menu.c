@@ -1,5 +1,5 @@
 ﻿#include "menu.h"
-#include <conio.h>
+//#include <conio.h>  
 
 /********************************************************************************
 窗体通用函数
@@ -156,10 +156,12 @@ void Menu_DisplaySubMenu() {
 		if (IndexListHeadSet)
 			for (a = 0; a < IndexListCount; a++)
 				if (IndexListHeadSet[a])
-					if (IndexListHeadSet[a]->ListName)
-						printf("   [L#%-2d]. %s{%d}\n", a + 1, IndexListHeadSet[a]->ListName, IndexListHeadSet[a]->listCount);
-					else
-						printf("   [L#%-2d]. (NULL){%d}\n", a + 1, IndexListHeadSet[a]->listCount);
+                    if (IndexListHeadSet[a]->ListName)
+                        printf("   [L#%-2d]. %s{%d}\n", a + 1, IndexListHeadSet[a]->ListName, IndexListHeadSet[a]->listCount);
+                    else
+                        printf("   [L#%-2d]. (NULL){%d}\n", a + 1, IndexListHeadSet[a]->listCount);
+                        
+						
 	}
 
 	//列配置文件

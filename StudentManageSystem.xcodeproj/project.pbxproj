@@ -40,6 +40,7 @@
 		D7AB62E21E02B7E4006527FA /* stu_param2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stu_param2.txt; sourceTree = "<group>"; };
 		D7AB62E31E02C03D006527FA /* C_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = C_info.txt; path = "MacOsX测试文件/C_info.txt"; sourceTree = "<group>"; };
 		D7AB62E41E02C03D006527FA /* S_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = S_info.txt; path = "MacOsX测试文件/S_info.txt"; sourceTree = "<group>"; };
+		D7EB09041E0575D500E093E9 /* stu_info5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stu_info5.txt; path = "MacOsX测试文件/stu_info5.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +73,7 @@
 		D71C8CAE1DF1E580007BD820 /* StudentManageSystem */ = {
 			isa = PBXGroup;
 			children = (
+				D7EB09041E0575D500E093E9 /* stu_info5.txt */,
 				D7AB62E31E02C03D006527FA /* C_info.txt */,
 				D7AB62E41E02C03D006527FA /* S_info.txt */,
 				D77A5C141DF47B040036449B /* DataBase.c */,
