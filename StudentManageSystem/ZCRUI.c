@@ -1038,6 +1038,8 @@ void Sub_Save5()
 //7高级功能
 void SubMenu_Advantage()
 {
+	void Sub_TitleList();
+	void Sub_IndexList();
 	char tempChar[100];
 #if RANDOMCOLOR
 	ChangeColor();
@@ -1053,12 +1055,53 @@ void SubMenu_Advantage()
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].列配置编辑\n"\
-			" [2].计算平均成绩\n"\
+			" [1].列配置设置\n"\
+			" [2].名单编辑\n"\
 			" [3].显示信息\n"\
-			" [4].初始化名单\n"\
-			" [5].初始化列配置\n"\
+			" [4].计算平均成绩\n"\
 			" [0].返回主菜单\n"\
+			DELIMS_LINE
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			Sub_TitleList();
+			break;
+		case 2:
+			Sub_IndexList();
+			break;
+		case 3:
+			SubMenu_Display();
+			break;
+		case 4:
+			CaluAverage();
+			break;
+		case 0:
+			return;
+		}
+	}
+}
+void Sub_TitleList()
+{
+	char tempChar[100];
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
+	while (1)
+	{
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                    列配置设置\n"
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		printf(
+			DELIMS_LINE\
+			" [1].列配置编辑\n"\
+			" [2].初始化列配置\n"\
+			" [3].显示信息\n"\
+			" [0].返回上一级\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -1080,27 +1123,6 @@ void SubMenu_Advantage()
 			GETCH();
 			break;
 		case 2:
-			CaluAverage();
-			break;
-		case 3:
-			SubMenu_Display();
-			break;
-		case 4:
-			if (ChartHead&&ChartHead[CurrentChartIndex])
-			{
-				if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex])
-				{
-					if (FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines))
-						printf("初始化失败\n");
-					else
-						printf("初始化成功\n");
-				}
-			}
-			else
-				printf("请先对表进行初始化\n");
-			GETCH();
-			break;
-		case 5:
 			if (ChartHead&&ChartHead[CurrentChartIndex])
 			{
 				if (TitleListHeadSet&&TitleListHeadSet[CurrentTitleListIndex])
@@ -1115,12 +1137,65 @@ void SubMenu_Advantage()
 				printf("请先对表进行初始化\n");
 			GETCH();
 			break;
+		case 3:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
 	}
 }
 
+void Sub_IndexList()
+{
+	char tempChar[100];
+#if RANDOMCOLOR
+	ChangeColor();
+#endif
+	while (1)
+	{
+		COMMAND_CLEAR();
+		printf(
+			DELIMS_LINE\
+			"                    名单编辑\n"
+			DELIMS_LINE\
+		);
+		Menu_DisplaySubMenu();
+		printf(
+			DELIMS_LINE\
+			" [1].编辑当前选择的名单(未完成)\n"\
+			" [2].初始化当前选择的名单\n"\
+			" [3].显示信息\n"\
+			" [0].返回上一级\n"\
+			DELIMS_LINE
+		);
+		switch (Event_Input())
+		{
+		case 1:
+			break;
+		case 2:
+			if (ChartHead&&ChartHead[CurrentChartIndex])
+			{
+				if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex])
+				{
+					if (FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines))
+						printf("初始化失败\n");
+					else
+						printf("初始化成功\n");
+				}
+			}
+			else
+				printf("请先对表进行初始化\n");
+			GETCH();
+			break;
+		case 3:
+			SubMenu_Display();
+			break;
+		case 0:
+			return;
+		}
+	}
+}
 
 //随机改变颜色
 void ChangeColor()

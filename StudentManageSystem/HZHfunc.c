@@ -119,17 +119,21 @@ void CaluAverage()
 
 			if (ChartHead&&ChartHead[CurrentChartIndex])
 			{
-				returnVal = CreateNewUnit(ChartHead[CurrentChartIndex], 1, UnitName, NewTitleLimits);
-				if (!returnVal)
-				{
-					printf("创建新的单元格列成功\n");
-				}
-				else {
-					printf("创建新的单元格失败\n");
-					GETCH();
-					break;
-				}
 				NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "平均成绩");
+				if (NewUnitIndex == -1) {
+					returnVal = CreateNewUnit(ChartHead[CurrentChartIndex], 1, UnitName, NewTitleLimits);
+					if (!returnVal)
+					{
+						printf("创建新的单元格列成功\n");
+						NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "平均成绩");
+					}
+					else {
+						printf("创建新的单元格失败\n");
+						GETCH();
+						break;
+					}
+
+				}
 				for (i = 0; i < ChartHead[CurrentChartIndex]->UsedLines; i++)
 				{
 					sum = 0;
@@ -316,7 +320,7 @@ void SortByWhatYouWant()
 			DELIMS_LINE
 		);
 		Menu_DisplaySubMenu();
-		temp=Menu_DisplaySubMenu_Search();
+		temp = Menu_DisplaySubMenu_Search();
 		printf(
 			DELIMS_LINE
 			" [1].排序方式:%s\n",
@@ -329,7 +333,7 @@ void SortByWhatYouWant()
 			" [2].按\"%s\"%s排序\n"\
 			" [3].显示信息\n"\
 			" [0].返回上一级\n"\
-			DELIMS_LINE, 
+			DELIMS_LINE,
 			temp,
 			SortMode ? "降序" : "升序"
 		);
