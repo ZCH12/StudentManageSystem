@@ -145,6 +145,7 @@ void Sub_ChoiceFileToRead1()
 		printf(
 			DELIMS_LINE\
 			" [5].开始读取\n"\
+			" [6].显示信息\n"\
 			" [0].返回上一级\n"
 			DELIMS_LINE
 		);
@@ -203,6 +204,9 @@ void Sub_ChoiceFileToRead1()
 			GETCH();
 			//读取数据
 			break;
+		case 6:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
@@ -236,6 +240,7 @@ void Sub_ChoiceFileToRead2()
 		printf(
 			DELIMS_LINE\
 			" [2].开始读取\n"\
+			" [3].显示信息\n"\
 			" [0].返回上一级\n"
 			DELIMS_LINE
 		);
@@ -261,6 +266,9 @@ void Sub_ChoiceFileToRead2()
 			else if (returnVal == ERR_OPENFILE)
 				printf("文件路径错误\n");
 			GETCH();
+			break;
+		case 3:
+			SubMenu_Display();
 			break;
 		case 0:
 			return;
@@ -294,9 +302,8 @@ void SubMenu_Search()
 			" [1].按姓名进行查找\n"\
 			" [2].按学号进行查找\n"\
 			" [3].按选定信息点进行查找\n"\
-			" [4].显示全部结果\n"\
-			" [5].分页显示结果\n"\
-			" [6].初始化当前名单\n"\
+			" [4].显示信息\n"\
+			" [5].初始化当前名单\n"\
 			" [0].返回主菜单\n"\
 			DELIMS_LINE
 		);
@@ -334,58 +341,9 @@ void SubMenu_Search()
 			GETCH();
 			break;
 		case 4:
-			if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet &&IndexListHeadSet[CurrentIndexListIndex]->listCount > 0) {
-				if ((IndexListHeadSet[CurrentIndexListIndex]->listCount <= WARNING_TOMUCHITEM) ||
-					(ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && ChartHead[CurrentChartIndex]->UsedLines <= WARNING_TOMUCHITEM)) {
-					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
-						printf("显示信息错误\n");
-				}
-				else
-				{
-					printf("预测将要输出的结果数量太大,是否使用分页显示结果?不使用分页显示请输入N,使用分页显示请输入任意字符\n");
-					scanf("%c", &temp);
-					switch (temp)
-					{
-					case 'N':
-					case 'n':
-						if (ChartHead&&ChartHead[CurrentChartIndex]) {
-							if (IndexListHeadSet&&TitleListHeadSet) {
-								if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
-									printf("显示信息错误\n");
-							}
-							else printf("请先初始化ListSet\n");
-						}
-						else printf("请先读取信息\n");
-					default:
-						ShowPageList = 1;
-						if (ChartHead&&ChartHead[CurrentChartIndex]) {
-							if (IndexListHeadSet&&TitleListHeadSet) {
-								if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
-									printf("显示信息错误\n");
-							}
-							else printf("请先初始化ListSet\n");
-						}
-						else printf("请先读取信息\n");
-					}
-				}
-			}
-			else {
-				printf("没有结果可以显示\n");
-			}
-			GETCH();
+			SubMenu_Display();
 			break;
 		case 5:
-			if (ChartHead&&ChartHead[CurrentChartIndex]) {
-				if (IndexListHeadSet&&TitleListHeadSet) {
-					if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
-						printf("显示信息错误\n");
-				}
-				else printf("请先初始化ListSet\n");
-			}
-			else printf("请先读取信息\n");
-			GETCH();
-			break;
-		case 6:
 			if (IndexListHeadSet&&ChartHead)
 				FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
 			printf("初始化完毕\n");
@@ -441,11 +399,13 @@ int WhichListSaveTo()
 	int a, b = -1;
 	printf(" 请问你需要在哪个名单中存放结果\n");
 	printf("请输入一个数字进行选择\n");
+	printf(DELIMS_LINE);
 	for (a = 0; a < IndexListCount; a++)
 		if (IndexListHeadSet[a] && IndexListHeadSet[a]->ListName)
 			printf("  [%d]. %s\n", a + 1, IndexListHeadSet[a]->ListName);
 		else
 			printf("  [%d]. 未命名\n", a + 1);
+	printf(DELIMS_LINE);
 	while (b<1 || b>IndexListCount)
 		scanf("%d", &b);
 	return b - 1;
@@ -489,6 +449,7 @@ void SubMenu_Change()
 			" [1].选择修改的学生\n"\
 			" [2].查看已选择的学生的信息\n"\
 			" [3].开始修改\n"\
+			" [4].查看信息\n"\
 			" [0].返回主菜单\n"\
 			DELIMS_LINE
 		);
@@ -557,6 +518,9 @@ void SubMenu_Change()
 				printf("请先正确选择学生\n");
 			}
 			GETCH();
+			break;
+		case 4:
+			SubMenu_Display();
 			break;
 		case 0:
 			return;
@@ -695,6 +659,7 @@ void SubMenu_SaveToFile()
 			" [3].保存全部数据到二进制文件\n"\
 			" [4].保存部分数据到二进制文件\n"\
 			" [5].导出数据到*.txt(自动对齐)\n"\
+			" [6].显示信息\n"\
 			" [0].返回主菜单\n"\
 			DELIMS_LINE
 		);
@@ -714,6 +679,9 @@ void SubMenu_SaveToFile()
 			break;
 		case 5:
 			Sub_Save5();
+			break;
+		case 6:
+			SubMenu_Display();
 			break;
 		case 0:
 			return;
@@ -744,6 +712,7 @@ void Sub_Save1()
 		printf(
 			DELIMS_LINE\
 			" [3].保存数据到文本文件\n"\
+			" [4].查看信息\n"\
 			" [0].返回主菜单\n"
 			DELIMS_LINE
 		);
@@ -776,6 +745,9 @@ void Sub_Save1()
 			}
 			GETCH();
 			break;
+		case 4:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
@@ -805,6 +777,7 @@ void Sub_Save2()
 		printf(
 			DELIMS_LINE\
 			" [3].保存数据到文本文件\n"\
+			" [4].显示信息\n"\
 			" [0].返回主菜单\n"
 			DELIMS_LINE
 		);
@@ -849,6 +822,9 @@ void Sub_Save2()
 			}
 			GETCH();
 			break;
+		case 4:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
@@ -877,6 +853,7 @@ void Sub_Save3()
 		printf(
 			DELIMS_LINE\
 			" [2].保存数据到二进制文件文件\n"\
+			" [3].显示信息\n"\
 			" [0].返回主菜单\n"
 			DELIMS_LINE
 		);
@@ -907,6 +884,9 @@ void Sub_Save3()
 			}
 			GETCH();
 			break;
+		case 3:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
@@ -935,6 +915,7 @@ void Sub_Save4()
 		printf(
 			DELIMS_LINE\
 			" [2].保存数据到二进制文件文件\n"\
+			" [3].显示信息\n"\
 			" [0].返回主菜单\n"
 			DELIMS_LINE
 		);
@@ -946,7 +927,7 @@ void Sub_Save4()
 			fgets(FilePath, 512, stdin);
 			FilePath[strlen(FilePath) - 1] = 0;
 			break;
-		case 3:
+		case 2:
 			//开始输出
 			printf("请输入加密的密码(读取时需要此密码,无此密码无法读取)\n");
 			//scanf("%s", PassWord);
@@ -976,6 +957,9 @@ void Sub_Save4()
 			}
 			GETCH();
 			break;
+		case 3:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
@@ -1003,6 +987,7 @@ void Sub_Save5()
 		printf(
 			DELIMS_LINE\
 			" [2].保存数据到文本文件\n"\
+			" [3].显示信息\n"\
 			" [0].返回主菜单\n"
 			DELIMS_LINE
 		);
@@ -1041,6 +1026,9 @@ void Sub_Save5()
 			}
 			GETCH();
 			break;
+		case 3:
+			SubMenu_Display();
+			break;
 		case 0:
 			return;
 		}
@@ -1067,6 +1055,9 @@ void SubMenu_Advantage()
 			DELIMS_LINE\
 			" [1].列配置编辑\n"\
 			" [2].计算平均成绩\n"\
+			" [3].显示信息\n"\
+			" [4].初始化名单\n"\
+			" [5].初始化列配置\n"\
 			" [0].返回主菜单\n"\
 			DELIMS_LINE
 		);
@@ -1090,6 +1081,39 @@ void SubMenu_Advantage()
 			break;
 		case 2:
 			CaluAverage();
+			break;
+		case 3:
+			SubMenu_Display();
+			break;
+		case 4:
+			if (ChartHead&&ChartHead[CurrentChartIndex])
+			{
+				if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex])
+				{
+					if (FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines))
+						printf("初始化失败\n");
+					else
+						printf("初始化成功\n");
+				}
+			}
+			else
+				printf("请先对表进行初始化\n");
+			GETCH();
+			break;
+		case 5:
+			if (ChartHead&&ChartHead[CurrentChartIndex])
+			{
+				if (TitleListHeadSet&&TitleListHeadSet[CurrentTitleListIndex])
+				{
+					if (FillList(TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount))
+						printf("初始化失败\n");
+					else
+						printf("初始化成功\n");
+				}
+			}
+			else
+				printf("请先对表进行初始化\n");
+			GETCH();
 			break;
 		case 0:
 			return;

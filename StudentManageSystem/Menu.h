@@ -39,7 +39,7 @@ extern int CurrentPageIndex;				//当前在操作的页
 void InitALL();
 void FreeAll();
 void Menu_DisplaySubMenu();
-void Menu_DisplaySubMenu_Search();
+char* Menu_DisplaySubMenu_Search();
 void Menu_DisplaySubMenu_Display();
 void Menu_DisplaySubMenu_Page();
 int Event_Input();

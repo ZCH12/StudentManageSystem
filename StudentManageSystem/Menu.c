@@ -189,7 +189,7 @@ void Menu_DisplaySubMenu() {
 	}
 	return;
 }
-void Menu_DisplaySubMenu_Search()
+char* Menu_DisplaySubMenu_Search()
 {
 	int a;
 	char* Temp;
@@ -206,6 +206,7 @@ void Menu_DisplaySubMenu_Search()
 		for (a = 0; a < ChartHead[CurrentTitleListIndex]->TitleCount; a++)
 			printf("   [S#%-2d]. %s\n", a + 1, ChartHead[CurrentTitleListIndex]->ChartTitle[a]);
 	}
+	return Temp;
 }
 //Display的子函数
 void Menu_DisplaySubMenu_Display()
