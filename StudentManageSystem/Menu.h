@@ -21,15 +21,21 @@ extern int CurrentPageIndex;				//当前在操作的页
 #define WARNING_TOMUCHITEM 2000				//控制何时警告输出的数量太多
 #define SIZE_PAGE 2000						//一页的大小
 
+//跨平台自动编译开关
 #ifdef __APPLE__ 
 #ifdef __MACH__
+#define GETPASSWORD 0
 #define GETCH() getchar()
 #define COMMAND_CLEAR() system("clear")
 #else
+#include <conio.h> 
+#define GETPASSWORD 1
 #define GETCH()  system("pause>nul")
 #define COMMAND_CLEAR() system("cls")
 #endif
 #else
+#include <conio.h> 
+#define GETPASSWORD 1
 #define GETCH()  system("pause>nul")
 #define COMMAND_CLEAR() system("cls")
 #endif
@@ -46,6 +52,7 @@ int Event_Input();
 int InputPassWord(char *PassWord, int MaxSize);
 void ChangeColor();
 
+//用于存取配置文件
 void WriteConfig1(char *ConfigFile, char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName);
 void WriteConfig2(char *ConfigFile, char * FileName);
 void WriteConfig3(char *ConfigFile, char *ParamFileName, char * DataFileName);

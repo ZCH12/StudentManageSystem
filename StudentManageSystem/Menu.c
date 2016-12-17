@@ -1,6 +1,5 @@
 ﻿#include "menu.h"
 
-
 /********************************************************************************
 窗体通用函数
 ********************************************************************************/
@@ -335,7 +334,6 @@ int InputPassWord(char *PassWord, int MaxSize)
 	return a;
 }
 #else
-
 int InputPassWord(char *PassWord, int MaxSize)
 {
 	getchar();
