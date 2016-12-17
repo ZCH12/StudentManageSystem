@@ -2204,6 +2204,8 @@ ErrVal FillList(List *OperateList, int Count)
 			OperateList->ListName = (char*)malloc(sizeof(char) * 32);
 		if (OperateList->ListName)
 			strcpy(OperateList->ListName, "空List");
+		else
+			return ERR_MEMORYNOTENOUGH;
 		return SUCCESS;
 	}
 

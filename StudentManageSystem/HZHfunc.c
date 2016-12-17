@@ -89,19 +89,24 @@ void CaluAverage()
 		case 1:
 			getchar();
 			printf(DELIMS_LINE);
-			for (i = 4; i < ChartHead[CurrentChartIndex]->TitleCount; i++) {
-				printf(" [%d].%s ", i + 1, ChartHead[CurrentChartIndex]->ChartTitle[i]);
+			if (ChartHead&&ChartHead[CurrentChartIndex]) {
+				for (i = 4; i < ChartHead[CurrentChartIndex]->TitleCount; i++) {
+					printf(" [%d].%s ", i + 1, ChartHead[CurrentChartIndex]->ChartTitle[i]);
+				}
+				printf(
+					"\n"\
+					DELIMS_LINE
+				);
+				fgets(temp, 128, stdin);
+				temp[strlen(temp) - 1] = 0;
+				GetListFromString(temp, &tempList, ChartHead[CurrentChartIndex]->TitleCount);
+				if (tempList.listCount <= 0) {
+					printf("输入格式错误\n");
+					GETCH();
+				}
 			}
-			printf(
-				"\n"\
-				DELIMS_LINE
-			);
-			fgets(temp, 128, stdin);
-			temp[strlen(temp) - 1] = 0;
-			GetListFromString(temp, &tempList, ChartHead[CurrentChartIndex]->TitleCount);
-			if (tempList.listCount <= 0) {
-				printf("输入格式错误\n");
-				GETCH();
+			else {
+				printf("请先读取文件\n");
 			}
 			break;
 		case 2:
@@ -328,11 +333,15 @@ void SortByWhatYouWant()
 			SortMode = !SortMode;
 			break;
 		case 2:
-			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) {
+			if (ChartHead && (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0 || !ChartHead[CurrentChartIndex])) {
 				if (IndexListHeadSet) {
-					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount < 0)
+					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
 						FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
-					ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], CurrentTitleIndex, SortMode);
+					if (IndexListHeadSet[CurrentIndexListIndex]->listCount > 0)
+						ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], CurrentTitleIndex, SortMode);
+					else {
+						printf("初始化List失败\n");
+					}
 					if (!ReturnVal) {
 						printf("排序成功\n");
 					}
