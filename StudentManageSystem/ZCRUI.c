@@ -282,7 +282,6 @@ void SubMenu_Search()
 	void Sub_Search1();
 	extern int ShowPageList;
 	int returnVal;
-	char temp;
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -1040,7 +1039,6 @@ void SubMenu_Advantage()
 {
 	void Sub_TitleList();
 	void Sub_IndexList();
-	char tempChar[100];
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -1148,7 +1146,6 @@ void Sub_TitleList()
 
 void Sub_IndexList()
 {
-	char tempChar[100];
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
