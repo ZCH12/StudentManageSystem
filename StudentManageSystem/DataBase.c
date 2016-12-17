@@ -2532,7 +2532,6 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 				break;
 			}
 		}
-		printf("%s   %s\n", c1, c2);
 		temp = atoi(c1) - 1;
 		temp3 = atoi(c2) - 1;
 		for (b = temp; b <= temp3; b++)
