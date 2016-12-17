@@ -29,18 +29,20 @@
 /* Begin PBXFileReference section */
 		D71C8CAC1DF1E580007BD820 /* StudentManageSystem */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StudentManageSystem; sourceTree = BUILT_PRODUCTS_DIR; };
 		D71C8CAF1DF1E580007BD820 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		D739F7061DFA85790039186C /* data.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.txt; sourceTree = "<group>"; };
 		D77A5C141DF47B040036449B /* DataBase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DataBase.c; sourceTree = "<group>"; };
 		D77A5C151DF47B040036449B /* DataBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = DataBase.h; sourceTree = "<group>"; };
 		D78B54411DF7F8BA00F40455 /* HZHfunc.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = HZHfunc.c; sourceTree = "<group>"; };
 		D7A85C2B1DFEA91B006BB60E /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		D7A85C2D1DFEA91B006BB60E /* Menu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Menu.c; sourceTree = "<group>"; };
 		D7A85C2E1DFEA91B006BB60E /* ZCRUI.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ZCRUI.c; sourceTree = "<group>"; };
-		D7AB62E11E02B7E4006527FA /* stu_info2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stu_info2.txt; sourceTree = "<group>"; };
-		D7AB62E21E02B7E4006527FA /* stu_param2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = stu_param2.txt; sourceTree = "<group>"; };
-		D7AB62E31E02C03D006527FA /* C_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = C_info.txt; path = "MacOsX测试文件/C_info.txt"; sourceTree = "<group>"; };
-		D7AB62E41E02C03D006527FA /* S_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = S_info.txt; path = "MacOsX测试文件/S_info.txt"; sourceTree = "<group>"; };
-		D7EB09041E0575D500E093E9 /* stu_info5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stu_info5.txt; path = "MacOsX测试文件/stu_info5.txt"; sourceTree = "<group>"; };
+		D7EB09051E05883C00E093E9 /* C_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = C_info.txt; path = "MacOsX测试文件/C_info.txt"; sourceTree = "<group>"; };
+		D7EB09061E05883C00E093E9 /* S_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = S_info.txt; path = "MacOsX测试文件/S_info.txt"; sourceTree = "<group>"; };
+		D7EB09071E05883C00E093E9 /* Stu_info.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Stu_info.txt; path = "MacOsX测试文件/Stu_info.txt"; sourceTree = "<group>"; };
+		D7EB09081E05883C00E093E9 /* stu_info2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stu_info2.txt; path = "MacOsX测试文件/stu_info2.txt"; sourceTree = "<group>"; };
+		D7EB09091E05883C00E093E9 /* stu_info5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stu_info5.txt; path = "MacOsX测试文件/stu_info5.txt"; sourceTree = "<group>"; };
+		D7EB090A1E05883C00E093E9 /* stu_param.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stu_param.txt; path = "MacOsX测试文件/stu_param.txt"; sourceTree = "<group>"; };
+		D7EB090B1E05883C00E093E9 /* stu_param2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stu_param2.txt; path = "MacOsX测试文件/stu_param2.txt"; sourceTree = "<group>"; };
+		D7EB090C1E05883C00E093E9 /* stu_param5.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = stu_param5.txt; path = "MacOsX测试文件/stu_param5.txt"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,9 +75,14 @@
 		D71C8CAE1DF1E580007BD820 /* StudentManageSystem */ = {
 			isa = PBXGroup;
 			children = (
-				D7EB09041E0575D500E093E9 /* stu_info5.txt */,
-				D7AB62E31E02C03D006527FA /* C_info.txt */,
-				D7AB62E41E02C03D006527FA /* S_info.txt */,
+				D7EB09051E05883C00E093E9 /* C_info.txt */,
+				D7EB09061E05883C00E093E9 /* S_info.txt */,
+				D7EB09071E05883C00E093E9 /* Stu_info.txt */,
+				D7EB09081E05883C00E093E9 /* stu_info2.txt */,
+				D7EB09091E05883C00E093E9 /* stu_info5.txt */,
+				D7EB090A1E05883C00E093E9 /* stu_param.txt */,
+				D7EB090B1E05883C00E093E9 /* stu_param2.txt */,
+				D7EB090C1E05883C00E093E9 /* stu_param5.txt */,
 				D77A5C141DF47B040036449B /* DataBase.c */,
 				D78B54411DF7F8BA00F40455 /* HZHfunc.c */,
 				D71C8CAF1DF1E580007BD820 /* main.c */,
@@ -83,9 +90,6 @@
 				D7A85C2E1DFEA91B006BB60E /* ZCRUI.c */,
 				D77A5C151DF47B040036449B /* DataBase.h */,
 				D7A85C2B1DFEA91B006BB60E /* menu.h */,
-				D739F7061DFA85790039186C /* data.txt */,
-				D7AB62E11E02B7E4006527FA /* stu_info2.txt */,
-				D7AB62E21E02B7E4006527FA /* stu_param2.txt */,
 			);
 			path = StudentManageSystem;
 			sourceTree = "<group>";
