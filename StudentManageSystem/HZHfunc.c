@@ -185,17 +185,21 @@ void SortByName1()
 				{
 					if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
 					{
-						if (IndexListHeadSet&&IndexListHeadSet[CurrentTitleListIndex] && IndexListHeadSet[CurrentTitleListIndex]->AllocatedList <= 0)
-						{
-							FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+						if (IndexListHeadSet) {
+							if (IndexListHeadSet[CurrentTitleListIndex] && IndexListHeadSet[CurrentTitleListIndex]->AllocatedList <= 0)
+							{
+								FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+							}
+							ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
+
+							if (!ReturnVal) {
+								printf("排序成功\n");
+							}
+							else {
+								printf("排序失败\n");
+							}
 						}
-						ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
-						if (!ReturnVal) {
-							printf("排序成功\n");
-						}
-						else {
-							printf("排序失败\n");
-						}
+						else printf("请先初始化表\n");
 					}
 				}
 				else
@@ -248,26 +252,32 @@ void SortByEx1()
 			SortMode = !SortMode;
 			break;
 		case 2:
-			ReturnVal = SHI(ChartHead[CurrentChartIndex], "平均成绩");
-			if (ReturnVal != -1)
-			{
-				if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
+			if (ChartHead) {
+				ReturnVal = SHI(ChartHead[CurrentChartIndex], "平均成绩");
+				if (ReturnVal != -1)
 				{
-					if (IndexListHeadSet&&IndexListHeadSet[CurrentTitleListIndex] && IndexListHeadSet[CurrentTitleListIndex]->AllocatedList <= 0)
+					if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
 					{
-						FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
-					}
-					ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
-					if (!ReturnVal) {
-						printf("排序成功\n");
-					}
-					else {
-						printf("排序失败\n");
+						if (IndexListHeadSet) {
+							if (IndexListHeadSet[CurrentTitleListIndex] && IndexListHeadSet[CurrentTitleListIndex]->AllocatedList <= 0)
+							{
+								FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+							}
+							ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
+							if (!ReturnVal) {
+								printf("排序成功\n");
+							}
+							else {
+								printf("排序失败\n");
+							}
+						}
+						else printf("请先初始化List集\n");
 					}
 				}
+				else
+					printf("请先去高级功能中计算平均成绩\n");
 			}
-			else
-				printf("请先去高级功能中计算平均成绩\n");
+			else printf("请先读取信息\n");
 			GETCH();
 			break;
 		case 3:
@@ -319,17 +329,20 @@ void SortByWhatYouWant()
 			break;
 		case 2:
 			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) {
-				if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount < 0)
-					FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
-				ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], CurrentTitleIndex, SortMode);
-				if (!ReturnVal) {
-					printf("排序成功\n");
+				if (IndexListHeadSet) {
+					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount < 0)
+						FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+					ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], CurrentTitleIndex, SortMode);
+					if (!ReturnVal) {
+						printf("排序成功\n");
+					}
+					else {
+						printf("排序失败\n");
+					}
 				}
-				else {
-					printf("排序失败\n");
-				}
+				else printf("请先初始化List集\n");
 			}
-			else printf("请先对表进行初始化");
+			else printf("请先对表进行初始化\n");
 			GETCH();
 			break;
 		case 3:

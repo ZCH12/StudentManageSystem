@@ -153,11 +153,13 @@ void Menu_DisplaySubMenu() {
 	printf(" %c[L] 当前进行操作的名单:%s(%d)\n", ShowListList ? '-' : '+', Temp, CurrentIndexListIndex);
 	if (ShowListList)
 	{
-		for (a = 0; a < IndexListCount; a++)
-			if (IndexListHeadSet[a] && IndexListHeadSet[a]->ListName)
-				printf("   [L#%-2d]. %s{%d}\n", a + 1, IndexListHeadSet[a]->ListName,IndexListHeadSet[a]->listCount);
-			else
-				printf("   [L#%-2d]. (NULL){%d}\n", a + 1, IndexListHeadSet[a]->listCount);
+		if (IndexListHeadSet)
+			for (a = 0; a < IndexListCount; a++)
+				if (IndexListHeadSet[a])
+					if (IndexListHeadSet[a]->ListName)
+						printf("   [L#%-2d]. %s{%d}\n", a + 1, IndexListHeadSet[a]->ListName, IndexListHeadSet[a]->listCount);
+					else
+						printf("   [L#%-2d]. (NULL){%d}\n", a + 1, IndexListHeadSet[a]->listCount);
 	}
 
 	//列配置文件
@@ -171,11 +173,13 @@ void Menu_DisplaySubMenu() {
 	printf(" %c[T] 当前进行操作的列配置:%s(%d)\n", ShowTitleList ? '-' : '+', Temp, CurrentTitleListIndex);
 	if (ShowTitleList)
 	{
-		for (a = 0; a < TitleListCount; a++)
-			if (TitleListHeadSet[a] && TitleListHeadSet[a]->ListName)
-				printf("   [T#%-2d]. %s{%d}\n", a + 1, TitleListHeadSet[a]->ListName, TitleListHeadSet[a]->listCount);
-			else
-				printf("   [T#%-2d]. (NULL){%d}\n", a + 1, TitleListHeadSet[a]->listCount);
+		if (TitleListHeadSet)
+			for (a = 0; a < TitleListCount; a++)
+				if (TitleListHeadSet[a])
+					if (TitleListHeadSet[a]->ListName)
+						printf("   [T#%-2d]. %s{%d}\n", a + 1, TitleListHeadSet[a]->ListName, TitleListHeadSet[a]->listCount);
+					else
+						printf("   [T#%-2d]. (NULL){%d}\n", a + 1, TitleListHeadSet[a]->listCount);
 	}
 	return;
 }
@@ -211,7 +215,7 @@ void Menu_DisplaySubMenu_Display()
 void Menu_DisplaySubMenu_Page()
 {
 	int a, b;
-	printf(" %c[P] 当前进行操作的页:%d--%d(%d)\n", ShowSearchTitleList ?'-' : '+',CurrentPageIndex*SIZE_PAGE,(CurrentPageIndex+1)*SIZE_PAGE,CurrentPageIndex);
+	printf(" %c[P] 当前进行操作的页:%d--%d(%d)\n", ShowSearchTitleList ? '-' : '+', CurrentPageIndex*SIZE_PAGE, (CurrentPageIndex + 1)*SIZE_PAGE, CurrentPageIndex);
 	if (ShowPageList) {
 		if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->AllocatedList > 0)
 		{

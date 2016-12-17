@@ -348,12 +348,24 @@ void SubMenu_Search()
 					{
 					case 'N':
 					case 'n':
-						if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
-							printf("显示信息错误\n");
+						if (ChartHead&&ChartHead[CurrentChartIndex]) {
+							if (IndexListHeadSet&&TitleListHeadSet) {
+								if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+									printf("显示信息错误\n");
+							}
+							else printf("请先初始化ListSet\n");
+						}
+						else printf("请先读取信息\n");
 					default:
 						ShowPageList = 1;
-						if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
-							printf("显示信息错误\n");
+						if (ChartHead&&ChartHead[CurrentChartIndex]) {
+							if (IndexListHeadSet&&TitleListHeadSet) {
+								if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+									printf("显示信息错误\n");
+							}
+							else printf("请先初始化ListSet\n");
+						}
+						else printf("请先读取信息\n");
 					}
 				}
 			}
@@ -363,8 +375,14 @@ void SubMenu_Search()
 			GETCH();
 			break;
 		case 5:
-			if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
-				printf("显示信息错误\n");
+			if (ChartHead&&ChartHead[CurrentChartIndex]) {
+				if (IndexListHeadSet&&TitleListHeadSet) {
+					if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
+						printf("显示信息错误\n");
+				}
+				else printf("请先初始化ListSet\n");
+			}
+			else printf("请先读取信息\n");
 			GETCH();
 			break;
 		case 6:
@@ -480,21 +498,36 @@ void SubMenu_Change()
 			if (ChartHead&&ChartHead[CurrentChartIndex] && ChoiceLines >= 0 && ChoiceLines < ChartHead[CurrentChartIndex]->UsedLines)
 			{
 				printf(DELIMS_LINE);
-				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->AllocatedList <= 0)
-					FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
-				Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_SHOWNUMBER);
-				printf(DELIMS_LINE\
-					"请通过编号选择学生:\n"
-				);
-				scanf("%d", &returnVal);
-				if (returnVal >= 0 && returnVal < ChartHead[CurrentChartIndex]->UsedLines)
+				if (IndexListHeadSet) {
+					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->AllocatedList <= 0)
+						if (FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines))
+						{
+							printf("操作失败\n");
+							GETCH();
+							break;
+						}
+					Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_SHOWNUMBER);
+					printf(DELIMS_LINE\
+						"请通过编号选择学生:\n"
+					);
+					scanf("%d", &returnVal);
+					if (returnVal >= 0 && returnVal < ChartHead[CurrentChartIndex]->UsedLines)
+					{
+						if (IndexListHeadSet[CurrentIndexListIndex]) {
+							ChoiceLines = IndexListHeadSet[CurrentIndexListIndex]->list[returnVal];
+							printf("选择成功\n");
+						}
+						else printf("请先初始化List\n");
+					}
+					else {
+						printf("输入有误\n");
+					}
+				}
+				else
 				{
-					ChoiceLines = IndexListHeadSet[CurrentIndexListIndex]->list[returnVal];
-					printf("选择成功\n");
+					printf("请先初始化List集\n");
 				}
-				else {
-					printf("输入有误\n");
-				}
+
 			}
 			else printf("请先正确选择学生\n");
 			GETCH();
@@ -563,9 +596,11 @@ void SubMenu_Display()
 		{
 		case 1:
 			if ((IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0 && IndexListHeadSet[CurrentIndexListIndex]->listCount <= WARNING_TOMUCHITEM) ||
-				(ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && ChartHead[CurrentChartIndex]->UsedLines <= WARNING_TOMUCHITEM)) {
-				if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
-					printf("显示信息错误\n");
+				(ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && ChartHead[CurrentChartIndex]->UsedLines <= WARNING_TOMUCHITEM))
+			{
+				if (IndexListHeadSet&&TitleListHeadSet)
+					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+						printf("显示信息错误\n");
 			}
 			else
 			{
@@ -576,12 +611,28 @@ void SubMenu_Display()
 				{
 				case 'N':
 				case 'n':
-					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
-						printf("显示信息错误\n");
+					if (ChartHead&&ChartHead[CurrentChartIndex]) {
+						if (IndexListHeadSet&&TitleListHeadSet) {
+							if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+								printf("显示信息错误\n");
+						}
+						else
+							printf("List没有初始化\n");
+					}
+					else
+						printf("请先读取信息\n");
 				default:
 					ShowPageList = 1;
-					if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
-						printf("显示信息错误\n");
+					if (ChartHead&&ChartHead[CurrentChartIndex]) {
+						if (IndexListHeadSet&&TitleListHeadSet) {
+							if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
+								printf("显示信息错误\n");
+						}
+						else
+							printf("List没有初始化\n");
+					}
+					else
+						printf("请先读取信息\n");
 				}
 			}
 			GETCH();

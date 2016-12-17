@@ -1927,6 +1927,9 @@ ErrVal NewChartSet(int CreateCount)
 	if (NewChartCount <= ChartCount)
 		return ERR_ILLEGALPARAM;
 
+	if (NewChartCount <= 0)
+		return ERR_ILLEGALPARAM;
+
 	if (AlloctedChartCount <= 0)
 	{
 		//全新初始化表
@@ -1948,24 +1951,25 @@ ErrVal NewChartSet(int CreateCount)
 	else {
 		//增量初始化
 		tempChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
-		if (!tempChartSet)
-			return ERR_MEMORYNOTENOUGH;
-		for (a = 0; a < ChartCount; a++)
-			tempChartSet[a] = ChartHead[a];
-		for (; a < NewChartCount; a++)
-		{
-			tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
-			if (!tempChartSet[a])
+		if (tempChartSet) {
+			for (a = 0; a < ChartCount; a++)
+				tempChartSet[a] = ChartHead[a];
+			for (; a < NewChartCount; a++)
 			{
-				if (a != ChartCount)
-					for (a--; a >= ChartCount; a--)
-					{
-						free(tempChartSet[a]);
-					}
-				free(tempChartSet);
-				return ERR_MEMORYNOTENOUGH;
+				tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
+				if (!tempChartSet[a])
+				{
+					if (a != ChartCount)
+						for (a--; a >= ChartCount; a--)
+						{
+							free(tempChartSet[a]);
+						}
+					free(tempChartSet);
+					return ERR_MEMORYNOTENOUGH;
+				}
 			}
 		}
+		else return ERR_MEMORYNOTENOUGH;
 	}
 	if (ChartHead)
 		free(ChartHead);
@@ -2111,7 +2115,7 @@ ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int
 	}
 	*/
 	return SUCCESS;
-}
+	}
 #endif
 
 
@@ -2314,7 +2318,7 @@ ErrVal NewListSet(int CreateCount, int ListType)
 	int a;
 	List** tempListSet = NULL;	//新的List集
 	int NewListCount;
-	List** OperateList;
+	List** OperateList = NULL;
 	int ListCount, AlloctedListCount;
 
 	//把信息对应到指定类型的表
@@ -2362,29 +2366,7 @@ ErrVal NewListSet(int CreateCount, int ListType)
 				return ERR_MEMORYNOTENOUGH;
 			}
 		}
-	}/*
-	 //这种情况暂时不会有
-	 else if (NewListCount <= AlloctedListCount)
-	 {
-	 //已分配空间新建表
-	 tempListSet = (List**)malloc(sizeof(List*)*NewListCount);
-	 if (!tempListSet)
-	 return ERR_MEMORYNOTENOUGH;
-	 for (a = 0; a < ListCount; a++)
-	 tempListSet[a] = OperateList[a];
-	 for (a = ListCount; a < NewListCount; a++)
-	 {
-	 tempListSet[a] = (List*)calloc(sizeof(List), sizeof(List));
-	 if (!tempListSet[a])
-	 {
-	 if (a != ListCount)
-	 for (a--; a >= ListCount; a--)
-	 free(tempListSet[a]);
-	 free(tempListSet);
-	 return ERR_MEMORYNOTENOUGH;;
-	 }
-	 }
-	 }*/
+	}
 	else {
 		//增量初始化
 		tempListSet = (List**)malloc(sizeof(List*)*NewListCount);
@@ -2510,21 +2492,26 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 	int a = 0;
 	int temp;
 	const char *Delimer = " \t";
-	if (!list)
-		return ERR_ILLEGALPARAM;
 
 	if (len <= 0)
 		return ERR_ILLEGALPARAM;
+	if (list) {
+		if (list->AllocatedList <= 0 || !list->list) {
+			a = FillList(list, len);
+			if (a)
+			{
+				if (a != ERR_MEMORYNOTENOUGH)
+					FreeList(list);
+				return a;
+			}
 
-	if (list->AllocatedList <= 0 || !list->list) {
-		a = FillList(list, len);
-		if (a)
-		{
-			if (a != ERR_MEMORYNOTENOUGH)
-				FreeList(list);
-			return a;
 		}
+	}
+	else return ERR_ILLEGALPARAM;
 
+	if (!list->list)
+	{
+		return ERR_EMTYLIST;
 	}
 
 	temp2 = strtok(Input, Delimer);
