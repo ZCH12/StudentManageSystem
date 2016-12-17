@@ -1489,7 +1489,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	}
 	printf("\n");
 
-	
+
 	if (ShowLines)
 	{
 		tempLineList = ShowLines->list;
@@ -1773,7 +1773,7 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 
 	if (ShowLines)
 	{
-		tempLineList = ShowLines->list+Start_index;
+		tempLineList = ShowLines->list + Start_index;
 		//按List中显示信息
 		if (ShowTitle)
 		{
@@ -2005,6 +2005,7 @@ OperateList 包含在Chart表中lines的下标的数组,必须是一个合法的
 Mode 0升序
 Mode 1降序
 */
+#if SORT_ARITHMETIC==0
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode)
 {
 	int a, b;
@@ -2045,6 +2046,74 @@ ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int
 	}
 	return SUCCESS;
 }
+#else
+void Swap(int *A, int *B)
+{
+	int tmp = *A;
+	*A = *B;
+	*B = tmp;
+}
+
+//从大到小
+int QuickSortX(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode, int Low, int High)
+{
+	int L_p, R_p;
+	char *privotKey = OperateChart->Chart[OperateList->list[Low]][BaseTitleIndex];
+	int privotIndex = OperateList->list[Low];
+	int temp;
+
+	if (High - Low < SORT_CHUNK_SIZE)
+		return 0;
+	//if (High - Low < 1000)
+		//return 0;
+
+	L_p = Low;
+	R_p = High;
+	while (L_p != R_p) {
+		while (StrCmp(OperateChart->Chart[OperateList->list[R_p]][BaseTitleIndex], privotKey) <= 0 && L_p < R_p)
+			R_p--;
+		while (StrCmp(OperateChart->Chart[OperateList->list[L_p]][BaseTitleIndex], privotKey) >= 0 && L_p < R_p)
+			L_p++;
+		if (L_p < R_p) {
+			temp = OperateList->list[L_p];
+			OperateList->list[L_p] = OperateList->list[R_p];
+			OperateList->list[R_p] = temp;
+		}
+	}
+	OperateList->list[Low] = OperateList->list[L_p];
+	OperateList->list[L_p] = privotIndex;
+
+	if (L_p - 1 > Low)
+		QuickSortX(OperateChart, OperateList, BaseTitleIndex, Mode, Low, L_p - 1);
+	if (L_p + 1 < High)
+		QuickSortX(OperateChart, OperateList, BaseTitleIndex, Mode, L_p + 1, High);
+	return L_p;
+}
+
+ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode)
+{
+	int a, b;
+	int tmp;
+	char *tmpchar;
+	//进行快排
+	QuickSortX(OperateChart, OperateList, BaseTitleIndex, Mode, 0, OperateList->listCount - 1);
+	/*
+	for (a = 1; a < OperateList->listCount; a++)
+	{
+		if (StrCmp(OperateChart->Chart[OperateList->list[a - 1]][BaseTitleIndex], OperateChart->Chart[OperateList->list[a]][BaseTitleIndex]) < 0)
+		{
+			tmp = OperateList->list[a];
+			tmpchar = OperateChart->Chart[OperateList->list[tmp]][BaseTitleIndex];
+			for (b = a - 1; b >= 0 && StrCmp(OperateChart->Chart[OperateList->list[b]][BaseTitleIndex], tmpchar) < 0; b--)
+				OperateList->list[b + 1] = OperateList->list[b];
+			OperateList->list[b + 1] = tmp;
+		}
+	}
+	*/
+	return SUCCESS;
+}
+#endif
+
 
 /*
 在SearchList的范围内搜索符合条件的行,并返回给ResultList
@@ -2455,7 +2524,7 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 				FreeList(list);
 			return a;
 		}
-			
+
 	}
 
 	temp2 = strtok(Input, Delimer);

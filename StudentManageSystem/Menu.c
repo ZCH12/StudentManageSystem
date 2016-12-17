@@ -1,4 +1,5 @@
 ﻿#include "menu.h"
+#include <conio.h>
 
 /********************************************************************************
 窗体通用函数
@@ -214,12 +215,12 @@ void Menu_DisplaySubMenu_Page()
 	if (ShowPageList) {
 		if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->AllocatedList > 0)
 		{
-			for (a = 1, b = 0; b + SIZE_PAGE < IndexListHeadSet[CurrentIndexListIndex]->listCount; a++, b += SIZE_PAGE)
+			for (a = 1, b = 0; b + SIZE_PAGE <= IndexListHeadSet[CurrentIndexListIndex]->listCount; a++, b += SIZE_PAGE)
 				printf("   [P#%-2d]. %d--%d\n", a, b, b + SIZE_PAGE);
 		}
 		else {
 			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines)
-				for (a = 1, b = 0; b + SIZE_PAGE < ChartHead[CurrentChartIndex]->UsedLines; a++, b += SIZE_PAGE)
+				for (a = 1, b = 0; b + SIZE_PAGE <= ChartHead[CurrentChartIndex]->UsedLines; a++, b += SIZE_PAGE)
 					printf("   [P#%-2d]. %d--%d\n", a, b, b + SIZE_PAGE);
 		}
 	}
@@ -288,4 +289,36 @@ int Event_Input()
 		break;
 	}
 	return -1;
+}
+
+//密码输入器,星号回显
+int InputPassWord(char *PassWord, int MaxSize)
+{
+	char tempchar;
+	int a;
+	if (MaxSize <= 0)
+		return 0;
+	for (a = 0; a < MaxSize;)
+	{
+		tempchar = _getch();
+		switch (tempchar)
+		{
+		case '\r':
+			PassWord[a] = 0;
+			printf("\n");
+			return a;
+		case '\b':
+			if (a > 0) {
+				a--;
+				printf("\b \b");
+			}
+			break;
+		default:
+			PassWord[a] = tempchar;
+			printf("*");
+			a++;
+			break;
+		}
+	}
+	return a;
 }

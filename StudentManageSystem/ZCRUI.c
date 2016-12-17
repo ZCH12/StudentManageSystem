@@ -249,7 +249,8 @@ void Sub_ChoiceFileToRead2()
 			break;
 		case 2:
 			printf("请输入文件密码密码:\n");
-			scanf("%s", PassWord);
+			//scanf("%s", PassWord);
+			InputPassWord(PassWord, 32);
 			returnVal = ReadFromBinFile(FilePath, PassWord, ChartHead[CurrentChartIndex]);
 			if (!returnVal) {
 				WriteConfig2(CONFIGFILEPATH2, FilePath);
@@ -355,6 +356,9 @@ void SubMenu_Search()
 							printf("显示信息错误\n");
 					}
 				}
+			}
+			else {
+				printf("没有结果可以显示\n");
 			}
 			GETCH();
 			break;
@@ -837,7 +841,8 @@ void Sub_Save3()
 		case 2:
 			//开始输出
 			printf("请输入加密的密码(读取时需要此密码,无此密码无法读取)\n");
-			scanf("%s", PassWord);
+			//scanf("%s", PassWord);
+			InputPassWord(PassWord, 32);
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && IndexListHeadSet&&TitleListHeadSet) {
 				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex])) {
 					WriteConfig2(CONFIGFILEPATH4, FilePath);
@@ -893,7 +898,8 @@ void Sub_Save4()
 		case 3:
 			//开始输出
 			printf("请输入加密的密码(读取时需要此密码,无此密码无法读取)\n");
-			scanf("%s", PassWord);
+			//scanf("%s", PassWord);
+			InputPassWord(PassWord, 32);
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
 			{
 				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)

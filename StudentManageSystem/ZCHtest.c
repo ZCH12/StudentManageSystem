@@ -282,6 +282,37 @@ void test11()
 	Display_Page(ChartHead[0], IndexListHeadSet[0], NULL, DISPLAY_SHOWNUMBER, 4, 3);
 }
 
+//测试排序
+/*
+void test12()
+{
+	int Part(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode, int Low, int High);
+	NewChartSet(5);
+	NewListSet(5, LISTTYPE_INDEXLIST);
+	//NewListSet(5, LISTTYPE_TITLELIST);
+	
+	ReadFromTwoFile("Windows测试文件\\stu_param2.txt", "Windows测试文件\\stu_info2.txt", ChartHead[0]);
+	FillList(IndexListHeadSet[0], ChartHead[0]->UsedLines);
+
+	for (int a = 0; a < IndexListHeadSet[0]->listCount; a++)
+	{
+		printf("%d ", IndexListHeadSet[0]->list[a]);
+	}
+	printf("\n\n");
+
+	Sort(ChartHead[0], IndexListHeadSet[0], 0, 1);
+
+	for (int a = 0; a < IndexListHeadSet[0]->listCount; a++)
+	{
+		printf("%d ", IndexListHeadSet[0]->list[a]);
+	}
+	printf("\n");
+
+	Display_Chart(ChartHead[0], IndexListHeadSet[0], NULL, 1);
+	system("pause");
+}
+*/
+
 int main()
 {
 	//_CrtSetBreakAlloc(65);
@@ -302,9 +333,10 @@ int main()
 	//test7();
 	//test8();
 	//test9();
-	//testmain();
+	testmain();
 	//test10();
-	test11();
+	//test11();
+	//test12();
 	//FreeChartSet();
 	//FreeListSet(0);
 	//FreeListSet(1);

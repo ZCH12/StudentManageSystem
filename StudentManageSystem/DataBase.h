@@ -29,6 +29,12 @@ Create By ZCR
 #define WTIA WirteToIntArray
 #define SHI SearchHeadIndex
 
+//编译开关
+#define SORT_ARITHMETIC 0		//排序算法编译控制
+
+//编译期常量
+#define SORT_CHUNK_SIZE 8		//排序算法改用插入排序的临界个数
+
 //类型别名
 typedef int ErrVal;
 typedef char*** Chart_t;
