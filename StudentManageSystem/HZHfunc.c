@@ -95,7 +95,8 @@ void CaluAverage()
 				}
 				printf(
 					"\n"\
-					DELIMS_LINE
+					DELIMS_LINE\
+					"请输入要计入平均分的项,支持区间输入用\"-\"连接区间的两个值\n"
 				);
 				fgets(temp, 128, stdin);
 				temp[strlen(temp) - 1] = 0;

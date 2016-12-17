@@ -614,7 +614,7 @@ void SubMenu_Display()
 				printf(DELIMS_LINE);
 				Menu_DisplaySubMenu_Display();
 				printf(DELIMS_LINE);
-				printf("请输入要显示的标题的序号,各个序号之间用空格隔开,用回车结束输入:\n");
+				printf("请输入要显示的标题的序号或区间,各个序号(区间)之间用空格隔开,用回车结束输入:\n");
 				getchar();
 				fgets(tempChar, 100, stdin);
 				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
@@ -1109,7 +1109,7 @@ void Sub_TitleList()
 				printf(DELIMS_LINE);
 				Menu_DisplaySubMenu_Display();
 				printf(DELIMS_LINE);
-				printf("请输入要显示的标题的序号,各个序号之间用空格隔开,用回车结束输入:\n");
+				printf("请输入要显示的标题的序号或序号区间,各个序号(区间)之间用空格隔开,用回车结束输入:\n");
 				getchar();
 				fgets(tempChar, 100, stdin);
 				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
