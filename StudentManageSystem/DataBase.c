@@ -2496,7 +2496,6 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 	char* c1, *c2;
 	int temp, temp3;
 	const char *Delimer = " \t\n";
-	const char *Delimer2 = "-";	//分割区间输入的符号
 
 	if (len <= 0)
 		return ERR_ILLEGALPARAM;
@@ -2521,7 +2520,7 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 	temp2 = strtok(Input, Delimer);
 	for (a = 0; temp2 != NULL&&a < list->AllocatedList; )
 	{
-		len2 = strlen(temp2);
+		len2 = (int )strlen(temp2);
 		c1 = temp2;
 		c2 = temp2;
 		for (b = 0; b < len2 - 1; b++)
