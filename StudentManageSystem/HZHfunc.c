@@ -3,9 +3,9 @@
 //排序菜单
 void SubMenu_SortList()
 {
-    void SubMenu_SortListByName();
-    void SubMenu_SortListByAver();
-    void SubMenu_SortListByWhatever();
+    void Sub_SortListByName();
+    void Sub_SortListByAver();
+    void Sub_SortListByWhatever();
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -30,13 +30,13 @@ void SubMenu_SortList()
 		switch (Event_Input())
 		{
 		case 1:
-			SubMenu_SortListByName();
+			Sub_SortListByName();
 			break;
 		case 2:
-			SubMenu_SortListByAver();
+			Sub_SortListByAver();
 			break;
 		case 3:
-			SubMenu_SortListByWhatever();
+			Sub_SortListByWhatever();
 			break;
 		case 4:
 			SubMenu_Display();
@@ -161,7 +161,7 @@ void CaluAverage()
 }
 
 //按照名字排序
-void SubMenu_SortListByName()
+void Sub_SortListByName()
 {
 	int SortMode = 0;               //排序模式
 	int ReturnVal = 0;
@@ -234,7 +234,7 @@ void SubMenu_SortListByName()
 }
 
 //按照平均成绩排序
-void SubMenu_SortListByAver()
+void Sub_SortListByAver()
 {
 	int ReturnVal = 0;
 	int SortMode = 0;
@@ -307,7 +307,7 @@ void SubMenu_SortListByAver()
 }
 
 //按照任意单元排序
-void SubMenu_SortListByWhatever()
+void Sub_SortListByWhatever()
 {
 	int SortMode = 0;
 	int ReturnVal = 0;
