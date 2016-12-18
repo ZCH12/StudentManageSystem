@@ -512,7 +512,7 @@ void SubMenu_Change()
 					ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]
 				);
 				scanf("%s", ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]);
-				printf("值已改为：%s、n", ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]);
+				printf("值已改为：%s\n", ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]);
 			}
 			else {
 				printf("请先正确选择学生\n");
@@ -531,10 +531,10 @@ void SubMenu_Change()
 //5显示学生信息
 void SubMenu_Display()
 {
+    extern void SubMenu_Advantage();
 	extern int ShowTitleList;
 	extern int ShowPageList;
 	static int ShowNumber = 0;
-	char tempChar[100];
 	char temp;
 #if RANDOMCOLOR
 	ChangeColor();
