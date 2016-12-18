@@ -2588,6 +2588,9 @@ ErrVal GetListFromStringViaList(char* Input, int n, List *Resultlist, List *Sour
 
 	if (n <= 0)
 		return ERR_ILLEGALPARAM;
+	if (!SourceList||SourceList->listCount<=0)
+		return ERR_EMTYLIST;
+
 	if (Resultlist)
 	{
 		if (Resultlist->AllocatedList <= 0 || !Resultlist->list)
@@ -2601,10 +2604,13 @@ ErrVal GetListFromStringViaList(char* Input, int n, List *Resultlist, List *Sour
 			}
 		}
 	}
-	else return ERR_ILLEGALPARAM;
+	else 
+		return ERR_ILLEGALPARAM;
 
 	if (!Resultlist->list)
 		return ERR_EMTYLIST;
+
+
 
 	temp2 = strtok(Input, Delimer);
 	for (a = 0; temp2 != NULL&&a < Resultlist->AllocatedList; )
