@@ -5,13 +5,13 @@
 void MainMenu()
 {
 	void SubMenu_Read();
-    extern void SubMenu_SortList();
+	extern void SubMenu_SortList();
 	void SubMenu_Search();
 	void SubMenu_Change();
 	void SubMenu_Display();
 	void SubMenu_SaveToFile();
 	void SubMenu_Advantage();
-	
+
 	char a;
 	while (1)
 	{
@@ -533,6 +533,7 @@ void SubMenu_Display()
 {
 	extern int ShowTitleList;
 	extern int ShowPageList;
+	static int ShowNumber = 0;
 	char tempChar[100];
 	char temp;
 #if RANDOMCOLOR
@@ -550,20 +551,25 @@ void SubMenu_Display()
 		Menu_DisplaySubMenu_Page();
 		printf(
 			DELIMS_LINE\
-			" [1].单页显示信息\n"\
-			" [2].分页显示信息\n"\
-			" [3].列配置编辑\n"\
-			" [0].返回主菜单\n"
-			DELIMS_LINE
+			" [1].显示编号:%s\n"\
+			" [2].单页显示信息\n"\
+			" [3].分页显示信息\n"\
+			" [4].跳转到高级功能\n"\
+			" [0].返回上一级\n"
+			DELIMS_LINE,
+			ShowNumber ? "是" : "否"
 		);
 		switch (Event_Input())
 		{
 		case 1:
+			ShowNumber = !ShowNumber;
+			break;
+		case 2:
 			if ((IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0 && IndexListHeadSet[CurrentIndexListIndex]->listCount <= WARNING_TOMUCHITEM) ||
 				(ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && ChartHead[CurrentChartIndex]->UsedLines <= WARNING_TOMUCHITEM))
 			{
 				if (IndexListHeadSet&&TitleListHeadSet)
-					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], ShowNumber))
 						printf("显示信息错误\n");
 			}
 			else
@@ -577,7 +583,7 @@ void SubMenu_Display()
 				case 'n':
 					if (ChartHead&&ChartHead[CurrentChartIndex]) {
 						if (IndexListHeadSet&&TitleListHeadSet) {
-							if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER))
+							if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], ShowNumber))
 								printf("显示信息错误\n");
 						}
 						else
@@ -589,7 +595,7 @@ void SubMenu_Display()
 					ShowPageList = 1;
 					if (ChartHead&&ChartHead[CurrentChartIndex]) {
 						if (IndexListHeadSet&&TitleListHeadSet) {
-							if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
+							if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], ShowNumber, SIZE_PAGE, CurrentPageIndex))
 								printf("显示信息错误\n");
 						}
 						else
@@ -602,7 +608,7 @@ void SubMenu_Display()
 			GETCH();
 			break;
 
-		case 2:
+		case 3:
 			if (ChartHead&&ChartHead[CurrentChartIndex] && IndexListHeadSet&&TitleListHeadSet)
 			{
 				if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
@@ -610,21 +616,8 @@ void SubMenu_Display()
 			}
 			GETCH();
 			break;
-		case 3:
-			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->ChartTitle) {
-				printf(DELIMS_LINE);
-				Menu_DisplaySubMenu_Display();
-				printf(DELIMS_LINE);
-				printf("请输入要显示的标题的序号或区间,各个序号(区间)之间用空格隔开,用回车结束输入:\n");
-				getchar();
-				fgets(tempChar, 100, stdin);
-				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
-				printf("编辑成功\n");
-			}
-			else {
-				printf("请先读取或创建表\n");
-			}
-			GETCH();
+		case 4:
+			SubMenu_Advantage();
 			break;
 		case 0:
 			return;
@@ -1040,7 +1033,7 @@ void SubMenu_Advantage()
 {
 	void Sub_TitleList();
 	void Sub_IndexList();
-    void CaluAverage();
+	void CaluAverage();
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -1100,7 +1093,8 @@ void Sub_TitleList()
 			DELIMS_LINE\
 			" [1].列配置编辑\n"\
 			" [2].初始化列配置\n"\
-			" [3].显示信息\n"\
+			" [3].对当前列配置改名\n"\
+			" [4].显示信息\n"\
 			" [0].返回上一级\n"\
 			DELIMS_LINE
 		);
@@ -1114,8 +1108,10 @@ void Sub_TitleList()
 				printf("请输入要显示的标题的序号或序号区间,各个序号(区间)之间用空格隔开,用回车结束输入:\n");
 				getchar();
 				fgets(tempChar, 100, stdin);
-				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
-				printf("编辑成功\n");
+				if (GetListFromString(tempChar, ChartHead[CurrentChartIndex]->TitleCount, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount))
+					printf("编辑失败\n");
+				else
+					printf("编辑成功\n");
 			}
 			else {
 				printf("请先读取或创建表\n");
@@ -1138,6 +1134,18 @@ void Sub_TitleList()
 			GETCH();
 			break;
 		case 3:
+			if (TitleListHeadSet&&TitleListHeadSet[CurrentTitleListIndex] && TitleListHeadSet[CurrentTitleListIndex]->listCount > 0)
+			{
+				if (TitleListHeadSet[CurrentTitleListIndex]->ListName) {
+					scanf("%s", TitleListHeadSet[CurrentTitleListIndex]->ListName);
+					printf("修改成功\n");
+				}
+				else printf("请先对列配置进行初始化\n");
+			}
+			else printf("请先对列配置进行初始化\n");
+			GETCH();
+			break;
+		case 4:
 			SubMenu_Display();
 			break;
 		case 0:
@@ -1148,6 +1156,7 @@ void Sub_TitleList()
 
 void Sub_IndexList()
 {
+	char tempChar[512];
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -1162,15 +1171,32 @@ void Sub_IndexList()
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].编辑当前选择的名单(未完成)\n"\
+			" [1].从名单中选取学生\n"\
 			" [2].初始化当前选择的名单\n"\
-			" [3].显示信息\n"\
+			" [3].对当前名单改名\n"\
+			" [4].显示信息\n"\
 			" [0].返回上一级\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
+			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0) {
+				printf(
+					"请输入要显示的学生的编号或编号区间,各个编号(区间)之间用空格隔开,用回车结束输入:\n"
+					"Tip:编号可以通过显示信息功能,打开显示编号开关进行获取\n"
+				);
+				getchar();
+				fgets(tempChar, 512, stdin);
+				if (GetListFromStringViaList(tempChar, ChartHead[CurrentChartIndex]->UsedLines, IndexListHeadSet[WhichListSaveTo()], IndexListHeadSet[CurrentIndexListIndex]))
+					printf("编辑失败\n");
+				else
+					printf("编辑成功\n");
+			}
+			else {
+				printf("请先读取或创建表\n");
+			}
+			GETCH();
 			break;
 		case 2:
 			if (ChartHead&&ChartHead[CurrentChartIndex])
@@ -1188,6 +1214,18 @@ void Sub_IndexList()
 			GETCH();
 			break;
 		case 3:
+			if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount > 0)
+			{
+				if (IndexListHeadSet[CurrentIndexListIndex]->ListName) {
+					scanf("%s", IndexListHeadSet[CurrentIndexListIndex]->ListName);
+					printf("改名成功\n");
+				}
+				else printf("名单未初始化\n");
+			}
+			else printf("请先对当前名单进行初始化\n");
+			GETCH();
+			break;
+		case 4:
 			SubMenu_Display();
 			break;
 		case 0:

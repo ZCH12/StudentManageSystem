@@ -103,7 +103,7 @@ void CaluAverage()
 				);
 				fgets(temp, 128, stdin);
 				temp[strlen(temp) - 1] = 0;
-				GetListFromString(temp, &tempList, ChartHead[CurrentChartIndex]->TitleCount);
+				GetListFromString(temp, ChartHead[CurrentChartIndex]->TitleCount, &tempList, ChartHead[CurrentChartIndex]->TitleCount);
 				if (tempList.listCount <= 0) {
 					printf("输入格式错误\n");
 					GETCH();
@@ -206,6 +206,7 @@ void Sub_SortListByName()
 							{
 								FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
 							}
+							printf("正在排序,请耐心等待...\n");
 							ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
 
 							if (!ReturnVal) {
@@ -279,6 +280,7 @@ void Sub_SortListByAver()
 							{
 								FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
 							}
+							printf("正在排序,请耐心等待...\n");
 							ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
 							if (!ReturnVal) {
 								printf("排序成功\n");
@@ -352,16 +354,18 @@ void Sub_SortListByWhatever()
 				if (IndexListHeadSet) {
 					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
 						FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
-					if (IndexListHeadSet[CurrentIndexListIndex]->listCount > 0)
+					if (IndexListHeadSet[CurrentIndexListIndex]->listCount > 0) {
+						printf("正在排序,请耐心等待...\n");
 						ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], CurrentTitleIndex, SortMode);
+						if (!ReturnVal) {
+							printf("排序成功\n");
+						}
+						else {
+							printf("排序失败\n");
+						}
+					}
 					else {
 						printf("初始化List失败\n");
-					}
-					if (!ReturnVal) {
-						printf("排序成功\n");
-					}
-					else {
-						printf("排序失败\n");
 					}
 				}
 				else printf("请先初始化List集\n");

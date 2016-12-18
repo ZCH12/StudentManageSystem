@@ -313,6 +313,22 @@ void test12()
 }
 */
 
+//测试GetListFromStringViaList
+void test13()
+{
+	char str[] = "1-3 5 4";
+	NewListSet(3, LISTTYPE_INDEXLIST);
+	InitList(IndexListHeadSet[0], 5, 3, 2, 1, 4, 6);
+	FillList(IndexListHeadSet[1], 5);
+	GetListFromStringViaList(str,5, IndexListHeadSet[1], IndexListHeadSet[0]);
+	for (int a = 0; a < 5; a++)
+	{
+		printf("%d ", IndexListHeadSet[1]->list[a]);
+	}
+	printf("\n");
+
+}
+
 int main()
 {
 	//_CrtSetBreakAlloc(65);
@@ -333,10 +349,11 @@ int main()
 	//test7();
 	//test8();
 	//test9();
-	testmain();
+	//testmain();
 	//test10();
 	//test11();
 	//test12();
+	test13();
 	//FreeChartSet();
 	//FreeListSet(0);
 	//FreeListSet(1);

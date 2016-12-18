@@ -192,18 +192,18 @@ char* Menu_DisplaySubMenu_Search()
 {
 	int a;
 	char* Temp;
-	if (ChartHead[CurrentTitleListIndex] && ChartHead[CurrentTitleListIndex]->HadInit != 0) {
-		Temp = ChartHead[CurrentTitleListIndex]->ChartTitle[CurrentTitleIndex];
+	if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) {
+		Temp = ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex];
 		Temp = Temp ? Temp : "未命名";
 	}
 	else {
 		Temp = NULL;
 	}
 	printf(" %s 当前进行操作的列标题:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
-	if (ShowSearchTitleList&&ChartHead[CurrentTitleListIndex])
+	if (ShowSearchTitleList&&ChartHead[CurrentChartIndex])
 	{
-		for (a = 0; a < ChartHead[CurrentTitleListIndex]->TitleCount; a++)
-			printf("   [S#%-2d]. %s\n", a + 1, ChartHead[CurrentTitleListIndex]->ChartTitle[a]);
+		for (a = 0; a < ChartHead[CurrentChartIndex]->TitleCount; a++)
+			printf("   [S#%-2d]. %s\n", a + 1, ChartHead[CurrentChartIndex]->ChartTitle[a]);
 	}
 	return Temp;
 }

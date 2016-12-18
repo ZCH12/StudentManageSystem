@@ -39,8 +39,8 @@ int AlloctedTitleListCount = 0;			//已分配的TitleList的个数
 
 /*
 从文件读取数据到指定表
-                        //不安全,不推荐使用就好了
-                        //待重写
+						//不安全,不推荐使用就好了
+						//待重写
 FileName 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
 */
@@ -2501,26 +2501,27 @@ ErrVal CopyList(List *SourceList, List *DestList)
 该函数把一个字符串中的数字或数字区间截取出来,存进list中
 传入的数据 格式类似5 4 2 1 3
 可以存在 1-5 这样的区间,这等同于1 2 3 4 5
+n 输入的数字的个数,可超过,不能少于,这关系到内存的分配
 list 存储的目标List
 MaxIndex 限制传入数据的最大值(只是为了安全检查),这个值一般是指定Chart表的TitleCount
 字符串中的值是从1开始的
 */
-ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
+ErrVal GetListFromString(char* Input, int n, List *list, int MaxIndex)
 {
-	int len = (int)strlen(Input), len2;
+	int len2;
 	char *temp2;
 	int a = 0, b;
 	char* c1, *c2;
 	int temp, temp3;
 	const char *Delimer = " \t\n";
 
-	if (len <= 0)
+	if (n <= 0)
 		return ERR_ILLEGALPARAM;
 	if (list)
 	{
 		if (list->AllocatedList <= 0 || !list->list)
 		{
-			a = FillList(list, len);
+			a = FillList(list, n);
 			if (a)
 			{
 				if (a != ERR_MEMORYNOTENOUGH)
@@ -2537,7 +2538,7 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 	temp2 = strtok(Input, Delimer);
 	for (a = 0; temp2 != NULL&&a < list->AllocatedList; )
 	{
-		len2 = (int )strlen(temp2);
+		len2 = (int)strlen(temp2);
 		c1 = temp2;
 		c2 = temp2;
 		for (b = 0; b < len2 - 1; b++)
@@ -2563,6 +2564,84 @@ ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
 	list->listCount = a;
 	return SUCCESS;
 }
+
+/*
+该函数把一个字符串中指定的第n个元素存进ResultList中
+比如SourceList的List的数据为   5 1 2 4 3
+	Input的值为1-5(或1 2 3 4 5)
+	则ResultList中的值为 5 1 2 4 3
+
+如果Input的值为 1 3 2 4 5(或1 3 2 4-5)
+	则ResultList中的值为 5 2 1 4 3
+可以存在 1-5 这样的区间,这等同于1 2 3 4 5
+Resultlist 存储的目标List
+SourceList 源List
+*/
+ErrVal GetListFromStringViaList(char* Input, int n, List *Resultlist, List *SourceList)
+{
+	int len2;
+	char *temp2;
+	int a = 0, b;
+	char* c1, *c2;
+	int temp, temp3;
+	const char *Delimer = " \t\n";
+
+	if (n <= 0)
+		return ERR_ILLEGALPARAM;
+	if (!SourceList||SourceList->listCount<=0)
+		return ERR_EMTYLIST;
+
+	if (Resultlist)
+	{
+		if (Resultlist->AllocatedList <= 0 || !Resultlist->list)
+		{
+			a = FillList(Resultlist, n);
+			if (a)
+			{
+				if (a != ERR_MEMORYNOTENOUGH)
+					FreeList(Resultlist);
+				return a;
+			}
+		}
+	}
+	else 
+		return ERR_ILLEGALPARAM;
+
+	if (!Resultlist->list)
+		return ERR_EMTYLIST;
+
+
+
+	temp2 = strtok(Input, Delimer);
+	for (a = 0; temp2 != NULL&&a < Resultlist->AllocatedList; )
+	{
+		len2 = (int)strlen(temp2);
+		c1 = temp2;
+		c2 = temp2;
+		for (b = 0; b < len2 - 1; b++)
+		{
+			if (temp2[b] == '-')
+			{
+				c2 = temp2 + b + 1;
+				temp2[b] = 0;
+				break;
+			}
+		}
+		temp = atoi(c1) - 1;
+		temp3 = atoi(c2) - 1;
+		for (b = temp; b <= temp3; b++)
+		{
+			Resultlist->list[a] = SourceList->list[b];
+			if (b >= 0 && b < SourceList->listCount)
+				a++;
+		}
+		temp2 = strtok(NULL, Delimer);
+	}
+
+	Resultlist->listCount = a;
+	return SUCCESS;
+}
+
 
 /*
 ErrVal GetListFromString(char* Input, List *list, int MaxIndex)
