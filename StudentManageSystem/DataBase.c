@@ -659,6 +659,13 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 	return SUCCESS;
 }
 
+/*
+将数据导出到Txt(有排版,适合直接阅读的输出)
+FileName要写入的文件名
+OperateChart 要写入的数据存放的表
+WriteLine 控制表中哪些行要进行存储,并控制着存储顺序
+WriteTitle 控制着哪些列需要输出,并控制着输出顺序
+*/
 ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * WriteLine, TitleList * WriteTitle)
 {
 	FILE *File;
