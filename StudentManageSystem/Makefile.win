@@ -1,0 +1,52 @@
+# Project: 学生成绩管理系统
+# Compiler: Default GCC compiler
+# Compiler Type: MingW 3
+# Makefile created by wxDev-C++ IDE 7.4.2.569 on 18/12/16 22:03
+
+WXLIBNAME = wxmsw29u
+CPP       = g++.exe
+CC        = gcc.exe
+WINDRES   = "windres.exe"
+OBJ       = Objects/MingW/DataBase.o Objects/MingW/HZHfunc.o Objects/MingW/main.o Objects/MingW/Menu.o Objects/MingW/ZCRUI.o
+LINKOBJ   = "Objects/MingW/DataBase.o" "Objects/MingW/HZHfunc.o" "Objects/MingW/main.o" "Objects/MingW/Menu.o" "Objects/MingW/ZCRUI.o"
+LIBS      = -L"E:/Software/wxdevcpp/Dev-Cpp/lib/wx/gcc_lib" -L"E:/Software/wxdevcpp/Dev-Cpp/lib" -L"E:/Software/wxdevcpp/Dev-Cpp/MinGW32/lib"  
+INCS      = -I"E:/Software/wxdevcpp/Dev-Cpp/MinGW32/include"
+CXXINCS   = -I"E:/Software/wxdevcpp/Dev-Cpp/MinGW32/include" -I"E:/Software/wxdevcpp/Dev-Cpp/" -I"E:/Software/wxdevcpp/Dev-Cpp/include/common"
+RCINCS    = --include-dir "E:/Software/wxdevcpp/Dev-Cpp/include/common"
+BIN       = Output/MingW/学生成绩管理系统.exe
+DEFINES   = 
+CXXFLAGS  = $(CXXINCS) $(DEFINES)  
+CFLAGS    = $(INCS) $(DEFINES)  
+GPROF     = gprof.exe
+ifeq ($(OS),Windows_NT)
+   RM = del /Q
+   FixPath = $(subst /,\,$1)
+else
+   RM = rm -f
+   FixPath = $1
+endif
+LINK      = gcc.exe
+
+.PHONY: all all-before all-after clean clean-custom
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	$(RM) $(call FixPath,$(LINKOBJ)) "$(call FixPath,$(BIN))"
+
+$(BIN): $(OBJ)
+	$(LINK) $(LINKOBJ) -o "$(BIN)" $(LIBS) 
+
+Objects/MingW/DataBase.o: $(GLOBALDEPS) DataBase.c DataBase.h
+	$(CC) -c DataBase.c -o Objects/MingW/DataBase.o $(CFLAGS)
+
+Objects/MingW/HZHfunc.o: $(GLOBALDEPS) HZHfunc.c menu.h DataBase.h
+	$(CC) -c HZHfunc.c -o Objects/MingW/HZHfunc.o $(CFLAGS)
+
+Objects/MingW/main.o: $(GLOBALDEPS) main.c menu.h DataBase.h
+	$(CC) -c main.c -o Objects/MingW/main.o $(CFLAGS)
+
+Objects/MingW/Menu.o: $(GLOBALDEPS) Menu.c menu.h DataBase.h
+	$(CC) -c Menu.c -o Objects/MingW/Menu.o $(CFLAGS)
+
+Objects/MingW/ZCRUI.o: $(GLOBALDEPS) ZCRUI.c menu.h DataBase.h
+	$(CC) -c ZCRUI.c -o Objects/MingW/ZCRUI.o $(CFLAGS)

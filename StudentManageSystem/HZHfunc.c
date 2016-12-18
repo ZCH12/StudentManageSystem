@@ -1,6 +1,6 @@
-ï»¿#include "menu.h"
+#include "menu.h"
 
-//æ’åºèœå•
+//ÅÅĞò²Ëµ¥
 void SubMenu_SortList()
 {
     void Sub_SortListByName();
@@ -14,16 +14,16 @@ void SubMenu_SortList()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE
-			"                    å­¦ç”Ÿæ’åº\n"
+			"                    Ñ§ÉúÅÅĞò\n"
 			DELIMS_LINE
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE
-			" [1].æŒ‰ç…§å§“åæ’åº\n"
-			" [2].æŒ‰ç…§å¹³å‡æˆç»©æ’åº\n"
-			" [3].æŒ‰ç…§ä»»æ„å•å…ƒæ’åº\n"
-			" [0].è¿”å›ä¸»èœå•\n"
+			" [1].°´ÕÕĞÕÃûÅÅĞò\n"
+			" [2].°´ÕÕÆ½¾ù³É¼¨ÅÅĞò\n"
+			" [3].°´ÕÕÈÎÒâµ¥ÔªÅÅĞò\n"
+			" [0].·µ»ØÖ÷²Ëµ¥\n"
 			DELIMS_LINE
 		);
 
@@ -48,13 +48,13 @@ void SubMenu_SortList()
 	}
 }
 
-//è®¡ç®—ä»»æ„æˆç»©å¹³å‡å€¼
+//¼ÆËãÈÎÒâ³É¼¨Æ½¾ùÖµ
 void CaluAverage()
 {
-	int i, t;                       //å¾ªç¯å˜é‡
+	int i, t;                       //Ñ­»·±äÁ¿
 	int returnVal = 0;
 	double sum = 0;
-	char UnitName[1][32] = { "å¹³å‡æˆç»©" };     //ç”¨äºåˆ›å»ºæ–°çš„unit(å¹³å‡æˆç»©)
+	char UnitName[1][32] = { "Æ½¾ù³É¼¨" };     //ÓÃÓÚ´´½¨ĞÂµÄunit(Æ½¾ù³É¼¨)
 	int NewTitleLimits[1] = { 8 };
 	char temp[128];
 	int NewUnitIndex;
@@ -67,24 +67,24 @@ void CaluAverage()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                 è®¡ç®—å¹³å‡æˆç»©\n"
+			"                 ¼ÆËãÆ½¾ù³É¼¨\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].è®¡ç®—å¹³å‡æˆç»©çš„ç§‘ç›®:"
+			" [1].¼ÆËãÆ½¾ù³É¼¨µÄ¿ÆÄ¿:"
 		);
 		for (i = 0; i < tempList.listCount; i++) {
 			printf("%s ", ChartHead[CurrentChartIndex]->ChartTitle[tempList.list[i]]);
 		}
 		printf(
 			"\n"
-			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n"\
+			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n"\
 			DELIMS_LINE\
-			" [2].å¼€å§‹è®¡ç®—\n"\
-			" [3].æŸ¥çœ‹ä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"\
+			" [2].¿ªÊ¼¼ÆËã\n"\
+			" [3].²é¿´ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -99,40 +99,40 @@ void CaluAverage()
 				printf(
 					"\n"\
 					DELIMS_LINE\
-					"è¯·è¾“å…¥è¦è®¡å…¥å¹³å‡åˆ†çš„é¡¹,æ”¯æŒåŒºé—´è¾“å…¥ç”¨\"-\"è¿æ¥åŒºé—´çš„ä¸¤ä¸ªå€¼\n"
+					"ÇëÊäÈëÒª¼ÆÈëÆ½¾ù·ÖµÄÏî,Ö§³ÖÇø¼äÊäÈëÓÃ\"-\"Á¬½ÓÇø¼äµÄÁ½¸öÖµ\n"
 				);
 				fgets(temp, 128, stdin);
 				temp[strlen(temp) - 1] = 0;
 				GetListFromString(temp, ChartHead[CurrentChartIndex]->TitleCount, &tempList, ChartHead[CurrentChartIndex]->TitleCount);
 				if (tempList.listCount <= 0) {
-					printf("è¾“å…¥æ ¼å¼é”™è¯¯\n");
+					printf("ÊäÈë¸ñÊ½´íÎó\n");
 					GETCH();
 				}
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æ–‡ä»¶\n");
+				printf("ÇëÏÈ¶ÁÈ¡ÎÄ¼ş\n");
 			}
 			break;
 		case 2:
-			//æ£€æŸ¥æ˜¯å¦è¾“å…¥ è®¡ç®—ç§‘ç›®æ•°é‡
+			//¼ì²éÊÇ·ñÊäÈë ¼ÆËã¿ÆÄ¿ÊıÁ¿
 			if (tempList.listCount <= 0) {
-				printf("è¯·å…ˆé€‰æ‹©è¦è¿›è¡Œè®¡ç®—çš„ç§‘ç›®\n");
+				printf("ÇëÏÈÑ¡ÔñÒª½øĞĞ¼ÆËãµÄ¿ÆÄ¿\n");
 				GETCH();
 				break;
 			}
 
 			if (ChartHead && ChartHead[CurrentChartIndex])
 			{
-				NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "å¹³å‡æˆç»©");
+				NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "Æ½¾ù³É¼¨");
 				if (NewUnitIndex == -1) {
 					returnVal = CreateNewUnit(ChartHead[CurrentChartIndex], 1, UnitName, NewTitleLimits);
 					if (!returnVal)
 					{
-						printf("åˆ›å»ºæ–°çš„å•å…ƒæ ¼åˆ—æˆåŠŸ\n");
-						NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "å¹³å‡æˆç»©");
+						printf("´´½¨ĞÂµÄµ¥Ôª¸ñÁĞ³É¹¦\n");
+						NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "Æ½¾ù³É¼¨");
 					}
 					else {
-						printf("åˆ›å»ºæ–°çš„å•å…ƒæ ¼å¤±è´¥\n");
+						printf("´´½¨ĞÂµÄµ¥Ôª¸ñÊ§°Ü\n");
 						GETCH();
 						break;
 					}
@@ -148,7 +148,7 @@ void CaluAverage()
 					sprintf(ChartHead[CurrentChartIndex]->Chart[i][NewUnitIndex], "%.1lf", sum / 10);
 				}
 			}
-			printf("è®¡ç®—å¹³å‡æˆç»©æˆåŠŸ\n");
+			printf("¼ÆËãÆ½¾ù³É¼¨³É¹¦\n");
 			GETCH();
 			break;
 		case 3:
@@ -160,10 +160,10 @@ void CaluAverage()
 	}
 }
 
-//æŒ‰ç…§åå­—æ’åº
+//°´ÕÕÃû×ÖÅÅĞò
 void Sub_SortListByName()
 {
-	int SortMode = 0;               //æ’åºæ¨¡å¼
+	int SortMode = 0;               //ÅÅĞòÄ£Ê½
 	int ReturnVal = 0;
 #if RANDOMCOLOR
 	ChangeColor();
@@ -173,21 +173,21 @@ void Sub_SortListByName()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                 æŒ‰ç…§å§“åæ’åº\n"
+			"                 °´ÕÕĞÕÃûÅÅĞò\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE
-			" [1].æ’åºæ–¹å¼:%s\n"\
+			" [1].ÅÅĞò·½Ê½:%s\n"\
 			"\n"\
-			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n"\
+			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n"\
 			DELIMS_LINE\
-			" [2].å¼€å§‹æ’åº\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"\
+			" [2].¿ªÊ¼ÅÅĞò\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"\
 			DELIMS_LINE,
-			SortMode ? "é™åº" : "å‡åº"
+			SortMode ? "½µĞò" : "ÉıĞò"
 		);
 		switch (Event_Input())
 		{
@@ -196,7 +196,7 @@ void Sub_SortListByName()
 			break;
 		case 2:
 			if (ChartHead&&ChartHead[CurrentChartIndex]) {
-				ReturnVal = SHI(ChartHead[CurrentChartIndex], "å§“å");
+				ReturnVal = SHI(ChartHead[CurrentChartIndex], "ĞÕÃû");
 				if (ReturnVal != -1)
 				{
 					if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
@@ -206,23 +206,23 @@ void Sub_SortListByName()
 							{
 								FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
 							}
-							printf("æ­£åœ¨æ’åº,è¯·è€å¿ƒç­‰å¾…...\n");
+							printf("ÕıÔÚÅÅĞò,ÇëÄÍĞÄµÈ´ı...\n");
 							ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
 
 							if (!ReturnVal) {
-								printf("æ’åºæˆåŠŸ\n");
+								printf("ÅÅĞò³É¹¦\n");
 							}
 							else {
-								printf("æ’åºå¤±è´¥\n");
+								printf("ÅÅĞòÊ§°Ü\n");
 							}
 						}
-						else printf("è¯·å…ˆåˆå§‹åŒ–è¡¨\n");
+						else printf("ÇëÏÈ³õÊ¼»¯±í\n");
 					}
 				}
 				else
-					printf("è¯·å…ˆè¯»å–è¡¨\n");
+					printf("ÇëÏÈ¶ÁÈ¡±í\n");
 			}
-			else printf("è¯·å…ˆè¯»å–è¡¨\n");
+			else printf("ÇëÏÈ¶ÁÈ¡±í\n");
 			GETCH();
 			break;
 		case 3:
@@ -234,7 +234,7 @@ void Sub_SortListByName()
 	}
 }
 
-//æŒ‰ç…§å¹³å‡æˆç»©æ’åº
+//°´ÕÕÆ½¾ù³É¼¨ÅÅĞò
 void Sub_SortListByAver()
 {
 	int ReturnVal = 0;
@@ -247,21 +247,21 @@ void Sub_SortListByAver()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE
-			"                 æŒ‰ç…§å¹³å‡æˆç»©æ’åº\n"
+			"                 °´ÕÕÆ½¾ù³É¼¨ÅÅĞò\n"
 			DELIMS_LINE
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE
-			" [1].æ’åºæ–¹å¼:%s\n"\
+			" [1].ÅÅĞò·½Ê½:%s\n"\
 			"\n"\
-			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n"\
+			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n"\
 			DELIMS_LINE\
-			" [2].å¼€å§‹æ’åº\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"\
+			" [2].¿ªÊ¼ÅÅĞò\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"\
 			DELIMS_LINE
-			, SortMode ? "é™åº" : "å‡åº"
+			, SortMode ? "½µĞò" : "ÉıĞò"
 		);
 		switch (Event_Input())
 		{
@@ -270,7 +270,7 @@ void Sub_SortListByAver()
 			break;
 		case 2:
 			if (ChartHead) {
-				ReturnVal = SHI(ChartHead[CurrentChartIndex], "å¹³å‡æˆç»©");
+				ReturnVal = SHI(ChartHead[CurrentChartIndex], "Æ½¾ù³É¼¨");
 				if (ReturnVal != -1)
 				{
 					if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
@@ -280,22 +280,22 @@ void Sub_SortListByAver()
 							{
 								FillList(IndexListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->UsedLines);
 							}
-							printf("æ­£åœ¨æ’åº,è¯·è€å¿ƒç­‰å¾…...\n");
+							printf("ÕıÔÚÅÅĞò,ÇëÄÍĞÄµÈ´ı...\n");
 							ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentTitleListIndex], ReturnVal, SortMode);
 							if (!ReturnVal) {
-								printf("æ’åºæˆåŠŸ\n");
+								printf("ÅÅĞò³É¹¦\n");
 							}
 							else {
-								printf("æ’åºå¤±è´¥\n");
+								printf("ÅÅĞòÊ§°Ü\n");
 							}
 						}
-						else printf("è¯·å…ˆåˆå§‹åŒ–Listé›†\n");
+						else printf("ÇëÏÈ³õÊ¼»¯List¼¯\n");
 					}
 				}
 				else
-					printf("è¯·å…ˆå»é«˜çº§åŠŸèƒ½ä¸­è®¡ç®—å¹³å‡æˆç»©\n");
+					printf("ÇëÏÈÈ¥¸ß¼¶¹¦ÄÜÖĞ¼ÆËãÆ½¾ù³É¼¨\n");
 			}
-			else printf("è¯·å…ˆè¯»å–ä¿¡æ¯\n");
+			else printf("ÇëÏÈ¶ÁÈ¡ĞÅÏ¢\n");
 			GETCH();
 			break;
 		case 3:
@@ -308,7 +308,7 @@ void Sub_SortListByAver()
 	}
 }
 
-//æŒ‰ç…§ä»»æ„å•å…ƒæ’åº
+//°´ÕÕÈÎÒâµ¥ÔªÅÅĞò
 void Sub_SortListByWhatever()
 {
 	int SortMode = 0;
@@ -322,26 +322,26 @@ void Sub_SortListByWhatever()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE
-			"                 æŒ‰ç…§ä»»æ„å•å…ƒæ’åº\n"
+			"                 °´ÕÕÈÎÒâµ¥ÔªÅÅĞò\n"
 			DELIMS_LINE
 		);
 		Menu_DisplaySubMenu();
 		temp = Menu_DisplaySubMenu_Search();
 		printf(
 			DELIMS_LINE
-			" [1].æ’åºæ–¹å¼:%s\n",
-			SortMode ? "é™åº" : "å‡åº"
+			" [1].ÅÅĞò·½Ê½:%s\n",
+			SortMode ? "½µĞò" : "ÉıĞò"
 		);
 
 		printf(
-			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n"\
+			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n"\
 			DELIMS_LINE\
-			" [2].æŒ‰\"%s\"%sæ’åº\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"\
+			" [2].°´\"%s\"%sÅÅĞò\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"\
 			DELIMS_LINE,
 			temp,
-			SortMode ? "é™åº" : "å‡åº"
+			SortMode ? "½µĞò" : "ÉıĞò"
 		);
 
 		switch (Event_Input())
@@ -355,22 +355,22 @@ void Sub_SortListByWhatever()
 					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
 						FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
 					if (IndexListHeadSet[CurrentIndexListIndex]->listCount > 0) {
-						printf("æ­£åœ¨æ’åº,è¯·è€å¿ƒç­‰å¾…...\n");
+						printf("ÕıÔÚÅÅĞò,ÇëÄÍĞÄµÈ´ı...\n");
 						ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], CurrentTitleIndex, SortMode);
 						if (!ReturnVal) {
-							printf("æ’åºæˆåŠŸ\n");
+							printf("ÅÅĞò³É¹¦\n");
 						}
 						else {
-							printf("æ’åºå¤±è´¥\n");
+							printf("ÅÅĞòÊ§°Ü\n");
 						}
 					}
 					else {
-						printf("åˆå§‹åŒ–Listå¤±è´¥\n");
+						printf("³õÊ¼»¯ListÊ§°Ü\n");
 					}
 				}
-				else printf("è¯·å…ˆåˆå§‹åŒ–Listé›†\n");
+				else printf("ÇëÏÈ³õÊ¼»¯List¼¯\n");
 			}
-			else printf("è¯·å…ˆå¯¹è¡¨è¿›è¡Œåˆå§‹åŒ–\n");
+			else printf("ÇëÏÈ¶Ô±í½øĞĞ³õÊ¼»¯\n");
 			GETCH();
 			break;
 		case 3:

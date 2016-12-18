@@ -1,7 +1,7 @@
-ï»¿#include "menu.h"
+#include "menu.h"
 #include "time.h"
 
-//ä¸»èœå•å…¥å£
+//Ö÷²Ëµ¥Èë¿Ú
 void MainMenu()
 {
 	void SubMenu_Read();
@@ -21,48 +21,48 @@ void MainMenu()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                     ä¸»èœå•\n"\
+			"                     Ö÷²Ëµ¥\n"\
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 
 		printf(
 			DELIMS_LINE\
-			" [1].è¯»å–æ–‡ä»¶\n"\
-			" [2].å¯¹å­¦ç”Ÿè¿›è¡Œæ’åº\n"\
-			" [3].æŸ¥æ‰¾æŒ‡å®šå­¦ç”Ÿ\n"\
-			" [4].ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯\n"\
-			" [5].æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯\n"\
-			" [6].ä¿å­˜(å¯¼å‡º)ä¿¡æ¯\n"\
-			" [7].é«˜çº§åŠŸèƒ½\n"\
-			" [0].é€€å‡ºç³»ç»Ÿ\n"\
+			" [1].¶ÁÈ¡ÎÄ¼ş\n"\
+			" [2].¶ÔÑ§Éú½øĞĞÅÅĞò\n"\
+			" [3].²éÕÒÖ¸¶¨Ñ§Éú\n"\
+			" [4].ĞŞ¸ÄÑ§ÉúĞÅÏ¢\n"\
+			" [5].ÏÔÊ¾Ñ§ÉúĞÅÏ¢\n"\
+			" [6].±£´æ(µ¼³ö)ĞÅÏ¢\n"\
+			" [7].¸ß¼¶¹¦ÄÜ\n"\
+			" [0].ÍË³öÏµÍ³\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			SubMenu_Read();			//ä»æ–‡ä»¶è¯»å–ä¿¡æ¯
+			SubMenu_Read();			//´ÓÎÄ¼ş¶ÁÈ¡ĞÅÏ¢
 			break;
 		case 2:
-			SubMenu_SortList();           //å¯¹å­¦ç”Ÿä¿¡æ¯æ’åº
+			SubMenu_SortList();           //¶ÔÑ§ÉúĞÅÏ¢ÅÅĞò
 			break;
 		case 3:
-			SubMenu_Search();		//æŸ¥æ‰¾å­¦ç”Ÿä¿¡æ¯
+			SubMenu_Search();		//²éÕÒÑ§ÉúĞÅÏ¢
 			break;
 		case 4:
-			SubMenu_Change();		//ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯
+			SubMenu_Change();		//ĞŞ¸ÄÑ§ÉúĞÅÏ¢
 			break;
 		case 5:
-			SubMenu_Display();		//æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯
+			SubMenu_Display();		//ÏÔÊ¾Ñ§ÉúĞÅÏ¢
 			break;
 		case 6:
-			SubMenu_SaveToFile();	//ä¿å­˜ä¿¡æ¯
+			SubMenu_SaveToFile();	//±£´æĞÅÏ¢
 			break;
 		case 7:
-			SubMenu_Advantage();	//é«˜çº§è®¾ç½®
+			SubMenu_Advantage();	//¸ß¼¶ÉèÖÃ
 			break;
 		case 0:
-			printf("ç¡®å®šè¦é€€å‡ºå—?(æŒ‰Yç»§ç»­é€€å‡º)\nå¦‚æœé€€å‡º,æœªä¿å­˜çš„æ•°æ®å°†ä¼šä¸¢å¤±\n");
+			printf("È·¶¨ÒªÍË³öÂğ?(°´Y¼ÌĞøÍË³ö)\nÈç¹ûÍË³ö,Î´±£´æµÄÊı¾İ½«»á¶ªÊ§\n");
 			getchar();
 			scanf("%c", &a);
 			if (a == 'Y' || a == 'y')
@@ -72,7 +72,7 @@ void MainMenu()
 	return;
 }
 
-//1è¯»å–æ•°æ®å­èœå•
+//1¶ÁÈ¡Êı¾İ×Ó²Ëµ¥
 void SubMenu_Read()
 {
 	void Sub_ChoiceFileToRead1();
@@ -85,25 +85,25 @@ void SubMenu_Read()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    è¯»å–æ–‡ä»¶\n"
+			"                    ¶ÁÈ¡ÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].ä»æ–‡æœ¬æ–‡ä»¶è¯»å–\n"\
-			" [2].ä»äºŒè¿›åˆ¶æ–‡ä»¶è¯»å–\n"\
-			" [0].è¿”å›ä¸»èœå•\n"
+			" [1].´ÓÎÄ±¾ÎÄ¼ş¶ÁÈ¡\n"\
+			" [2].´Ó¶ş½øÖÆÎÄ¼ş¶ÁÈ¡\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			//ä»æ–‡æœ¬è¯»å–æ•°æ®
+			//´ÓÎÄ±¾¶ÁÈ¡Êı¾İ
 			Sub_ChoiceFileToRead1();
 			break;
 		case 2:
-			//ä»äºŒè¿›åˆ¶æ–‡ä»¶è¯»å–æ•°æ®
+			//´Ó¶ş½øÖÆÎÄ¼ş¶ÁÈ¡Êı¾İ
 			Sub_ChoiceFileToRead2();
 			break;
 		case 0:
@@ -128,50 +128,50 @@ void Sub_ChoiceFileToRead1()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                 é€‰æ‹©è¦è¯»å–çš„æ–‡ä»¶\n"
+			"                 Ñ¡ÔñÒª¶ÁÈ¡µÄÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 
 		printf(
 			DELIMS_LINE\
-			" [1].å‚æ•°åˆ—è¡¨æ–‡ä»¶è·¯å¾„:%s\n"\
-			" [2].æ•°æ®æ–‡ä»¶è·¯å¾„:%s\n"\
-			" [3].æ€§åˆ«æ˜ å°„æ–‡ä»¶è·¯å¾„:%s\n"\
-			" [4].å­¦é™¢ä¿¡æ¯æ˜ å°„æ–‡ä»¶è·¯å¾„:%s\n"
+			" [1].²ÎÊıÁĞ±íÎÄ¼şÂ·¾¶:%s\n"\
+			" [2].Êı¾İÎÄ¼şÂ·¾¶:%s\n"\
+			" [3].ĞÔ±ğÓ³ÉäÎÄ¼şÂ·¾¶:%s\n"\
+			" [4].Ñ§ÔºĞÅÏ¢Ó³ÉäÎÄ¼şÂ·¾¶:%s\n"
 			"\n"\
-			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n",
+			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n",
 			ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath
 		);
 		printf(
 			DELIMS_LINE\
-			" [5].å¼€å§‹è¯»å–\n"\
-			" [6].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"
+			" [5].¿ªÊ¼¶ÁÈ¡\n"\
+			" [6].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("è¯·è¾“å…¥å‚æ•°åˆ—è¡¨æ–‡ä»¶è·¯å¾„:\n");
+			printf("ÇëÊäÈë²ÎÊıÁĞ±íÎÄ¼şÂ·¾¶:\n");
 			getchar();
 			fgets(ParamFilePath, 512, stdin);
 			ParamFilePath[strlen(ParamFilePath) - 1] = 0;
 			break;
 		case 2:
-			printf("è¯·è¾“å…¥æ•°æ®æ–‡ä»¶è·¯å¾„:\n");
+			printf("ÇëÊäÈëÊı¾İÎÄ¼şÂ·¾¶:\n");
 			getchar();
 			fgets(DataFilePath, 512, stdin);
 			DataFilePath[strlen(DataFilePath) - 1] = 0;
 			break;
 		case 3:
-			printf("è¯·è¾“å…¥æ€§åˆ«æ˜ å°„æ–‡ä»¶è·¯å¾„:\n");
+			printf("ÇëÊäÈëĞÔ±ğÓ³ÉäÎÄ¼şÂ·¾¶:\n");
 			getchar();
 			fgets(SexTranslateFilePath, 512, stdin);
 			SexTranslateFilePath[strlen(SexTranslateFilePath) - 1] = 0;
 			break;
 		case 4:
-			printf("è¯·è¾“å…¥å­¦é™¢ä¿¡æ¯æ˜ å°„æ–‡ä»¶è·¯å¾„:\n");
+			printf("ÇëÊäÈëÑ§ÔºĞÅÏ¢Ó³ÉäÎÄ¼şÂ·¾¶:\n");
 			getchar();
 			fgets(CollegeTranslateFilePath, 512, stdin);
 			CollegeTranslateFilePath[strlen(CollegeTranslateFilePath) - 1] = 0;
@@ -180,15 +180,15 @@ void Sub_ChoiceFileToRead1()
 			returnVal = ReadFromTwoFile(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex]);
 			if (!returnVal)
 			{
-				printf("è¯»å–æ•°æ®æ–‡ä»¶æˆåŠŸ\n");
-				//ç»§ç»­ç¿»è¯‘
-				returnVal = SHI(ChartHead[CurrentChartIndex], "æ€§åˆ«");
+				printf("¶ÁÈ¡Êı¾İÎÄ¼ş³É¹¦\n");
+				//¼ÌĞø·­Òë
+				returnVal = SHI(ChartHead[CurrentChartIndex], "ĞÔ±ğ");
 				if (returnVal != -1) {
 					ReadMapFile(SexTranslateFilePath, &im);
 					Translate(ChartHead[CurrentChartIndex], returnVal, &im);
 					FreeMapStruct(&im);
 				}
-				returnVal = SHI(ChartHead[CurrentChartIndex], "å­¦é™¢åç§°");
+				returnVal = SHI(ChartHead[CurrentChartIndex], "Ñ§ÔºÃû³Æ");
 				if (returnVal != -1) {
 					ReadMapFile(CollegeTranslateFilePath, &im);
 					Translate(ChartHead[CurrentChartIndex], returnVal, &im);
@@ -197,13 +197,13 @@ void Sub_ChoiceFileToRead1()
 				WriteConfig1(CONFIGFILEPATH1, ParamFilePath, DataFilePath, SexTranslateFilePath, CollegeTranslateFilePath);
 			}
 			else if (returnVal == ERR_OPENFILE) {
-				printf("è¯»å–æ–‡ä»¶å¤±è´¥,è¯·ç¡®è®¤è·¯å¾„æ˜¯å¦æ­£ç¡®,");
+				printf("¶ÁÈ¡ÎÄ¼şÊ§°Ü,ÇëÈ·ÈÏÂ·¾¶ÊÇ·ñÕıÈ·,");
 			}
 			else if (returnVal == ERR_NOTSTANDARDFILE) {
-				printf("ç›®æ ‡æ–‡ä»¶ä¸ç¬¦åˆæ ‡å‡†,è¯·æ¢ä¸€ä¸ªæ–‡ä»¶å†è¯•\n");
+				printf("Ä¿±êÎÄ¼ş²»·ûºÏ±ê×¼,Çë»»Ò»¸öÎÄ¼şÔÙÊÔ\n");
 			}
 			GETCH();
-			//è¯»å–æ•°æ®
+			//¶ÁÈ¡Êı¾İ
 			break;
 		case 6:
 			SubMenu_Display();
@@ -227,45 +227,45 @@ void Sub_ChoiceFileToRead2()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                 é€‰æ‹©è¦è¯»å–çš„æ–‡ä»¶\n"
+			"                 Ñ¡ÔñÒª¶ÁÈ¡µÄÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE
-			" [1].äºŒè¿›åˆ¶æ–‡ä»¶å­˜æ”¾è·¯å¾„:%s\n"\
+			" [1].¶ş½øÖÆÎÄ¼ş´æ·ÅÂ·¾¶:%s\n"\
 			"\n"\
-			" Tip:è¾“å…¥å¯¹åº”æ•°å­—è¿›è¡Œè¾“å…¥æ•°æ®\n",
+			" Tip:ÊäÈë¶ÔÓ¦Êı×Ö½øĞĞÊäÈëÊı¾İ\n",
 			FilePath
 		);
 		printf(
 			DELIMS_LINE\
-			" [2].å¼€å§‹è¯»å–\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"
+			" [2].¿ªÊ¼¶ÁÈ¡\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("è¯·è¾“å…¥äºŒè¿›åˆ¶æ–‡ä»¶å­˜æ”¾è·¯å¾„:\n");
+			printf("ÇëÊäÈë¶ş½øÖÆÎÄ¼ş´æ·ÅÂ·¾¶:\n");
 			getchar();
 			fgets(FilePath, 512, stdin);
 			FilePath[strlen(FilePath) - 1] = 0;
 			break;
 		case 2:
-			printf("è¯·è¾“å…¥æ–‡ä»¶å¯†ç å¯†ç :\n");
+			printf("ÇëÊäÈëÎÄ¼şÃÜÂëÃÜÂë:\n");
 			//scanf("%s", PassWord);
 			InputPassWord(PassWord, 32);
 			returnVal = ReadFromBinFile(FilePath, PassWord, ChartHead[CurrentChartIndex]);
 			if (!returnVal) {
 				WriteConfig2(CONFIGFILEPATH2, FilePath);
-				printf("è¯»å–æ–‡ä»¶æˆåŠŸ\n");
+				printf("¶ÁÈ¡ÎÄ¼ş³É¹¦\n");
 			}
 			else if (returnVal == ERR_WRONGPASSWORD)
-				printf("å¯†ç é”™è¯¯,æ— æ³•è¯»å–æ–‡ä»¶\n");
+				printf("ÃÜÂë´íÎó,ÎŞ·¨¶ÁÈ¡ÎÄ¼ş\n");
 			else if (returnVal == ERR_OPENFILE)
-				printf("æ–‡ä»¶è·¯å¾„é”™è¯¯\n");
+				printf("ÎÄ¼şÂ·¾¶´íÎó\n");
 			GETCH();
 			break;
 		case 3:
@@ -277,7 +277,7 @@ void Sub_ChoiceFileToRead2()
 	}
 }
 
-//3æœç´¢æ•°æ®å­èœå•
+//3ËÑË÷Êı¾İ×Ó²Ëµ¥
 void SubMenu_Search()
 {
 	void Sub_Search1();
@@ -291,7 +291,7 @@ void SubMenu_Search()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                     æœç´¢ä¿¡æ¯\n"\
+			"                     ËÑË÷ĞÅÏ¢\n"\
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
@@ -299,18 +299,18 @@ void SubMenu_Search()
 		Menu_DisplaySubMenu_Page();
 		printf(
 			DELIMS_LINE\
-			" [1].æŒ‰å§“åè¿›è¡ŒæŸ¥æ‰¾\n"\
-			" [2].æŒ‰å­¦å·è¿›è¡ŒæŸ¥æ‰¾\n"\
-			" [3].æŒ‰é€‰å®šä¿¡æ¯ç‚¹è¿›è¡ŒæŸ¥æ‰¾\n"\
-			" [4].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [5].åˆå§‹åŒ–å½“å‰åå•\n"\
-			" [0].è¿”å›ä¸»èœå•\n"\
+			" [1].°´ĞÕÃû½øĞĞ²éÕÒ\n"\
+			" [2].°´Ñ§ºÅ½øĞĞ²éÕÒ\n"\
+			" [3].°´Ñ¡¶¨ĞÅÏ¢µã½øĞĞ²éÕÒ\n"\
+			" [4].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [5].³õÊ¼»¯µ±Ç°Ãûµ¥\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			returnVal = SHI(ChartHead[0], "å§“å");
+			returnVal = SHI(ChartHead[0], "ĞÕÃû");
 			if (returnVal != -1)
 			{
 				CurrentTitleIndex = returnVal;
@@ -318,13 +318,13 @@ void SubMenu_Search()
 			}
 			else
 			{
-				printf("æœ¬è¡¨æ²¡æœ‰å§“åå­—æ®µ\n");
+				printf("±¾±íÃ»ÓĞĞÕÃû×Ö¶Î\n");
 			}
 			GETCH();
-			//æŒ‰å§“åè¿›è¡ŒæŸ¥æ‰¾
+			//°´ĞÕÃû½øĞĞ²éÕÒ
 			break;
 		case 2:
-			returnVal = SHI(ChartHead[0], "å­¦å·");
+			returnVal = SHI(ChartHead[0], "Ñ§ºÅ");
 			if (returnVal != -1)
 			{
 				CurrentTitleIndex = returnVal;
@@ -332,7 +332,7 @@ void SubMenu_Search()
 			}
 			else
 			{
-				printf("æœ¬è¡¨æ²¡æœ‰å­¦å·å­—æ®µ\n");
+				printf("±¾±íÃ»ÓĞÑ§ºÅ×Ö¶Î\n");
 			}
 			GETCH();
 			break;
@@ -346,7 +346,7 @@ void SubMenu_Search()
 		case 5:
 			if (IndexListHeadSet&&ChartHead)
 				FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
-			printf("åˆå§‹åŒ–å®Œæ¯•\n");
+			printf("³õÊ¼»¯Íê±Ï\n");
 			GETCH();
 			break;
 		case 0:
@@ -360,9 +360,9 @@ void Sub_Search1()
 	int returnVal, SaveIndex;
 	char SearchString[512];
 	if (CurrentChartIndex >= 0 && CurrentChartIndex < ChartHead[CurrentChartIndex]->TitleCount) {
-		printf("è¯·è¾“å…¥è¦æœç´¢çš„%s:\n", ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex]);
+		printf("ÇëÊäÈëÒªËÑË÷µÄ%s:\n", ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex]);
 		scanf("%s", SearchString);
-		printf("è¯·é€‰æ‹©ä¿å­˜ç»“æœçš„åå•:\n");
+		printf("ÇëÑ¡Ôñ±£´æ½á¹ûµÄÃûµ¥:\n");
 		SaveIndex = WhichListSaveTo();
 		if (!IndexListHeadSet[SaveIndex] || IndexListHeadSet[SaveIndex]->AllocatedList == 0)
 		{
@@ -379,39 +379,39 @@ void Sub_Search1()
 		if (!returnVal)
 		{
 			if (IndexListHeadSet[SaveIndex] && IndexListHeadSet[SaveIndex]->listCount > 0) {
-				printf("æˆåŠŸæ‰¾åˆ°ä»¥ä¸‹æ•°æ®\n");
+				printf("³É¹¦ÕÒµ½ÒÔÏÂÊı¾İ\n");
 				Display_Chart(ChartHead[0], IndexListHeadSet[SaveIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER);
 				CurrentTitleIndex = SaveIndex;
-				printf("å…±æ‰¾åˆ°%dä¸ªç»“æœ\n", IndexListHeadSet[SaveIndex]->listCount);
+				printf("¹²ÕÒµ½%d¸ö½á¹û\n", IndexListHeadSet[SaveIndex]->listCount);
 			}
 			else
-				printf("æ²¡æœ‰æ‰¾åˆ°ç›¸å…³æ•°æ®\n");
+				printf("Ã»ÓĞÕÒµ½Ïà¹ØÊı¾İ\n");
 		}
 		else if (returnVal == ERR_ILLEGALCHART) {
-			printf("é”™è¯¯çš„è¡¨,å¯èƒ½æ²¡æœ‰è¯»å–è¿‡æ–‡ä»¶\n");
+			printf("´íÎóµÄ±í,¿ÉÄÜÃ»ÓĞ¶ÁÈ¡¹ıÎÄ¼ş\n");
 		}
 	}
 	else
-		printf("æ“ä½œå¤±è´¥\n");
+		printf("²Ù×÷Ê§°Ü\n");
 }
 int WhichListSaveTo()
 {
 	int a, b = -1;
-	printf(" è¯·é—®ä½ éœ€è¦åœ¨å“ªä¸ªåå•ä¸­å­˜æ”¾ç»“æœ\n");
-	printf("è¯·è¾“å…¥ä¸€ä¸ªæ•°å­—è¿›è¡Œé€‰æ‹©\n");
+	printf(" ÇëÎÊÄãĞèÒªÔÚÄÄ¸öÃûµ¥ÖĞ´æ·Å½á¹û\n");
+	printf("ÇëÊäÈëÒ»¸öÊı×Ö½øĞĞÑ¡Ôñ\n");
 	printf(DELIMS_LINE);
 	for (a = 0; a < IndexListCount; a++)
 		if (IndexListHeadSet[a] && IndexListHeadSet[a]->ListName)
 			printf("  [%d]. %s\n", a + 1, IndexListHeadSet[a]->ListName);
 		else
-			printf("  [%d]. æœªå‘½å\n", a + 1);
+			printf("  [%d]. Î´ÃüÃû\n", a + 1);
 	printf(DELIMS_LINE);
 	while (b<1 || b>IndexListCount)
 		scanf("%d", &b);
 	return b - 1;
 }
 
-//4ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯
+//4ĞŞ¸ÄÑ§ÉúĞÅÏ¢
 void SubMenu_Change()
 {
 	int returnVal;
@@ -425,13 +425,13 @@ void SubMenu_Change()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                     ä¿®æ”¹ä¿¡æ¯\n"\
+			"                     ĞŞ¸ÄĞÅÏ¢\n"\
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		Menu_DisplaySubMenu_Search();
 		if (ChartHead&&ChartHead[CurrentChartIndex]) {
-			returnVal = SHI(ChartHead[CurrentChartIndex], "å§“å");
+			returnVal = SHI(ChartHead[CurrentChartIndex], "ĞÕÃû");
 			if (returnVal != -1) {
 				if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->Chart&&ChartHead[CurrentChartIndex]->Chart[ChoiceLines] && ChartHead[CurrentChartIndex]->Chart[ChoiceLines][returnVal])
 					temp = ChartHead[CurrentChartIndex]->Chart[ChoiceLines][returnVal];
@@ -443,14 +443,14 @@ void SubMenu_Change()
 			else temp = NULL;
 		}
 		else temp = NULL;
-		printf(" å½“å‰é€‰æ‹©çš„å­¦ç”Ÿ:%s\n", temp);
+		printf(" µ±Ç°Ñ¡ÔñµÄÑ§Éú:%s\n", temp);
 		printf(
 			DELIMS_LINE\
-			" [1].é€‰æ‹©ä¿®æ”¹çš„å­¦ç”Ÿ\n"\
-			" [2].æŸ¥çœ‹å·²é€‰æ‹©çš„å­¦ç”Ÿçš„ä¿¡æ¯\n"\
-			" [3].å¼€å§‹ä¿®æ”¹\n"\
-			" [4].æŸ¥çœ‹ä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸»èœå•\n"\
+			" [1].Ñ¡ÔñĞŞ¸ÄµÄÑ§Éú\n"\
+			" [2].²é¿´ÒÑÑ¡ÔñµÄÑ§ÉúµÄĞÅÏ¢\n"\
+			" [3].¿ªÊ¼ĞŞ¸Ä\n"\
+			" [4].²é¿´ĞÅÏ¢\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -463,41 +463,41 @@ void SubMenu_Change()
 					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->AllocatedList <= 0)
 						if (FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines))
 						{
-							printf("æ“ä½œå¤±è´¥\n");
+							printf("²Ù×÷Ê§°Ü\n");
 							GETCH();
 							break;
 						}
 					Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_SHOWNUMBER);
 					printf(DELIMS_LINE\
-						"è¯·é€šè¿‡ç¼–å·é€‰æ‹©å­¦ç”Ÿ:\n"
+						"ÇëÍ¨¹ı±àºÅÑ¡ÔñÑ§Éú:\n"
 					);
 					scanf("%d", &returnVal);
 					if (returnVal >= 0 && returnVal < ChartHead[CurrentChartIndex]->UsedLines)
 					{
 						if (IndexListHeadSet[CurrentIndexListIndex]) {
 							ChoiceLines = IndexListHeadSet[CurrentIndexListIndex]->list[returnVal];
-							printf("é€‰æ‹©æˆåŠŸ\n");
+							printf("Ñ¡Ôñ³É¹¦\n");
 						}
-						else printf("è¯·å…ˆåˆå§‹åŒ–List\n");
+						else printf("ÇëÏÈ³õÊ¼»¯List\n");
 					}
 					else {
-						printf("è¾“å…¥æœ‰è¯¯\n");
+						printf("ÊäÈëÓĞÎó\n");
 					}
 				}
 				else
 				{
-					printf("è¯·å…ˆåˆå§‹åŒ–Listé›†\n");
+					printf("ÇëÏÈ³õÊ¼»¯List¼¯\n");
 				}
 
 			}
-			else printf("è¯·å…ˆæ­£ç¡®é€‰æ‹©å­¦ç”Ÿ\n");
+			else printf("ÇëÏÈÕıÈ·Ñ¡ÔñÑ§Éú\n");
 			GETCH();
 			break;
 		case 2:
 			if (ChartHead&&ChartHead[CurrentChartIndex] && ChoiceLines >= 0 && ChoiceLines < ChartHead[CurrentChartIndex]->UsedLines)
 				Display_Piece(ChartHead[CurrentChartIndex], ChoiceLines, TitleListHeadSet[CurrentTitleListIndex]);
 			else
-				printf("è¯·å…ˆæ­£ç¡®é€‰æ‹©æ“ä½œå­¦ç”Ÿ\n");
+				printf("ÇëÏÈÕıÈ·Ñ¡Ôñ²Ù×÷Ñ§Éú\n");
 			GETCH();
 			break;
 		case 3:
@@ -505,17 +505,17 @@ void SubMenu_Change()
 				ChoiceLines >= 0 && ChoiceLines < ChartHead[CurrentChartIndex]->UsedLines&&ChartHead[CurrentChartIndex]->Chart[ChoiceLines]
 				&& CurrentTitleIndex >= 0 && CurrentTitleIndex < ChartHead[CurrentChartIndex]->TitleCount) {
 				printf(
-					" è¯·è¾“å…¥ã€%sã€‘çš„ã€%sã€‘çš„å€¼:\n"\
-					"åŸæ¥çš„å€¼ä¸º:%s\n",
+					" ÇëÊäÈë¡¾%s¡¿µÄ¡¾%s¡¿µÄÖµ:\n"\
+					"Ô­À´µÄÖµÎª:%s\n",
 					temp,
 					ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex],
 					ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]
 				);
 				scanf("%s", ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]);
-				printf("å€¼å·²æ”¹ä¸ºï¼š%s\n", ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]);
+				printf("ÖµÒÑ¸ÄÎª£º%s¡¢n", ChartHead[CurrentChartIndex]->Chart[ChoiceLines][CurrentTitleIndex]);
 			}
 			else {
-				printf("è¯·å…ˆæ­£ç¡®é€‰æ‹©å­¦ç”Ÿ\n");
+				printf("ÇëÏÈÕıÈ·Ñ¡ÔñÑ§Éú\n");
 			}
 			GETCH();
 			break;
@@ -528,13 +528,14 @@ void SubMenu_Change()
 	}
 }
 
-//5æ˜¾ç¤ºå­¦ç”Ÿä¿¡æ¯
+//5ÏÔÊ¾Ñ§ÉúĞÅÏ¢
 void SubMenu_Display()
 {
-    extern void SubMenu_Advantage();
+    void SubMenu_Advantage();
 	extern int ShowTitleList;
 	extern int ShowPageList;
 	static int ShowNumber = 0;
+	char tempChar[100];
 	char temp;
 #if RANDOMCOLOR
 	ChangeColor();
@@ -544,20 +545,20 @@ void SubMenu_Display()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    æ˜¾ç¤ºä¿¡æ¯\n"
+			"                    ÏÔÊ¾ĞÅÏ¢\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		Menu_DisplaySubMenu_Page();
 		printf(
 			DELIMS_LINE\
-			" [1].æ˜¾ç¤ºç¼–å·:%s\n"\
-			" [2].å•é¡µæ˜¾ç¤ºä¿¡æ¯\n"\
-			" [3].åˆ†é¡µæ˜¾ç¤ºä¿¡æ¯\n"\
-			" [4].è·³è½¬åˆ°é«˜çº§åŠŸèƒ½\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"
+			" [1].ÏÔÊ¾±àºÅ:%s\n"\
+			" [2].µ¥Ò³ÏÔÊ¾ĞÅÏ¢\n"\
+			" [3].·ÖÒ³ÏÔÊ¾ĞÅÏ¢\n"\
+			" [4].Ìø×ªµ½¸ß¼¶¹¦ÄÜ\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"
 			DELIMS_LINE,
-			ShowNumber ? "æ˜¯" : "å¦"
+			ShowNumber ? "ÊÇ" : "·ñ"
 		);
 		switch (Event_Input())
 		{
@@ -570,11 +571,11 @@ void SubMenu_Display()
 			{
 				if (IndexListHeadSet&&TitleListHeadSet)
 					if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], ShowNumber))
-						printf("æ˜¾ç¤ºä¿¡æ¯é”™è¯¯\n");
+						printf("ÏÔÊ¾ĞÅÏ¢´íÎó\n");
 			}
 			else
 			{
-				printf("é¢„æµ‹å°†è¦è¾“å‡ºçš„ç»“æœæ•°é‡å¤ªå¤§,æ˜¯å¦ä½¿ç”¨åˆ†é¡µæ˜¾ç¤ºç»“æœ?ä¸ä½¿ç”¨åˆ†é¡µæ˜¾ç¤ºè¯·è¾“å…¥N,ä½¿ç”¨åˆ†é¡µæ˜¾ç¤ºè¯·è¾“å…¥ä»»æ„å­—ç¬¦\n");
+				printf("Ô¤²â½«ÒªÊä³öµÄ½á¹ûÊıÁ¿Ì«´ó,ÊÇ·ñÊ¹ÓÃ·ÖÒ³ÏÔÊ¾½á¹û?²»Ê¹ÓÃ·ÖÒ³ÏÔÊ¾ÇëÊäÈëN,Ê¹ÓÃ·ÖÒ³ÏÔÊ¾ÇëÊäÈëÈÎÒâ×Ö·û\n");
 				getchar();
 				scanf("%c", &temp);
 				switch (temp)
@@ -584,25 +585,25 @@ void SubMenu_Display()
 					if (ChartHead&&ChartHead[CurrentChartIndex]) {
 						if (IndexListHeadSet&&TitleListHeadSet) {
 							if (Display_Chart(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], ShowNumber))
-								printf("æ˜¾ç¤ºä¿¡æ¯é”™è¯¯\n");
+								printf("ÏÔÊ¾ĞÅÏ¢´íÎó\n");
 						}
 						else
-							printf("Listæ²¡æœ‰åˆå§‹åŒ–\n");
+							printf("ListÃ»ÓĞ³õÊ¼»¯\n");
 					}
 					else
-						printf("è¯·å…ˆè¯»å–ä¿¡æ¯\n");
+						printf("ÇëÏÈ¶ÁÈ¡ĞÅÏ¢\n");
 				default:
 					ShowPageList = 1;
 					if (ChartHead&&ChartHead[CurrentChartIndex]) {
 						if (IndexListHeadSet&&TitleListHeadSet) {
 							if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], ShowNumber, SIZE_PAGE, CurrentPageIndex))
-								printf("æ˜¾ç¤ºä¿¡æ¯é”™è¯¯\n");
+								printf("ÏÔÊ¾ĞÅÏ¢´íÎó\n");
 						}
 						else
-							printf("Listæ²¡æœ‰åˆå§‹åŒ–\n");
+							printf("ListÃ»ÓĞ³õÊ¼»¯\n");
 					}
 					else
-						printf("è¯·å…ˆè¯»å–ä¿¡æ¯\n");
+						printf("ÇëÏÈ¶ÁÈ¡ĞÅÏ¢\n");
 				}
 			}
 			GETCH();
@@ -612,7 +613,7 @@ void SubMenu_Display()
 			if (ChartHead&&ChartHead[CurrentChartIndex] && IndexListHeadSet&&TitleListHeadSet)
 			{
 				if (Display_Page(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex], DISPLAY_HIDENUMBER, SIZE_PAGE, CurrentPageIndex))
-					printf("æ˜¾ç¤ºä¿¡æ¯é”™è¯¯\n");
+					printf("ÏÔÊ¾ĞÅÏ¢´íÎó\n");
 			}
 			GETCH();
 			break;
@@ -625,7 +626,7 @@ void SubMenu_Display()
 	}
 }
 
-//6ä¿å­˜å­¦ç”Ÿä¿¡æ¯
+//6±£´æÑ§ÉúĞÅÏ¢
 void SubMenu_SaveToFile()
 {
 	void Sub_Save1();
@@ -641,19 +642,19 @@ void SubMenu_SaveToFile()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    ä¿å­˜ä¿¡æ¯\n"
+			"                    ±£´æĞÅÏ¢\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].ä¿å­˜å…¨éƒ¨æ•°æ®åˆ°æ–‡æœ¬æ–‡ä»¶\n"\
-			" [2].ä¿å­˜éƒ¨åˆ†æ•°æ®åˆ°æ–‡æœ¬æ–‡ä»¶\n"\
-			" [3].ä¿å­˜å…¨éƒ¨æ•°æ®åˆ°äºŒè¿›åˆ¶æ–‡ä»¶\n"\
-			" [4].ä¿å­˜éƒ¨åˆ†æ•°æ®åˆ°äºŒè¿›åˆ¶æ–‡ä»¶\n"\
-			" [5].å¯¼å‡ºæ•°æ®åˆ°*.txt(è‡ªåŠ¨å¯¹é½)\n"\
-			" [6].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸»èœå•\n"\
+			" [1].±£´æÈ«²¿Êı¾İµ½ÎÄ±¾ÎÄ¼ş\n"\
+			" [2].±£´æ²¿·ÖÊı¾İµ½ÎÄ±¾ÎÄ¼ş\n"\
+			" [3].±£´æÈ«²¿Êı¾İµ½¶ş½øÖÆÎÄ¼ş\n"\
+			" [4].±£´æ²¿·ÖÊı¾İµ½¶ş½øÖÆÎÄ¼ş\n"\
+			" [5].µ¼³öÊı¾İµ½*.txt(×Ô¶¯¶ÔÆë)\n"\
+			" [6].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -693,48 +694,48 @@ void Sub_Save1()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    ä¿å­˜å½“å‰è¡¨çš„å…¨éƒ¨ä¿¡æ¯åˆ°æ–‡æœ¬æ–‡ä»¶\n"
+			"                    ±£´æµ±Ç°±íµÄÈ«²¿ĞÅÏ¢µ½ÎÄ±¾ÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].å‚æ•°æ–‡ä»¶çš„å­˜å‚¨ä½ç½®:%s\n"\
-			" [2].æ•°æ®æ–‡ä»¶çš„å­˜å‚¨ä½ç½®:%s\n"\
+			" [1].²ÎÊıÎÄ¼şµÄ´æ´¢Î»ÖÃ:%s\n"\
+			" [2].Êı¾İÎÄ¼şµÄ´æ´¢Î»ÖÃ:%s\n"\
 			, ParamFilePath, DataFilePath);
 		printf(
 			DELIMS_LINE\
-			" [3].ä¿å­˜æ•°æ®åˆ°æ–‡æœ¬æ–‡ä»¶\n"\
-			" [4].æŸ¥çœ‹ä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸»èœå•\n"
+			" [3].±£´æÊı¾İµ½ÎÄ±¾ÎÄ¼ş\n"\
+			" [4].²é¿´ĞÅÏ¢\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("è¯·è¾“å…¥å‚æ•°æ–‡ä»¶çš„å­˜å‚¨è·¯å¾„:\n");
+			printf("ÇëÊäÈë²ÎÊıÎÄ¼şµÄ´æ´¢Â·¾¶:\n");
 			getchar();
 			fgets(ParamFilePath, 512, stdin);
 			ParamFilePath[strlen(ParamFilePath) - 1] = 0;
 			break;
 		case 2:
-			printf("è¯·è¾“å…¥æ•°æ®æ–‡ä»¶çš„å­˜å‚¨è·¯å¾„:\n");
+			printf("ÇëÊäÈëÊı¾İÎÄ¼şµÄ´æ´¢Â·¾¶:\n");
 			getchar();
 			fgets(DataFilePath, 512, stdin);
 			DataFilePath[strlen(DataFilePath) - 1] = 0;
 			break;
 		case 3:
-			//å¼€å§‹è¾“å‡º
+			//¿ªÊ¼Êä³ö
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0) {
 				if (!WriteToTwoFile_Chart(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex])) {
-					printf("ä¿å­˜åˆ°æ–‡ä»¶æˆåŠŸ\n");
+					printf("±£´æµ½ÎÄ¼ş³É¹¦\n");
 					WriteConfig3(CONFIGFILEPATH3, ParamFilePath, DataFilePath);
 				}
 				else
-					printf("ä¿å­˜åˆ°æ–‡ä»¶å¤±è´¥\n");
+					printf("±£´æµ½ÎÄ¼şÊ§°Ü\n");
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æ–‡ä»¶\n");
+				printf("ÇëÏÈ¶ÁÈ¡ÎÄ¼ş\n");
 			}
 			GETCH();
 			break;
@@ -758,38 +759,38 @@ void Sub_Save2()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    ä¿å­˜å½“å‰è¡¨çš„éƒ¨åˆ†ä¿¡æ¯åˆ°æ–‡æœ¬æ–‡ä»¶\n"
+			"                    ±£´æµ±Ç°±íµÄ²¿·ÖĞÅÏ¢µ½ÎÄ±¾ÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].å‚æ•°æ–‡ä»¶çš„å­˜å‚¨ä½ç½®:%s\n"\
-			" [2].æ•°æ®æ–‡ä»¶çš„å­˜å‚¨ä½ç½®:%s\n"\
+			" [1].²ÎÊıÎÄ¼şµÄ´æ´¢Î»ÖÃ:%s\n"\
+			" [2].Êı¾İÎÄ¼şµÄ´æ´¢Î»ÖÃ:%s\n"\
 			, ParamFilePath, DataFilePath);
 		printf(
 			DELIMS_LINE\
-			" [3].ä¿å­˜æ•°æ®åˆ°æ–‡æœ¬æ–‡ä»¶\n"\
-			" [4].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸»èœå•\n"
+			" [3].±£´æÊı¾İµ½ÎÄ±¾ÎÄ¼ş\n"\
+			" [4].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("è¯·è¾“å…¥å‚æ•°æ–‡ä»¶çš„å­˜å‚¨è·¯å¾„:\n");
+			printf("ÇëÊäÈë²ÎÊıÎÄ¼şµÄ´æ´¢Â·¾¶:\n");
 			getchar();
 			fgets(ParamFilePath, 512, stdin);
 			ParamFilePath[strlen(ParamFilePath) - 1] = 0;
 			break;
 		case 2:
-			printf("è¯·è¾“å…¥æ•°æ®æ–‡ä»¶çš„å­˜å‚¨è·¯å¾„:\n");
+			printf("ÇëÊäÈëÊı¾İÎÄ¼şµÄ´æ´¢Â·¾¶:\n");
 			getchar();
 			fgets(DataFilePath, 512, stdin);
 			DataFilePath[strlen(DataFilePath) - 1] = 0;
 			break;
 		case 3:
-			//å¼€å§‹è¾“å‡º
+			//¿ªÊ¼Êä³ö
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
 			{
 				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
@@ -803,15 +804,15 @@ void Sub_Save2()
 				if (!WriteToTwoFileByList(ParamFilePath, DataFilePath, ChartHead[CurrentChartIndex],
 					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
 				{
-					printf("ä¿å­˜åˆ°æ–‡ä»¶æˆåŠŸ\n");
+					printf("±£´æµ½ÎÄ¼ş³É¹¦\n");
 					WriteConfig3(CONFIGFILEPATH3, ParamFilePath, DataFilePath);
 				}
 				else {
-					printf("ä¿å­˜åˆ°æ–‡ä»¶å¤±è´¥\n");
+					printf("±£´æµ½ÎÄ¼şÊ§°Ü\n");
 				}
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æ–‡ä»¶\n");
+				printf("ÇëÏÈ¶ÁÈ¡ÎÄ¼ş\n");
 			}
 			GETCH();
 			break;
@@ -835,45 +836,45 @@ void Sub_Save3()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    ä¿å­˜å½“å‰è¡¨çš„å…¨éƒ¨ä¿¡æ¯åˆ°äºŒè¿›åˆ¶æ–‡ä»¶\n"
+			"                    ±£´æµ±Ç°±íµÄÈ«²¿ĞÅÏ¢µ½¶ş½øÖÆÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].äºŒè¿›åˆ¶æ–‡ä»¶çš„å­˜å‚¨ä½ç½®:%s\n"\
+			" [1].¶ş½øÖÆÎÄ¼şµÄ´æ´¢Î»ÖÃ:%s\n"\
 			, FilePath);
 		printf(
 			DELIMS_LINE\
-			" [2].ä¿å­˜æ•°æ®åˆ°äºŒè¿›åˆ¶æ–‡ä»¶æ–‡ä»¶\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸»èœå•\n"
+			" [2].±£´æÊı¾İµ½¶ş½øÖÆÎÄ¼şÎÄ¼ş\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("è¯·è¾“å…¥äºŒè¿›åˆ¶æ–‡ä»¶çš„å­˜å‚¨ä½ç½®:\n");
+			printf("ÇëÊäÈë¶ş½øÖÆÎÄ¼şµÄ´æ´¢Î»ÖÃ:\n");
 			getchar();
 			fgets(FilePath, 512, stdin);
 			FilePath[strlen(FilePath) - 1] = 0;
 			break;
 
 		case 2:
-			//å¼€å§‹è¾“å‡º
-			printf("è¯·è¾“å…¥åŠ å¯†çš„å¯†ç (è¯»å–æ—¶éœ€è¦æ­¤å¯†ç ,æ— æ­¤å¯†ç æ— æ³•è¯»å–)\n");
+			//¿ªÊ¼Êä³ö
+			printf("ÇëÊäÈë¼ÓÃÜµÄÃÜÂë(¶ÁÈ¡Ê±ĞèÒª´ËÃÜÂë,ÎŞ´ËÃÜÂëÎŞ·¨¶ÁÈ¡)\n");
 			//scanf("%s", PassWord);
 			InputPassWord(PassWord, 32);
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0 && IndexListHeadSet&&TitleListHeadSet) {
 				if (!WriteToBinFileByList(FilePath, PassWord, ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex])) {
 					WriteConfig2(CONFIGFILEPATH4, FilePath);
-					printf("ä¿å­˜åˆ°æ–‡ä»¶æˆåŠŸ\n");
+					printf("±£´æµ½ÎÄ¼ş³É¹¦\n");
 				}
 				else
-					printf("ä¿å­˜åˆ°æ–‡ä»¶å¤±è´¥\n");
+					printf("±£´æµ½ÎÄ¼şÊ§°Ü\n");
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æ–‡ä»¶\n");
+				printf("ÇëÏÈ¶ÁÈ¡ÎÄ¼ş\n");
 			}
 			GETCH();
 			break;
@@ -897,32 +898,32 @@ void Sub_Save4()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    ä¿å­˜å½“å‰è¡¨çš„éƒ¨åˆ†ä¿¡æ¯åˆ°äºŒè¿›åˆ¶æ–‡ä»¶\n"
+			"                    ±£´æµ±Ç°±íµÄ²¿·ÖĞÅÏ¢µ½¶ş½øÖÆÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].äºŒè¿›åˆ¶æ–‡ä»¶çš„å­˜å‚¨ä½ç½®:%s\n"\
+			" [1].¶ş½øÖÆÎÄ¼şµÄ´æ´¢Î»ÖÃ:%s\n"\
 			, FilePath);
 		printf(
 			DELIMS_LINE\
-			" [2].ä¿å­˜æ•°æ®åˆ°äºŒè¿›åˆ¶æ–‡ä»¶æ–‡ä»¶\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸»èœå•\n"
+			" [2].±£´æÊı¾İµ½¶ş½øÖÆÎÄ¼şÎÄ¼ş\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("è¯·è¾“å…¥å‚æ•°æ–‡ä»¶çš„å­˜å‚¨è·¯å¾„:\n");
+			printf("ÇëÊäÈë²ÎÊıÎÄ¼şµÄ´æ´¢Â·¾¶:\n");
 			getchar();
 			fgets(FilePath, 512, stdin);
 			FilePath[strlen(FilePath) - 1] = 0;
 			break;
 		case 2:
-			//å¼€å§‹è¾“å‡º
-			printf("è¯·è¾“å…¥åŠ å¯†çš„å¯†ç (è¯»å–æ—¶éœ€è¦æ­¤å¯†ç ,æ— æ­¤å¯†ç æ— æ³•è¯»å–)\n");
+			//¿ªÊ¼Êä³ö
+			printf("ÇëÊäÈë¼ÓÃÜµÄÃÜÂë(¶ÁÈ¡Ê±ĞèÒª´ËÃÜÂë,ÎŞ´ËÃÜÂëÎŞ·¨¶ÁÈ¡)\n");
 			//scanf("%s", PassWord);
 			InputPassWord(PassWord, 32);
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
@@ -939,14 +940,14 @@ void Sub_Save4()
 					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
 				{
 					WriteConfig2(CONFIGFILEPATH4, FilePath);
-					printf("ä¿å­˜åˆ°æ–‡ä»¶æˆåŠŸ\n");
+					printf("±£´æµ½ÎÄ¼ş³É¹¦\n");
 				}
 				else {
-					printf("ä¿å­˜åˆ°æ–‡ä»¶å¤±è´¥\n");
+					printf("±£´æµ½ÎÄ¼şÊ§°Ü\n");
 				}
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æ–‡ä»¶\n");
+				printf("ÇëÏÈ¶ÁÈ¡ÎÄ¼ş\n");
 			}
 			GETCH();
 			break;
@@ -969,31 +970,31 @@ void Sub_Save5()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    ä¿å­˜å½“å‰è¡¨çš„éƒ¨åˆ†ä¿¡æ¯åˆ°æ–‡æœ¬æ–‡ä»¶\n"
+			"                    ±£´æµ±Ç°±íµÄ²¿·ÖĞÅÏ¢µ½ÎÄ±¾ÎÄ¼ş\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].txtæ–‡ä»¶çš„å­˜å‚¨ä½ç½®:%s\n"\
+			" [1].txtÎÄ¼şµÄ´æ´¢Î»ÖÃ:%s\n"\
 			, FilePath);
 		printf(
 			DELIMS_LINE\
-			" [2].ä¿å­˜æ•°æ®åˆ°æ–‡æœ¬æ–‡ä»¶\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸»èœå•\n"
+			" [2].±£´æÊı¾İµ½ÎÄ±¾ÎÄ¼ş\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"
 			DELIMS_LINE
 		);
 		switch (Event_Input())
 		{
 		case 1:
-			printf("è¯·è¾“å…¥å‚æ•°æ–‡ä»¶çš„å­˜å‚¨è·¯å¾„:\n");
+			printf("ÇëÊäÈë²ÎÊıÎÄ¼şµÄ´æ´¢Â·¾¶:\n");
 			getchar();
 			fgets(FilePath, 512, stdin);
 			FilePath[strlen(FilePath) - 1] = 0;
 			break;
 		case 2:
-			//å¼€å§‹è¾“å‡º
+			//¿ªÊ¼Êä³ö
 			if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0)
 			{
 				if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
@@ -1007,15 +1008,15 @@ void Sub_Save5()
 				if (!ExportToTxt(FilePath, ChartHead[CurrentChartIndex],
 					IndexListHeadSet[CurrentIndexListIndex], TitleListHeadSet[CurrentTitleListIndex]))
 				{
-					printf("ä¿å­˜åˆ°æ–‡ä»¶æˆåŠŸ\n");
+					printf("±£´æµ½ÎÄ¼ş³É¹¦\n");
 					WriteConfig2(CONFIGFILEPATH5, FilePath);
 				}
 				else {
-					printf("ä¿å­˜åˆ°æ–‡ä»¶å¤±è´¥\n");
+					printf("±£´æµ½ÎÄ¼şÊ§°Ü\n");
 				}
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æ–‡ä»¶\n");
+				printf("ÇëÏÈ¶ÁÈ¡ÎÄ¼ş\n");
 			}
 			GETCH();
 			break;
@@ -1028,7 +1029,7 @@ void Sub_Save5()
 	}
 }
 
-//7é«˜çº§åŠŸèƒ½
+//7¸ß¼¶¹¦ÄÜ
 void SubMenu_Advantage()
 {
 	void Sub_TitleList();
@@ -1042,17 +1043,17 @@ void SubMenu_Advantage()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    é«˜çº§åŠŸèƒ½\n"
+			"                    ¸ß¼¶¹¦ÄÜ\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].åˆ—é…ç½®è®¾ç½®\n"\
-			" [2].åå•ç¼–è¾‘\n"\
-			" [3].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [4].è®¡ç®—å¹³å‡æˆç»©\n"\
-			" [0].è¿”å›ä¸»èœå•\n"\
+			" [1].ÁĞÅäÖÃÉèÖÃ\n"\
+			" [2].Ãûµ¥±à¼­\n"\
+			" [3].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [4].¼ÆËãÆ½¾ù³É¼¨\n"\
+			" [0].·µ»ØÖ÷²Ëµ¥\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -1085,17 +1086,17 @@ void Sub_TitleList()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    åˆ—é…ç½®è®¾ç½®\n"
+			"                    ÁĞÅäÖÃÉèÖÃ\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].åˆ—é…ç½®ç¼–è¾‘\n"\
-			" [2].åˆå§‹åŒ–åˆ—é…ç½®\n"\
-			" [3].å¯¹å½“å‰åˆ—é…ç½®æ”¹å\n"\
-			" [4].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"\
+			" [1].ÁĞÅäÖÃ±à¼­\n"\
+			" [2].³õÊ¼»¯ÁĞÅäÖÃ\n"\
+			" [3].¶Ôµ±Ç°ÁĞÅäÖÃ¸ÄÃû\n"\
+			" [4].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -1105,16 +1106,16 @@ void Sub_TitleList()
 				printf(DELIMS_LINE);
 				Menu_DisplaySubMenu_Display();
 				printf(DELIMS_LINE);
-				printf("è¯·è¾“å…¥è¦æ˜¾ç¤ºçš„æ ‡é¢˜çš„åºå·æˆ–åºå·åŒºé—´,å„ä¸ªåºå·(åŒºé—´)ä¹‹é—´ç”¨ç©ºæ ¼éš”å¼€,ç”¨å›è½¦ç»“æŸè¾“å…¥:\n");
+				printf("ÇëÊäÈëÒªÏÔÊ¾µÄ±êÌâµÄĞòºÅ»òĞòºÅÇø¼ä,¸÷¸öĞòºÅ(Çø¼ä)Ö®¼äÓÃ¿Õ¸ñ¸ô¿ª,ÓÃ»Ø³µ½áÊøÊäÈë:\n");
 				getchar();
 				fgets(tempChar, 100, stdin);
 				if (GetListFromString(tempChar, ChartHead[CurrentChartIndex]->TitleCount, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount))
-					printf("ç¼–è¾‘å¤±è´¥\n");
+					printf("±à¼­Ê§°Ü\n");
 				else
-					printf("ç¼–è¾‘æˆåŠŸ\n");
+					printf("±à¼­³É¹¦\n");
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æˆ–åˆ›å»ºè¡¨\n");
+				printf("ÇëÏÈ¶ÁÈ¡»ò´´½¨±í\n");
 			}
 			GETCH();
 			break;
@@ -1124,13 +1125,13 @@ void Sub_TitleList()
 				if (TitleListHeadSet&&TitleListHeadSet[CurrentTitleListIndex])
 				{
 					if (FillList(TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount))
-						printf("åˆå§‹åŒ–å¤±è´¥\n");
+						printf("³õÊ¼»¯Ê§°Ü\n");
 					else
-						printf("åˆå§‹åŒ–æˆåŠŸ\n");
+						printf("³õÊ¼»¯³É¹¦\n");
 				}
 			}
 			else
-				printf("è¯·å…ˆå¯¹è¡¨è¿›è¡Œåˆå§‹åŒ–\n");
+				printf("ÇëÏÈ¶Ô±í½øĞĞ³õÊ¼»¯\n");
 			GETCH();
 			break;
 		case 3:
@@ -1138,11 +1139,11 @@ void Sub_TitleList()
 			{
 				if (TitleListHeadSet[CurrentTitleListIndex]->ListName) {
 					scanf("%s", TitleListHeadSet[CurrentTitleListIndex]->ListName);
-					printf("ä¿®æ”¹æˆåŠŸ\n");
+					printf("ĞŞ¸Ä³É¹¦\n");
 				}
-				else printf("è¯·å…ˆå¯¹åˆ—é…ç½®è¿›è¡Œåˆå§‹åŒ–\n");
+				else printf("ÇëÏÈ¶ÔÁĞÅäÖÃ½øĞĞ³õÊ¼»¯\n");
 			}
-			else printf("è¯·å…ˆå¯¹åˆ—é…ç½®è¿›è¡Œåˆå§‹åŒ–\n");
+			else printf("ÇëÏÈ¶ÔÁĞÅäÖÃ½øĞĞ³õÊ¼»¯\n");
 			GETCH();
 			break;
 		case 4:
@@ -1165,17 +1166,17 @@ void Sub_IndexList()
 		COMMAND_CLEAR();
 		printf(
 			DELIMS_LINE\
-			"                    åå•ç¼–è¾‘\n"
+			"                    Ãûµ¥±à¼­\n"
 			DELIMS_LINE\
 		);
 		Menu_DisplaySubMenu();
 		printf(
 			DELIMS_LINE\
-			" [1].ä»åå•ä¸­é€‰å–å­¦ç”Ÿ\n"\
-			" [2].åˆå§‹åŒ–å½“å‰é€‰æ‹©çš„åå•\n"\
-			" [3].å¯¹å½“å‰åå•æ”¹å\n"\
-			" [4].æ˜¾ç¤ºä¿¡æ¯\n"\
-			" [0].è¿”å›ä¸Šä¸€çº§\n"\
+			" [1].´ÓÃûµ¥ÖĞÑ¡È¡Ñ§Éú\n"\
+			" [2].³õÊ¼»¯µ±Ç°Ñ¡ÔñµÄÃûµ¥\n"\
+			" [3].¶Ôµ±Ç°Ãûµ¥¸ÄÃû\n"\
+			" [4].ÏÔÊ¾ĞÅÏ¢\n"\
+			" [0].·µ»ØÉÏÒ»¼¶\n"\
 			DELIMS_LINE
 		);
 		switch (Event_Input())
@@ -1183,18 +1184,18 @@ void Sub_IndexList()
 		case 1:
 			if (ChartHead&&ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->UsedLines > 0) {
 				printf(
-					"è¯·è¾“å…¥è¦æ˜¾ç¤ºçš„å­¦ç”Ÿçš„ç¼–å·æˆ–ç¼–å·åŒºé—´,å„ä¸ªç¼–å·(åŒºé—´)ä¹‹é—´ç”¨ç©ºæ ¼éš”å¼€,ç”¨å›è½¦ç»“æŸè¾“å…¥:\n"
-					"Tip:ç¼–å·å¯ä»¥é€šè¿‡æ˜¾ç¤ºä¿¡æ¯åŠŸèƒ½,æ‰“å¼€æ˜¾ç¤ºç¼–å·å¼€å…³è¿›è¡Œè·å–\n"
+					"ÇëÊäÈëÒªÏÔÊ¾µÄÑ§ÉúµÄ±àºÅ»ò±àºÅÇø¼ä,¸÷¸ö±àºÅ(Çø¼ä)Ö®¼äÓÃ¿Õ¸ñ¸ô¿ª,ÓÃ»Ø³µ½áÊøÊäÈë:\n"
+					"Tip:±àºÅ¿ÉÒÔÍ¨¹ıÏÔÊ¾ĞÅÏ¢¹¦ÄÜ,´ò¿ªÏÔÊ¾±àºÅ¿ª¹Ø½øĞĞ»ñÈ¡\n"
 				);
 				getchar();
 				fgets(tempChar, 512, stdin);
 				if (GetListFromStringViaList(tempChar, ChartHead[CurrentChartIndex]->UsedLines, IndexListHeadSet[WhichListSaveTo()], IndexListHeadSet[CurrentIndexListIndex]))
-					printf("ç¼–è¾‘å¤±è´¥\n");
+					printf("±à¼­Ê§°Ü\n");
 				else
-					printf("ç¼–è¾‘æˆåŠŸ\n");
+					printf("±à¼­³É¹¦\n");
 			}
 			else {
-				printf("è¯·å…ˆè¯»å–æˆ–åˆ›å»ºè¡¨\n");
+				printf("ÇëÏÈ¶ÁÈ¡»ò´´½¨±í\n");
 			}
 			GETCH();
 			break;
@@ -1204,13 +1205,13 @@ void Sub_IndexList()
 				if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex])
 				{
 					if (FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines))
-						printf("åˆå§‹åŒ–å¤±è´¥\n");
+						printf("³õÊ¼»¯Ê§°Ü\n");
 					else
-						printf("åˆå§‹åŒ–æˆåŠŸ\n");
+						printf("³õÊ¼»¯³É¹¦\n");
 				}
 			}
 			else
-				printf("è¯·å…ˆå¯¹è¡¨è¿›è¡Œåˆå§‹åŒ–\n");
+				printf("ÇëÏÈ¶Ô±í½øĞĞ³õÊ¼»¯\n");
 			GETCH();
 			break;
 		case 3:
@@ -1218,11 +1219,11 @@ void Sub_IndexList()
 			{
 				if (IndexListHeadSet[CurrentIndexListIndex]->ListName) {
 					scanf("%s", IndexListHeadSet[CurrentIndexListIndex]->ListName);
-					printf("æ”¹åæˆåŠŸ\n");
+					printf("¸ÄÃû³É¹¦\n");
 				}
-				else printf("åå•æœªåˆå§‹åŒ–\n");
+				else printf("Ãûµ¥Î´³õÊ¼»¯\n");
 			}
-			else printf("è¯·å…ˆå¯¹å½“å‰åå•è¿›è¡Œåˆå§‹åŒ–\n");
+			else printf("ÇëÏÈ¶Ôµ±Ç°Ãûµ¥½øĞĞ³õÊ¼»¯\n");
 			GETCH();
 			break;
 		case 4:
@@ -1234,7 +1235,7 @@ void Sub_IndexList()
 	}
 }
 
-//éšæœºæ”¹å˜é¢œè‰²
+//Ëæ»ú¸Ä±äÑÕÉ«
 void ChangeColor()
 {
 	srand((int)time(NULL));

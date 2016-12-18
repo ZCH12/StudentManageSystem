@@ -1,4 +1,4 @@
-ï»¿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,53 +6,53 @@
 #include "DataBase.h"
 
 /*
-æ•°æ®åº“åº“
+Êı¾İ¿â¿â
 Create By ZCR
 2016-12-10
 
 */
 
 /*
-åœ¨å­˜æ¡£æ–‡ä»¶ä¸­,
-ç¬¬ä¸€è¡Œç¬¬ä¸€ä¸ªæ•°å­—ä»£è¡¨å­¦ç”Ÿçš„äººæ•°n,ç¬¬äºŒä¸ªæ•°å­—ä»£è¡¨æ¯ä¸ªäººçš„å±æ€§çš„ä¸ªæ•°unit
-ç¬¬äºŒè¡Œæœ‰unitç»„æ•°æ®,æ¯ç»„æ•°æ®ç”±2ä¸ªæ•°æ®ç»„æˆ,åˆ†åˆ«æ˜¯ä¸€ä¸ªå­—ç¬¦ä¸²(è¡¨å¤´)å’Œä¸€ä¸ªæ•°å­—(ä»£è¡¨è¿™ä¸ªå•å…ƒçš„é™åˆ¶é•¿åº¦)
-æ¥ä¸‹æ¥æœ‰nç»„æ•°æ®,ä¸€ç›´åˆ°æ–‡ä»¶ç»“å°¾,æ¯ç»„æ•°æ®åˆ†åˆ«æœ‰unitä¸ªæ•°æ®,ä»–ä»¬çš„å€¼å°±æ˜¯è¡¨å¤´å®šä¹‰çš„å€¼
-æ³¨æ„è¡¨å¤´çš„é•¿åº¦é™åˆ¶ä¸º31ä¸ªè‹±æ–‡å­—ç¬¦
+ÔÚ´æµµÎÄ¼şÖĞ,
+µÚÒ»ĞĞµÚÒ»¸öÊı×Ö´ú±íÑ§ÉúµÄÈËÊın,µÚ¶ş¸öÊı×Ö´ú±íÃ¿¸öÈËµÄÊôĞÔµÄ¸öÊıunit
+µÚ¶şĞĞÓĞunit×éÊı¾İ,Ã¿×éÊı¾İÓÉ2¸öÊı¾İ×é³É,·Ö±ğÊÇÒ»¸ö×Ö·û´®(±íÍ·)ºÍÒ»¸öÊı×Ö(´ú±íÕâ¸öµ¥ÔªµÄÏŞÖÆ³¤¶È)
+½ÓÏÂÀ´ÓĞn×éÊı¾İ,Ò»Ö±µ½ÎÄ¼ş½áÎ²,Ã¿×éÊı¾İ·Ö±ğÓĞunit¸öÊı¾İ,ËûÃÇµÄÖµ¾ÍÊÇ±íÍ·¶¨ÒåµÄÖµ
+×¢Òâ±íÍ·µÄ³¤¶ÈÏŞÖÆÎª31¸öÓ¢ÎÄ×Ö·û
 */
-//ç”Ÿæˆçš„æ–‡ä»¶çš„æ ‡è¯†å¤´
+//Éú³ÉµÄÎÄ¼şµÄ±êÊ¶Í·
 #ifndef BIN_HEAD
 #define BIN_HEAD "DataBaseChartBIN"
 #endif
 
-//å…¨å±€å˜é‡
-Chart ** ChartHead = NULL;				//å·²åˆ†é…çš„è¡¨çš„ä¸ªæ•°
-int ChartCount = 0;						//å·²ä½¿ç”¨çš„è¡¨çš„ä¸ªæ•°
-int AlloctedChartCount = 0;				//è¡¨çš„æŒ‡é’ˆæ•°ç»„
+//È«¾Ö±äÁ¿
+Chart ** ChartHead = NULL;				//ÒÑ·ÖÅäµÄ±íµÄ¸öÊı
+int ChartCount = 0;						//ÒÑÊ¹ÓÃµÄ±íµÄ¸öÊı
+int AlloctedChartCount = 0;				//±íµÄÖ¸ÕëÊı×é
 
-IndexList **IndexListHeadSet = NULL;	//IndexListçš„æŒ‡é’ˆæ•°ç»„
-int IndexListCount = 0;					//å·²ä½¿ç”¨çš„IndexListçš„ä¸ªæ•°
-int AlloctedIndexListCount = 0;			//å·²åˆ†é…çš„IndexListçš„ä¸ªæ•°
+IndexList **IndexListHeadSet = NULL;	//IndexListµÄÖ¸ÕëÊı×é
+int IndexListCount = 0;					//ÒÑÊ¹ÓÃµÄIndexListµÄ¸öÊı
+int AlloctedIndexListCount = 0;			//ÒÑ·ÖÅäµÄIndexListµÄ¸öÊı
 
-TitleList **TitleListHeadSet = NULL;	//TitleListçš„æŒ‡é’ˆæ•°ç»„
-int TitleListCount = 0;					//å·²ä½¿ç”¨çš„TitleListçš„ä¸ªæ•°
-int AlloctedTitleListCount = 0;			//å·²åˆ†é…çš„TitleListçš„ä¸ªæ•°
+TitleList **TitleListHeadSet = NULL;	//TitleListµÄÖ¸ÕëÊı×é
+int TitleListCount = 0;					//ÒÑÊ¹ÓÃµÄTitleListµÄ¸öÊı
+int AlloctedTitleListCount = 0;			//ÒÑ·ÖÅäµÄTitleListµÄ¸öÊı
 
 /*
-ä»æ–‡ä»¶è¯»å–æ•°æ®åˆ°æŒ‡å®šè¡¨
-						//ä¸å®‰å…¨,ä¸æ¨èä½¿ç”¨å°±å¥½äº†
-						//å¾…é‡å†™
-FileName è¦è¯»å–çš„æ–‡ä»¶è·¯å¾„
-OperateChart è¦ç”¨æ¥å­˜å‚¨è¯»å…¥çš„æ•°æ®çš„è¡¨
+´ÓÎÄ¼ş¶ÁÈ¡Êı¾İµ½Ö¸¶¨±í
+						//²»°²È«,²»ÍÆ¼öÊ¹ÓÃ¾ÍºÃÁË
+						//´ıÖØĞ´
+FileName Òª¶ÁÈ¡µÄÎÄ¼şÂ·¾¶
+OperateChart ÒªÓÃÀ´´æ´¢¶ÁÈëµÄÊı¾İµÄ±í
 */
 
 ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 {
 	FILE *File;
 	int Count, TitleCount;
-	int a, b;				//å¾ªç¯å˜é‡
-	char temp;				//ç”¨äºæ‰”æ‰æ— ç”¨çš„æ•°æ®
-	char **temp2, ***temp4;	//ç”¨äºæé«˜æ€§èƒ½
-	int *temp3;				//ç”¨äºæé«˜æ€§èƒ½
+	int a, b;				//Ñ­»·±äÁ¿
+	char temp;				//ÓÃÓÚÈÓµôÎŞÓÃµÄÊı¾İ
+	char **temp2, ***temp4;	//ÓÃÓÚÌá¸ßĞÔÄÜ
+	int *temp3;				//ÓÃÓÚÌá¸ßĞÔÄÜ
 
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
@@ -61,7 +61,7 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 	if (!File)
 		return ERR_OPENFILE;
 
-	if (fscanf(File, "%d%d", &Count, &TitleCount) != 2)		//ä»æ–‡ä»¶è¯»å–ä¸¤ä¸ªå‚æ•°,åˆ†åˆ«å¯¹åº”ä¸¤ä¸ª
+	if (fscanf(File, "%d%d", &Count, &TitleCount) != 2)		//´ÓÎÄ¼ş¶ÁÈ¡Á½¸ö²ÎÊı,·Ö±ğ¶ÔÓ¦Á½¸ö
 	{
 		fclose(File);
 		return ERR_NOTSTANDARDFILE;
@@ -69,12 +69,12 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 	if (fgetc(File) != '\n')
 		return ERR_NOTSTANDARDFILE;
 
-	//å¯¹è¡¨è¿›è¡Œåˆå§‹åŒ–
+	//¶Ô±í½øĞĞ³õÊ¼»¯
 	OperateChart->TitleCount = TitleCount;
 	OperateChart->UsedLines = Count;
 	//OperateChart->AllocatedLines = Count;
 
-	//åˆ†é…å†…å­˜
+	//·ÖÅäÄÚ´æ
 	OperateChart->Chart = (Chart_t)malloc(sizeof(ChartPiece_t)*Count);
 	OperateChart->ChartTitle = (ChartPiece_t)malloc(sizeof(ChartPiece_t)*TitleCount);
 	OperateChart->ChartLimits = (int*)malloc(sizeof(int)*TitleCount);
@@ -109,7 +109,7 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 			free(OperateChart->Chart);
 			return ERR_MEMORYNOTENOUGH;
 		}
-		//å†™å…¥æ ‡é¢˜æ–‡å­—
+		//Ğ´Èë±êÌâÎÄ×Ö
 		if (fscanf(File, "%s%c%d", *temp2, &temp, temp3) != 3)
 		{
 			fclose(File);
@@ -129,7 +129,7 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 	if (fgetc(File) != '\n')
 		return ERR_NOTSTANDARDFILE;
 
-	//è¯»å–æ•°æ®å…¥è¡¨
+	//¶ÁÈ¡Êı¾İÈë±í
 	temp4 = OperateChart->Chart;
 	temp3 = OperateChart->ChartLimits;
 	for (a = 0; a < Count; a++) {
@@ -153,18 +153,18 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 			if (!temp4[0][b])
 			{
 				fclose(File);
-				//å…ˆé‡Šæ”¾åªåˆ†é…äº†ä¸€åŠçš„æ•°ç»„
+				//ÏÈÊÍ·ÅÖ»·ÖÅäÁËÒ»°ëµÄÊı×é
 				for (b--; b >= 0; b--)
 					free(temp4[0][b]);
 
-				//å†é‡Šæ”¾å‰aè½®å·²åˆ†é…çš„æ•°ç»„
+				//ÔÙÊÍ·ÅÇ°aÂÖÒÑ·ÖÅäµÄÊı×é
 				for (temp4--, a--; a >= 0; a--)
 				{
 					for (b = 0; b < TitleCount; b++)
 						free(temp4[0][b]);
 					temp4--;
 				}
-				//é‡Šæ”¾è¡¨å¤´
+				//ÊÍ·Å±íÍ·
 				temp2 = OperateChart->ChartTitle;
 				for (a = 0; a < TitleCount; a++)
 				{
@@ -186,7 +186,7 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 						free((*temp4)[b]);
 					temp4--;
 				}
-				//é‡Šæ”¾è¡¨å¤´
+				//ÊÍ·Å±íÍ·
 				temp2 = OperateChart->ChartTitle;
 				for (a = 0; a < TitleCount; a++)
 				{
@@ -209,27 +209,27 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 }
 
 /*
-ä»ä¸¤ä¸ªæ–‡ä»¶ä¸­è¯»å–ä¿¡æ¯
-ParamFileName   è¡¨å¤´ä¸é…ç½®æ–‡ä»¶çš„è·¯å¾„
-DataFileName    è¡¨ä¸­æ•°æ®çš„è·¯å¾„
-OperateChart    è¦ç”¨æ¥å­˜å‚¨è¯»å…¥çš„æ•°æ®çš„è¡¨
+´ÓÁ½¸öÎÄ¼şÖĞ¶ÁÈ¡ĞÅÏ¢
+ParamFileName   ±íÍ·ÓëÅäÖÃÎÄ¼şµÄÂ·¾¶
+DataFileName    ±íÖĞÊı¾İµÄÂ·¾¶
+OperateChart    ÒªÓÃÀ´´æ´¢¶ÁÈëµÄÊı¾İµÄ±í
 */
 ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Chart *OperateChart)
 {
-	FILE *File;		//å½“å‰æ­£åœ¨è¯»å–çš„æ–‡ä»¶
+	FILE *File;		//µ±Ç°ÕıÔÚ¶ÁÈ¡µÄÎÄ¼ş
 	const char *Delimer = " \t\n\r";
 
-	//è¯»å–æ“ä½œä½¿ç”¨çš„å˜é‡
-	char* Line;		//å­˜å‚¨ä¸€è¡Œçš„ä¿¡æ¯
-	char* Piece;	//å­˜å‚¨ä¸€ä¸ªä¿¡æ¯ç‚¹
+	//¶ÁÈ¡²Ù×÷Ê¹ÓÃµÄ±äÁ¿
+	char* Line;		//´æ´¢Ò»ĞĞµÄĞÅÏ¢
+	char* Piece;	//´æ´¢Ò»¸öĞÅÏ¢µã
 	int a, b, c;
 
-	//è¡¨ä¿¡æ¯
+	//±íĞÅÏ¢
 	int LineCount;
 	int TitleCount;
 	int LineCharCount;
 
-	//å­˜å‚¨æ“ä½œä½¿ç”¨çš„å˜é‡
+	//´æ´¢²Ù×÷Ê¹ÓÃµÄ±äÁ¿
 	ChartPiece_t tempChartPiece;
 	int* tempChartTitleLimits;
 	Chart_t tempChart;
@@ -240,11 +240,11 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 
 	if (OperateChart->HadInit)
 	{
-		//å·²ç»åˆå§‹åŒ–çš„è¡¨å…ˆé‡Šæ”¾
+		//ÒÑ¾­³õÊ¼»¯µÄ±íÏÈÊÍ·Å
 		FreeChart(OperateChart);
 	}
 
-	//å¼€å§‹è¯»å–è¡¨å‚æ•°æ–‡ä»¶
+	//¿ªÊ¼¶ÁÈ¡±í²ÎÊıÎÄ¼ş
 	File = fopen(ParamFileName, "r");
 	if (!File)
 		return ERR_OPENFILE;
@@ -255,7 +255,7 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 		return ERR_MEMORYNOTENOUGH;
 	}
 
-	//è¯»å–è¡Œæ•°å’Œåˆ—æ•°
+	//¶ÁÈ¡ĞĞÊıºÍÁĞÊı
 	fgets(Line, 20, File);
 	LineCount = atoi(strtok(Line, Delimer));
 	TitleCount = atoi(strtok(NULL, Delimer));
@@ -266,7 +266,7 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 		return ERR_NOTSTANDARDFILE;
 	}
 
-	//ç”³è¯·ä¸€ä¸ªç”¨äºå­˜æ”¾æ ‡é¢˜çš„æ•°ç»„
+	//ÉêÇëÒ»¸öÓÃÓÚ´æ·Å±êÌâµÄÊı×é
 	tempChartPiece = (ChartPiece_t)malloc(sizeof(char*)*TitleCount);
 	tempChartTitleLimits = (int*)malloc(sizeof(int)*TitleCount);
 	if (!tempChartPiece || !tempChartTitleLimits)
@@ -282,9 +282,9 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 	OperateChart->ChartTitle = tempChartPiece;
 
 	free(Line);
-	LineCharCount = 38 * TitleCount;	//è®¡ç®—ä¸‹ä¸€è¡Œçš„æœ€é•¿é•¿åº¦
+	LineCharCount = 38 * TitleCount;	//¼ÆËãÏÂÒ»ĞĞµÄ×î³¤³¤¶È
 	Line = (char*)malloc(sizeof(char) * LineCharCount);
-	fgets(Line, LineCharCount, File);	//è¯»å–ä¸‹ä¸€è¡Œ
+	fgets(Line, LineCharCount, File);	//¶ÁÈ¡ÏÂÒ»ĞĞ
 
 	tempChartPiece[0] = (char*)malloc(sizeof(char) * 32);
 	if (!tempChartPiece[0])
@@ -296,11 +296,11 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 		return ERR_MEMORYNOTENOUGH;
 	}
 
-	//è¯»å–ç¬¬ä¸€ä¸ªæ ‡é¢˜
+	//¶ÁÈ¡µÚÒ»¸ö±êÌâ
 	strcpy(tempChartPiece[0], strtok(Line, Delimer));
 	tempChartTitleLimits[0] = atoi(strtok(NULL, Delimer));
 
-	for (a = 1; a < TitleCount; a++)	//è¯»å–2åˆ°ç¬¬LineCharCountæ ‡é¢˜
+	for (a = 1; a < TitleCount; a++)	//¶ÁÈ¡2µ½µÚLineCharCount±êÌâ
 	{
 		tempChartPiece[a] = (char*)malloc(sizeof(char) * 32);
 		if (!tempChartPiece[a])
@@ -344,8 +344,8 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 	OperateChart->ChartTitle = tempChartPiece;
 	OperateChart->ChartLimits = tempChartTitleLimits;
 
-	//æ ‡é¢˜è¯»å–å®Œæ¯•,å¼€å§‹è¯»å–è¡¨
-	LineCharCount = 0;		//å¼€å§‹è®¡ç®—æ•°æ®è¡Œçš„ä¸€è¡Œçš„æœ€é•¿é•¿åº¦
+	//±êÌâ¶ÁÈ¡Íê±Ï,¿ªÊ¼¶ÁÈ¡±í
+	LineCharCount = 0;		//¿ªÊ¼¼ÆËãÊı¾İĞĞµÄÒ»ĞĞµÄ×î³¤³¤¶È
 	for (a = 0; a < TitleCount; a++)
 		LineCharCount += tempChartTitleLimits[a];
 	LineCharCount += TitleCount;
@@ -397,7 +397,7 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 		}
 		fgets(Line, LineCharCount, File);
 
-		//å†™å…¥ç¬¬ä¸€ä¸ªå€¼
+		//Ğ´ÈëµÚÒ»¸öÖµ
 		tempChart[a][0] = (char*)malloc(sizeof(char)*tempChartTitleLimits[0] + 1);
 		if (!tempChart[a][0])
 		{
@@ -436,7 +436,7 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 		}
 		strcpy(tempChart[a][0], Piece);
 
-		//è¯»å–ç¬¬äºŒåˆ°ç¬¬TitleCountä¸ªå€¼
+		//¶ÁÈ¡µÚ¶şµ½µÚTitleCount¸öÖµ
 		for (b = 1; b < TitleCount; b++)
 		{
 			tempChart[a][b] = (char*)malloc(sizeof(char)*tempChartTitleLimits[b] + 1);
@@ -485,7 +485,7 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 	OperateChart->TitleCount = TitleCount;
 	OperateChart->HadInit = 1;
 
-	//è·å–è¯»å–çš„æ–‡ä»¶çš„åå­—
+	//»ñÈ¡¶ÁÈ¡µÄÎÄ¼şµÄÃû×Ö
 	a = (int)strlen(ParamFileName);
 	b = (int)strlen(DataFileName);
 	Line = (char*)malloc(sizeof(char)*(a + b + 4));
@@ -517,10 +517,10 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 }
 
 /*
-ä»æœ¬ç¨‹åºåˆ›å»ºçš„äºŒè¿›åˆ¶æ–‡ä»¶è¯»å–ä¿¡æ¯
-FileName        äºŒè¿›åˆ¶æ–‡ä»¶çš„è·¯å¾„
-PassWord        åŠ å¯†çš„å¯†ç 
-OperateChart    è¦è¿›è¡Œä¿å­˜çš„è¡¨
+´Ó±¾³ÌĞò´´½¨µÄ¶ş½øÖÆÎÄ¼ş¶ÁÈ¡ĞÅÏ¢
+FileName        ¶ş½øÖÆÎÄ¼şµÄÂ·¾¶
+PassWord        ¼ÓÃÜµÄÃÜÂë
+OperateChart    Òª½øĞĞ±£´æµÄ±í
 */
 ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart)
 {
@@ -650,7 +650,7 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 		}
 	}
 	if (OperateChart->HadInit)
-		FreeChart(OperateChart);//å·²ç»åˆå§‹åŒ–çš„è¡¨å…ˆé‡Šæ”¾
+		FreeChart(OperateChart);//ÒÑ¾­³õÊ¼»¯µÄ±íÏÈÊÍ·Å
 
 
 	OperateChart->Chart = tempChart->Chart;
@@ -665,11 +665,11 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 }
 
 /*
-å°†æ•°æ®å¯¼å‡ºåˆ°Txt(æœ‰æ’ç‰ˆ,é€‚åˆç›´æ¥é˜…è¯»çš„è¾“å‡º)
-FileName        è¦å†™å…¥çš„æ–‡ä»¶å
-OperateChart    è¦å†™å…¥çš„æ•°æ®å­˜æ”¾çš„è¡¨
-WriteLine       æ§åˆ¶è¡¨ä¸­å“ªäº›è¡Œè¦è¿›è¡Œå­˜å‚¨,å¹¶æ§åˆ¶ç€å­˜å‚¨é¡ºåº
-WriteTitle      æ§åˆ¶ç€å“ªäº›åˆ—éœ€è¦è¾“å‡º,å¹¶æ§åˆ¶ç€è¾“å‡ºé¡ºåº
+½«Êı¾İµ¼³öµ½Txt(ÓĞÅÅ°æ,ÊÊºÏÖ±½ÓÔÄ¶ÁµÄÊä³ö)
+FileName        ÒªĞ´ÈëµÄÎÄ¼şÃû
+OperateChart    ÒªĞ´ÈëµÄÊı¾İ´æ·ÅµÄ±í
+WriteLine       ¿ØÖÆ±íÖĞÄÄĞ©ĞĞÒª½øĞĞ´æ´¢,²¢¿ØÖÆ×Å´æ´¢Ë³Ğò
+WriteTitle      ¿ØÖÆ×ÅÄÄĞ©ÁĞĞèÒªÊä³ö,²¢¿ØÖÆ×ÅÊä³öË³Ğò
 */
 ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * WriteLine, TitleList * WriteTitle)
 {
@@ -685,12 +685,12 @@ ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * Writ
 	if (!File)
 		return ERR_OPENFILE;
 
-	//å†™å…¥å‚æ•°å¤´éƒ¨
+	//Ğ´Èë²ÎÊıÍ·²¿
 	for (a = 0; a < WriteTitle->listCount; a++)
 		fprintf(File, "%*s ", OperateChart->ChartLimits[WriteTitle->list[a]], OperateChart->ChartTitle[WriteTitle->list[a]]);
 	fprintf(File, "\n");
 
-	//å¼€å§‹å†™å…¥è¡¨ä¸­æ•°æ®
+	//¿ªÊ¼Ğ´Èë±íÖĞÊı¾İ
 	for (a = 0; a < WriteLine->listCount; a++)
 	{
 		for (b = 0; b < WriteTitle->listCount; b++)
@@ -703,10 +703,10 @@ ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * Writ
 }
 
 /*
-å°†è¡¨å†™å…¥åˆ°ä¸¤ä¸ªæ–‡ä»¶ä¸­å»
-ParamFileName   è¦å†™å…¥å‚æ•°çš„æ–‡ä»¶è·¯å¾„
-DataFileName    è¦å†™å…¥è¡¨ä¸­æ•°æ®çš„æ–‡ä»¶è·¯å¾„
-OperateChart    è¦å†™å…¥çš„æ•°æ®å­˜æ”¾çš„è¡¨
+½«±íĞ´Èëµ½Á½¸öÎÄ¼şÖĞÈ¥
+ParamFileName   ÒªĞ´Èë²ÎÊıµÄÎÄ¼şÂ·¾¶
+DataFileName    ÒªĞ´Èë±íÖĞÊı¾İµÄÎÄ¼şÂ·¾¶
+OperateChart    ÒªĞ´ÈëµÄÊı¾İ´æ·ÅµÄ±í
 */
 ErrVal WriteToTwoFile_Chart(const char * ParamFileName, const char * DataFileName, Chart * OperateChart)
 {
@@ -722,14 +722,14 @@ ErrVal WriteToTwoFile_Chart(const char * ParamFileName, const char * DataFileNam
 	if (!File)
 		return ERR_OPENFILE;
 
-	//å†™å…¥å‚æ•°å¤´éƒ¨
+	//Ğ´Èë²ÎÊıÍ·²¿
 	fprintf(File, "%d %d\n", OperateChart->UsedLines, OperateChart->TitleCount);
 	for (a = 0; a < OperateChart->TitleCount; a++)
 		fprintf(File, "%s %d ", OperateChart->ChartTitle[a], OperateChart->ChartLimits[a]);
 	fprintf(File, "\n");
 	fclose(File);
 
-	//å¼€å§‹å†™å…¥è¡¨ä¸­æ•°æ®
+	//¿ªÊ¼Ğ´Èë±íÖĞÊı¾İ
 	File = fopen(DataFileName, "w");
 	if (!File)
 		return ERR_OPENFILE;
@@ -744,12 +744,12 @@ ErrVal WriteToTwoFile_Chart(const char * ParamFileName, const char * DataFileNam
 }
 
 /*
-æŒ‰ç…§Listçš„é¡ºåºæŠŠè¡¨å†™å…¥åˆ°æ–‡ä»¶ä¸­å»,ä¸WriteToTwoFile_Chart()ä¸åŒçš„æ˜¯è¿™ä¸ªå‡½æ•°æ”¯æŒå°†éƒ¨åˆ†æ•°æ®å†™å…¥è¡¨
-ParamFileName   è¦å†™å…¥å‚æ•°çš„æ–‡ä»¶è·¯å¾„
-DataFileName    è¦å†™å…¥è¡¨ä¸­æ•°æ®çš„æ–‡ä»¶è·¯å¾„
-OperateChart    è¦å†™å…¥çš„æ•°æ®å­˜æ”¾çš„è¡¨
-WriteLine       å°†è¦è¿›è¡Œå†™å…¥çš„è¡Œçš„æ•°æ®
-WriteTitle      å°†è¦è¿›è¡Œå†™å…¥çš„åˆ—çš„æ•°æ®
+°´ÕÕListµÄË³Ğò°Ñ±íĞ´Èëµ½ÎÄ¼şÖĞÈ¥,ÓëWriteToTwoFile_Chart()²»Í¬µÄÊÇÕâ¸öº¯ÊıÖ§³Ö½«²¿·ÖÊı¾İĞ´Èë±í
+ParamFileName   ÒªĞ´Èë²ÎÊıµÄÎÄ¼şÂ·¾¶
+DataFileName    ÒªĞ´Èë±íÖĞÊı¾İµÄÎÄ¼şÂ·¾¶
+OperateChart    ÒªĞ´ÈëµÄÊı¾İ´æ·ÅµÄ±í
+WriteLine       ½«Òª½øĞĞĞ´ÈëµÄĞĞµÄÊı¾İ
+WriteTitle      ½«Òª½øĞĞĞ´ÈëµÄÁĞµÄÊı¾İ
 */
 ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle)
 {
@@ -765,14 +765,14 @@ ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileNam
 	if (!File)
 		return ERR_OPENFILE;
 
-	//å†™å…¥å‚æ•°å¤´éƒ¨
+	//Ğ´Èë²ÎÊıÍ·²¿
 	fprintf(File, "%d %d\n", WriteLine->listCount, WriteTitle->listCount);
 	for (a = 0; a < WriteTitle->listCount; a++)
 		fprintf(File, "%s %d ", OperateChart->ChartTitle[WriteTitle->list[a]], OperateChart->ChartLimits[WriteTitle->list[a]]);
 	fprintf(File, "\n");
 	fclose(File);
 
-	//å¼€å§‹å†™å…¥è¡¨ä¸­æ•°æ®
+	//¿ªÊ¼Ğ´Èë±íÖĞÊı¾İ
 	File = fopen(DataFileName, "w");
 	if (!File)
 		return ERR_OPENFILE;
@@ -788,10 +788,10 @@ ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileNam
 }
 
 /*
-å°†è¡¨ä¸­çš„æ•°æ®å†™å…¥åˆ°è¡¨
-FileName        è¦å†™å…¥çš„æ–‡ä»¶çš„è·¯å¾„
-PassWord        åŠ å¯†çš„å¯†ç 
-OperateChart    è¦è¿›è¡Œä¿å­˜çš„è¡¨
+½«±íÖĞµÄÊı¾İĞ´Èëµ½±í
+FileName        ÒªĞ´ÈëµÄÎÄ¼şµÄÂ·¾¶
+PassWord        ¼ÓÃÜµÄÃÜÂë
+OperateChart    Òª½øĞĞ±£´æµÄ±í
 */
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart)
 {
@@ -810,9 +810,9 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 	if (!File)
 		return ERR_OPENFILE;
 
-	//å†™å…¥æ ‡å¤´
+	//Ğ´Èë±êÍ·
 	fwrite(BIN_HEAD, sizeof(BIN_HEAD), 1, File);
-	//è§£å¯†æ˜¯å¦æˆåŠŸçš„å­—ç¬¦ä¸²
+	//½âÃÜÊÇ·ñ³É¹¦µÄ×Ö·û´®
 
 	EncryptChar(tempStr, "CHECK", sizeof("CHECK") - sizeof(char), PassWord, PassWord_len);
 	fwrite(tempStr, sizeof("CHECK"), 1, File);
@@ -837,12 +837,12 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 }
 
 /*
-å°†è¡¨ä¸­çš„æ•°æ®å†™å…¥åˆ°è¡¨
-FileName        è¦å†™å…¥çš„æ–‡ä»¶çš„è·¯å¾„
-PassWord        åŠ å¯†çš„å¯†ç 
-OperateChart    è¦è¿›è¡Œä¿å­˜çš„è¡¨
-WriteLine       è¦å†™å…¥çš„è¡Œçš„List
-WriteTitle      è¦å†™å…¥çš„åˆ—çš„List
+½«±íÖĞµÄÊı¾İĞ´Èëµ½±í
+FileName        ÒªĞ´ÈëµÄÎÄ¼şµÄÂ·¾¶
+PassWord        ¼ÓÃÜµÄÃÜÂë
+OperateChart    Òª½øĞĞ±£´æµÄ±í
+WriteLine       ÒªĞ´ÈëµÄĞĞµÄList
+WriteTitle      ÒªĞ´ÈëµÄÁĞµÄList
 */
 ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle)
 {
@@ -875,9 +875,9 @@ ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart 
 	if (!File)
 		return ERR_OPENFILE;
 
-	//å†™å…¥æ ‡å¤´
+	//Ğ´Èë±êÍ·
 	fwrite(BIN_HEAD, sizeof(BIN_HEAD), 1, File);
-	//è§£å¯†æ˜¯å¦æˆåŠŸçš„å­—ç¬¦ä¸²
+	//½âÃÜÊÇ·ñ³É¹¦µÄ×Ö·û´®
 
 	EncryptChar(tempStr, "CHECK", sizeof("CHECK") - sizeof(char), PassWord, PassWord_len);
 	fwrite(tempStr, sizeof("CHECK"), 1, File);
@@ -902,10 +902,10 @@ ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart 
 }
 
 /*
-è¯»å–æ˜ å°„æ–‡ä»¶
-MapFileName     è¯»å–çš„æ˜ å°„æ–‡ä»¶çš„åç§°
-MapStruct       æ˜ å°„ä¿¡æ¯å­˜å‚¨çš„ç»“æ„ä½“
-æ˜ å°„æ–‡ä»¶çš„æ ¼å¼ä¸º,ç›´åˆ°æ–‡ä»¶ç»“å°¾
+¶ÁÈ¡Ó³ÉäÎÄ¼ş
+MapFileName     ¶ÁÈ¡µÄÓ³ÉäÎÄ¼şµÄÃû³Æ
+MapStruct       Ó³ÉäĞÅÏ¢´æ´¢µÄ½á¹¹Ìå
+Ó³ÉäÎÄ¼şµÄ¸ñÊ½Îª,Ö±µ½ÎÄ¼ş½áÎ²
 Val		String
 Val		String
 ...
@@ -969,8 +969,8 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 }
 
 /*
-é‡Šæ”¾æ˜ å°„å…³ç³»ç»“æ„ä½“
-MapStruct       è¦é‡Šæ”¾çš„ç»“æ„ä½“
+ÊÍ·ÅÓ³Éä¹ØÏµ½á¹¹Ìå
+MapStruct       ÒªÊÍ·ÅµÄ½á¹¹Ìå
 */
 ErrVal FreeMapStruct(InfoMap * MapStruct)
 {
@@ -989,11 +989,11 @@ ErrVal FreeMapStruct(InfoMap * MapStruct)
 }
 
 /*
-æ–°å¢1ä¸ªæˆ–å¤šä¸ªæ–°çš„æ ‡é¢˜
-OperateChart    è¦è¿›è¡Œæ“ä½œçš„è¡¨
-CreateCount     è¦æ–°å¢çš„æ ‡é¢˜æ•°ç›®
-NewTitleSet     æ–°å¢çš„æ ‡é¢˜åç§°æ•°ç»„
-NewTitleLimits  æ–°å¢çš„æ ‡é¢˜çš„å†…å®¹é™åˆ¶é•¿åº¦
+ĞÂÔö1¸ö»ò¶à¸öĞÂµÄ±êÌâ
+OperateChart    Òª½øĞĞ²Ù×÷µÄ±í
+CreateCount     ÒªĞÂÔöµÄ±êÌâÊıÄ¿
+NewTitleSet     ĞÂÔöµÄ±êÌâÃû³ÆÊı×é
+NewTitleLimits  ĞÂÔöµÄ±êÌâµÄÄÚÈİÏŞÖÆ³¤¶È
 */
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits)
 {
@@ -1003,7 +1003,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	int LinesCount = OperateChart->UsedLines;
 	int UnitCount = OperateChart->TitleCount, NewUnitCount;
 	int a, b, c, d;
-	char **temp;		//ä¸ºäº†æé«˜æ€§èƒ½
+	char **temp;		//ÎªÁËÌá¸ßĞÔÄÜ
 	int  *temp3;
 
 	if (CreateCount <= 0)
@@ -1017,7 +1017,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 
 	NewUnitCount = OperateChart->TitleCount + CreateCount;
 
-	//å¼€å§‹æ–°å»ºè¡¨å¤´
+	//¿ªÊ¼ĞÂ½¨±íÍ·
 	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
 	NewChartLimits = (int*)malloc(sizeof(int)*NewUnitCount);
 	if (!NewChartTitle)
@@ -1028,7 +1028,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 		free(NewChartTitle);
 		return ERR_MEMORYNOTENOUGH;
 	}
-	//æ‹·è´æ ‡é¢˜åˆ°æ–°çš„è¡¨å¤´
+	//¿½±´±êÌâµ½ĞÂµÄ±íÍ·
 	temp = OperateChart->ChartTitle;
 	temp3 = OperateChart->ChartLimits;
 	for (a = 0; a < UnitCount; a++)
@@ -1057,7 +1057,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 		NewTitleSet++;
 	}
 
-	//å¼€å§‹æ–°å»ºä¸€ä¸ªæ–°çš„è¡¨
+	//¿ªÊ¼ĞÂ½¨Ò»¸öĞÂµÄ±í
 	NewChart = (Chart_t)malloc(sizeof(ChartPiece_t)*OperateChart->UsedLines);
 	if (!NewChart) {
 		for (a = UnitCount; a < NewUnitCount; a++)
@@ -1066,13 +1066,13 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 		free(NewChartLimits);
 		return ERR_MEMORYNOTENOUGH;
 	}
-	//å¯¹æ¯ä¸ªè¡Œåˆ†é…å•å…ƒæ ¼
+	//¶ÔÃ¿¸öĞĞ·ÖÅäµ¥Ôª¸ñ
 	for (a = 0; a < LinesCount; a++)
 	{
 		NewChart[a] = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
 		if (!NewChart[a])
 		{
-			//å¦‚æœåˆ†é…å‡ºç°é—®é¢˜,åˆ™å›æ”¶å·²åˆ†é…å†…å­˜,è¿”å›
+			//Èç¹û·ÖÅä³öÏÖÎÊÌâ,Ôò»ØÊÕÒÑ·ÖÅäÄÚ´æ,·µ»Ø
 			for (a--; a >= 0; a--)
 				free(NewChart[a]);
 			free(NewChart);
@@ -1083,12 +1083,12 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 			return ERR_MEMORYNOTENOUGH;
 		}
 
-		//æ‹·è´å•å…ƒæ ¼
+		//¿½±´µ¥Ôª¸ñ
 		temp = OperateChart->Chart[a];
 		for (b = 0; b < OperateChart->TitleCount; b++)
 			NewChart[a][b] = temp[b];
 
-		//æ–°çš„å•å…ƒæ ¼è¿›è¡Œåˆ†é…å†…å­˜
+		//ĞÂµÄµ¥Ôª¸ñ½øĞĞ·ÖÅäÄÚ´æ
 		//temp2 = OperateChart->TitleCount+CreateCount;
 		for (c = 0; c < CreateCount&&b < NewUnitCount; b++, c++)
 		{
@@ -1097,10 +1097,10 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 			NewChart[a][b] = (char*)calloc(d, d);
 			if (!NewChart[a][b])
 			{
-				for (b--; b >= 0; b--)			//åˆ é™¤è¿™ä¸€è½®åˆ†é…çš„å†…å­˜
+				for (b--; b >= 0; b--)			//É¾³ıÕâÒ»ÂÖ·ÖÅäµÄÄÚ´æ
 					free(NewChart[a][b]);
 				free(NewChart[a]);
-				for (a--; a >= 0; a--)			//åˆ é™¤å‰å‡ è½®åˆ†é…çš„å†…å­˜
+				for (a--; a >= 0; a--)			//É¾³ıÇ°¼¸ÂÖ·ÖÅäµÄÄÚ´æ
 				{
 					for (b = UnitCount; b < NewUnitCount; b++)
 						free(NewChart[a][b]);
@@ -1116,9 +1116,9 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 			}
 		}
 	}
-	//è¿è¡Œåˆ°è¿™é‡Œ,æ–°çš„è¡¨å°±åˆ†é…å¥½äº†
-	//æŠŠæ—§è¡¨å†…å­˜é‡Šæ”¾æ‰,æ”¾å…¥æ–°è¡¨,å°±æ“ä½œæˆåŠŸäº†
-	for (a = 0; a < OperateChart->UsedLines; a++)		//åˆ é™¤æ—§è¡¨,
+	//ÔËĞĞµ½ÕâÀï,ĞÂµÄ±í¾Í·ÖÅäºÃÁË
+	//°Ñ¾É±íÄÚ´æÊÍ·Åµô,·ÅÈëĞÂ±í,¾Í²Ù×÷³É¹¦ÁË
+	for (a = 0; a < OperateChart->UsedLines; a++)		//É¾³ı¾É±í,
 		free(OperateChart->Chart[a]);
 	free(OperateChart->Chart);
 	free(OperateChart->ChartTitle);
@@ -1132,10 +1132,10 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 }
 
 /*
-åœ¨å·²æœ‰çš„è¡¨ä¸­åˆ›å»ºCreateCountä¸ªæ–°çš„è¡Œ
-OperateChart    è¦è¿›è¡Œæ“ä½œçš„è¡¨
-CreateCount     æ–°å¢çš„è¡Œæ•°
-NewList         æ–°ç”Ÿæˆçš„è¡Œçš„ä¸‹æ ‡å­˜å‚¨çš„åˆ—è¡¨
+ÔÚÒÑÓĞµÄ±íÖĞ´´½¨CreateCount¸öĞÂµÄĞĞ
+OperateChart    Òª½øĞĞ²Ù×÷µÄ±í
+CreateCount     ĞÂÔöµÄĞĞÊı
+NewList         ĞÂÉú³ÉµÄĞĞµÄÏÂ±ê´æ´¢µÄÁĞ±í
 */
 ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 {
@@ -1152,7 +1152,7 @@ ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 	/*
 	if (NewLine <= OperateChart->AllocatedLines)
 	{
-	//å†…å­˜å……è¶³
+	//ÄÚ´æ³ä×ã
 	tempChart = OperateChart->Chart;
 	for (a = OperateChart->UsedLines; a < NewLine; a++)
 	{
@@ -1180,7 +1180,7 @@ ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 	else
 	{
 	*/
-	//å†…å­˜ä¸å¤Ÿ,éœ€è¦é‡æ–°åˆ†é…å†…å­˜å¹¶å¤åˆ¶
+	//ÄÚ´æ²»¹»,ĞèÒªÖØĞÂ·ÖÅäÄÚ´æ²¢¸´ÖÆ
 	tempChart = (Chart_t)malloc(sizeof(ChartPiece_t)*NewLine);
 	if (!tempChart)
 		return ERR_MEMORYNOTENOUGH;
@@ -1230,7 +1230,7 @@ ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 
 	if (NewList)
 	{
-		//ä¸ºåˆ—è¡¨èµ‹å€¼
+		//ÎªÁĞ±í¸³Öµ
 		for (a = OperateChart->UsedLines, b = 0; a < NewLine&&b < NewList->AllocatedList; a++, b++)
 			NewList->list[b] = a;
 		NewList->listCount = b;
@@ -1240,12 +1240,12 @@ ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 }
 
 /*
-åˆå§‹åŒ–ä¸€ä¸ªæ–°çš„è¡¨,å¦‚æœå¯¹å·²æœ‰å†…å®¹çš„è¡¨è¿›è¡Œåˆå§‹åŒ–,å°†ä¼šç ´ååŸè¡¨çš„å†…å®¹
-åˆå§‹åŒ–åçš„è¡¨æ— å†…å®¹
-OperateChart	è¦è¿›è¡Œåˆå§‹åŒ–çš„è¡¨
-LineCount		è¡Œæ•°
-TitleCount		åˆ—æ•°
-TitleList,TitleLimits	æ ‡é¢˜åˆå§‹åŒ–åˆ—è¡¨(æœ‰TitleCountç»„)
+³õÊ¼»¯Ò»¸öĞÂµÄ±í,Èç¹û¶ÔÒÑÓĞÄÚÈİµÄ±í½øĞĞ³õÊ¼»¯,½«»áÆÆ»µÔ­±íµÄÄÚÈİ
+³õÊ¼»¯ºóµÄ±íÎŞÄÚÈİ
+OperateChart	Òª½øĞĞ³õÊ¼»¯µÄ±í
+LineCount		ĞĞÊı
+TitleCount		ÁĞÊı
+TitleList,TitleLimits	±êÌâ³õÊ¼»¯ÁĞ±í(ÓĞTitleCount×é)
 */
 ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* TitleList, int TitleLimits, ...)
 {
@@ -1263,7 +1263,7 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 
 	FreeChart(OperateChart);
 
-	//åˆå§‹åŒ–æ ‡é¢˜åˆ—è¡¨
+	//³õÊ¼»¯±êÌâÁĞ±í
 	tempChartTitle = (ChartPiece_t)malloc(sizeof(char*)*TitleCount);
 	if (!tempChartTitle)
 		return ERR_MEMORYNOTENOUGH;
@@ -1280,10 +1280,10 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 		free(tempChartTitle);
 		return ERR_MEMORYNOTENOUGH;
 	}
-	strcpy(*tempChartTitle, TitleList);		//å†™å…¥ç¬¬ä¸€ä¸ªæ ‡é¢˜ 
-	*tempChartLimits = TitleLimits;			//å†™å…¥ç¬¬ä¸€ä¸ªæ ‡é¢˜çš„å†…å®¹é•¿åº¦é™åˆ¶
+	strcpy(*tempChartTitle, TitleList);		//Ğ´ÈëµÚÒ»¸ö±êÌâ 
+	*tempChartLimits = TitleLimits;			//Ğ´ÈëµÚÒ»¸ö±êÌâµÄÄÚÈİ³¤¶ÈÏŞÖÆ
 
-											//å¯¹ç¬¬2-TitleCountä¸ªæ•°è¿›è¡Œå¤„ç†
+											//¶ÔµÚ2-TitleCount¸öÊı½øĞĞ´¦Àí
 	va_start(ap, TitleLimits);
 
 	for (a = 1; a < TitleCount; a++)
@@ -1292,7 +1292,7 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 		if (!tempChartTitle[a])
 		{
 			for (a--; a >= 0; a--)
-				free(tempChartTitle[a]);		//é‡Šæ”¾å·²ç»åˆ†é…çš„å†…å­˜ 
+				free(tempChartTitle[a]);		//ÊÍ·ÅÒÑ¾­·ÖÅäµÄÄÚ´æ 
 			free(tempChartLimits);
 			free(tempChartTitle);
 			return ERR_MEMORYNOTENOUGH;
@@ -1301,7 +1301,7 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 		tempChartLimits[a] = va_arg(ap, int);
 	}
 
-	//åˆå§‹åŒ–è¡¨ 
+	//³õÊ¼»¯±í 
 	tempChart = (Chart_t)malloc(sizeof(ChartPiece_t)*LinesCount);
 	if (!tempChart)
 	{
@@ -1351,7 +1351,7 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 			temp++;
 		}
 	}
-	//åˆå§‹åŒ–è¡¨çš„å…¶ä»–ä¿¡æ¯
+	//³õÊ¼»¯±íµÄÆäËûĞÅÏ¢
 	OperateChart->ChartName = NULL;
 	OperateChart->Chart = tempChart;
 	OperateChart->ChartLimits = tempChartLimits;
@@ -1365,10 +1365,10 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 }
 
 /*
-æŠŠæ•°å­—ä»£ç è§£é‡Šä¸ºå­—ç¬¦ä¸²
-OperateChart	è¿›è¡Œæ“ä½œçš„è¡¨
-TitleIndex		è¿›è¡Œè½¬æ¢çš„åˆ—
-MapStruct		å­˜å‚¨æ˜ å°„å…³ç³»çš„è¡¨
+°ÑÊı×Ö´úÂë½âÊÍÎª×Ö·û´®
+OperateChart	½øĞĞ²Ù×÷µÄ±í
+TitleIndex		½øĞĞ×ª»»µÄÁĞ
+MapStruct		´æ´¢Ó³Éä¹ØÏµµÄ±í
 */
 ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 {
@@ -1383,7 +1383,7 @@ ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 		{
 			if (!strcmp(temp, Val[b]))
 			{
-				//åŒ¹é…,è¿›è¡Œç¿»è¯‘
+				//Æ¥Åä,½øĞĞ·­Òë
 				strcpy(temp, list[b]);
 				break;
 			}
@@ -1393,10 +1393,10 @@ ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 }
 
 /*
-æŠŠä¸ºå­—ç¬¦ä¸²è§£é‡Šæ•°å­—ä»£ç 
-OperateChart	è¿›è¡Œæ“ä½œçš„è¡¨
-TitleIndex		è¿›è¡Œè½¬æ¢çš„åˆ—
-MapStruct		å­˜å‚¨æ˜ å°„å…³ç³»çš„è¡¨
+°ÑÎª×Ö·û´®½âÊÍÊı×Ö´úÂë
+OperateChart	½øĞĞ²Ù×÷µÄ±í
+TitleIndex		½øĞĞ×ª»»µÄÁĞ
+MapStruct		´æ´¢Ó³Éä¹ØÏµµÄ±í
 */
 ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 {
@@ -1411,7 +1411,7 @@ ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 		{
 			if (!strcmp(temp, Val[b]))
 			{
-				//åŒ¹é…,è¿›è¡Œé€†ç¿»è¯‘
+				//Æ¥Åä,½øĞĞÄæ·­Òë
 				strcpy(temp, list[b]);
 				break;
 			}
@@ -1421,8 +1421,8 @@ ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 }
 
 /*
-é‡Šæ”¾æ•´ä¸ªè¡¨æ‰€å çš„å†…å­˜
-OperateChart    è¦è¿›è¡Œé”€æ¯çš„è¡¨,è¡¨é”€æ¯ä¹‹åå¤„äºæœªåˆå§‹åŒ–çš„çŠ¶æ€,éœ€è¦é‡æ–°åˆå§‹åŒ–æ‰èƒ½ä½¿ç”¨
+ÊÍ·ÅÕû¸ö±íËùÕ¼µÄÄÚ´æ
+OperateChart    Òª½øĞĞÏú»ÙµÄ±í,±íÏú»ÙÖ®ºó´¦ÓÚÎ´³õÊ¼»¯µÄ×´Ì¬,ĞèÒªÖØĞÂ³õÊ¼»¯²ÅÄÜÊ¹ÓÃ
 */
 ErrVal FreeChart(Chart *OperateChart)
 {
@@ -1458,13 +1458,13 @@ ErrVal FreeChart(Chart *OperateChart)
 }
 
 /*
-æŒ‰ç…§ShowLineså’ŒShowTitleçš„é¡ºåºæ˜¾ç¤ºä¿¡æ¯
-OperateChart    è¦æ˜¾ç¤ºçš„è¡¨
-ShowLines       æ§åˆ¶è¡Œæ˜¾ç¤ºé¡ºåºçš„ç»“æ„ä½“.å…è®¸ä¸ºNULL,ä¸ºNULLåˆ™æŒ‰ç…§è¡¨ä¸­å®é™…é¡ºåºè¾“å‡º
-ShowTitle       æ§åˆ¶åˆ—æ˜¾ç¤ºé¡ºåºçš„ç»“æ„ä½“.å…è®¸ä¸ºNULL,ä¸ºNULLåˆ™æŒ‰ç…§è¡¨ä¸­å®é™…é¡ºåºè¾“å‡º
-Mode        æ§åˆ¶æ˜¾ç¤ºçš„ä¸€ä¸ªå‚æ•°(ç”¨äºç»™ç”¨æˆ·è¿›è¡Œé€‰æ‹©)
-Mode   1    è¾“å‡ºä¸€ä¸ªç¼–å·
-Mode   0    ä¸è¾“å‡ºç¼–å·
+°´ÕÕShowLinesºÍShowTitleµÄË³ĞòÏÔÊ¾ĞÅÏ¢
+OperateChart    ÒªÏÔÊ¾µÄ±í
+ShowLines       ¿ØÖÆĞĞÏÔÊ¾Ë³ĞòµÄ½á¹¹Ìå.ÔÊĞíÎªNULL,ÎªNULLÔò°´ÕÕ±íÖĞÊµ¼ÊË³ĞòÊä³ö
+ShowTitle       ¿ØÖÆÁĞÏÔÊ¾Ë³ĞòµÄ½á¹¹Ìå.ÔÊĞíÎªNULL,ÎªNULLÔò°´ÕÕ±íÖĞÊµ¼ÊË³ĞòÊä³ö
+Mode        ¿ØÖÆÏÔÊ¾µÄÒ»¸ö²ÎÊı(ÓÃÓÚ¸øÓÃ»§½øĞĞÑ¡Ôñ)
+Mode   1    Êä³öÒ»¸ö±àºÅ
+Mode   0    ²»Êä³ö±àºÅ
 */
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
 {
@@ -1486,10 +1486,10 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	}
 
 	if (Mode == 1)
-		printf("ç¼–å·   ");
+		printf("±àºÅ   ");
 	if (!ShowTitle)
 	{
-		//æ— æŒ‡å®šæ ‡é¢˜å°†ä½¿ç”¨é»˜è®¤
+		//ÎŞÖ¸¶¨±êÌâ½«Ê¹ÓÃÄ¬ÈÏ
 		for (a = 0; a < OperateChart->TitleCount; a++)
 			printf("%-*s ", OperateChart->ChartLimits[a], OperateChart->ChartTitle[a]);
 	}
@@ -1508,10 +1508,10 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	if (ShowLines)
 	{
 		tempLineList = ShowLines->list;
-		//æŒ‰Listä¸­æ˜¾ç¤ºä¿¡æ¯
+		//°´ListÖĞÏÔÊ¾ĞÅÏ¢
 		if (ShowTitle)
 		{
-			//æŒ‰ä¸¤è¡¨çš„æ•°æ®æ˜¾ç¤º
+			//°´Á½±íµÄÊı¾İÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1550,7 +1550,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 			}
 		}
 		else {
-			//åªæŒ‰IndexListè¡¨æ˜¾ç¤º
+			//Ö»°´IndexList±íÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1582,7 +1582,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 	else {
 		if (ShowTitle)
 		{
-			//æŒ‰TitleListè¡¨çš„æ•°æ®æ˜¾ç¤º
+			//°´TitleList±íµÄÊı¾İÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1615,7 +1615,7 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 			}
 		}
 		else {
-			//ä¸æŒ‰ä»»ä½•è¡¨æ˜¾ç¤º
+			//²»°´ÈÎºÎ±íÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1642,25 +1642,25 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 }
 
 /*
-æŒ‰ç…§ShowLineså’ŒShowTitleçš„é¡ºåºæ˜¾ç¤ºä¿¡æ¯
-OperateChart        æ‰€éœ€çš„æ˜¾ç¤ºä¿¡æ¯æ‰€åœ¨çš„è¡¨
-OperateLineIndex    åœ¨Chartè¡¨ä¸­è¡Œçš„ä¸‹æ ‡
-ShowTitle           æ§åˆ¶åˆ—æ˜¾ç¤ºé¡ºåºçš„ç»“æ„ä½“.å…è®¸ä¸ºNULL,ä¸ºNULLåˆ™æŒ‰ç…§è¡¨ä¸­å®é™…é¡ºåºè¾“å‡º
+°´ÕÕShowLinesºÍShowTitleµÄË³ĞòÏÔÊ¾ĞÅÏ¢
+OperateChart        ËùĞèµÄÏÔÊ¾ĞÅÏ¢ËùÔÚµÄ±í
+OperateLineIndex    ÔÚChart±íÖĞĞĞµÄÏÂ±ê
+ShowTitle           ¿ØÖÆÁĞÏÔÊ¾Ë³ĞòµÄ½á¹¹Ìå.ÔÊĞíÎªNULL,ÎªNULLÔò°´ÕÕ±íÖĞÊµ¼ÊË³ĞòÊä³ö
 */
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle)
 {
 	int a, b;
 	TitleList tempTitlelist = { 0 };
-	int temp, temp3;			//ç”¨äºæé«˜æ€§èƒ½
-	int *temp2, *temp22, *temp5;	//ç”¨äºæé«˜æ€§èƒ½
-	char **temp4;				//ç”¨äºæé«˜æ€§èƒ½
+	int temp, temp3;			//ÓÃÓÚÌá¸ßĞÔÄÜ
+	int *temp2, *temp22, *temp5;	//ÓÃÓÚÌá¸ßĞÔÄÜ
+	char **temp4;				//ÓÃÓÚÌá¸ßĞÔÄÜ
 
 	if (OperateLineIndex >= OperateChart->UsedLines)
 		return ERR_ILLEGALPARAM;
 
 	if (!ShowTitle || !ShowTitle->AllocatedList)
 	{
-		//å¦‚æœShowTitleä¸ºç©º,åˆ™åˆå§‹åŒ–ä¸€ä¸ªShowTitle
+		//Èç¹ûShowTitleÎª¿Õ,Ôò³õÊ¼»¯Ò»¸öShowTitle
 		temp = OperateChart->TitleCount;
 		tempTitlelist.listCount = temp;
 		tempTitlelist.list = (int*)malloc(sizeof(int)*temp);
@@ -1675,9 +1675,9 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 		ShowTitle = &tempTitlelist;
 	}
 	temp3 = ShowTitle->listCount;
-	temp5 = OperateChart->ChartLimits;		//å–å¾—é•¿åº¦é™åˆ¶çš„æ•°ç»„
+	temp5 = OperateChart->ChartLimits;		//È¡µÃ³¤¶ÈÏŞÖÆµÄÊı×é
 
-											//æ˜¾ç¤ºè¡¨å¤´
+											//ÏÔÊ¾±íÍ·
 	temp2 = ShowTitle->list;
 	for (a = 0; a < temp3; a++)
 	{
@@ -1699,22 +1699,22 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 	}
 	printf("\n");
 
-	//é‡Šæ”¾ä¸´æ—¶ç”³è¯·çš„å†…å­˜
+	//ÊÍ·ÅÁÙÊ±ÉêÇëµÄÄÚ´æ
 	if (tempTitlelist.list)
 		free(tempTitlelist.list);
 	return SUCCESS;
 }
 
 /*
-æŒ‰ç…§ShowLineså’ŒShowTitleçš„é¡ºåºæ˜¾ç¤ºä¿¡æ¯
-OperateChart    è¦æ˜¾ç¤ºçš„è¡¨
-ShowLines       æ§åˆ¶è¡Œæ˜¾ç¤ºé¡ºåºçš„ç»“æ„ä½“.å…è®¸ä¸ºNULL,ä¸ºNULLåˆ™æŒ‰ç…§è¡¨ä¸­å®é™…é¡ºåºè¾“å‡º
-ShowTitle       æ§åˆ¶åˆ—æ˜¾ç¤ºé¡ºåºçš„ç»“æ„ä½“.å…è®¸ä¸ºNULL,ä¸ºNULLåˆ™æŒ‰ç…§è¡¨ä¸­å®é™…é¡ºåºè¾“å‡º
-PageSize        ä¸€é¡µçš„å¤§å°
-PageIndex       é¡µçš„åºå·
-Mode        æ§åˆ¶æ˜¾ç¤ºçš„ä¸€ä¸ªå‚æ•°(ç”¨äºç»™ç”¨æˆ·è¿›è¡Œé€‰æ‹©)
-Mode   1    è¾“å‡ºä¸€ä¸ªç¼–å·
-Mode   0    ä¸è¾“å‡ºç¼–å·
+°´ÕÕShowLinesºÍShowTitleµÄË³ĞòÏÔÊ¾ĞÅÏ¢
+OperateChart    ÒªÏÔÊ¾µÄ±í
+ShowLines       ¿ØÖÆĞĞÏÔÊ¾Ë³ĞòµÄ½á¹¹Ìå.ÔÊĞíÎªNULL,ÎªNULLÔò°´ÕÕ±íÖĞÊµ¼ÊË³ĞòÊä³ö
+ShowTitle       ¿ØÖÆÁĞÏÔÊ¾Ë³ĞòµÄ½á¹¹Ìå.ÔÊĞíÎªNULL,ÎªNULLÔò°´ÕÕ±íÖĞÊµ¼ÊË³ĞòÊä³ö
+PageSize        Ò»Ò³µÄ´óĞ¡
+PageIndex       Ò³µÄĞòºÅ
+Mode        ¿ØÖÆÏÔÊ¾µÄÒ»¸ö²ÎÊı(ÓÃÓÚ¸øÓÃ»§½øĞĞÑ¡Ôñ)
+Mode   1    Êä³öÒ»¸ö±àºÅ
+Mode   0    ²»Êä³ö±àºÅ
 */
 ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode, int PageSize, int PageIndex)
 {
@@ -1770,10 +1770,10 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 	}
 
 	if (Mode == 1)
-		printf("ç¼–å·   ");
+		printf("±àºÅ   ");
 	if (!ShowTitle)
 	{
-		//æ— æŒ‡å®šæ ‡é¢˜å°†ä½¿ç”¨é»˜è®¤
+		//ÎŞÖ¸¶¨±êÌâ½«Ê¹ÓÃÄ¬ÈÏ
 		for (a = 0; a < OperateChart->TitleCount; a++)
 			printf("%-*s ", OperateChart->ChartLimits[a], OperateChart->ChartTitle[a]);
 	}
@@ -1791,10 +1791,10 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 	if (ShowLines)
 	{
 		tempLineList = ShowLines->list + Start_index;
-		//æŒ‰Listä¸­æ˜¾ç¤ºä¿¡æ¯
+		//°´ListÖĞÏÔÊ¾ĞÅÏ¢
 		if (ShowTitle)
 		{
-			//æŒ‰ä¸¤è¡¨çš„æ•°æ®æ˜¾ç¤º
+			//°´Á½±íµÄÊı¾İÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1833,7 +1833,7 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 			}
 		}
 		else {
-			//åªæŒ‰IndexListè¡¨æ˜¾ç¤º
+			//Ö»°´IndexList±íÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1865,7 +1865,7 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 	else {
 		if (ShowTitle)
 		{
-			//æŒ‰TitleListè¡¨çš„æ•°æ®æ˜¾ç¤º
+			//°´TitleList±íµÄÊı¾İÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1898,7 +1898,7 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 			}
 		}
 		else {
-			//ä¸æŒ‰ä»»ä½•è¡¨æ˜¾ç¤º
+			//²»°´ÈÎºÎ±íÏÔÊ¾
 			switch (Mode)
 			{
 			case 0:
@@ -1925,14 +1925,14 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 }
 
 /*
-å¯¹è¡¨é›†è¿›è¡Œæ‰©å……æˆ–åˆå§‹åŒ–
-CreateCount     è¦æ–°å¢çš„è¡¨çš„æ•°é‡
+¶Ô±í¼¯½øĞĞÀ©³ä»ò³õÊ¼»¯
+CreateCount     ÒªĞÂÔöµÄ±íµÄÊıÁ¿
 */
 ErrVal NewChartSet(int CreateCount)
 {
 
 	int a;
-	Chart** tempChartSet = NULL; //æ–°çš„è¡¨é›†
+	Chart** tempChartSet = NULL; //ĞÂµÄ±í¼¯
 	int NewChartCount;
 	if (CreateCount <= 0)
 		return ERR_ILLEGALPARAM;
@@ -1949,7 +1949,7 @@ ErrVal NewChartSet(int CreateCount)
 
 	if (AlloctedChartCount <= 0)
 	{
-		//å…¨æ–°åˆå§‹åŒ–è¡¨
+		//È«ĞÂ³õÊ¼»¯±í
 		tempChartSet = (Chart**)malloc(sizeof(Chart*)*CreateCount);
 		if (!tempChartSet)
 			return ERR_MEMORYNOTENOUGH;
@@ -1966,7 +1966,7 @@ ErrVal NewChartSet(int CreateCount)
 		}
 	}
 	else {
-		//å¢é‡åˆå§‹åŒ–
+		//ÔöÁ¿³õÊ¼»¯
 		tempChartSet = (Chart**)malloc(sizeof(Chart*)*NewChartCount);
 		if (tempChartSet) {
 			for (a = 0; a < ChartCount; a++)
@@ -1997,8 +1997,8 @@ ErrVal NewChartSet(int CreateCount)
 }
 
 /*
-æŠŠå·²ç»åˆå§‹åŒ–å¥½çš„è¡¨é›†é”€æ¯
-!!!æ­¤æ“ä½œä¼šåŒæ—¶é”€æ¯æ‰€æœ‰è¡¨
+°ÑÒÑ¾­³õÊ¼»¯ºÃµÄ±í¼¯Ïú»Ù
+!!!´Ë²Ù×÷»áÍ¬Ê±Ïú»ÙËùÓĞ±í
 */
 ErrVal FreeChartSet()
 {
@@ -2009,7 +2009,7 @@ ErrVal FreeChartSet()
 	for (a = 0; a < ChartCount; a++)
 	{
 		if (ChartHead[a]) {
-			FreeChart(ChartHead[a]);		//é”€æ¯æ¯ä¸€ä¸ªè¡¨
+			FreeChart(ChartHead[a]);		//Ïú»ÙÃ¿Ò»¸ö±í
 			free(ChartHead[a]);
 		}
 	}
@@ -2021,21 +2021,21 @@ ErrVal FreeChartSet()
 }
 
 /*
-æŒ‰ç…§IndexListå¯¹è¡Œè¿›è¡Œæ’åº
-OperateList     åŒ…å«åœ¨Chartè¡¨ä¸­linesçš„ä¸‹æ ‡çš„æ•°ç»„,å¿…é¡»æ˜¯ä¸€ä¸ªåˆæ³•çš„IndexList
-Mode   0   å‡åº
-Mode   1   é™åº
+°´ÕÕIndexList¶ÔĞĞ½øĞĞÅÅĞò
+OperateList     °üº¬ÔÚChart±íÖĞlinesµÄÏÂ±êµÄÊı×é,±ØĞëÊÇÒ»¸öºÏ·¨µÄIndexList
+Mode   0   ÉıĞò
+Mode   1   ½µĞò
 */
 #if SORT_ARITHMETIC==0
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode)
 {
 	int a, b;
-	int temp;		//äº¤æ¢æ—¶ç”¨äºå­˜å‚¨ä¸­é—´å€¼çš„å˜é‡
+	int temp;		//½»»»Ê±ÓÃÓÚ´æ´¢ÖĞ¼äÖµµÄ±äÁ¿
 
 	switch (Mode)
 	{
 	case 0:
-		//å‡åº
+		//ÉıĞò
 		for (a = 0; a < OperateList->listCount; a++)
 		{
 			for (b = a; b < OperateList->listCount; b++)
@@ -2050,7 +2050,7 @@ ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int
 		}
 		break;
 	case 1:
-		//é™åº
+		//½µĞò
 		for (a = 0; a < OperateList->listCount; a++)
 		{
 			for (b = a; b < OperateList->listCount; b++)
@@ -2075,7 +2075,7 @@ void Swap(int *A, int *B)
 	*B = tmp;
 }
 
-//ä»å¤§åˆ°å°
+//´Ó´óµ½Ğ¡
 int QuickSortX(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode, int Low, int High)
 {
 	int L_p, R_p;
@@ -2116,7 +2116,7 @@ ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int
 	int a, b;
 	int tmp;
 	char *tmpchar;
-	//è¿›è¡Œå¿«æ’
+	//½øĞĞ¿ìÅÅ
 	QuickSortX(OperateChart, OperateList, BaseTitleIndex, Mode, 0, OperateList->listCount - 1);
 	/*
 	for (a = 1; a < OperateList->listCount; a++)
@@ -2137,11 +2137,11 @@ ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int
 
 
 /*
-åœ¨SearchListçš„èŒƒå›´å†…æœç´¢ç¬¦åˆæ¡ä»¶çš„è¡Œ,å¹¶è¿”å›ç»™ResultList
-OperateChart	è¦è¿›è¡ŒæŸ¥æ‰¾çš„è¡¨
-SearchList		å¯»æ‰¾çš„èŒƒå›´,å…è®¸ä¸ºNULL,å¦‚æœä¸ºNULL,å°†æŸ¥æ‰¾æ•´ä¸ªè¡¨
-ResultList		å°†ç»“æœè¿”å›çš„ç»“æ„ä½“
-BaseTitleIndex	è¿›è¡Œæ¯”è¾ƒçš„åŸºå‡†(é€‰æ‹©ä»¥é‚£ä¸ªåˆ—ä½œä¸ºåŸºå‡†)
+ÔÚSearchListµÄ·¶Î§ÄÚËÑË÷·ûºÏÌõ¼şµÄĞĞ,²¢·µ»Ø¸øResultList
+OperateChart	Òª½øĞĞ²éÕÒµÄ±í
+SearchList		Ñ°ÕÒµÄ·¶Î§,ÔÊĞíÎªNULL,Èç¹ûÎªNULL,½«²éÕÒÕû¸ö±í
+ResultList		½«½á¹û·µ»ØµÄ½á¹¹Ìå
+BaseTitleIndex	½øĞĞ±È½ÏµÄ»ù×¼(Ñ¡ÔñÒÔÄÇ¸öÁĞ×÷Îª»ù×¼)
 */
 ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex, char * DestinString)
 {
@@ -2163,7 +2163,7 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 	if (!SearchList || SearchList->listCount == 0)
 	{
 		isNULL = 1;
-		//å¦‚æœSearchListä¸ºç©º,åˆ™åˆå§‹åŒ–ä¸€ä¸ªIndexList
+		//Èç¹ûSearchListÎª¿Õ,Ôò³õÊ¼»¯Ò»¸öIndexList
 		temp = OperateChart->UsedLines;
 		if (!temp)
 		{
@@ -2196,11 +2196,11 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 }
 
 /*
-å¡«å……ä¸€ä¸ªList(åŒ…å«IndexListå’ŒTitleList),ä»0å¼€å§‹å¡«å……,ä¼šè‡ªåŠ¨åˆå§‹åŒ–å†…å­˜
-OperateList     è¦è¿›è¡Œåˆå§‹åŒ–çš„list
-Count           åœ¨Listä½œä¸ºIndexListæ—¶ä¸€å®šä¸è¦è¶…è¿‡è¡¨ä¸­çš„è¡Œæ•°
-åœ¨ä½œä¸ºTitleListæ—¶ä¸€å®šä¸è¦è¶…è¿‡è¡¨ä¸­çš„æ ‡é¢˜çš„æ•°é‡
-OperateList ä¸­çš„listæˆå‘˜å¦‚æœæ˜¯æŒ‡å‘æ•°ç»„çš„æŒ‡é’ˆè¯·è®¾ç½®ä¸º0
+Ìî³äÒ»¸öList(°üº¬IndexListºÍTitleList),´Ó0¿ªÊ¼Ìî³ä,»á×Ô¶¯³õÊ¼»¯ÄÚ´æ
+OperateList     Òª½øĞĞ³õÊ¼»¯µÄlist
+Count           ÔÚList×÷ÎªIndexListÊ±Ò»¶¨²»Òª³¬¹ı±íÖĞµÄĞĞÊı
+ÔÚ×÷ÎªTitleListÊ±Ò»¶¨²»Òª³¬¹ı±íÖĞµÄ±êÌâµÄÊıÁ¿
+OperateList ÖĞµÄlist³ÉÔ±Èç¹ûÊÇÖ¸ÏòÊı×éµÄÖ¸ÕëÇëÉèÖÃÎª0
 */
 ErrVal FillList(List *OperateList, int Count)
 {
@@ -2221,7 +2221,7 @@ ErrVal FillList(List *OperateList, int Count)
 		if (!OperateList->ListName)
 			OperateList->ListName = (char*)malloc(sizeof(char) * 32);
 		if (OperateList->ListName)
-			strcpy(OperateList->ListName, "ç©ºList");
+			strcpy(OperateList->ListName, "¿ÕList");
 		else
 			return ERR_MEMORYNOTENOUGH;
 		return SUCCESS;
@@ -2244,10 +2244,10 @@ ErrVal FillList(List *OperateList, int Count)
 }
 
 /*
-æŒ‰ç…§æä¾›çš„å€¼åˆå§‹åŒ–ä¸€ä¸ªList
-OperateList     è¦è¿›è¡Œåˆå§‹åŒ–çš„ç»“æ„ä½“
-Count           ListDataçš„å‚æ•°ä¸ªæ•°
-å®ƒä¸FillListçš„å·®åˆ«åœ¨äºèƒ½å¦åœ¨åˆå§‹åŒ–æ—¶è‡ªå®šä¹‰æ¯ä¸€ä¸ªå…ƒç´ 
+°´ÕÕÌá¹©µÄÖµ³õÊ¼»¯Ò»¸öList
+OperateList     Òª½øĞĞ³õÊ¼»¯µÄ½á¹¹Ìå
+Count           ListDataµÄ²ÎÊı¸öÊı
+ËüÓëFillListµÄ²î±ğÔÚÓÚÄÜ·ñÔÚ³õÊ¼»¯Ê±×Ô¶¨ÒåÃ¿Ò»¸öÔªËØ
 */
 ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 {
@@ -2266,7 +2266,7 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 		if (!OperateList->ListName)
 			OperateList->ListName = (char*)malloc(sizeof(char) * 32);
 		if (OperateList->ListName)
-			strcpy(OperateList->ListName, "æœªå‘½å");
+			strcpy(OperateList->ListName, "Î´ÃüÃû");
 		return SUCCESS;
 	}
 
@@ -2288,7 +2288,7 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 	return SUCCESS;
 }
 /*
-é‡Šæ”¾ä¸€ä¸ªlist
+ÊÍ·ÅÒ»¸ölist
 */
     ErrVal FreeList(List *OperateList)
 {
@@ -2305,10 +2305,10 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 }
 
 /*
-ç”¨ListDataå‚æ•°è¡¨æ¥ç»™OperateArrayèµ‹å€¼
-OperateArray	è¦è¿›è¡Œèµ‹å€¼çš„æ•°ç»„
-n				è¢«ListDataåˆ—è¡¨å‚æ•°çš„ä¸ªæ•°(ä¸€å®šè¦å°äºç­‰äºæ•°ç»„çš„å®¹é‡)
-ListData		å€¼åˆ—è¡¨,è¯¥åˆ—è¡¨ä¸­çš„å‰nä¸ªå€¼ä¼šèµ‹å€¼åˆ°OperateArrayæ•°ç»„ä¸­
+ÓÃListData²ÎÊı±íÀ´¸øOperateArray¸³Öµ
+OperateArray	Òª½øĞĞ¸³ÖµµÄÊı×é
+n				±»ListDataÁĞ±í²ÎÊıµÄ¸öÊı(Ò»¶¨ÒªĞ¡ÓÚµÈÓÚÊı×éµÄÈİÁ¿)
+ListData		ÖµÁĞ±í,¸ÃÁĞ±íÖĞµÄÇ°n¸öÖµ»á¸³Öµµ½OperateArrayÊı×éÖĞ
 */
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...)
 {
@@ -2326,21 +2326,21 @@ ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...)
 }
 
 /*
-å¯¹è¡¨é›†è¿›è¡Œæ‰©å……æˆ–åˆå§‹åŒ–
-CreateCount     è¦æ–°å¢çš„è¡¨çš„æ•°é‡
-ListType        è¦è¿›è¡Œåˆå§‹åŒ–çš„Listç±»å‹
-ListType=0      å¯¹IndexListHeadSetè¿›è¡Œæ“ä½œ
-ListType=1      å¯¹TitleListHeadSetè¿›è¡Œæ“ä½œ
+¶Ô±í¼¯½øĞĞÀ©³ä»ò³õÊ¼»¯
+CreateCount     ÒªĞÂÔöµÄ±íµÄÊıÁ¿
+ListType        Òª½øĞĞ³õÊ¼»¯µÄListÀàĞÍ
+ListType=0      ¶ÔIndexListHeadSet½øĞĞ²Ù×÷
+ListType=1      ¶ÔTitleListHeadSet½øĞĞ²Ù×÷
 */
 ErrVal NewListSet(int CreateCount, int ListType)
 {
 	int a;
-	List** tempListSet = NULL;	//æ–°çš„Listé›†
+	List** tempListSet = NULL;	//ĞÂµÄList¼¯
 	int NewListCount;
 	List** OperateList = NULL;
 	int ListCount, AlloctedListCount;
 
-	//æŠŠä¿¡æ¯å¯¹åº”åˆ°æŒ‡å®šç±»å‹çš„è¡¨
+	//°ÑĞÅÏ¢¶ÔÓ¦µ½Ö¸¶¨ÀàĞÍµÄ±í
 	switch (ListType)
 	{
 	case 0:
@@ -2370,7 +2370,7 @@ ErrVal NewListSet(int CreateCount, int ListType)
 
 	if (AlloctedListCount <= 0)
 	{
-		//å…¨æ–°åˆå§‹åŒ–Listé›†
+		//È«ĞÂ³õÊ¼»¯List¼¯
 		tempListSet = (List**)malloc(sizeof(List*)*CreateCount);
 		if (!tempListSet)
 			return ERR_MEMORYNOTENOUGH;
@@ -2387,7 +2387,7 @@ ErrVal NewListSet(int CreateCount, int ListType)
 		}
 	}
 	else {
-		//å¢é‡åˆå§‹åŒ–
+		//ÔöÁ¿³õÊ¼»¯
 		tempListSet = (List**)malloc(sizeof(List*)*NewListCount);
 		if (!tempListSet)
 			return ERR_MEMORYNOTENOUGH;
@@ -2427,11 +2427,11 @@ ErrVal NewListSet(int CreateCount, int ListType)
 }
 
 /*
-é‡Šæ”¾Listé›†
-å½“ä¸ç”¨åˆ°æ‰€æœ‰å¯¹åº”ç±»å‹(IndexListæˆ–TitleList)çš„è¡¨é›†æ—¶,å¯è°ƒç”¨æ­¤å‡½æ•°å¯¹Listé›†è¿›è¡Œå†…å­˜é‡Šæ”¾
-ListType        è¦è¿›è¡Œé‡Šæ”¾çš„Listç±»å‹
-ListType=0      å¯¹IndexListHeadSetè¿›è¡Œæ“ä½œ
-ListType=1      å¯¹TitleListHeadSetè¿›è¡Œæ“ä½œ
+ÊÍ·ÅList¼¯
+µ±²»ÓÃµ½ËùÓĞ¶ÔÓ¦ÀàĞÍ(IndexList»òTitleList)µÄ±í¼¯Ê±,¿Éµ÷ÓÃ´Ëº¯Êı¶ÔList¼¯½øĞĞÄÚ´æÊÍ·Å
+ListType        Òª½øĞĞÊÍ·ÅµÄListÀàĞÍ
+ListType=0      ¶ÔIndexListHeadSet½øĞĞ²Ù×÷
+ListType=1      ¶ÔTitleListHeadSet½øĞĞ²Ù×÷
 */
 ErrVal FreeListSet(int ListType)
 {
@@ -2459,7 +2459,7 @@ ErrVal FreeListSet(int ListType)
 	for (a = 0; a < ListCount; a++)
 	{
 		if (OperateList[a]) {
-			FreeList(OperateList[a]);		//é”€æ¯æ¯ä¸€ä¸ªList
+			FreeList(OperateList[a]);		//Ïú»ÙÃ¿Ò»¸öList
 			free(OperateList[a]);
 		}
 	}
@@ -2481,7 +2481,7 @@ ErrVal FreeListSet(int ListType)
 }
 
 /*
-å°†DestListè¡¨å¤åˆ¶åˆ°SourceList
+½«DestList±í¸´ÖÆµ½SourceList
 */
 ErrVal CopyList(List *SourceList, List *DestList)
 {
@@ -2498,13 +2498,13 @@ ErrVal CopyList(List *SourceList, List *DestList)
 }
 
 /*
-è¯¥å‡½æ•°æŠŠä¸€ä¸ªå­—ç¬¦ä¸²ä¸­çš„æ•°å­—æˆ–æ•°å­—åŒºé—´æˆªå–å‡ºæ¥,å­˜è¿›listä¸­
-ä¼ å…¥çš„æ•°æ® æ ¼å¼ç±»ä¼¼5 4 2 1 3
-å¯ä»¥å­˜åœ¨ 1-5 è¿™æ ·çš„åŒºé—´,è¿™ç­‰åŒäº1 2 3 4 5
-n è¾“å…¥çš„æ•°å­—çš„ä¸ªæ•°,å¯è¶…è¿‡,ä¸èƒ½å°‘äº,è¿™å…³ç³»åˆ°å†…å­˜çš„åˆ†é…
-list å­˜å‚¨çš„ç›®æ ‡List
-MaxIndex é™åˆ¶ä¼ å…¥æ•°æ®çš„æœ€å¤§å€¼(åªæ˜¯ä¸ºäº†å®‰å…¨æ£€æŸ¥),è¿™ä¸ªå€¼ä¸€èˆ¬æ˜¯æŒ‡å®šChartè¡¨çš„TitleCount
-å­—ç¬¦ä¸²ä¸­çš„å€¼æ˜¯ä»1å¼€å§‹çš„
+¸Ãº¯Êı°ÑÒ»¸ö×Ö·û´®ÖĞµÄÊı×Ö»òÊı×ÖÇø¼ä½ØÈ¡³öÀ´,´æ½ølistÖĞ
+´«ÈëµÄÊı¾İ ¸ñÊ½ÀàËÆ5 4 2 1 3
+¿ÉÒÔ´æÔÚ 1-5 ÕâÑùµÄÇø¼ä,ÕâµÈÍ¬ÓÚ1 2 3 4 5
+n ÊäÈëµÄÊı×ÖµÄ¸öÊı,¿É³¬¹ı,²»ÄÜÉÙÓÚ,Õâ¹ØÏµµ½ÄÚ´æµÄ·ÖÅä
+list ´æ´¢µÄÄ¿±êList
+MaxIndex ÏŞÖÆ´«ÈëÊı¾İµÄ×î´óÖµ(Ö»ÊÇÎªÁË°²È«¼ì²é),Õâ¸öÖµÒ»°ãÊÇÖ¸¶¨Chart±íµÄTitleCount
+×Ö·û´®ÖĞµÄÖµÊÇ´Ó1¿ªÊ¼µÄ
 */
 ErrVal GetListFromString(char* Input, int n, List *list, int MaxIndex)
 {
@@ -2566,16 +2566,16 @@ ErrVal GetListFromString(char* Input, int n, List *list, int MaxIndex)
 }
 
 /*
-è¯¥å‡½æ•°æŠŠä¸€ä¸ªå­—ç¬¦ä¸²ä¸­æŒ‡å®šçš„ç¬¬nä¸ªå…ƒç´ å­˜è¿›ResultListä¸­
-æ¯”å¦‚SourceListçš„Listçš„æ•°æ®ä¸º   5 1 2 4 3
-	Inputçš„å€¼ä¸º1-5(æˆ–1 2 3 4 5)
-	åˆ™ResultListä¸­çš„å€¼ä¸º 5 1 2 4 3
+¸Ãº¯Êı°ÑÒ»¸ö×Ö·û´®ÖĞÖ¸¶¨µÄµÚn¸öÔªËØ´æ½øResultListÖĞ
+±ÈÈçSourceListµÄListµÄÊı¾İÎª   5 1 2 4 3
+	InputµÄÖµÎª1-5(»ò1 2 3 4 5)
+	ÔòResultListÖĞµÄÖµÎª 5 1 2 4 3
 
-å¦‚æœInputçš„å€¼ä¸º 1 3 2 4 5(æˆ–1 3 2 4-5)
-	åˆ™ResultListä¸­çš„å€¼ä¸º 5 2 1 4 3
-å¯ä»¥å­˜åœ¨ 1-5 è¿™æ ·çš„åŒºé—´,è¿™ç­‰åŒäº1 2 3 4 5
-Resultlist å­˜å‚¨çš„ç›®æ ‡List
-SourceList æºList
+Èç¹ûInputµÄÖµÎª 1 3 2 4 5(»ò1 3 2 4-5)
+	ÔòResultListÖĞµÄÖµÎª 5 2 1 4 3
+¿ÉÒÔ´æÔÚ 1-5 ÕâÑùµÄÇø¼ä,ÕâµÈÍ¬ÓÚ1 2 3 4 5
+Resultlist ´æ´¢µÄÄ¿±êList
+SourceList Ô´List
 */
 ErrVal GetListFromStringViaList(char* Input, int n, List *Resultlist, List *SourceList)
 {
@@ -2688,7 +2688,7 @@ return SUCCESS;
 */
 
 /*
-ä¸¤ä¸ªå­—ç¬¦ä¸²è¿›è¡Œæ¯”è¾ƒ,å…¼å®¹æ•°å­—å­—ç¬¦ä¸²æ¯”è¾ƒ
+Á½¸ö×Ö·û´®½øĞĞ±È½Ï,¼æÈİÊı×Ö×Ö·û´®±È½Ï
 */
 int StrCmp(const char *A, const char *B)
 {
@@ -2696,7 +2696,7 @@ int StrCmp(const char *A, const char *B)
 	int lenA = 0, lenB = 0;
 	char *A2 = (char*)A, *B2 = (char*)B;
 
-	//è®¡ç®—é•¿åº¦å¹¶åˆ¤æ–­æ˜¯å¦æ˜¯çº¯æ•°å­—
+	//¼ÆËã³¤¶È²¢ÅĞ¶ÏÊÇ·ñÊÇ´¿Êı×Ö
 	while (*A2) {
 		if (isNumA && (*A2<'0' || *A2>'9'))
 			isNumA = 0;
@@ -2711,26 +2711,26 @@ int StrCmp(const char *A, const char *B)
 	}
 
 	if (isNumA*isNumB == 1) {
-		//ä¸¤ä¸ªæ•°å­—è¿›è¡Œæ¯”è¾ƒ
+		//Á½¸öÊı×Ö½øĞĞ±È½Ï
 		if (lenA != lenB) {
-			//å¦‚æœä¸¤ä¸ªæ•°å­—çš„é•¿åº¦ä¸åŒ,åˆ™é•¿çš„æ•°å­—å¤§
+			//Èç¹ûÁ½¸öÊı×ÖµÄ³¤¶È²»Í¬,Ôò³¤µÄÊı×Ö´ó
 			return lenA - lenB;
 		}
 		else {
-			//å¦‚æœæ•°å­—é•¿åº¦ç›¸åŒ,æ€ä»é«˜ä½åˆ°ä½ä½ä¾æ¬¡æ¯”è¾ƒ
+			//Èç¹ûÊı×Ö³¤¶ÈÏàÍ¬,Ôõ´Ó¸ßÎ»µ½µÍÎ»ÒÀ´Î±È½Ï
 			return strcmp(A, B);
 		}
 	}
 	else {
-		//éæ•°å­—è¿›è¡Œæ¯”è¾ƒ
+		//·ÇÊı×Ö½øĞĞ±È½Ï
 		return strcmp(A, B);
 	}
 }
 
 /*
-é€šè¿‡è¡¨å¤´çš„æ ‡é¢˜æ‰¾åˆ°è¡¨å¤´å¯¹åº”çš„ç¼–å·
-OperateChart        æ‰€éœ€å¯»æ‰¾çš„æ ‡é¢˜æ‰€åœ¨çš„è¡¨
-UnitHeadName        å­—ç¬¦ä¸²"æ ‡é¢˜"
+Í¨¹ı±íÍ·µÄ±êÌâÕÒµ½±íÍ·¶ÔÓ¦µÄ±àºÅ
+OperateChart        ËùĞèÑ°ÕÒµÄ±êÌâËùÔÚµÄ±í
+UnitHeadName        ×Ö·û´®"±êÌâ"
 */
 int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName)
 {
@@ -2745,7 +2745,7 @@ int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName)
 }
 
 /*
-ä»è·¯å¾„å­—ç¬¦ä¸²ä¸­è¯»å–æ–‡ä»¶åç§°
+´ÓÂ·¾¶×Ö·û´®ÖĞ¶ÁÈ¡ÎÄ¼şÃû³Æ
 */
 char* GetFileName(const char* Path)
 {
@@ -2764,9 +2764,9 @@ char* GetFileName(const char* Path)
 }
 
 
-/***********************************å†…éƒ¨å‡½æ•°******************************************/
+/***********************************ÄÚ²¿º¯Êı******************************************/
 /*
-å¯¹å­—ç¬¦ä¸²è¿›è¡Œç®€å•åŠ å¯†è§£å¯†
+¶Ô×Ö·û´®½øĞĞ¼òµ¥¼ÓÃÜ½âÃÜ
 */
 ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord, int PassWord_len)
 {

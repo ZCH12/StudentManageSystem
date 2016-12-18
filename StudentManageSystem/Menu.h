@@ -1,27 +1,27 @@
-ï»¿#pragma once
+#pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "DataBase.h"
 
-extern int CurrentChartIndex;				//æœ€è¿‘åœ¨æ“ä½œçš„è¡¨çš„ç¼–å·
-extern int CurrentIndexListIndex;			//æœ€è¿‘åœ¨æ“ä½œçš„IndexListçš„ç¼–å·
-extern int CurrentTitleListIndex;			//æœ€è¿‘åœ¨æ“ä½œçš„TitleListçš„ç¼–å·
-extern int CurrentTitleIndex;				//æœ€è¿‘åœ¨æ“ä½œçš„Chartè¡¨ä¸­çš„åˆ—çš„ç¼–å·
-extern int CurrentPageIndex;				//å½“å‰åœ¨æ“ä½œçš„é¡µ
+extern int CurrentChartIndex;				//×î½üÔÚ²Ù×÷µÄ±íµÄ±àºÅ
+extern int CurrentIndexListIndex;			//×î½üÔÚ²Ù×÷µÄIndexListµÄ±àºÅ
+extern int CurrentTitleListIndex;			//×î½üÔÚ²Ù×÷µÄTitleListµÄ±àºÅ
+extern int CurrentTitleIndex;				//×î½üÔÚ²Ù×÷µÄChart±íÖĞµÄÁĞµÄ±àºÅ
+extern int CurrentPageIndex;				//µ±Ç°ÔÚ²Ù×÷µÄÒ³
 
-#define CONFIGFILEPATH1 "Config\\Config1.config"	//é…ç½®æ–‡ä»¶çš„è·¯å¾„
-#define CONFIGFILEPATH2 "Config\\Config2.config"	//é…ç½®æ–‡ä»¶çš„è·¯å¾„
-#define CONFIGFILEPATH3 "Config\\Config3.config"	//é…ç½®æ–‡ä»¶çš„è·¯å¾„
-#define CONFIGFILEPATH4 "Config\\Config4.config"	//é…ç½®æ–‡ä»¶çš„è·¯å¾„
-#define CONFIGFILEPATH5 "Config\\Config5.config"	//é…ç½®æ–‡ä»¶çš„è·¯å¾„
+#define CONFIGFILEPATH1 "Config\\Config1.config"	//ÅäÖÃÎÄ¼şµÄÂ·¾¶
+#define CONFIGFILEPATH2 "Config\\Config2.config"	//ÅäÖÃÎÄ¼şµÄÂ·¾¶
+#define CONFIGFILEPATH3 "Config\\Config3.config"	//ÅäÖÃÎÄ¼şµÄÂ·¾¶
+#define CONFIGFILEPATH4 "Config\\Config4.config"	//ÅäÖÃÎÄ¼şµÄÂ·¾¶
+#define CONFIGFILEPATH5 "Config\\Config5.config"	//ÅäÖÃÎÄ¼şµÄÂ·¾¶
 
-#define RANDOMCOLOR 1//æ§åˆ¶æ˜¯å¦éšæœºæ”¹å˜çª—å£é¢œè‰²
-#define WARNING_TOMUCHITEM 2000				//æ§åˆ¶ä½•æ—¶è­¦å‘Šè¾“å‡ºçš„æ•°é‡å¤ªå¤š
-#define SIZE_PAGE 2000						//ä¸€é¡µçš„å¤§å°
+#define RANDOMCOLOR 1//¿ØÖÆÊÇ·ñËæ»ú¸Ä±ä´°¿ÚÑÕÉ«
+#define WARNING_TOMUCHITEM 2000				//¿ØÖÆºÎÊ±¾¯¸æÊä³öµÄÊıÁ¿Ì«¶à
+#define SIZE_PAGE 2000						//Ò»Ò³µÄ´óĞ¡
 
-//è·¨å¹³å°è‡ªåŠ¨ç¼–è¯‘å¼€å…³
+//¿çÆ½Ì¨×Ô¶¯±àÒë¿ª¹Ø
 #ifdef __APPLE__ 
 #ifdef __MACH__
 #define GETPASSWORD 0
@@ -52,7 +52,7 @@ int Event_Input();
 int InputPassWord(char *PassWord, int MaxSize);
 void ChangeColor();
 
-//ç”¨äºå­˜å–é…ç½®æ–‡ä»¶
+//ÓÃÓÚ´æÈ¡ÅäÖÃÎÄ¼ş
 void WriteConfig1(char *ConfigFile, char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName);
 void WriteConfig2(char *ConfigFile, char * FileName);
 void WriteConfig3(char *ConfigFile, char *ParamFileName, char * DataFileName);
@@ -60,10 +60,10 @@ void ReadConfig1(char *ConfigFile, char *ParamFileName, char * DataFileName, cha
 void ReadConfig2(char *ConfigFile, char * FileName);
 void ReadConfig3(char *ConfigFile, char *ParamFileName, char * DataFileName);
 
-//éœ€è¦å…¬å…±ä½¿ç”¨çš„UI
+//ĞèÒª¹«¹²Ê¹ÓÃµÄUI
 void SubMenu_Display();
 
-//ä¸»èœå•çš„å…¥å£
+//Ö÷²Ëµ¥µÄÈë¿Ú
 void MainMenu();
 
 
