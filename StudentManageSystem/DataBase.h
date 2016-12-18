@@ -61,7 +61,7 @@ typedef struct
 
 /*
 IndexList是一个索引结构体,它里面的list是一个int数组,数组的每一个元素是单元行在Chart表中的实际顺序的下标(从0开始计数),在调用display时,影响数据输出的顺序的是list中下标的顺序,而与行在数组的位置无关
-Title也是一个索引结构体,它里面的list是一个int数组,数组的每一个元素是标题在Chart表中的下标,在调用display时,此索引也同样可以影响display显示的标题和顺序
+TitleList也是一个索引结构体,它里面的list是一个int数组,数组的每一个元素是标题在Chart表中的下标,在调用display时,此索引也同样可以影响display显示的标题和顺序
 警告:在使用时一定要与相应的表匹配,否则结果不正确.
 */
 typedef struct
@@ -104,10 +104,10 @@ extern int AlloctedTitleListCount;	//全局:已分配的TitleList的个数
 
 
 //输入输出函数
-ErrVal ReadFromFile(const char *FileName, Chart *OperateChart);
+//ErrVal ReadFromFile(const char *FileName, Chart *OperateChart);
+//ErrVal WriteToFile_Chart();
 ErrVal ReadFromTwoFile(const char *ParamFileName,const char * DataFileName,Chart *OperateChart);
 ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart);
-//ErrVal WriteToFile_Chart();
 ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * WriteLine, TitleList * WriteTitle);
 ErrVal WriteToTwoFile_Chart(const char *ParamFileName,const char * DataFileName, Chart *OperateChart);
 ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);

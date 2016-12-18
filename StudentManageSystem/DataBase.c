@@ -39,10 +39,12 @@ int AlloctedTitleListCount = 0;			//已分配的TitleList的个数
 
 /*
 从文件读取数据到指定表
-File 要读取的文件路径
+                        //不安全,不推荐使用就好了
+                        //待重写
+FileName 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
-//待重写
 */
+
 ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 {
 	FILE *File;
@@ -208,9 +210,9 @@ ErrVal ReadFromFile(const char *FileName, Chart *OperateChart)
 
 /*
 从两个文件中读取信息
-ParamFileName	表头与配置文件的路径
-DataFileName	表中数据的路径
-OperateChart 要用来存储读入的数据的表
+ParamFileName   表头与配置文件的路径
+DataFileName    表中数据的路径
+OperateChart    要用来存储读入的数据的表
 */
 ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Chart *OperateChart)
 {
@@ -516,6 +518,9 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 
 /*
 从本程序创建的二进制文件读取信息
+FileName        二进制文件的路径
+PassWord        加密的密码
+OperateChart    要进行保存的表
 */
 ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart)
 {
@@ -661,10 +666,10 @@ ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *Operat
 
 /*
 将数据导出到Txt(有排版,适合直接阅读的输出)
-FileName要写入的文件名
-OperateChart 要写入的数据存放的表
-WriteLine 控制表中哪些行要进行存储,并控制着存储顺序
-WriteTitle 控制着哪些列需要输出,并控制着输出顺序
+FileName        要写入的文件名
+OperateChart    要写入的数据存放的表
+WriteLine       控制表中哪些行要进行存储,并控制着存储顺序
+WriteTitle      控制着哪些列需要输出,并控制着输出顺序
 */
 ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * WriteLine, TitleList * WriteTitle)
 {
@@ -699,8 +704,9 @@ ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * Writ
 
 /*
 将表写入到两个文件中去
-ParamFileName 要写入参数的文件路径
-DataFileName 要写入表中数据的文件路径
+ParamFileName   要写入参数的文件路径
+DataFileName    要写入表中数据的文件路径
+OperateChart    要写入的数据存放的表
 */
 ErrVal WriteToTwoFile_Chart(const char * ParamFileName, const char * DataFileName, Chart * OperateChart)
 {
@@ -739,10 +745,11 @@ ErrVal WriteToTwoFile_Chart(const char * ParamFileName, const char * DataFileNam
 
 /*
 按照List的顺序把表写入到文件中去,与WriteToTwoFile_Chart()不同的是这个函数支持将部分数据写入表
-ParamFileName 要写入参数的文件路径
-DataFileName 要写入表中数据的文件路径
-WriteLine 将要进行写入的行的数据
-WriteTitle 将要进行写入的列的数据
+ParamFileName   要写入参数的文件路径
+DataFileName    要写入表中数据的文件路径
+OperateChart    要写入的数据存放的表
+WriteLine       将要进行写入的行的数据
+WriteTitle      将要进行写入的列的数据
 */
 ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle)
 {
@@ -782,9 +789,9 @@ ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileNam
 
 /*
 将表中的数据写入到表
-FileName 要写入的文件的路径
-PassWord 加密的密码
-OperateChart 要进行保存的表
+FileName        要写入的文件的路径
+PassWord        加密的密码
+OperateChart    要进行保存的表
 */
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart)
 {
@@ -831,11 +838,11 @@ ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart 
 
 /*
 将表中的数据写入到表
-FileName 要写入的文件的路径
-PassWord 加密的密码
-OperateChart 要进行保存的表
-WriteLine 要写入的行的List
-WriteTitle 要写入的列的List
+FileName        要写入的文件的路径
+PassWord        加密的密码
+OperateChart    要进行保存的表
+WriteLine       要写入的行的List
+WriteTitle      要写入的列的List
 */
 ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle)
 {
@@ -1452,11 +1459,12 @@ ErrVal FreeChart(Chart *OperateChart)
 
 /*
 按照ShowLines和ShowTitle的顺序显示信息
-ShowLines 包含在Chart表中lines的下标的数组,允许为NULL,将输出所有的行(按表中顺序)
-ShowTitle 包含在Chart表中ShowTitle的下标的数组,允许为NULL,将输出所有的列(按表中顺序)
-Mode是控制显示的一个参数
-Mode=1 输出一个编号(用于给用户进行选择)
-Mode=0 不输出编号
+OperateChart    要显示的表
+ShowLines       控制行显示顺序的结构体.允许为NULL,为NULL则按照表中实际顺序输出
+ShowTitle       控制列显示顺序的结构体.允许为NULL,为NULL则按照表中实际顺序输出
+Mode        控制显示的一个参数(用于给用户进行选择)
+Mode=1      输出一个编号
+Mode=0      不输出编号
 */
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
 {
@@ -1635,8 +1643,9 @@ ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowT
 
 /*
 按照ShowLines和ShowTitle的顺序显示信息
-OperateLineIndex 在Chart表中行的下标
-ShowTitle 包含在Chart表中ShowTitle的下标的数组,允许为NULL,将输出所有的列(按表中顺序)
+OperateChart        所需的显示信息所在的表
+OperateLineIndex    在Chart表中行的下标
+ShowTitle           控制列显示顺序的结构体.允许为NULL,为NULL则按照表中实际顺序输出
 */
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle)
 {
@@ -1698,13 +1707,14 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 
 /*
 按照ShowLines和ShowTitle的顺序显示信息
-ShowLines 包含在Chart表中lines的下标的数组, 允许为NULL, 将输出所有的行(按表中顺序)
-ShowTitle 包含在Chart表中ShowTitle的下标的数组, 允许为NULL, 将输出所有的列(按表中顺序)
-Mode是控制显示的一个参数
-Mode = 1 输出一个编号(用于给用户进行选择)
-Mode = 0 不输出编号
-PageSize 一页的大小
-PageIndex 页的序号
+OperateChart    要显示的表
+ShowLines       控制行显示顺序的结构体.允许为NULL,为NULL则按照表中实际顺序输出
+ShowTitle       控制列显示顺序的结构体.允许为NULL,为NULL则按照表中实际顺序输出
+PageSize        一页的大小
+PageIndex       页的序号
+Mode        控制显示的一个参数(用于给用户进行选择)
+Mode = 1    输出一个编号
+Mode = 0    不输出编号
 */
 ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode, int PageSize, int PageIndex)
 {
