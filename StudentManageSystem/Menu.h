@@ -66,6 +66,4 @@ void SubMenu_Display();
 //主菜单的入口
 void MainMenu();
 
-//黄智豪的函数
 
-void CaluAverage();

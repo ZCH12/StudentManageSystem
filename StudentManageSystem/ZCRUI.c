@@ -1039,6 +1039,7 @@ void SubMenu_Advantage()
 {
 	void Sub_TitleList();
 	void Sub_IndexList();
+    void CaluAverage();
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
