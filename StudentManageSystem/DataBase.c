@@ -903,8 +903,8 @@ ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart 
 
 /*
 读取映射文件
-MapFileName 读取的映射文件的名称
-MapStruct 映射信息存储的结构体
+MapFileName     读取的映射文件的名称
+MapStruct       映射信息存储的结构体
 映射文件的格式为,直到文件结尾
 Val		String
 Val		String
@@ -970,7 +970,7 @@ ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct)
 
 /*
 释放映射关系结构体
-MapStruct 要释放的结构体
+MapStruct       要释放的结构体
 */
 ErrVal FreeMapStruct(InfoMap * MapStruct)
 {
@@ -990,10 +990,10 @@ ErrVal FreeMapStruct(InfoMap * MapStruct)
 
 /*
 新增1个或多个新的标题
-OperateChart 要进行操作的表
-CreateCount 要新增的标题数目
-NewTitleSet 新增的标题名称数组
-NewTitleLimits 新增的标题的内容限制长度
+OperateChart    要进行操作的表
+CreateCount     要新增的标题数目
+NewTitleSet     新增的标题名称数组
+NewTitleLimits  新增的标题的内容限制长度
 */
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits)
 {
@@ -1133,9 +1133,9 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 
 /*
 在已有的表中创建CreateCount个新的行
-OperateChart 要进行操作的表
-CreateCount 新增的行数
-NewList		新生成的行的下标存储的列表
+OperateChart    要进行操作的表
+CreateCount     新增的行数
+NewList         新生成的行的下标存储的列表
 */
 ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList)
 {
@@ -1422,7 +1422,7 @@ ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct)
 
 /*
 释放整个表所占的内存
-OperateChart 要进行销毁的表,表销毁之后处于未初始化的状态,需要重新初始化才能使用
+OperateChart    要进行销毁的表,表销毁之后处于未初始化的状态,需要重新初始化才能使用
 */
 ErrVal FreeChart(Chart *OperateChart)
 {
@@ -1463,8 +1463,8 @@ OperateChart    要显示的表
 ShowLines       控制行显示顺序的结构体.允许为NULL,为NULL则按照表中实际顺序输出
 ShowTitle       控制列显示顺序的结构体.允许为NULL,为NULL则按照表中实际顺序输出
 Mode        控制显示的一个参数(用于给用户进行选择)
-Mode=1      输出一个编号
-Mode=0      不输出编号
+Mode   1    输出一个编号
+Mode   0    不输出编号
 */
 ErrVal Display_Chart(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode)
 {
@@ -1713,8 +1713,8 @@ ShowTitle       控制列显示顺序的结构体.允许为NULL,为NULL则按照
 PageSize        一页的大小
 PageIndex       页的序号
 Mode        控制显示的一个参数(用于给用户进行选择)
-Mode = 1    输出一个编号
-Mode = 0    不输出编号
+Mode   1    输出一个编号
+Mode   0    不输出编号
 */
 ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTitle, int Mode, int PageSize, int PageIndex)
 {
@@ -1926,7 +1926,7 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 
 /*
 对表集进行扩充或初始化
-CreateCount 要新增的表的数量
+CreateCount     要新增的表的数量
 */
 ErrVal NewChartSet(int CreateCount)
 {
@@ -2022,9 +2022,9 @@ ErrVal FreeChartSet()
 
 /*
 按照IndexList对行进行排序
-OperateList 包含在Chart表中lines的下标的数组,必须是一个合法的IndexList
-Mode 0升序
-Mode 1降序
+OperateList     包含在Chart表中lines的下标的数组,必须是一个合法的IndexList
+Mode   0   升序
+Mode   1   降序
 */
 #if SORT_ARITHMETIC==0
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode)
@@ -2197,7 +2197,8 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 
 /*
 填充一个List(包含IndexList和TitleList),从0开始填充,会自动初始化内存
-Count 在List作为IndexList时一定不要超过表中的行数
+OperateList     要进行初始化的list
+Count           在List作为IndexList时一定不要超过表中的行数
 在作为TitleList时一定不要超过表中的标题的数量
 OperateList 中的list成员如果是指向数组的指针请设置为0
 */
@@ -2244,8 +2245,8 @@ ErrVal FillList(List *OperateList, int Count)
 
 /*
 按照提供的值初始化一个List
-OperateList 要进行初始化的结构体
-Count ListData的参数个数
+OperateList     要进行初始化的结构体
+Count           ListData的参数个数
 它与FillList的差别在于能否在初始化时自定义每一个元素
 */
 ErrVal InitList(List *OperateList, int Count, int ListData, ...)
@@ -2287,10 +2288,7 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 	return SUCCESS;
 }
 
-/*
-释放一个List
-*/
-ErrVal FreeList(List *OperateList)
+    ErrVal FreeList(List *OperateList)
 {
 	if (!OperateList)
 		return ERR_EMTYLIST;
@@ -2327,10 +2325,10 @@ ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...)
 
 /*
 对表集进行扩充或初始化
-CreateCount 要新增的表的数量
-ListType 要进行初始化的List类型
-ListType=0	对IndexListHeadSet进行操作
-ListType=1	对TitleListHeadSet进行操作
+CreateCount     要新增的表的数量
+ListType        要进行初始化的List类型
+ListType=0      对IndexListHeadSet进行操作
+ListType=1      对TitleListHeadSet进行操作
 */
 ErrVal NewListSet(int CreateCount, int ListType)
 {
@@ -2429,9 +2427,9 @@ ErrVal NewListSet(int CreateCount, int ListType)
 /*
 释放List集
 当不用到所有对应类型(IndexList或TitleList)的表集时,可调用此函数对List集进行内存释放
-ListType 要进行释放的List类型
-ListType=0	对IndexListHeadSet进行操作
-ListType=1	对TitleListHeadSet进行操作
+ListType        要进行释放的List类型
+ListType=0      对IndexListHeadSet进行操作
+ListType=1      对TitleListHeadSet进行操作
 */
 ErrVal FreeListSet(int ListType)
 {
@@ -2650,6 +2648,8 @@ int StrCmp(const char *A, const char *B)
 
 /*
 通过表头的标题找到表头对应的编号
+OperateChart        所需寻找的标题所在的表
+UnitHeadName        字符串"标题"
 */
 int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName)
 {

@@ -106,10 +106,10 @@ extern int AlloctedTitleListCount;	//全局:已分配的TitleList的个数
 //输入输出函数
 //ErrVal ReadFromFile(const char *FileName, Chart *OperateChart);
 //ErrVal WriteToFile_Chart();
-ErrVal ReadFromTwoFile(const char *ParamFileName,const char * DataFileName,Chart *OperateChart);
+ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Chart *OperateChart);
 ErrVal ReadFromBinFile(const char *FileName, const char *PassWord, Chart *OperateChart);
 ErrVal ExportToTxt(const char * FileName, Chart * OperateChart, IndexList * WriteLine, TitleList * WriteTitle);
-ErrVal WriteToTwoFile_Chart(const char *ParamFileName,const char * DataFileName, Chart *OperateChart);
+ErrVal WriteToTwoFile_Chart(const char *ParamFileName, const char * DataFileName, Chart *OperateChart);
 ErrVal WriteToTwoFileByList(const char * ParamFileName, const char * DataFileName, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);
 ErrVal WriteToBinFile_Chart(const char * FileName, const char * PassWord, Chart * OperateChart);
 ErrVal WriteToBinFileByList(const char * FileName, const char * PassWord, Chart * OperateChart, IndexList *WriteLine, TitleList *WriteTitle);
@@ -125,8 +125,8 @@ ErrVal FreeChartSet();
 //表操作函数
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList);
-ErrVal InitNewChart(Chart *OperateChart,int LinesCount,int TitleCount,char* TitleList,int TitleLimits,...); 
-ErrVal Translate(Chart *OperateChart,int TitleIndex,InfoMap *MapStruct);
+ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* TitleList, int TitleLimits,...);
+ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct);
 ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct);
 ErrVal FreeChart(Chart *OperateChart);
 
@@ -136,12 +136,12 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 ErrVal InitList(List *OperateList, int Count, int ListData, ...);
 ErrVal FillList(List *OperateList, int Count);
 ErrVal CopyList(List *SourceList, List *DestList);
-ErrVal GetListFromString(char* Input, List *list,int MaxIndex);
+ErrVal GetListFromString(char* Input, List *list, int MaxIndex);
 ErrVal FreeList(List *OperateList);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 
 //List集操作函数
-ErrVal NewListSet(int CreateCount,int ListType);
+ErrVal NewListSet(int CreateCount, int ListType);
 ErrVal FreeListSet(int ListType);
 
 //映射关系操作函数
