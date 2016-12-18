@@ -3,6 +3,9 @@
 //排序菜单
 void SortList_M()
 {
+    void SortByName1();
+    void SortByEx1();
+    void SortByWhatYouWant();
 #if RANDOMCOLOR
 	ChangeColor();
 #endif

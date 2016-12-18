@@ -67,8 +67,5 @@ void SubMenu_Display();
 void MainMenu();
 
 //黄智豪的函数
-void SortList_M();
+
 void CaluAverage();
-void SortByName1();
-void SortByEx1();
-void SortByWhatYouWant();

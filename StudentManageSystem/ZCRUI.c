@@ -10,7 +10,7 @@ void MainMenu()
 	void SubMenu_Display();
 	void SubMenu_SaveToFile();
 	void SubMenu_Advantage();
-	extern void SortList_M();
+	void SortList_M();
 	char a;
 	while (1)
 	{
