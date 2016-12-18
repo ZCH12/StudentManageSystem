@@ -617,7 +617,7 @@ void SubMenu_Display()
 				printf("请输入要显示的标题的序号或区间,各个序号(区间)之间用空格隔开,用回车结束输入:\n");
 				getchar();
 				fgets(tempChar, 100, stdin);
-				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+				GetListFromString(tempChar,ChartHead[CurrentChartIndex]->TitleCount, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
 				printf("编辑成功\n");
 			}
 			else {
@@ -1112,7 +1112,7 @@ void Sub_TitleList()
 				printf("请输入要显示的标题的序号或序号区间,各个序号(区间)之间用空格隔开,用回车结束输入:\n");
 				getchar();
 				fgets(tempChar, 100, stdin);
-				GetListFromString(tempChar, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
+				GetListFromString(tempChar, ChartHead[CurrentChartIndex]->TitleCount, TitleListHeadSet[CurrentTitleListIndex], ChartHead[CurrentChartIndex]->TitleCount);
 				printf("编辑成功\n");
 			}
 			else {
