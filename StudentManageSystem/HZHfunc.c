@@ -1,11 +1,11 @@
 ﻿#include "menu.h"
 
 //排序菜单
-void SortList_M()
+void SubMenu_SortList()
 {
-    void SortByName1();
-    void SortByEx1();
-    void SortByWhatYouWant();
+    void SubMenu_SortList1();
+    void SubMenu_SortList2();
+    void SubMenu_SortList3();
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -30,13 +30,13 @@ void SortList_M()
 		switch (Event_Input())
 		{
 		case 1:
-			SortByName1();
+			SubMenu_SortList1();
 			break;
 		case 2:
-			SortByEx1();
+			SubMenu_SortList2();
 			break;
 		case 3:
-			SortByWhatYouWant();
+			SubMenu_SortList3();
 			break;
 		case 4:
 			SubMenu_Display();
@@ -161,7 +161,7 @@ void CaluAverage()
 }
 
 //按照名字排序
-void SortByName1()
+void SubMenu_SortList1()
 {
 	int SortMode = 0;               //排序模式
 	int ReturnVal = 0;
@@ -234,7 +234,7 @@ void SortByName1()
 }
 
 //按照平均成绩排序
-void SortByEx1()
+void SubMenu_SortList2()
 {
 	int ReturnVal = 0;
 	int SortMode = 0;
@@ -307,7 +307,7 @@ void SortByEx1()
 }
 
 //按照任意单元排序
-void SortByWhatYouWant()
+void SubMenu_SortList3()
 {
 	int SortMode = 0;
 	int ReturnVal = 0;
