@@ -121,7 +121,7 @@ void CaluAverage()
 				break;
 			}
 
-			if (ChartHead&&ChartHead[CurrentChartIndex])
+			if (ChartHead && ChartHead[CurrentChartIndex])
 			{
 				NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "平均成绩");
 				if (NewUnitIndex == -1) {

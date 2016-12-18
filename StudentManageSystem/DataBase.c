@@ -2287,7 +2287,9 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 		sprintf(OperateList->ListName, "List(%d)", Count);
 	return SUCCESS;
 }
-
+/*
+释放一个list
+*/
     ErrVal FreeList(List *OperateList)
 {
 	if (!OperateList)
