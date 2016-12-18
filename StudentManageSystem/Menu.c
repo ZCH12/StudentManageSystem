@@ -1,20 +1,20 @@
-ï»¿#include "menu.h"
+#include "menu.h"
 
 /********************************************************************************
-çª—ä½“é€šç”¨å‡½æ•°
+´°ÌåÍ¨ÓÃº¯Êı
 ********************************************************************************/
-int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//ä»…ä½œä¸ºå¼€å…³
+int ShowChartList = 0, ShowListList = 0, ShowTitleList = 0, ShowSearchTitleList = 0;		//½ö×÷Îª¿ª¹Ø
 int ShowPageList = 0;
-int CurrentChartIndex = 0;			//æœ€è¿‘åœ¨æ“ä½œçš„è¡¨çš„ç¼–å·
-int CurrentIndexListIndex = 0;		//æœ€è¿‘åœ¨æ“ä½œçš„IndexListçš„ç¼–å·
-int CurrentTitleListIndex = 0;		//æœ€è¿‘åœ¨æ“ä½œçš„TitleListçš„ç¼–å·
-int CurrentTitleIndex = 0;			//æœ€è¿‘åœ¨æ“ä½œçš„Chartè¡¨ä¸­çš„åˆ—çš„ç¼–å·
-int CurrentPageIndex = 0;			//å½“å‰åœ¨æ“ä½œçš„é¡µ
+int CurrentChartIndex = 0;			//×î½üÔÚ²Ù×÷µÄ±íµÄ±àºÅ
+int CurrentIndexListIndex = 0;		//×î½üÔÚ²Ù×÷µÄIndexListµÄ±àºÅ
+int CurrentTitleListIndex = 0;		//×î½üÔÚ²Ù×÷µÄTitleListµÄ±àºÅ
+int CurrentTitleIndex = 0;			//×î½üÔÚ²Ù×÷µÄChart±íÖĞµÄÁĞµÄ±àºÅ
+int CurrentPageIndex = 0;			//µ±Ç°ÔÚ²Ù×÷µÄÒ³
 
 char InputBuffer[256];
 
 /*
-æ ¹æ®é¢„è®¾å€¼å°†æ‰€æœ‰çš„å˜é‡è¿›è¡Œåˆå§‹åŒ–
+¸ù¾İÔ¤ÉèÖµ½«ËùÓĞµÄ±äÁ¿½øĞĞ³õÊ¼»¯
 */
 void InitALL()
 {
@@ -25,11 +25,11 @@ void InitALL()
 	for (a = 0; a < 5; a++)
 	{
 		FillList(IndexListHeadSet[a], 0);
-		strcpy(IndexListHeadSet[a]->ListName, "(æœªåˆå§‹åŒ–)");
+		strcpy(IndexListHeadSet[a]->ListName, "(Î´³õÊ¼»¯)");
 		FillList(TitleListHeadSet[a], 0);
-		strcpy(TitleListHeadSet[a]->ListName, "(æœªåˆå§‹åŒ–)");
+		strcpy(TitleListHeadSet[a]->ListName, "(Î´³õÊ¼»¯)");
 	}
-	system("title å­¦ç”Ÿç®¡ç†ç³»ç»Ÿ");
+	system("title Ñ§Éú¹ÜÀíÏµÍ³");
 	system("mode con: cols=120 lines=10000");
 	system("color F9");
 
@@ -37,7 +37,7 @@ void InitALL()
 }
 
 /*
-ä»é…ç½®æ–‡ä»¶è¯»å–é…ç½®
+´ÓÅäÖÃÎÄ¼ş¶ÁÈ¡ÅäÖÃ
 */
 void ReadConfig1(char *ConfigFile, char *ParamFileName, char * DataFileName, char *SexFileName, char *CollageFileName)
 {
@@ -123,15 +123,15 @@ void Menu_DisplaySubMenu() {
 	int a;
 	char* Temp;
 
-	//è¡¨
+	//±í
 	if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) {
 		Temp = ChartHead[CurrentChartIndex]->ChartName;
-		Temp = Temp ? Temp : "æœªå‘½å";
+		Temp = Temp ? Temp : "Î´ÃüÃû";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %c[C] å½“å‰è¿›è¡Œæ“ä½œçš„è¡¨:%s(%d)\n", ShowChartList ? '-' : '+', Temp, CurrentChartIndex);
+	printf(" %c[C] µ±Ç°½øĞĞ²Ù×÷µÄ±í:%s(%d)\n", ShowChartList ? '-' : '+', Temp, CurrentChartIndex);
 	if (ShowChartList)
 	{
 		for (a = 0; a < ChartCount; a++)
@@ -141,15 +141,15 @@ void Menu_DisplaySubMenu() {
 				printf("   [C#%-2d]. (NULL)\n", a + 1);
 	}
 
-	//åå•
+	//Ãûµ¥
 	if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->AllocatedList > 0) {
 		Temp = IndexListHeadSet[CurrentIndexListIndex]->ListName;
-		Temp = Temp ? Temp : "æœªå‘½å";
+		Temp = Temp ? Temp : "Î´ÃüÃû";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %c[L] å½“å‰è¿›è¡Œæ“ä½œçš„åå•:%s(%d)\n", ShowListList ? '-' : '+', Temp, CurrentIndexListIndex);
+	printf(" %c[L] µ±Ç°½øĞĞ²Ù×÷µÄÃûµ¥:%s(%d)\n", ShowListList ? '-' : '+', Temp, CurrentIndexListIndex);
 	if (ShowListList)
 	{
 		if (IndexListHeadSet)
@@ -164,15 +164,15 @@ void Menu_DisplaySubMenu() {
                 }
 	}
 
-	//åˆ—é…ç½®æ–‡ä»¶
+	//ÁĞÅäÖÃÎÄ¼ş
 	if (TitleListHeadSet[CurrentTitleListIndex] && TitleListHeadSet[CurrentTitleListIndex]->AllocatedList > 0) {
 		Temp = TitleListHeadSet[CurrentTitleListIndex]->ListName;
-		Temp = Temp ? Temp : "æœªå‘½å";
+		Temp = Temp ? Temp : "Î´ÃüÃû";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %c[T] å½“å‰è¿›è¡Œæ“ä½œçš„åˆ—é…ç½®:%s(%d)\n", ShowTitleList ? '-' : '+', Temp, CurrentTitleListIndex);
+	printf(" %c[T] µ±Ç°½øĞĞ²Ù×÷µÄÁĞÅäÖÃ:%s(%d)\n", ShowTitleList ? '-' : '+', Temp, CurrentTitleListIndex);
 	if (ShowTitleList)
 	{
 		if (TitleListHeadSet)
@@ -194,12 +194,12 @@ char* Menu_DisplaySubMenu_Search()
 	char* Temp;
 	if (ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) {
 		Temp = ChartHead[CurrentChartIndex]->ChartTitle[CurrentTitleIndex];
-		Temp = Temp ? Temp : "æœªå‘½å";
+		Temp = Temp ? Temp : "Î´ÃüÃû";
 	}
 	else {
 		Temp = NULL;
 	}
-	printf(" %s å½“å‰è¿›è¡Œæ“ä½œçš„åˆ—æ ‡é¢˜:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
+	printf(" %s µ±Ç°½øĞĞ²Ù×÷µÄÁĞ±êÌâ:%s(%d)\n", ShowSearchTitleList ? "-[S]" : "+[S]", Temp, CurrentTitleIndex);
 	if (ShowSearchTitleList&&ChartHead[CurrentChartIndex])
 	{
 		for (a = 0; a < ChartHead[CurrentChartIndex]->TitleCount; a++)
@@ -207,7 +207,7 @@ char* Menu_DisplaySubMenu_Search()
 	}
 	return Temp;
 }
-//Displayçš„å­å‡½æ•°
+//DisplayµÄ×Óº¯Êı
 void Menu_DisplaySubMenu_Display()
 {
 	int a;
@@ -217,11 +217,11 @@ void Menu_DisplaySubMenu_Display()
 			printf("   [%-2d]. %s\n", a + 1, ChartHead[CurrentIndexListIndex]->ChartTitle[a]);
 	}
 }
-//å¤šé¡µé€‰æ‹©å™¨
+//¶àÒ³Ñ¡ÔñÆ÷
 void Menu_DisplaySubMenu_Page()
 {
 	int a, b;
-	printf(" %c[P] å½“å‰è¿›è¡Œæ“ä½œçš„é¡µ:%d--%d(%d)\n", ShowSearchTitleList ? '-' : '+', CurrentPageIndex*SIZE_PAGE, (CurrentPageIndex + 1)*SIZE_PAGE, CurrentPageIndex);
+	printf(" %c[P] µ±Ç°½øĞĞ²Ù×÷µÄÒ³:%d--%d(%d)\n", ShowSearchTitleList ? '-' : '+', CurrentPageIndex*SIZE_PAGE, (CurrentPageIndex + 1)*SIZE_PAGE, CurrentPageIndex);
 	if (ShowPageList) {
 		if (IndexListHeadSet&&IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->AllocatedList > 0)
 		{
@@ -236,7 +236,7 @@ void Menu_DisplaySubMenu_Page()
 	}
 }
 
-//å“åº”å­èœå•äº‹ä»¶
+//ÏìÓ¦×Ó²Ëµ¥ÊÂ¼ş
 int Event_Input()
 {
 	char Choice[5];
@@ -302,7 +302,7 @@ int Event_Input()
 }
 
 #if GETPASSWORD==1
-//å¯†ç è¾“å…¥å™¨,æ˜Ÿå·å›æ˜¾
+//ÃÜÂëÊäÈëÆ÷,ĞÇºÅ»ØÏÔ
 int InputPassWord(char *PassWord, int MaxSize)
 {
 	char tempchar;

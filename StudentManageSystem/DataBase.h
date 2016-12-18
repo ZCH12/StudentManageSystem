@@ -1,109 +1,109 @@
-ï»¿#pragma once
+#pragma once
 /*
 Create By ZCR
 2016-12-10
 */
 
-//é”™è¯¯ä»£ç 
-#define SUCCESS					0		//æ“ä½œæˆåŠŸ
-#define ERR_OPENFILE			1		//æ‰“å¼€æ–‡ä»¶å¤±è´¥
-#define ERR_NOTSTANDARDFILE		2		//ä¸æ˜¯ä¸€ä¸ªæœ¬ç¨‹åºå¯è¯»çš„æ–‡ä»¶
-#define ERR_MEMORYNOTENOUGH		3		//å†…å­˜ä¸è¶³,æ— æ³•åˆ†é…å†…å­˜
-#define ERR_ILLEGALCHART		4		//éæ³•çš„è¡¨
-#define ERR_UNINITIALIZEDCHART	5		//æœªåˆå§‹åŒ–çš„è¡¨
-#define ERR_ILLEGALPARAM		6		//éæ³•çš„å‚æ•°
-#define ERR_EMTYLIST			7		//ç©ºList
-#define ERR_UNINITIALIZEDLIST	8		//æœªåˆå§‹åŒ–çš„è¡¨
-#define ERR_WRONGPASSWORD		9		//é”™è¯¯çš„å¯†ç 
-#define ERR_ILLEGALBINFILE		10		//é”™è¯¯çš„äºŒè¿›åˆ¶æ–‡ä»¶
+//´íÎó´úÂë
+#define SUCCESS					0		//²Ù×÷³É¹¦
+#define ERR_OPENFILE			1		//´ò¿ªÎÄ¼şÊ§°Ü
+#define ERR_NOTSTANDARDFILE		2		//²»ÊÇÒ»¸ö±¾³ÌĞò¿É¶ÁµÄÎÄ¼ş
+#define ERR_MEMORYNOTENOUGH		3		//ÄÚ´æ²»×ã,ÎŞ·¨·ÖÅäÄÚ´æ
+#define ERR_ILLEGALCHART		4		//·Ç·¨µÄ±í
+#define ERR_UNINITIALIZEDCHART	5		//Î´³õÊ¼»¯µÄ±í
+#define ERR_ILLEGALPARAM		6		//·Ç·¨µÄ²ÎÊı
+#define ERR_EMTYLIST			7		//¿ÕList
+#define ERR_UNINITIALIZEDLIST	8		//Î´³õÊ¼»¯µÄ±í
+#define ERR_WRONGPASSWORD		9		//´íÎóµÄÃÜÂë
+#define ERR_ILLEGALBINFILE		10		//´íÎóµÄ¶ş½øÖÆÎÄ¼ş
 
-//åŠ©è®°å¸¸é‡
-#define SORT_ASCENDING	0		//æŒ‰å‡åºè¿›è¡Œæ’åº
-#define SORT_DESCENDING	1		//æŒ‰é™åºè¿›è¡Œæ’åº
-#define DISPLAY_HIDENUMBER	0	//éšè—ç¼–å·
-#define DISPLAY_SHOWNUMBER	1	//æ˜¾ç¤ºç¼–å·
-#define LISTTYPE_INDEXLIST	0	//æŒ‡å®šä¸ºIndexListç±»å‹çš„ç»“æ„ä½“
-#define LISTTYPE_TITLELIST	1	//æŒ‡å®šä¸ºTitleListç±»å‹çš„ç»“æ„ä½“
+//Öú¼Ç³£Á¿
+#define SORT_ASCENDING	0		//°´ÉıĞò½øĞĞÅÅĞò
+#define SORT_DESCENDING	1		//°´½µĞò½øĞĞÅÅĞò
+#define DISPLAY_HIDENUMBER	0	//Òş²Ø±àºÅ
+#define DISPLAY_SHOWNUMBER	1	//ÏÔÊ¾±àºÅ
+#define LISTTYPE_INDEXLIST	0	//Ö¸¶¨ÎªIndexListÀàĞÍµÄ½á¹¹Ìå
+#define LISTTYPE_TITLELIST	1	//Ö¸¶¨ÎªTitleListÀàĞÍµÄ½á¹¹Ìå
 
-//å‡½æ•°çŸ­å
+//º¯Êı¶ÌÃû
 #define WTIA WirteToIntArray
 #define SHI SearchHeadIndex
 
-//ç¼–è¯‘å¼€å…³
-#define SORT_ARITHMETIC 0		//æ’åºç®—æ³•ç¼–è¯‘æ§åˆ¶
+//±àÒë¿ª¹Ø
+#define SORT_ARITHMETIC 0		//ÅÅĞòËã·¨±àÒë¿ØÖÆ
 
-//ç¼–è¯‘æœŸå¸¸é‡
-#define SORT_CHUNK_SIZE 8		//æ’åºç®—æ³•æ”¹ç”¨æ’å…¥æ’åºçš„ä¸´ç•Œä¸ªæ•°
+//±àÒëÆÚ³£Á¿
+#define SORT_CHUNK_SIZE 8		//ÅÅĞòËã·¨¸ÄÓÃ²åÈëÅÅĞòµÄÁÙ½ç¸öÊı
 
-//ç±»å‹åˆ«å
+//ÀàĞÍ±ğÃû
 typedef int ErrVal;
 typedef char*** Chart_t;
 typedef char** ChartPiece_t;
 
-//å®šä¹‰ä¸€ä¸ªè¡¨ç»“æ„
+//¶¨ÒåÒ»¸ö±í½á¹¹
 typedef struct
 {
-	//è¡¨
-	Chart_t Chart;				//æ•´ä¸ªè¡¨çš„å…¥å£é¦–åœ°å€
-	char *ChartName;			//è¿™ä¸ªè¡¨çš„åç§°
+	//±í
+	Chart_t Chart;				//Õû¸ö±íµÄÈë¿ÚÊ×µØÖ·
+	char *ChartName;			//Õâ¸ö±íµÄÃû³Æ
 
-	//æ ‡é¢˜
-	int TitleCount;				//å­˜å‚¨æ ‡é¢˜çš„ä¸ªæ•°
-	ChartPiece_t ChartTitle;	//å­˜å‚¨æ¯ä¸ªæ ‡é¢˜çš„å­—ç¬¦ä¸²(æ¯ä¸ªæ ‡é¢˜ä¸å¾—è¶…è¿‡31ä¸ªå­—æ¯)
-	int *ChartLimits;			//å­˜å‚¨æ¯ä¸€ä¸ªæ ‡é¢˜ä¸‹çš„å•å…ƒæ ¼é‡Œçš„å­—ç¬¦ä¸²çš„æœ€å¤§é•¿åº¦
+	//±êÌâ
+	int TitleCount;				//´æ´¢±êÌâµÄ¸öÊı
+	ChartPiece_t ChartTitle;	//´æ´¢Ã¿¸ö±êÌâµÄ×Ö·û´®(Ã¿¸ö±êÌâ²»µÃ³¬¹ı31¸ö×ÖÄ¸)
+	int *ChartLimits;			//´æ´¢Ã¿Ò»¸ö±êÌâÏÂµÄµ¥Ôª¸ñÀïµÄ×Ö·û´®µÄ×î´ó³¤¶È
 
-	//è¡Œ
-	//int AllocatedLines;			//è¡¨å·²åˆ†é…çš„å¤§å°(æ­¤å€¼å¤§äºç­‰äºUsedLines)(å·²åˆ†é…ä½†æœªä½¿ç”¨çš„è¡Œæœªç”³è¯·å†…å­˜)
-	int UsedLines;				//åœ¨è¡¨ä¸­å®é™…è¢«ä½¿ç”¨çš„è¡Œ
-	int HadInit;				//è®°å½•è¿™ä¸ªè¡¨æ˜¯å¦å·²ç»è¢«åˆå§‹åŒ–
+	//ĞĞ
+	//int AllocatedLines;			//±íÒÑ·ÖÅäµÄ´óĞ¡(´ËÖµ´óÓÚµÈÓÚUsedLines)(ÒÑ·ÖÅäµ«Î´Ê¹ÓÃµÄĞĞÎ´ÉêÇëÄÚ´æ)
+	int UsedLines;				//ÔÚ±íÖĞÊµ¼Ê±»Ê¹ÓÃµÄĞĞ
+	int HadInit;				//¼ÇÂ¼Õâ¸ö±íÊÇ·ñÒÑ¾­±»³õÊ¼»¯
 } Chart;
 
 
 /*
-IndexListæ˜¯ä¸€ä¸ªç´¢å¼•ç»“æ„ä½“,å®ƒé‡Œé¢çš„listæ˜¯ä¸€ä¸ªintæ•°ç»„,æ•°ç»„çš„æ¯ä¸€ä¸ªå…ƒç´ æ˜¯å•å…ƒè¡Œåœ¨Chartè¡¨ä¸­çš„å®é™…é¡ºåºçš„ä¸‹æ ‡(ä»0å¼€å§‹è®¡æ•°),åœ¨è°ƒç”¨displayæ—¶,å½±å“æ•°æ®è¾“å‡ºçš„é¡ºåºçš„æ˜¯listä¸­ä¸‹æ ‡çš„é¡ºåº,è€Œä¸è¡Œåœ¨æ•°ç»„çš„ä½ç½®æ— å…³
-TitleListä¹Ÿæ˜¯ä¸€ä¸ªç´¢å¼•ç»“æ„ä½“,å®ƒé‡Œé¢çš„listæ˜¯ä¸€ä¸ªintæ•°ç»„,æ•°ç»„çš„æ¯ä¸€ä¸ªå…ƒç´ æ˜¯æ ‡é¢˜åœ¨Chartè¡¨ä¸­çš„ä¸‹æ ‡,åœ¨è°ƒç”¨displayæ—¶,æ­¤ç´¢å¼•ä¹ŸåŒæ ·å¯ä»¥å½±å“displayæ˜¾ç¤ºçš„æ ‡é¢˜å’Œé¡ºåº
-è­¦å‘Š:åœ¨ä½¿ç”¨æ—¶ä¸€å®šè¦ä¸ç›¸åº”çš„è¡¨åŒ¹é…,å¦åˆ™ç»“æœä¸æ­£ç¡®.
+IndexListÊÇÒ»¸öË÷Òı½á¹¹Ìå,ËüÀïÃæµÄlistÊÇÒ»¸öintÊı×é,Êı×éµÄÃ¿Ò»¸öÔªËØÊÇµ¥ÔªĞĞÔÚChart±íÖĞµÄÊµ¼ÊË³ĞòµÄÏÂ±ê(´Ó0¿ªÊ¼¼ÆÊı),ÔÚµ÷ÓÃdisplayÊ±,Ó°ÏìÊı¾İÊä³öµÄË³ĞòµÄÊÇlistÖĞÏÂ±êµÄË³Ğò,¶øÓëĞĞÔÚÊı×éµÄÎ»ÖÃÎŞ¹Ø
+TitleListÒ²ÊÇÒ»¸öË÷Òı½á¹¹Ìå,ËüÀïÃæµÄlistÊÇÒ»¸öintÊı×é,Êı×éµÄÃ¿Ò»¸öÔªËØÊÇ±êÌâÔÚChart±íÖĞµÄÏÂ±ê,ÔÚµ÷ÓÃdisplayÊ±,´ËË÷ÒıÒ²Í¬Ñù¿ÉÒÔÓ°ÏìdisplayÏÔÊ¾µÄ±êÌâºÍË³Ğò
+¾¯¸æ:ÔÚÊ¹ÓÃÊ±Ò»¶¨ÒªÓëÏàÓ¦µÄ±íÆ¥Åä,·ñÔò½á¹û²»ÕıÈ·.
 */
 typedef struct
 {
-	int *list;			//æ•°ç»„,é‡Œé¢çš„å€¼å­˜å‚¨çš„æ˜¯æŒ‡å®šè¡¨ä¸­çš„å®é™…è¡Œ(æˆ–åˆ—)çš„æ•°ç»„ä¸‹æ ‡
-	int listCount;		//è®°å½•æ•°ç»„çš„ä¸ªæ•°
-	int AllocatedList;	//å·²åˆ†é…çš„å†…å­˜
-	int IsOnStack;		//è¯¥å€¼ä¸º1æ—¶è¡¨ç¤ºlistæ˜¯åŠ¨æ€åˆ†é…çš„
-	char *ListName;		//è¿™ä¸ªListçš„åç§°
+	int *list;			//Êı×é,ÀïÃæµÄÖµ´æ´¢µÄÊÇÖ¸¶¨±íÖĞµÄÊµ¼ÊĞĞ(»òÁĞ)µÄÊı×éÏÂ±ê
+	int listCount;		//¼ÇÂ¼Êı×éµÄ¸öÊı
+	int AllocatedList;	//ÒÑ·ÖÅäµÄÄÚ´æ
+	int IsOnStack;		//¸ÃÖµÎª1Ê±±íÊ¾listÊÇ¶¯Ì¬·ÖÅäµÄ
+	char *ListName;		//Õâ¸öListµÄÃû³Æ
 } List, IndexList, TitleList;
 
 /*
-æ˜ å°„æ–¹æ¡ˆå­˜å‚¨ç»“æ„
-ç”¨äºå­˜æ”¾ä»æ–‡ä»¶ä¸­è¯»å–çš„æ˜ å°„æ–¹æ¡ˆ,ç”¨äºä»£ç åˆ°ç›®æ ‡å­—ç¬¦ä¸²çš„è½¬æ¢æ—¶
+Ó³Éä·½°¸´æ´¢½á¹¹
+ÓÃÓÚ´æ·Å´ÓÎÄ¼şÖĞ¶ÁÈ¡µÄÓ³Éä·½°¸,ÓÃÓÚ´úÂëµ½Ä¿±ê×Ö·û´®µÄ×ª»»Ê±
 */
 typedef struct
 {
-	char **Val;				//æ˜ å°„æ–¹æ¡ˆçš„é”®å­˜æ”¾çš„ä½ç½®çš„é¦–æŒ‡é’ˆ
-	char **String;			//æ˜ å°„æ–¹æ¡ˆçš„å€¼å­˜æ”¾çš„ä½ç½®çš„é¦–æŒ‡é’ˆ
-	int Count;				//æ˜ å°„æ–¹æ¡ˆä¸­å…ƒç´ çš„ä¸ªæ•°
-	char *MapName;			//æ­¤æ˜ å°„æ–¹æ¡ˆçš„åå­—,é»˜è®¤ä¸ºè¯»å–çš„æ–‡ä»¶åç§°
+	char **Val;				//Ó³Éä·½°¸µÄ¼ü´æ·ÅµÄÎ»ÖÃµÄÊ×Ö¸Õë
+	char **String;			//Ó³Éä·½°¸µÄÖµ´æ·ÅµÄÎ»ÖÃµÄÊ×Ö¸Õë
+	int Count;				//Ó³Éä·½°¸ÖĞÔªËØµÄ¸öÊı
+	char *MapName;			//´ËÓ³Éä·½°¸µÄÃû×Ö,Ä¬ÈÏÎª¶ÁÈ¡µÄÎÄ¼şÃû³Æ
 } InfoMap;
 
 /*
-å…¨å±€å¤–éƒ¨å˜é‡çš„å£°æ˜
+È«¾ÖÍâ²¿±äÁ¿µÄÉùÃ÷
 */
-//è¡¨é›†çš„å£°æ˜
-extern Chart ** ChartHead;			//å…¨å±€:è¡¨çš„æŒ‡é’ˆæ•°ç»„
-extern int ChartCount;				//å…¨å±€:å·²ä½¿ç”¨çš„è¡¨çš„ä¸ªæ•°
-extern int AlloctedChartCount;		//å…¨å±€:å·²åˆ†é…çš„è¡¨çš„ä¸ªæ•°
+//±í¼¯µÄÉùÃ÷
+extern Chart ** ChartHead;			//È«¾Ö:±íµÄÖ¸ÕëÊı×é
+extern int ChartCount;				//È«¾Ö:ÒÑÊ¹ÓÃµÄ±íµÄ¸öÊı
+extern int AlloctedChartCount;		//È«¾Ö:ÒÑ·ÖÅäµÄ±íµÄ¸öÊı
 
-//ä¸¤ç§Listé›†çš„å£°æ˜
-extern IndexList **IndexListHeadSet;//å…¨å±€:IndexListçš„æŒ‡é’ˆæ•°ç»„
-extern int IndexListCount;			//å…¨å±€:å·²ä½¿ç”¨çš„IndexListçš„ä¸ªæ•°
-extern int AlloctedIndexListCount;	//å…¨å±€:å·²åˆ†é…çš„IndexListçš„ä¸ªæ•°
+//Á½ÖÖList¼¯µÄÉùÃ÷
+extern IndexList **IndexListHeadSet;//È«¾Ö:IndexListµÄÖ¸ÕëÊı×é
+extern int IndexListCount;			//È«¾Ö:ÒÑÊ¹ÓÃµÄIndexListµÄ¸öÊı
+extern int AlloctedIndexListCount;	//È«¾Ö:ÒÑ·ÖÅäµÄIndexListµÄ¸öÊı
 
-extern TitleList **TitleListHeadSet;//å…¨å±€:TitleListçš„æŒ‡é’ˆæ•°ç»„
-extern int TitleListCount;			//å…¨å±€:å·²ä½¿ç”¨çš„TitleListçš„ä¸ªæ•°
-extern int AlloctedTitleListCount;	//å…¨å±€:å·²åˆ†é…çš„TitleListçš„ä¸ªæ•°
+extern TitleList **TitleListHeadSet;//È«¾Ö:TitleListµÄÖ¸ÕëÊı×é
+extern int TitleListCount;			//È«¾Ö:ÒÑÊ¹ÓÃµÄTitleListµÄ¸öÊı
+extern int AlloctedTitleListCount;	//È«¾Ö:ÒÑ·ÖÅäµÄTitleListµÄ¸öÊı
 
 
-//è¾“å…¥è¾“å‡ºå‡½æ•°
+//ÊäÈëÊä³öº¯Êı
 //ErrVal ReadFromFile(const char *FileName, Chart *OperateChart);
 //ErrVal WriteToFile_Chart();
 ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Chart *OperateChart);
@@ -118,11 +118,11 @@ ErrVal Display_Page(Chart *OperateChart, IndexList *ShowLines, TitleList *ShowTi
 ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowTitle);
 
 
-//è¡¨é›†æ“ä½œå‡½æ•°
+//±í¼¯²Ù×÷º¯Êı
 ErrVal NewChartSet(int CreateCount);
 ErrVal FreeChartSet();
 
-//è¡¨æ“ä½œå‡½æ•°
+//±í²Ù×÷º¯Êı
 ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32], int *NewTitleLimits);
 ErrVal CreateNewLine(Chart * OperateChart, int CreateCount, IndexList *NewList);
 ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* TitleList, int TitleLimits,...);
@@ -130,7 +130,7 @@ ErrVal Translate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct);
 ErrVal UnTranslate(Chart *OperateChart, int TitleIndex, InfoMap *MapStruct);
 ErrVal FreeChart(Chart *OperateChart);
 
-//å¯¹Listæ“ä½œçš„å‡½æ•°
+//¶ÔList²Ù×÷µÄº¯Êı
 ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int Mode);
 ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList, int BaseTitleIndex, char * DestinString);
 ErrVal InitList(List *OperateList, int Count, int ListData, ...);
@@ -141,15 +141,15 @@ ErrVal GetListFromStringViaList(char* Input, int n, List *Resultlist, List *Sour
 ErrVal FreeList(List *OperateList);
 ErrVal WirteToIntArray(int* OperateArray, int n, int ListData, ...);
 
-//Listé›†æ“ä½œå‡½æ•°
+//List¼¯²Ù×÷º¯Êı
 ErrVal NewListSet(int CreateCount, int ListType);
 ErrVal FreeListSet(int ListType);
 
-//æ˜ å°„å…³ç³»æ“ä½œå‡½æ•°
+//Ó³Éä¹ØÏµ²Ù×÷º¯Êı
 ErrVal ReadMapFile(char* MapFileName, InfoMap *MapStruct);
 ErrVal FreeMapStruct(InfoMap *MapStruct);
 
-//åŸºç¡€åŠŸèƒ½å‡½æ•°
+//»ù´¡¹¦ÄÜº¯Êı
 int StrCmp(const char *A, const char *B);
 int SearchHeadIndex(Chart *OperateChart, const char *UnitHeadName);
 char* GetFileName(const char* Path);
@@ -157,7 +157,7 @@ char* GetFileName(const char* Path);
 
 /*
 TODO:
-éœ€è¦å¯¹è¡¨ä¸­çš„ç©ºå…ƒç´ å­˜å‚¨æ—¶ä½¿ç”¨#ä»£æ›¿ç©ºå­—ç¬¦ä¸²
-æ£€æŸ¥NewUnitçš„å†…å­˜æ³„æ¼é—®é¢˜ 
-è¾“å…¥å‡½æ•°å­˜åœ¨å†…å­˜æ³„æ¼çš„é£é™©,ä»¥åŠå®¹æ˜“å‡ºç°æ— æ³•è¯»å–æ–‡ä»¶çš„bug
+ĞèÒª¶Ô±íÖĞµÄ¿ÕÔªËØ´æ´¢Ê±Ê¹ÓÃ#´úÌæ¿Õ×Ö·û´®
+¼ì²éNewUnitµÄÄÚ´æĞ¹Â©ÎÊÌâ 
+ÊäÈëº¯Êı´æÔÚÄÚ´æĞ¹Â©µÄ·çÏÕ,ÒÔ¼°ÈİÒ×³öÏÖÎŞ·¨¶ÁÈ¡ÎÄ¼şµÄbug
 */
