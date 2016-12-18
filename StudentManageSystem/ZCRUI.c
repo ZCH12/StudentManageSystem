@@ -5,12 +5,13 @@
 void MainMenu()
 {
 	void SubMenu_Read();
+    extern void SubMenu_SortList();
 	void SubMenu_Search();
 	void SubMenu_Change();
 	void SubMenu_Display();
 	void SubMenu_SaveToFile();
 	void SubMenu_Advantage();
-	extern void SortList_M();
+	
 	char a;
 	while (1)
 	{
@@ -43,7 +44,7 @@ void MainMenu()
 			SubMenu_Read();			//从文件读取信息
 			break;
 		case 2:
-			SortList_M();           //对学生信息排序
+			SubMenu_SortList();           //对学生信息排序
 			break;
 		case 3:
 			SubMenu_Search();		//查找学生信息
@@ -1039,6 +1040,7 @@ void SubMenu_Advantage()
 {
 	void Sub_TitleList();
 	void Sub_IndexList();
+    void CaluAverage();
 #if RANDOMCOLOR
 	ChangeColor();
 #endif

@@ -1,8 +1,11 @@
 ﻿#include "menu.h"
 
 //排序菜单
-void SortList_M()
+void SubMenu_SortList()
 {
+    void SubMenu_SortListByName();
+    void SubMenu_SortListByAver();
+    void SubMenu_SortListByWhatever();
 #if RANDOMCOLOR
 	ChangeColor();
 #endif
@@ -27,13 +30,13 @@ void SortList_M()
 		switch (Event_Input())
 		{
 		case 1:
-			SortByName1();
+			SubMenu_SortListByName();
 			break;
 		case 2:
-			SortByEx1();
+			SubMenu_SortListByAver();
 			break;
 		case 3:
-			SortByWhatYouWant();
+			SubMenu_SortListByWhatever();
 			break;
 		case 4:
 			SubMenu_Display();
@@ -118,7 +121,7 @@ void CaluAverage()
 				break;
 			}
 
-			if (ChartHead&&ChartHead[CurrentChartIndex])
+			if (ChartHead && ChartHead[CurrentChartIndex])
 			{
 				NewUnitIndex = SHI(ChartHead[CurrentChartIndex], "平均成绩");
 				if (NewUnitIndex == -1) {
@@ -158,7 +161,7 @@ void CaluAverage()
 }
 
 //按照名字排序
-void SortByName1()
+void SubMenu_SortListByName()
 {
 	int SortMode = 0;               //排序模式
 	int ReturnVal = 0;
@@ -231,7 +234,7 @@ void SortByName1()
 }
 
 //按照平均成绩排序
-void SortByEx1()
+void SubMenu_SortListByAver()
 {
 	int ReturnVal = 0;
 	int SortMode = 0;
@@ -304,7 +307,7 @@ void SortByEx1()
 }
 
 //按照任意单元排序
-void SortByWhatYouWant()
+void SubMenu_SortListByWhatever()
 {
 	int SortMode = 0;
 	int ReturnVal = 0;
