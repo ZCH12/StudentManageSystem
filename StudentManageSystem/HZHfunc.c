@@ -103,7 +103,7 @@ void CaluAverage()
 				);
 				fgets(temp, 128, stdin);
 				temp[strlen(temp) - 1] = 0;
-				GetListFromString(temp, &tempList, ChartHead[CurrentChartIndex]->TitleCount);
+				GetListFromString(temp, ChartHead[CurrentChartIndex]->TitleCount, &tempList, ChartHead[CurrentChartIndex]->TitleCount);
 				if (tempList.listCount <= 0) {
 					printf("输入格式错误\n");
 					GETCH();
