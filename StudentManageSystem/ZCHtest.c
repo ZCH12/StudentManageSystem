@@ -1,15 +1,15 @@
-ï»¿//#include <vld.h>
+//#include <vld.h>
 #include <time.h>
 #include "menu.h"
 /*
-//æµ‹è¯•å†…å­˜æ³„æ¼ç”¨
+//²âÊÔÄÚ´æĞ¹Â©ÓÃ
 #define CRTDBG_MAP_ALLOC
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
 */
 #if 0
-//æµ‹è¯•åŠ¨æ€åˆ›å»ºè¡¨
+//²âÊÔ¶¯Ì¬´´½¨±í
 void Demo0()
 {
 	Chart c;
@@ -18,15 +18,15 @@ void Demo0()
 	IndexList stulist3;
 	TitleList titlelist;
 
-	//åˆå§‹åŒ–ä¸€ä¸ª3*5çš„è¡¨
-	InitNewChart(&c, 5, 3, "å§“å", 5, "ç­çº§", 5, "åº§å·", 5);
+	//³õÊ¼»¯Ò»¸ö3*5µÄ±í
+	InitNewChart(&c, 5, 3, "ĞÕÃû", 5, "°à¼¶", 5, "×ùºÅ", 5);
 
-	//å†™å…¥æ•°æ®
-	strcpy(c.Chart[0][0], "å¼ ä¸‰");
-	strcpy(c.Chart[1][0], "æå››");
-	strcpy(c.Chart[2][0], "ç‹äº”");
-	strcpy(c.Chart[3][0], "å†¯å…«");
-	strcpy(c.Chart[4][0], "å¼ ä¸‰");
+	//Ğ´ÈëÊı¾İ
+	strcpy(c.Chart[0][0], "ÕÅÈı");
+	strcpy(c.Chart[1][0], "ÀîËÄ");
+	strcpy(c.Chart[2][0], "ÍõÎå");
+	strcpy(c.Chart[3][0], "·ë°Ë");
+	strcpy(c.Chart[4][0], "ÕÅÈı");
 	strcpy(c.Chart[0][1], "303");
 	strcpy(c.Chart[1][1], "302");
 	strcpy(c.Chart[2][1], "303");
@@ -47,49 +47,49 @@ void Demo0()
 
 	Display_Chart(&c, NULL, NULL, DISPLAY_HIDENUMBER);
 	/*********************************************************/
-	//æ’åºæµ‹è¯•
-	//æŒ‰å§“åå‡åºæ’åº
-	printf("æŒ‰å§“åå‡åºæ’åº\n");
-	Sort(&c, &stulist, SHI(&c, "å§“å"), SORT_ASCENDING);
-	Display_Chart(&c, &stulist, NULL, DISPLAY_HIDENUMBER);			//æ˜¾ç¤ºæ•°æ®
+	//ÅÅĞò²âÊÔ
+	//°´ĞÕÃûÉıĞòÅÅĞò
+	printf("°´ĞÕÃûÉıĞòÅÅĞò\n");
+	Sort(&c, &stulist, SHI(&c, "ĞÕÃû"), SORT_ASCENDING);
+	Display_Chart(&c, &stulist, NULL, DISPLAY_HIDENUMBER);			//ÏÔÊ¾Êı¾İ
 	printf("\n");
 
-	//æŒ‰åº§å·é™åºæ’åº
-	printf("æŒ‰åº§å·é™åºæ’åº\n");
-	Sort(&c, &stulist, SHI(&c, "åº§å·"), SORT_DESCENDING);
-	Display_Chart(&c, &stulist, NULL, DISPLAY_HIDENUMBER);			//æ˜¾ç¤ºæ•°æ®
+	//°´×ùºÅ½µĞòÅÅĞò
+	printf("°´×ùºÅ½µĞòÅÅĞò\n");
+	Sort(&c, &stulist, SHI(&c, "×ùºÅ"), SORT_DESCENDING);
+	Display_Chart(&c, &stulist, NULL, DISPLAY_HIDENUMBER);			//ÏÔÊ¾Êı¾İ
 	/*********************************************************/
-	//ç­›é€‰æŸ¥æ‰¾
-	FillList(&stulist2, 10);			//Listä½¿ç”¨ä¹‹å‰è¦å…ˆè¿›è¡Œåˆå§‹åŒ–
-	FillList(&stulist3, 10);			//Listä½¿ç”¨ä¹‹å‰è¦å…ˆè¿›è¡Œåˆå§‹åŒ–
+	//É¸Ñ¡²éÕÒ
+	FillList(&stulist2, 10);			//ListÊ¹ÓÃÖ®Ç°ÒªÏÈ½øĞĞ³õÊ¼»¯
+	FillList(&stulist3, 10);			//ListÊ¹ÓÃÖ®Ç°ÒªÏÈ½øĞĞ³õÊ¼»¯
 
-	Search(&c, &stulist, &stulist2, SHI(&c, "å§“å"), "å¼ ä¸‰");
+	Search(&c, &stulist, &stulist2, SHI(&c, "ĞÕÃû"), "ÕÅÈı");
 
 	if (stulist2.listCount > 0) {
-		printf("\næ‰¾åˆ°å§“åä¸ºå¼ ä¸‰çš„å­¦ç”Ÿå¦‚ä¸‹:\n");
+		printf("\nÕÒµ½ĞÕÃûÎªÕÅÈıµÄÑ§ÉúÈçÏÂ:\n");
 		Display_Chart(&c, &stulist2, NULL, DISPLAY_HIDENUMBER);
 	}
-	else printf("\næ²¡æœ‰æ‰¾åˆ°æœ‰å…³å­¦ç”Ÿçš„ä¿¡æ¯\n");
+	else printf("\nÃ»ÓĞÕÒµ½ÓĞ¹ØÑ§ÉúµÄĞÅÏ¢\n");
 
-	Search(&c, &stulist2, &stulist3, SHI(&c, "ç­çº§"), "303");		//åœ¨ä¹‹å‰æœç´¢ç»“æœçš„åŸºç¡€ä¸Šå†æœç´¢ç­çº§ä¸º303çš„å­¦ç”Ÿ
+	Search(&c, &stulist2, &stulist3, SHI(&c, "°à¼¶"), "303");		//ÔÚÖ®Ç°ËÑË÷½á¹ûµÄ»ù´¡ÉÏÔÙËÑË÷°à¼¶Îª303µÄÑ§Éú
 	if (stulist3.listCount > 0)
 	{
-		printf("\næ‰¾åˆ°å§“åä¸ºå¼ ä¸‰çš„å­¦ç”Ÿå¦‚ä¸‹:\n");
+		printf("\nÕÒµ½ĞÕÃûÎªÕÅÈıµÄÑ§ÉúÈçÏÂ:\n");
 		Display_Chart(&c, &stulist3, NULL, DISPLAY_HIDENUMBER);
 	}
-	else printf("\næ²¡æœ‰æ‰¾åˆ°æœ‰å…³å­¦ç”Ÿçš„ä¿¡æ¯\n");
+	else printf("\nÃ»ÓĞÕÒµ½ÓĞ¹ØÑ§ÉúµÄĞÅÏ¢\n");
 	/**********************************************************/
-	//è¾“å‡ºçš„æ—¶å€™å¦‚æœè§‰å¾—åº§å·æ”¾åœ¨åé¢ä¸åˆé€‚,æ²¡å…³ç³»,å¯ä»¥è¿›è¡Œè°ƒæ•´
+	//Êä³öµÄÊ±ºòÈç¹û¾õµÃ×ùºÅ·ÅÔÚºóÃæ²»ºÏÊÊ,Ã»¹ØÏµ,¿ÉÒÔ½øĞĞµ÷Õû
 
-	printf("\né‡æ–°è°ƒæ•´åˆ—ä¹‹åçš„è¾“å‡º\n");
-	InitList(&titlelist, 3, SHI(&c, "åº§å·"), SHI(&c, "ç­çº§"), SHI(&c, "å§“å"));
+	printf("\nÖØĞÂµ÷ÕûÁĞÖ®ºóµÄÊä³ö\n");
+	InitList(&titlelist, 3, SHI(&c, "×ùºÅ"), SHI(&c, "°à¼¶"), SHI(&c, "ĞÕÃû"));
 	Display_Chart(&c, &stulist, &titlelist, DISPLAY_HIDENUMBER);
 
-	printf("\nå†æŒ‰åº§å·å‡åºæ’åºä¸€ä¸‹\n");
-	Sort(&c, &stulist, SHI(&c, "åº§å·"), SORT_ASCENDING);
+	printf("\nÔÙ°´×ùºÅÉıĞòÅÅĞòÒ»ÏÂ\n");
+	Sort(&c, &stulist, SHI(&c, "×ùºÅ"), SORT_ASCENDING);
 	Display_Chart(&c, &stulist, &titlelist, DISPLAY_HIDENUMBER);
 
-	//æµ‹è¯•å®Œæ¯•åé‡Šæ”¾å†…å­˜,é˜²æ­¢æŒ‡é’ˆä¸¢å¤±é€ æˆå†…å­˜æ³„éœ²
+	//²âÊÔÍê±ÏºóÊÍ·ÅÄÚ´æ,·ÀÖ¹Ö¸Õë¶ªÊ§Ôì³ÉÄÚ´æĞ¹Â¶
 	FreeList(&stulist);
 	FreeList(&stulist2);
 	FreeList(&stulist3);
@@ -97,18 +97,18 @@ void Demo0()
 	FreeChart(&c);
 }
 
-//æµ‹è¯•ä»åŒæ–‡ä»¶ä¸­è¯»å–æ•°æ®
+//²âÊÔ´ÓË«ÎÄ¼şÖĞ¶ÁÈ¡Êı¾İ
 void demo1()
 {
 	InfoMap im = { 0 }, im2 = { 0 };
 	ReadFromTwoFile("ZCHtestFile\\stu_param.txt", "ZCHtestFile\\Stu_info.txt", ChartHead[0]);
 
-	//ç¿»è¯‘å­¦é™¢ä»£ç ä¸ºå­¦é™¢åç§°
+	//·­ÒëÑ§Ôº´úÂëÎªÑ§ÔºÃû³Æ
 	ReadMapFile("ZCHtestFile\\C_info.txt", &im);
-	Translate(ChartHead[0], SHI(ChartHead[0], "å­¦é™¢åç§°"), &im);
-	//ç¿»è¯‘æ€§åˆ«
+	Translate(ChartHead[0], SHI(ChartHead[0], "Ñ§ÔºÃû³Æ"), &im);
+	//·­ÒëĞÔ±ğ
 	ReadMapFile("ZCHtestFile\\S_info.txt", &im2);
-	Translate(ChartHead[0], SHI(ChartHead[0], "æ€§åˆ«"), &im2);
+	Translate(ChartHead[0], SHI(ChartHead[0], "ĞÔ±ğ"), &im2);
 
 	Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 	printf("%s\n", ChartHead[0]->ChartName);
@@ -117,7 +117,7 @@ void demo1()
 
 }
 
-//æµ‹è¯•CreateNewLineæ•ˆç‡
+//²âÊÔCreateNewLineĞ§ÂÊ
 void test2()
 {
 	clock_t t1, t2, t3;
@@ -128,9 +128,9 @@ void test2()
 	CreateNewLine(ChartHead[0], 5, NULL);
 	CreateNewLine(ChartHead[0], 5, NULL);
 	t3 = clock();
-	printf("æ€»ç”¨æ—¶:%ld\n", t3 - t1);
-	printf("è¯»å–æ–‡ä»¶ç”¨æ—¶:%ld\n", t2 - t1);
-	printf("åˆ†é…æ–°è¡Œç”¨æ—¶:%ld\n", t3 - t2);
+	printf("×ÜÓÃÊ±:%ld\n", t3 - t1);
+	printf("¶ÁÈ¡ÎÄ¼şÓÃÊ±:%ld\n", t2 - t1);
+	printf("·ÖÅäĞÂĞĞÓÃÊ±:%ld\n", t3 - t2);
 	//Display_Chart(ChartHead[0], NULL, NULL, DISPLAY_HIDENUMBER);
 
 }
@@ -156,7 +156,7 @@ void test3()
 	//Search_M();
 }
 
-//æµ‹è¯•æ–‡ä»¶çš„å†™å…¥
+//²âÊÔÎÄ¼şµÄĞ´Èë
 void test4()
 {
 	NewChartSet(5);
@@ -181,7 +181,7 @@ void test5()
 	//ReadFromBinFile("1.dat", " ", ChartHead[1]);
 	//Display_Chart(ChartHead[1], IndexListHeadSet[0], TitleListHeadSet[0], DISPLAY_HIDENUMBER);
 }
-//æµ‹è¯•ä»äºŒè¿›åˆ¶æ–‡ä»¶è¯»å–æ•°æ®
+//²âÊÔ´Ó¶ş½øÖÆÎÄ¼ş¶ÁÈ¡Êı¾İ
 void test6()
 {
 	NewChartSet(5);
@@ -193,11 +193,11 @@ void test6()
 	Display_Chart(ChartHead[0], IndexListHeadSet[0], TitleListHeadSet[0], DISPLAY_HIDENUMBER);
 }
 
-//åŠ å¯†è§£å¯†æµ‹è¯•
+//¼ÓÃÜ½âÃÜ²âÊÔ
 void test7()
 {
 	ErrVal EncryptChar(const char *ResultString, const char *SourceString, int size, const char* PassWord);
-	char str1[100] = "å¼ é©°è£";
+	char str1[100] = "ÕÅ³ÛÈÙ";
 	char str2[100] = "";
 	printf("%s'%d\n", str1, strlen(str1));
 	EncryptChar(str2, str1, strlen(str1), "123");
@@ -212,7 +212,7 @@ void test7()
 }
 
 /*
-æµ‹è¯•æ˜¾ç¤ºèœå•
+²âÊÔÏÔÊ¾²Ëµ¥
 */
 void test8()
 {
@@ -223,7 +223,7 @@ void test8()
 	//Display_M();
 }
 
-//æµ‹è¯•å­èœå•
+//²âÊÔ×Ó²Ëµ¥
 void test9()
 {
 	//InitALL();
@@ -244,7 +244,7 @@ void test9()
 	system("pause");
 }
 #endif
-//å®éªŒä¸­çš„ä¸»èœå•,å°†ä½œä¸ºä¸»å‡½æ•°
+//ÊµÑéÖĞµÄÖ÷²Ëµ¥,½«×÷ÎªÖ÷º¯Êı
 void testmain()
 {
 	InitALL();
@@ -270,7 +270,7 @@ void test11()
 	NewChartSet(5);
 	NewListSet(5, LISTTYPE_INDEXLIST);
 	NewListSet(5, LISTTYPE_TITLELIST);
-	ReadFromTwoFile("Windowsæµ‹è¯•æ–‡ä»¶\\stu_param.txt", "Windowsæµ‹è¯•æ–‡ä»¶\\stu_info.txt", ChartHead[0]);
+	ReadFromTwoFile("Windows²âÊÔÎÄ¼ş\\stu_param.txt", "Windows²âÊÔÎÄ¼ş\\stu_info.txt", ChartHead[0]);
 	InitList(IndexListHeadSet[0], 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 11);
 
 	Display_Page(ChartHead[0], IndexListHeadSet[0], NULL, DISPLAY_SHOWNUMBER, 4, 0);
@@ -282,7 +282,7 @@ void test11()
 	Display_Page(ChartHead[0], IndexListHeadSet[0], NULL, DISPLAY_SHOWNUMBER, 4, 3);
 }
 
-//æµ‹è¯•æ’åº
+//²âÊÔÅÅĞò
 /*
 void test12()
 {
@@ -291,7 +291,7 @@ void test12()
 	NewListSet(5, LISTTYPE_INDEXLIST);
 	//NewListSet(5, LISTTYPE_TITLELIST);
 	
-	ReadFromTwoFile("Windowsæµ‹è¯•æ–‡ä»¶\\stu_param2.txt", "Windowsæµ‹è¯•æ–‡ä»¶\\stu_info2.txt", ChartHead[0]);
+	ReadFromTwoFile("Windows²âÊÔÎÄ¼ş\\stu_param2.txt", "Windows²âÊÔÎÄ¼ş\\stu_info2.txt", ChartHead[0]);
 	FillList(IndexListHeadSet[0], ChartHead[0]->UsedLines);
 
 	for (int a = 0; a < IndexListHeadSet[0]->listCount; a++)
@@ -313,7 +313,7 @@ void test12()
 }
 */
 
-//æµ‹è¯•GetListFromStringViaList
+//²âÊÔGetListFromStringViaList
 void test13()
 {
 	char str[] = "1-3 5 4";
