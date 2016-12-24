@@ -535,7 +535,6 @@ void SubMenu_Display()
 	extern int ShowTitleList;
 	extern int ShowPageList;
 	static int ShowNumber = 0;
-	char tempChar[100];
 	char temp;
 #if RANDOMCOLOR
 	ChangeColor();

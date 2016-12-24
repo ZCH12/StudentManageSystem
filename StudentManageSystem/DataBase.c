@@ -39,8 +39,8 @@ int AlloctedTitleListCount = 0;			//已分配的TitleList的个数
 
 /*
 从文件读取数据到指定表
-						//不安全,不推荐使用就好了
-						//待重写
+//不安全,不推荐使用就好了
+//待重写
 FileName 要读取的文件路径
 OperateChart 要用来存储读入的数据的表
 */
@@ -488,7 +488,7 @@ ErrVal ReadFromTwoFile(const char *ParamFileName, const char * DataFileName, Cha
 	//获取读取的文件的名字
 	a = (int)strlen(ParamFileName);
 	b = (int)strlen(DataFileName);
-	Line = (char*)malloc(sizeof(char)*(a + b + 4));
+	Line = (char*)malloc(sizeof(char)*(a + b + 6));
 	if (Line) {
 		for (c = a - 1; c >= 0; c--)
 			if (ParamFileName[c] == '/' || ParamFileName[c] == '\\')
@@ -1000,8 +1000,8 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	Chart_t NewChart;
 	ChartPiece_t NewChartTitle;
 	int* NewChartLimits;
-	int LinesCount = OperateChart->UsedLines;
-	int UnitCount = OperateChart->TitleCount, NewUnitCount;
+	int LinesCount;
+	int UnitCount, NewUnitCount;
 	int a, b, c, d;
 	char **temp;		//为了提高性能
 	int  *temp3;
@@ -1011,11 +1011,17 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 
 	if (!OperateChart)
 		return ERR_ILLEGALCHART;
+	UnitCount = OperateChart->TitleCount;
+	LinesCount = OperateChart->UsedLines;
 
 	if (LinesCount <= 0 || UnitCount <= 0)
 		return ERR_UNINITIALIZEDCHART;
 
+
 	NewUnitCount = OperateChart->TitleCount + CreateCount;
+
+	if (NewUnitCount<=OperateChart->TitleCount)
+		return ERR_ILLEGALPARAM;
 
 	//开始新建表头
 	NewChartTitle = (ChartPiece_t)malloc(sizeof(char*)*NewUnitCount);
@@ -1043,6 +1049,7 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 	for (a = UnitCount; a < NewUnitCount; a++)
 	{
 		NewChartTitle[a] = (char*)malloc(sizeof(char) * 32);
+		NewChartLimits[a] = *temp3;
 		if (!NewChartTitle[a])
 		{
 			for (a--; a >= UnitCount; a--)
@@ -1051,10 +1058,10 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 			free(NewChartLimits);
 			return ERR_MEMORYNOTENOUGH;
 		}
-		NewChartLimits[a] = *temp3;
 		strcpy(NewChartTitle[a], *NewTitleSet);
 		temp3++;
 		NewTitleSet++;
+
 	}
 
 	//开始新建一个新的表
@@ -1077,7 +1084,8 @@ ErrVal CreateNewUnit(Chart *OperateChart, int CreateCount, char(*NewTitleSet)[32
 				free(NewChart[a]);
 			free(NewChart);
 			for (a = UnitCount; a < NewUnitCount; a++)
-				free(NewChartTitle[a]);
+				if (NewChartTitle[a])
+					free(NewChartTitle[a]);
 			free(NewChartTitle);
 			free(NewChartLimits);
 			return ERR_MEMORYNOTENOUGH;
@@ -1283,7 +1291,7 @@ ErrVal InitNewChart(Chart *OperateChart, int LinesCount, int TitleCount, char* T
 	strcpy(*tempChartTitle, TitleList);		//写入第一个标题 
 	*tempChartLimits = TitleLimits;			//写入第一个标题的内容长度限制
 
-											//对第2-TitleCount个数进行处理
+	//对第2-TitleCount个数进行处理
 	va_start(ap, TitleLimits);
 
 	for (a = 1; a < TitleCount; a++)
@@ -1677,7 +1685,7 @@ ErrVal Display_Piece(Chart *OperateChart, int OperateLineIndex, TitleList *ShowT
 	temp3 = ShowTitle->listCount;
 	temp5 = OperateChart->ChartLimits;		//取得长度限制的数组
 
-											//显示表头
+	//显示表头
 	temp2 = ShowTitle->list;
 	for (a = 0; a < temp3; a++)
 	{
@@ -1976,11 +1984,12 @@ ErrVal NewChartSet(int CreateCount)
 				tempChartSet[a] = (Chart*)calloc(sizeof(Chart), sizeof(Chart));
 				if (!tempChartSet[a])
 				{
-					if (a != ChartCount)
+					if (a != ChartCount){
 						for (a--; a >= ChartCount; a--)
 						{
 							free(tempChartSet[a]);
 						}
+					}
 					free(tempChartSet);
 					return ERR_MEMORYNOTENOUGH;
 				}
@@ -2086,7 +2095,7 @@ int QuickSortX(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, 
 	if (High - Low < SORT_CHUNK_SIZE)
 		return 0;
 	//if (High - Low < 1000)
-		//return 0;
+	//return 0;
 
 	L_p = Low;
 	R_p = High;
@@ -2121,14 +2130,14 @@ ErrVal Sort(Chart *OperateChart, IndexList *OperateList, int BaseTitleIndex, int
 	/*
 	for (a = 1; a < OperateList->listCount; a++)
 	{
-		if (StrCmp(OperateChart->Chart[OperateList->list[a - 1]][BaseTitleIndex], OperateChart->Chart[OperateList->list[a]][BaseTitleIndex]) < 0)
-		{
-			tmp = OperateList->list[a];
-			tmpchar = OperateChart->Chart[OperateList->list[tmp]][BaseTitleIndex];
-			for (b = a - 1; b >= 0 && StrCmp(OperateChart->Chart[OperateList->list[b]][BaseTitleIndex], tmpchar) < 0; b--)
-				OperateList->list[b + 1] = OperateList->list[b];
-			OperateList->list[b + 1] = tmp;
-		}
+	if (StrCmp(OperateChart->Chart[OperateList->list[a - 1]][BaseTitleIndex], OperateChart->Chart[OperateList->list[a]][BaseTitleIndex]) < 0)
+	{
+	tmp = OperateList->list[a];
+	tmpchar = OperateChart->Chart[OperateList->list[tmp]][BaseTitleIndex];
+	for (b = a - 1; b >= 0 && StrCmp(OperateChart->Chart[OperateList->list[b]][BaseTitleIndex], tmpchar) < 0; b--)
+	OperateList->list[b + 1] = OperateList->list[b];
+	OperateList->list[b + 1] = tmp;
+	}
 	}
 	*/
 	return SUCCESS;
@@ -2188,11 +2197,11 @@ ErrVal Search(Chart *OperateChart, IndexList *SearchList, IndexList *ResultList,
 				ResultList->list[list_p++] = SearchList->list[a];
 			}
 		}
-	ResultList->listCount = list_p;
-	if (isNULL)
-		free(tempLinelist.list);
+		ResultList->listCount = list_p;
+		if (isNULL)
+			free(tempLinelist.list);
 
-	return SUCCESS;
+		return SUCCESS;
 }
 
 /*
@@ -2290,7 +2299,7 @@ ErrVal InitList(List *OperateList, int Count, int ListData, ...)
 /*
 释放一个list
 */
-    ErrVal FreeList(List *OperateList)
+ErrVal FreeList(List *OperateList)
 {
 	if (!OperateList)
 		return ERR_EMTYLIST;
@@ -2398,11 +2407,12 @@ ErrVal NewListSet(int CreateCount, int ListType)
 			tempListSet[a] = (List*)calloc(sizeof(List), sizeof(List));
 			if (!tempListSet[a])
 			{
-				if (a != ListCount)
+				if (a != ListCount){
 					for (a--; a >= ListCount; a--)
 					{
 						free(tempListSet[a]);
 					}
+				}
 				free(tempListSet);
 				return ERR_MEMORYNOTENOUGH;
 			}
@@ -2568,11 +2578,11 @@ ErrVal GetListFromString(char* Input, int n, List *list, int MaxIndex)
 /*
 该函数把一个字符串中指定的第n个元素存进ResultList中
 比如SourceList的List的数据为   5 1 2 4 3
-	Input的值为1-5(或1 2 3 4 5)
-	则ResultList中的值为 5 1 2 4 3
+Input的值为1-5(或1 2 3 4 5)
+则ResultList中的值为 5 1 2 4 3
 
 如果Input的值为 1 3 2 4 5(或1 3 2 4-5)
-	则ResultList中的值为 5 2 1 4 3
+则ResultList中的值为 5 2 1 4 3
 可以存在 1-5 这样的区间,这等同于1 2 3 4 5
 Resultlist 存储的目标List
 SourceList 源List

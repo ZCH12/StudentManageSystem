@@ -350,10 +350,16 @@ void Sub_SortListByWhatever()
 			SortMode = !SortMode;
 			break;
 		case 2:
-			if (ChartHead && ((ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0) || (!ChartHead[CurrentChartIndex]))) {
+			if (ChartHead && ((ChartHead[CurrentChartIndex] && ChartHead[CurrentChartIndex]->HadInit != 0))) {
 				if (IndexListHeadSet) {
-					if (!IndexListHeadSet[CurrentIndexListIndex] || IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
+					if (IndexListHeadSet[CurrentIndexListIndex] && IndexListHeadSet[CurrentIndexListIndex]->listCount <= 0)
 						FillList(IndexListHeadSet[CurrentIndexListIndex], ChartHead[CurrentChartIndex]->UsedLines);
+					else 
+					{
+						printf("名单未初始化\n");
+						GETCH();
+						break;
+					}
 					if (IndexListHeadSet[CurrentIndexListIndex]->listCount > 0) {
 						printf("正在排序,请耐心等待...\n");
 						ReturnVal = Sort(ChartHead[CurrentChartIndex], IndexListHeadSet[CurrentIndexListIndex], CurrentTitleIndex, SortMode);
